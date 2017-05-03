@@ -1,0 +1,20 @@
+Market Research
+  UX/UI                                                 https://blog.bloc.io/job-market-for-ux-ui-designers/
+  Graphic Designers        261,600   (+3,600 by 2024)   https://www.bls.gov/ooh/arts-and-design/graphic-designers.htm
+  Software Developers      1,114,000 (+186,000 by 2024) https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm
+  Web Developers (2014)    148,500   (+39,500 by 2024)  https://www.bls.gov/ooh/computer-and-information-technology/web-developers.htm
+
+Sales Prediction
+  %1 of web developers - 1,485
+  $100/mo per user     - $148,500
+  Annual               - $1,782,000
+
+Value Add
+  Decrease time to market
+  Increase creativity
+  Reduce complexity
+  Simplifies design/development
+  Desktop, Mobile, or Browser
+
+Quantify Loss of creativity
+Quantify Time loss of application development complexity

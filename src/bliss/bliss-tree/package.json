@@ -1,0 +1,29 @@
+{
+  "name": "bliss-tree",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js",
+    "build": "bin/build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buwilliams/bliss-tree.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.23.0",
+    "babel-preset-env": "^1.2.1",
+    "express": "^4.15.2",
+    "bootstrap": "^4.0.0-alpha.6"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "name": "Bliss",
+  "version": "0.2.0",
+  "description": "Bridging design and development for user-interfaces",
+  "main": "src/electron.js",
+  "scripts": {
+    "test": "bin/test",
+    "build": "node ./bin/build.js bliss v0.2",
+    "build-tree": "node ./bin/build.js bliss-tree v0.2",
+    "build-properties": "node ./bin/build.js bliss-properties v0.2",
+    "build-javascript": "node ./bin/build.js bliss-javascript v0.2",
+    "start": "node ./bin/server.js bliss v0.2",
+    "start-tree": "node ./bin/server.js bliss-tree v0.2",
+    "start-properties": "node ./bin/server.js bliss-properties v0.2",
+    "start-javascript": "node ./bin/server.js bliss-javascript v0.2",
+    "electron": "./node_modules/.bin/electron ./src/electron.js",
+    "pack": "build --dir",
+    "dist": "build",
+    "open": "open dist/mac/bliss.app"
+  },
+  "build": {
+    "appId": "com.bliss.frontend",
+    "files": [
+      "node_modules",
+      "src"
+    ],
+    "mac": {
+      "category": "com.bliss.frontend"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buwilliams/bliss.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/buwilliams/bliss/issues"
+  },
+  "homepage": "https://github.com/buwilliams/bliss#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "dotenv": "^4.0.0",
+    "electron-log": "^2.0.0",
+    "express": "^4.14.1",
+    "glob": "^7.1.1",
+    "js-beautify": "^1.6.11",
+    "lodash": "^4.17.4",
+    "lowdb": "^0.16.0",
+    "mkdirp": "^0.5.1",
+    "pretty": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^1.6.1",
+    "electron-packager": "^8.6.0",
+    "fs-extra": "^2.1.2",
+    "jasmine": "^2.5.3",
+    "reload": "^1.1.1"
+  }
+}

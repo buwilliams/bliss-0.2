@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+WD="$(pwd)"
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+cd $DIR/../
+
+./node_modules/.bin/babel ./src/js/bliss-properties.jsx -o ./src/js/bliss-properties.js
+./node_modules/.bin/babel ./src/js/bliss-property.jsx -o ./src/js/bliss-property.js
+
+mkdir -p dist
+
+cp ./src/js/bliss-properties.js dist/
+cp ./src/js/bliss-property.js dist/
+cp ./src/css/bliss-properties.css dist/
+
+cd $WD

@@ -1,0 +1,227 @@
+var js = require('./js.js');
+var htmlElements = require('./html-elements.js');
+
+module.exports = {
+  buildGetKey: function() {
+    var out = `app.getKey = function() {
+      var out = [];
+      for(var i=0; i<arguments.length; i++) out.push(arguments[i]);
+      return out.join('_');
+    };`;
+    return out;
+  },
+
+  buildMergeAttributesFn: function() {
+    var out = `app.mergeAttributes = function(id, scope, dynamicAttributes, attrs) {
+      for(key in dynamicAttributes) {
+        if(dynamicAttributes.hasOwnProperty(key)) {
+          var fn = dynamicAttributes[key];
+          var value = app.methods[id][fn](scope, attrs);
+          attrs[key] = value;
+        }
+      }
+      return attrs;
+    }`;
+    return out;
+  },
+
+  buildKeyFn: function(id, index) {
+    var out = '';
+    if(typeof index === "string") {
+      out += `app.getKey('id', '${id}', ${index})`;
+    } else {
+      out += `app.getKey('id', '${id}')`;
+    }
+    return out;
+  },
+
+  getAttributes: function(component, key) {
+    var out = "";
+    var attrs = [];
+
+    var dynamicAttributes = JSON.stringify(component.dynamicAttributes);
+    out += `app.mergeAttributes('${component.id}', scope, ${dynamicAttributes}, {`;
+
+    if(typeof component.attributes['class'] === "string") {
+      component.attributes['className'] = component.attributes['class'];
+      delete component.attributes['class'];
+    }
+
+    Object.keys(component.attributes).forEach(function(key) {
+      attrs.push(`"${key}":"${component.attributes[key]}"`);
+    });
+
+    out += attrs.join(',');
+    out += (attrs.length > 0) ? `,"key":${key}` : `"key":${key}`;
+    out += "})";
+
+    return out;
+  },
+
+  buildComponent: function(components, startId, designMode) {
+    if(typeof startId === "undefined" || typeof startId === null) return "";
+    var component = components[startId];
+
+    var out = "\n";
+
+    if(component.designMode === false && designMode === true) {
+      out += "null";
+      if(typeof component.next !== "undefined" && component.next !== null) {
+        out += "," + this.buildComponent(components, component.next, designMode);
+      }
+      return out;
+    }
+
+    out += this.buildStartIf(components, component);
+
+    var repeat = this.buildStartRepeat(components, component);
+    out += repeat;
+
+    out += "React.createElement(";
+    if(htmlElements.has(component.element)) {
+      out += `'${component.element}', `;
+    } else {
+      out += `${component.element}, `;
+    }
+
+    if(repeat === "") {
+      out += this.getAttributes(component, this.buildKeyFn(component.id));
+    } else {
+      out += this.getAttributes(component, this.buildKeyFn(component.id, 'i'));
+    }
+
+    if(typeof component.textFn === "string" && component.textFn !== "") {
+      var fn = `app.methods['${component.id}']['${component.textFn}']`;
+      out += `, ${fn}(scope)`;
+    } else if(typeof component.text === "string" && component.text !== "") {
+      out += `, "${component.text}"`;
+    }
+
+    if(component.child !== null) {
+      out += ", " + this.buildComponent(components, component.child, designMode);
+    }
+
+    out += ')';
+
+    out += this.buildEndIf(components, component);
+    out += this.buildEndRepeat(components, component);
+
+    if(typeof component.next !== "undefined" && component.next !== null) {
+      out += "," + this.buildComponent(components, component.next, designMode);
+    }
+
+    return out;
+  },
+
+  buildStartRepeat: function(components, component) {
+    var key;
+    if(typeof component.repeatFn === "undefined" ||
+       component.repeatFn === null || component.repeatFn === "") {
+      return "";
+    }
+
+    var fn = `app.methods['${component.id}']['${component.repeatFn}']`;
+    var out = "";
+    out += '(function(scope) {\n';
+    out += 'var out = []\n;'
+    out += `var list = scope['${component.repeatFn}'] = ${fn}(scope);\n`;
+    out += `for (var i=0; i<list.length; i++) {\n`;
+    out += `scope['${component.repeatFn}_index'] = i;`
+    out += `out.push(`;
+    return out;
+  },
+
+  buildEndRepeat: function(components, component) {
+    var key;
+    if(typeof component.repeatFn === "undefined" ||
+       component.repeatFn === null || component.repeatFn === "") {
+      return "";
+    }
+    var out = "";
+    out += `);\n`;
+    out += `}\n`;
+    out += `return out;\n`;
+    out += '})(scope)';
+    return out;
+  },
+
+  buildStartIf: function(components, component) {
+    if(typeof component.ifFn === "undefined" ||
+       component.ifFn === null || component.ifFn === "") {
+      return "";
+    }
+
+    var fn = `app.methods['${component.id}']['${component.ifFn}']`;
+    var out = "";
+
+    out += '(function(scope) {';
+    out += 'var out = []\n;'
+    out += `scope['${component.ifFn}'] = ${fn}(scope);`;
+    out += `if(${fn}(scope) === true) {`;
+    out += `out.push(`;
+    return out;
+  },
+
+  buildEndIf: function(components, component) {
+    if(typeof component.ifFn === "undefined" ||
+       component.ifFn === null || component.ifFn === "") {
+      return "";
+    }
+    var out = "";
+    out += `);`;
+    out += `}`;
+    out += `return out;`;
+    out += '})(scope)';
+
+    return out;
+  },
+
+  buildComponents: function(components, startId, designMode) {
+    var out = "app.rootComponent = function(props){ \n";
+    out += `if(typeof props !== "undefined") app.props = props;\n`;
+    out += "var scope = {};";
+    out += "return (" + this.buildComponent(components, startId, designMode) + ");\n"
+    out += "};\n"
+    return out;
+  },
+
+  buildReactClass: function() {
+    var out = "";
+    out += `app.component = React.createClass({\n`;
+    out += `  componentDidMount: function() {\n`;
+    out += `    app.props = this.props;\n`;
+    out += `  },\n`;
+    out += `  componentWillReceiveProps:function(newProps) {\n`;
+    out += `    app.props = newProps;\n`;
+    out += `  },\n`;
+    out += `  render: function() {\n`;
+    out += `    return app.rootComponent(this.props);\n`;
+    out += `  }\n`;
+    out += `});\n`;
+    out += `return app;\n`;
+    return out;
+  },
+
+  buildReact: function(projectJson, startId, attachToDom) {
+    var exportName = projectJson.name.replace(/\s/g, '_');
+    attachToDom = typeof attachToDom === "undefined" ? true : attachToDom;
+    var designMode = (projectJson.build === "designer") ? true : false;
+    var out = `var ${exportName} = (function() {\n`;
+    out += "var app = {};\n";
+    out += "app.state = " + JSON.stringify(projectJson.state, null, 2) + ";\n";
+    //out += this.renderProjectJson(projectJson);
+    //out += "app.project = {};\n";
+    out += "app.props = {}\n";
+    out += this.buildGetKey();
+    out += this.buildMergeAttributesFn();
+    out += js.buildJs(projectJson.components, startId);
+    out += this.buildComponents(projectJson.components, startId, designMode);
+    if(attachToDom) out += this.buildRenderMethod("app.rootComponent", "app");
+    out += this.buildSetStateMethod(attachToDom);
+    if(attachToDom) out += this.buildLoad(projectJson);
+    out += this.buildReactClass(projectJson);
+    out += "})();\n";
+    out += `if(typeof module !== "undefined") module.exports = ${exportName};\n`;
+    return out;
+  }
+};
