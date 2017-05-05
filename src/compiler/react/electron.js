@@ -1,9 +1,13 @@
-const {app, BrowserWindow, Menu} = require('electron');
+//const {app, BrowserWindow, Menu} = require('electron');
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const Menu = electron.Menu;
 const path = require('path');
 const url = require('url');
-const server = require('./server.js');
 const low = require('lowdb');
-const file = require('./compiler/react/v0.1/core/file.js');
+const server = require('./server.js');
+const file = require('./core/file.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,10 +26,12 @@ function createWindow(port) {
     resizable: true
   });
 
-  win.loadURL(`http://127.0.0.1:${port}/bliss/`);
+  var url = `http://127.0.0.1:${port}/bliss/bliss.html`;
+  console.log(`Opening url: ${url}`)
+  win.loadURL(url);
 
   // Open the DevTools.
-  //win.webContents.openDevTools()
+  //win.webContents.openDevTools();
 
   var template = [
     {
@@ -84,24 +90,28 @@ function init() {
   const db = low(defaultUserData);
   db.defaults({ port: defaultPort, workspace: defaultWorkspace}).write();
 
-  port = db.get('port').value();
-  workspace = db.get('workspace').value();
+  var options = {
+    port: db.get('port').value(),
+    workspace: db.get('workspace').value(),
+    app: path.join(__dirname, '..', '..', '..', 'build'),
+    node_modules: path.join(__dirname, '..', '..', '..', 'node_modules')
+  };
 
-  //console.log('defaultUserData', defaultUserData);
-  //console.log('port', port);
-  //console.log('workspace', workspace);
+  console.log(`App settings path: ${app.getPath("appData")}`);
+  console.log(`Creating workspace: ${options.workspace}`);
+  file.createWorkspace(options.workspace);
 
-  file.createWorkspace(workspace);
+  server(options);
 
-  server(port, workspace);
+  return options;
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
-  init();
-  createWindow(port);
+  var options = init();
+  createWindow(options.port);
 });
 
 // Quit when all windows are closed.

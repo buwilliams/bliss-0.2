@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-jasmine JASMINE_CONFIG_PATH=jasmine.json

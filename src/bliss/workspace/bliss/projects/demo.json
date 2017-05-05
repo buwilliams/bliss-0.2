@@ -1,0 +1,144 @@
+{
+  "project": {
+    "name": "demo",
+    "type": "designer",
+    "build": "designer",
+    "compiler": "react",
+    "next_id": 8,
+    "root_id": "1",
+    "externalCss": [],
+    "externalJs": [
+      "node_modules/react/dist/react.js",
+      "node_modules/react-dom/dist/react-dom.js"
+    ],
+    "state": {},
+    "js": {
+      "init": "function() {\n  var fruit = app.js.createState('fruit');\n  \n  fruit.create({'name': 'apple'});\n  fruit.create({'name': 'pear'});\n  fruit.create({'name': 'banana'});\n  fruit.create({'name': 'strawberry'});\n  fruit.create({'name': 'orange'});\n  fruit.create({'name': 'peach'});\n  fruit.create({'name': 'grape'});\n  fruit.create({'name': 'cherry'});\n  fruit.create({'name': 'pineapple'});\n  \n  app.render();\n}",
+      "createState": "function (rawName) {\n    var name = rawName.replace(/[^\\w]/gi, '');\n\n    var hasValue = function(item) {\n      return (typeof item !== \"undefined\" && item !== null);\n    };\n\n    if (!hasValue(app.state._managed)) app.state._managed = {};\n    if (!hasValue(app.state._managed[name])) app.state._managed[name] = {};\n\n    var managed = app.state._managed[name];\n\n    var getNewId = function() {\n      return managed.nextId++;\n    };\n\n    var getAll = function() {\n      return managed.data;\n    };\n\n    var find = function(id) {\n      var found = null;\n      for (var i = 0; i < managed.data.length; i++) {\n        var item = managed.data[i];\n        if (item.id === id) {\n          found = item;\n          break;\n        }\n      }\n      return found;\n    };\n\n    var findIndex = function(id) {\n      var found = -1;\n      for (var i = 0; i < managed.data.length; i++) {\n        var item = managed.data[i];\n        if (item.id === id) {\n          found = i;\n          break;\n        }\n      }\n      return found;\n    };\n\n    var create = function(data) {\n      if (!hasValue(data)) return;\n      if (!hasValue(data.id)) data.id = getNewId();\n      managed.data.push(data);\n    };\n\n    var update = function(id, data) {\n      var item = find(id);\n      for (key in data) {\n        if (data.hasOwnProperty(key)) {\n          item[key] = data[key];\n        }\n      }\n    };\n\n    var remove = function(id) {\n      var index = findIndex(id);\n      if (index) managed.data.splice(index, 1);\n    };\n\n    var removeAll = function() {\n      managed.data.splice(0, managed.data.length);\n    };\n\n    var replaceAll = function(dataArray) {\n      removeAll();\n      for (var i = 0; i < dataArray.length; i++) {\n        create(dataArray[i]);\n      }\n    };\n\n    var setData = function(key, value) {\n      managed.internalData[key] = value;\n    };\n\n    var getData = function(key) {\n      return managed.internalData[key];\n    };\n\n    managed.selected = null;\n    managed.nextId = 0;\n    managed.data = [];\n    managed.internalData = {};\n    managed.getNewId = getNewId;\n    managed.hasValue = hasValue;\n    managed.getAll = getAll;\n    managed.find = find;\n    managed.findIndex = findIndex;\n    managed.create = create;\n    managed.update = update;\n    managed.remove = remove;\n    managed.removeAll = removeAll;\n    managed.replaceAll = replaceAll;\n    managed.setData = setData;\n    managed.getData = getData;\n\n    return managed;\n  }",
+      "getState": "function (rawName) {\n    var name = rawName.replace(/[^\\w]/gi, '');\n    return app.state._managed[name];\n  }"
+    },
+    "load": [
+      "init"
+    ],
+    "components": {
+      "1": {
+        "id": "1",
+        "name": "demo",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "id": "demo"
+        },
+        "css": {
+          "padding": "50px"
+        },
+        "js": {},
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": null,
+        "child": "6",
+        "parent": null
+      },
+      "2": {
+        "id": "2",
+        "name": "box 1",
+        "element": "div",
+        "text": "Box 1",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "box1"
+        },
+        "css": {
+          "background-color": "#ccc",
+          "padding": "10px",
+          "margin-top": "10px"
+        },
+        "js": {},
+        "dynamicAttributes": {},
+        "next": "3",
+        "previous": "6",
+        "child": null,
+        "parent": "1"
+      },
+      "3": {
+        "id": "3",
+        "name": "box 2",
+        "element": "div",
+        "text": "Box 2",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "box2"
+        },
+        "css": {
+          "background-color": "#cce",
+          "padding": "10px",
+          "margin-top": "10px"
+        },
+        "js": {},
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": "2",
+        "child": "4",
+        "parent": "1"
+      },
+      "4": {
+        "id": "4",
+        "name": "unordered list",
+        "element": "ul",
+        "text": null,
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {},
+        "css": {},
+        "js": {},
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": null,
+        "child": "5",
+        "parent": "3"
+      },
+      "5": {
+        "id": "5",
+        "name": "list item",
+        "element": "li",
+        "text": "",
+        "textFn": "showText",
+        "ifFn": null,
+        "repeatFn": "repeater",
+        "attributes": {},
+        "css": {},
+        "js": {
+          "repeater": "function(scope, attributes) {\n  var fruit = app.js.getState('fruit');\n  return fruit.getAll();\n};\n",
+          "showText": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};\n"
+        },
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": null,
+        "child": null,
+        "parent": "4"
+      },
+      "6": {
+        "id": "6",
+        "name": "header",
+        "element": "h1",
+        "text": "Simple Demo",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {},
+        "css": {},
+        "js": {},
+        "dynamicAttributes": {},
+        "next": "2",
+        "previous": null,
+        "child": null,
+        "parent": "1"
+      }
+    }
+  }
+}

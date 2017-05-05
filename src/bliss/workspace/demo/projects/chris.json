@@ -1,0 +1,636 @@
+{
+  "project": {
+    "name": "chris",
+    "type": "bliss",
+    "build": "designer",
+    "compiler": "react",
+    "next_id": 93,
+    "root_id": "1",
+    "externalCss": [
+      "node_modules/tether/dist/css/tether.min.css",
+      "node_modules/bootstrap/dist/css/bootstrap.min.css",
+      "node_modules/font-awesome/css/font-awesome.css",
+      "node_modules/codemirror/lib/codemirror.css",
+      "node_modules/codemirror/theme/solarized.css",
+      "node_modules/bliss-tree/dist/bliss-tree.css",
+      "node_modules/bliss-properties/dist/bliss-properties.css",
+      "node_modules/bliss-javascript/dist/bliss-javascript.css"
+    ],
+    "externalJs": [
+      "node_modules/tether/dist/js/tether.min.js",
+      "node_modules/jquery/dist/jquery.min.js",
+      "node_modules/bootstrap/dist/js/bootstrap.min.js",
+      "node_modules/codemirror/lib/codemirror.js",
+      "node_modules/codemirror/mode/javascript/javascript.js",
+      "node_modules/react/dist/react.js",
+      "node_modules/react-dom/dist/react-dom.js",
+      "node_modules/react-code-mirror/standalone.js",
+      "node_modules/bliss-tree/dist/bliss-tree.js",
+      "node_modules/bliss-properties/dist/bliss-property.js",
+      "node_modules/bliss-properties/dist/bliss-properties.js",
+      "node_modules/bliss-javascript/dist/bliss-javascript.js"
+    ],
+    "state": {
+      "active_component": null,
+      "timer": null,
+      "show_javascript": false
+    },
+    "js": {
+      "global": "function() { window.app = app; }",
+      "init": "function() {\n        app.setState(function() {\n          app.buildProject = blissProject.project;\n          app.state.active_component = app.buildProject.root_id\n        });\n      }",
+      "build": "function() {\n        if(app.buildProject.type === \"bliss\") {\n          app.buildProject.build = \"designer\";\n        }\n\n        var data = JSON.stringify(app.buildProject);\n\n        $.ajax({\n          type: 'POST',\n          url: '/build',\n          data: data,\n          success: function(data) {\n            var iframe = $('#preview');\n            var url = location.origin + '/designer.html';\n            if(iframe.attr('src') !== url) {\n              iframe.attr('src', url);\n            } else {\n              try {\n                iframe[0].contentWindow.location.reload();\n              } catch(e){\n                console.log(e);\n              }\n            }\n          },\n          contentType: \"application/json\",\n          dataType: 'json'\n        });\n      }",
+      "selectComponent": "function(id) {\n        app.setState(function() {\n          app.state.active_component = id;\n        });\n      }",
+      "update": "function(fn) {\n        app.setState(function() { fn(); });\n        clearTimeout(app.state.timer);\n        app.state.timer = setTimeout(function() {\n          console.log('building');\n          app.js.build();\n        }, 500);\n      }"
+    },
+    "load": [
+      "global",
+      "init",
+      "build"
+    ],
+    "components": {
+      "1": {
+        "id": "1",
+        "name": "container",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "className": "container-fluid"
+        },
+        "css": {},
+        "js": {},
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": null,
+        "child": "2",
+        "parent": null
+      },
+      "2": {
+        "id": "2",
+        "name": "row",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "className": "row"
+        },
+        "css": {},
+        "js": {},
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": null,
+        "child": "3",
+        "parent": "1"
+      },
+      "3": {
+        "id": "3",
+        "name": "components",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "id": "components",
+          "className": "col-md-2"
+        },
+        "css": {
+          "background-color": "#eee"
+        },
+        "js": {},
+        "dynamicAttributes": {},
+        "next": "4",
+        "previous": null,
+        "child": "87",
+        "parent": "2"
+      },
+      "4": {
+        "id": "4",
+        "name": "designer",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "id": "designer",
+          "className": "col-md-8"
+        },
+        "css": {},
+        "js": {},
+        "dynamicAttributes": {},
+        "next": "77",
+        "previous": "3",
+        "child": "80",
+        "parent": "2"
+      },
+      "11": {
+        "id": "11",
+        "name": "bliss properties",
+        "element": "BlissProperties.component",
+        "text": null,
+        "attributes": {},
+        "css": {},
+        "js": {
+          "setComponentProp": "function(scope, props) {\n\treturn app.buildProject.components[app.state.active_component];\n}",
+          "setOnChangeProp": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
+        },
+        "dynamicAttributes": {
+          "component": "setComponentProp",
+          "onChange": "setOnChangeProp"
+        },
+        "next": null,
+        "previous": "22",
+        "child": null,
+        "parent": "77"
+      },
+      "17": {
+        "id": "17",
+        "name": "designerIframe",
+        "element": "iframe",
+        "designMode": false,
+        "text": null,
+        "attributes": {
+          "id": "preview",
+          "src": "about:blank"
+        },
+        "css": {
+          "width": "100%",
+          "height": "calc(100vh - 50px)",
+          "border": "none"
+        },
+        "js": {},
+        "dynamicAttributes": {},
+        "next": null,
+        "previous": null,
+        "child": null,
+        "parent": "19"
+      },
+      "18": {
+        "id": "18",
+        "name": "Component Tree",
+        "element": "BlissTree.component",
+        "text": null,
+        "attributes": {
+          "id": "componentTree"
+        },
+        "css": {
+          "height": "100px"
+        },
+        "js": {
+          "setDataProp": "function(scope, props){\n  return app.buildProject;\n}",
+          "setOnSelectProp": "function(scope, props) {\n  return function(id) {\n    console.log('component selected', id);\n    app.js.selectComponent(id);\n  };\n}",
+          "setOnCreateProp": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}",
+          "setOnCloneProp": "function(scope, props) {\n  return function(cloneId) {\n    var proj = BlissTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}",
+          "setOnDeleteProp": "function(scope, props) {\n  return function(id) {\n    var proj = BlissTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}",
+          "setOnMoveProp": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() { app.buildProject = proj; });\n  }\n}",
+          "setThis": "function(scope, props) {\n  var that = app;\n  return function() {\n    return that;\n  };\n}"
+        },
+        "dynamicAttributes": {
+          "data": "setDataProp",
+          "onSelect": "setOnSelectProp",
+          "onCreate": "setOnCreateProp",
+          "onClone": "setOnCloneProp",
+          "onDelete": "setOnDeleteProp",
+          "onMove": "setOnMoveProp",
+          "_this": "setThis"
+        },
+        "next": null,
+        "previous": "83",
+        "child": null,
+        "parent": "3"
+      },
+      "19": {
+        "id": "19",
+        "name": "iframeContainer",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "id": "iframeContainer"
+        },
+        "css": {
+          "overflow": "auto",
+          "border": "solid 3px #aaa",
+          "height": "calc(100vh - 100px)"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": null,
+        "previous": "21",
+        "child": "17",
+        "parent": "80"
+      },
+      "20": {
+        "id": "20",
+        "name": "h3Components",
+        "element": "h3",
+        "text": "components",
+        "attributes": {
+          "id": "h3Components"
+        },
+        "css": {
+          "text-transform": "uppercase",
+          "font-size": "1em",
+          "background-color": "#aaa",
+          "color": "#fff",
+          "padding": "10px",
+          "border-radius": "3px",
+          "margin-top": "20px"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": "83",
+        "previous": "88",
+        "child": null,
+        "parent": "3"
+      },
+      "21": {
+        "id": "21",
+        "name": "h3Designer",
+        "element": "h3",
+        "text": "designer",
+        "attributes": {
+          "id": "h3Designer"
+        },
+        "css": {
+          "text-transform": "uppercase",
+          "font-size": "1em",
+          "color": "#fff",
+          "margin-top": "15px",
+          "border-radius": "3px",
+          "background-color": "#aaa",
+          "padding": "10px"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": "19",
+        "previous": null,
+        "child": null,
+        "parent": "80"
+      },
+      "22": {
+        "id": "22",
+        "name": "propertyList",
+        "element": "h3",
+        "text": "Properties",
+        "attributes": {
+          "id": "propertyList"
+        },
+        "css": {
+          "text-transform": "uppercase",
+          "font-size": "1em",
+          "background-color": "#aaa",
+          "color": "#fff",
+          "margin-top": "15px",
+          "padding": "10px",
+          "border-radius": "3px"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": "11",
+        "previous": null,
+        "child": null,
+        "parent": "77"
+      },
+      "54": {
+        "id": "54",
+        "name": "JS Editor",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "id": "jsEditor"
+        },
+        "css": {
+          "overflow": "auto",
+          "height": "calc(100vh - 50px)"
+        },
+        "dynamicAttributes": {
+          "style": "setStyle"
+        },
+        "js": {
+          "setStyle": "function() {\n  var displayValue = (app.state.show_javascript === true) ? \"block\" : \"none\";\n  return { display: displayValue };\n}"
+        },
+        "next": null,
+        "previous": "80",
+        "child": "55",
+        "parent": "4"
+      },
+      "55": {
+        "id": "55",
+        "name": "h3Js",
+        "element": "h3",
+        "text": "JavaScript",
+        "attributes": {
+          "id": "h3Js"
+        },
+        "css": {
+          "text-transform": "uppercase",
+          "font-size": "1em",
+          "background-color": "#aaa",
+          "color": "#fff",
+          "margin-top": "15px",
+          "padding": "10px",
+          "border-radius": "3px"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": "56",
+        "previous": null,
+        "child": null,
+        "parent": "54"
+      },
+      "56": {
+        "id": "56",
+        "name": "code",
+        "element": "div",
+        "text": "",
+        "attributes": {
+          "id": "code"
+        },
+        "css": {
+          "background": "#fff",
+          "overflow": "auto",
+          "height": "auto"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": null,
+        "previous": "55",
+        "child": "79",
+        "parent": "54"
+      },
+      "77": {
+        "id": "77",
+        "name": "properties",
+        "element": "div",
+        "text": null,
+        "attributes": {
+          "id": "propertiesContainer",
+          "className": "col-md-2"
+        },
+        "css": {
+          "background-color": "#eee"
+        },
+        "dynamicAttributes": {},
+        "js": {},
+        "next": null,
+        "previous": "4",
+        "child": "22",
+        "parent": "2"
+      },
+      "79": {
+        "id": "79",
+        "name": "Bliss JavaScript",
+        "element": "BlissJavascript.component",
+        "text": null,
+        "attributes": {},
+        "css": {},
+        "js": {
+          "setComponentProp": "function(scope, props) {\n  return app.buildProject.components[app.state.active_component];\n}",
+          "setOnChangeProp": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
+        },
+        "dynamicAttributes": {
+          "component": "setComponentProp",
+          "onChange": "setOnChangeProp"
+        },
+        "next": null,
+        "previous": null,
+        "child": null,
+        "parent": "56"
+      },
+      "80": {
+        "id": "80",
+        "name": "designerContainer",
+        "element": "div",
+        "text": null,
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {},
+        "css": {},
+        "js": {
+          "setStyle": "function() {\n  var displayValue = (app.state.show_javascript === true) ? \"none\" : \"block\";\n  return { display: displayValue };\n}"
+        },
+        "dynamicAttributes": {
+          "style": "setStyle"
+        },
+        "next": "54",
+        "previous": null,
+        "child": "21",
+        "parent": "4"
+      },
+      "82": {
+        "id": "82",
+        "name": "icon",
+        "element": "i",
+        "text": null,
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "toggle-icon",
+          "className": "fa fa-toggle-on"
+        },
+        "css": {
+          "margin-left": "10px"
+        },
+        "js": {
+          "getClass": "function() {\n  if(app.state.show_javascript === true) {\n    return \"fa fa-toggle-on\";\n  } else {\n    return \"fa fa-toggle-off\";\n  }\n}"
+        },
+        "dynamicAttributes": {
+          "className": "getClass"
+        },
+        "next": null,
+        "previous": null,
+        "child": null,
+        "parent": "83"
+      },
+      "83": {
+        "id": "83",
+        "name": "Toggle",
+        "element": "div",
+        "text": "js",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "toggle"
+        },
+        "css": {
+          "text-transform": "uppercase",
+          "text-align": "center",
+          "background-color": "#ccc",
+          "font-size": ".8em",
+          "padding": "5px",
+          "cursor": "pointer",
+          "margin-top": "10px"
+        },
+        "js": {
+          "toggleJs": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_javascript = !app.state.show_javascript;\n  \t});\n  };\n}"
+        },
+        "dynamicAttributes": {
+          "onClick": "toggleJs"
+        },
+        "next": "18",
+        "previous": "20",
+        "child": "82",
+        "parent": "3"
+      },
+      "85": {
+        "id": "85",
+        "name": "new button",
+        "element": "button",
+        "text": "New",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "newButton",
+          "className": "btn btn-primary btn-sm"
+        },
+        "css": {
+          "margin-right": "5px"
+        },
+        "js": {
+          "showInput": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"new\";\n    });\n  }\n};\n"
+        },
+        "dynamicAttributes": {
+          "onClick": "showInput"
+        },
+        "next": "90",
+        "previous": null,
+        "child": null,
+        "parent": "88"
+      },
+      "87": {
+        "id": "87",
+        "name": "h3Project",
+        "element": "h3",
+        "text": "chris",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "h3Project"
+        },
+        "css": {
+          "text-transform": "uppercase",
+          "font-size": "1em",
+          "background-color": "#aaa",
+          "color": "#fff",
+          "margin-top": "15px",
+          "padding": "10px",
+          "border-radius": "3px"
+        },
+        "js": {},
+        "dynamicAttributes": {},
+        "next": "88",
+        "previous": null,
+        "child": null,
+        "parent": "3"
+      },
+      "88": {
+        "id": "88",
+        "name": "Project Options",
+        "element": "div",
+        "text": null,
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "projectOptions",
+          "className": "text-center"
+        },
+        "css": {},
+        "js": {},
+        "dynamicAttributes": {},
+        "next": "20",
+        "previous": "87",
+        "child": "85",
+        "parent": "3"
+      },
+      "90": {
+        "id": "90",
+        "name": "load button",
+        "element": "button",
+        "text": "Load",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "loadButton",
+          "className": "btn btn-primary btn-sm"
+        },
+        "css": {
+          "margin-right": "5px"
+        },
+        "js": {
+          "showInput": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"load\";\n    });\n  }\n};"
+        },
+        "dynamicAttributes": {
+          "onClick": "showInput"
+        },
+        "next": "91",
+        "previous": "85",
+        "child": null,
+        "parent": "88"
+      },
+      "91": {
+        "id": "91",
+        "name": "save button",
+        "element": "button",
+        "text": "Save",
+        "textFn": null,
+        "ifFn": null,
+        "repeatFn": null,
+        "attributes": {
+          "id": "saveButton",
+          "className": "btn btn-primary btn-sm"
+        },
+        "css": {},
+        "js": {
+          "showInput": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"save\";\n    });\n  }\n};"
+        },
+        "dynamicAttributes": {
+          "onClick": "showInput"
+        },
+        "next": "92",
+        "previous": "90",
+        "child": null,
+        "parent": "88"
+      },
+      "92": {
+        "id": "92",
+        "name": "project input",
+        "element": "input",
+        "text": null,
+        "textFn": null,
+        "ifFn": "shouldShow",
+        "repeatFn": null,
+        "attributes": {
+          "id": "projectInput"
+        },
+        "css": {
+          "margin-top": "5px",
+          "display": "block",
+          "width": "100%",
+          "border-radius": "3px",
+          "border": "solid 1px #ccc",
+          "padding": "3px 10px",
+          "outline": "none"
+        },
+        "js": {
+          "newProject": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"next_id\": 2,\n    \"root_id\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}",
+          "shouldShow": "function(scope, attributes) {\n  return (typeof app.state.showProjectInput === \"undefined\") ? false : app.state.showProjectInput;\n}",
+          "handleKeydown": "function(scope, attributes) {\n  var comp = this;\n  \n  return function(e) {\n    var ENTER = 13, ESCAPE = 27, key = e.which;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    if(key === ENTER && app.state.showProjectInputType === \"new\") {\n      comp.newProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"load\") {\n      comp.loadProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"save\") {\n      comp.saveProject(app.state.projectInputValue);\n    }\n    \n    app.setState(function() {\n      app.state.showProjectInput = false;\n      app.state.showProjectInputType = \"\";\n      app.state.projectInputValue = \"\";\n    });\n  }\n};\n",
+          "handleChange": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.projectInputValue = e.target.value;\n    });\n  }\n};\n",
+          "getValue": "function(scope, attributes) {\n  return app.state.projectInputValue || '';\n}",
+          "loadProject": "function(projectName) {\n  var comp = this;\n  $.ajax({\n    type: 'GET',\n    url: '/load',\n    data: {name: projectName},\n    success: function(data) {\n      console.log(\"Project loaded\", data);\n      comp.setProject(data.project);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}",
+          "saveProject": "function(projectName) {\n  var proj = app.buildProject;\n  proj.name = projectName;\n  var data = JSON.stringify(proj);\n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      console.log(\"Project saved\");\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}",
+          "setProject": "function(project) {\n  app.setState(function() {\n    app.state.active_component = project.root_id;\n    app.buildProject = project;\n  });\n  app.js.build();\n}"
+        },
+        "dynamicAttributes": {
+          "onKeyDown": "handleKeydown",
+          "onChange": "handleChange",
+          "value": "getValue"
+        },
+        "next": null,
+        "previous": "91",
+        "child": null,
+        "parent": "88"
+      }
+    }
+  }
+}
