@@ -119,14 +119,19 @@
           "value": "float-left"
         }
       ],
-      "css": {
-        "background-color": "#eee",
-        "padding": "5px",
-        "border-right": "solid 1px #ccc",
-        "width": "20%",
-        "height": "calc(100vh - 38px)",
-        "overflow": "auto"
-      },
+      "css": [
+        {
+          "selector": "#id_3",
+          "properties": [
+            { "name": "background-color", "value": "#eee" },
+            { "name": "padding", "value": "5px" },
+            { "name": "border-right", "value": "solid 1px #ccc" },
+            { "name": "width", "value": "20%" },
+            { "name": "height", "value": "calc(100vh - 38px)" },
+            { "name": "overflow", "value": "auto" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "4",
@@ -139,14 +144,19 @@
       "name": "designer",
       "element": "div",
       "text": null,
-      "attributes": {
-        "id": "designer",
-        "className": "float-left"
-      },
-      "css": {
-        "padding": "5px",
-        "width": "60%"
-      },
+      "attributes": [
+        { "name": "id", "value": "designer" },
+        { "name": "className", "value": "float-left" }
+      ],
+      "css": [
+        {
+          "selector": "#id_4",
+          "properties": [
+            { "name": "padding", "value": "5px" },
+            { "name": "width", "value": "60%" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "77",
@@ -161,14 +171,20 @@
       "text": null,
       "attributes": [],
       "css": [],
-      "js": {
-        "setComponentProp": "function(scope, props) {\n\treturn app.buildProject.components[app.state.active_component];\n}",
-        "setOnChangeProp": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
-      },
-      "dynamicAttributes": {
-        "component": "setComponentProp",
-        "onChange": "setOnChangeProp"
-      },
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n\treturn app.buildProject.components[app.state.active_component];\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "component", "value": "setComponentProp" },
+        { "name": "onChange", "value": "setOnChangeProp" }
+      ],
       "next": null,
       "previous": "129",
       "child": null,
@@ -180,21 +196,29 @@
       "element": "iframe",
       "designMode": false,
       "text": null,
-      "attributes": {
-        "id": "preview",
-        "src": "about:blank"
-      },
-      "css": {
-        "width": "100%",
-        "height": "calc(100vh - 50px)",
-        "border": "none"
-      },
-      "js": {
-        "getStyles": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = app.js.getState('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
-      },
-      "dynamicAttributes": {
-        "style": "getStyles"
-      },
+      "attributes": [
+        { "name": "id", "value": "preview" },
+        { "name": "src", "value": "about:blank" }
+      ],
+      "css": [
+        {
+          "selector": "#id_17",
+          "properties": [
+            { "name": "width", "value": "100%" },
+            { "name": "height", "value": "calc(100vh - 50px)" },
+            { "name": "border", "value": "none" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = app.js.getState('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "style", "value": "getStyles" }
+      ],
       "next": null,
       "previous": null,
       "child": null,
@@ -205,31 +229,57 @@
       "name": "Component Tree",
       "element": "BlissTree.component",
       "text": null,
-      "attributes": {
-        "id": "componentTree"
-      },
-      "css": {
-        "height": "100px",
-        "overflow": "auto"
-      },
-      "js": {
-        "setDataProp": "function(scope, props){\n  return app.buildProject;\n}",
-        "setOnSelectProp": "function(scope, props) {\n  return function(id) {\n    app.js.selectComponent(id);\n  };\n}",
-        "setOnCreateProp": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}",
-        "setOnCloneProp": "function(scope, props) {\n  return function(cloneId) {\n    var proj = BlissTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}",
-        "setOnDeleteProp": "function(scope, props) {\n  return function(id) {\n    var proj = BlissTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}",
-        "setOnMoveProp": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() { app.buildProject = proj; });\n  }\n}",
-        "setThis": "function(scope, props) {\n  var that = app;\n  return function() {\n    return that;\n  };\n}"
-      },
-      "dynamicAttributes": {
-        "data": "setDataProp",
-        "onSelect": "setOnSelectProp",
-        "onCreate": "setOnCreateProp",
-        "onClone": "setOnCloneProp",
-        "onDelete": "setOnDeleteProp",
-        "onMove": "setOnMoveProp",
-        "_this": "setThis"
-      },
+      "attributes": [
+        { "name": "id", "value": "componentTree" }
+      ],
+      "css": [
+        {
+          "selector": "#id_18",
+          "properties": [
+            { "name": "height", "value": "100px" },
+            { "name": "overflow", "value": "auto" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "setDataProp",
+          "body": "function(scope, props){\n  return app.buildProject;\n}"
+        },
+        {
+          "name": "setOnSelectProp",
+          "body": "function(scope, props) {\n  return function(id) {\n    app.js.selectComponent(id);\n  };\n}"
+        },
+        {
+          "name": "setOnCreateProp",
+          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+        },
+        {
+          "name": "setOnCloneProp",
+          "body": "function(scope, props) {\n  return function(cloneId) {\n    var proj = BlissTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+        },
+        {
+          "name": "setOnDeleteProp",
+          "body": "function(scope, props) {\n  return function(id) {\n    var proj = BlissTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+        },
+        {
+          "name": "setOnMoveProp",
+          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() { app.buildProject = proj; });\n  }\n}"
+        },
+        {
+          "name": "setThis",
+          "body": "function(scope, props) {\n  var that = app;\n  return function() {\n    return that;\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "data", "value": "setDataProp" },
+        { "name": "onSelect", "value": "setOnSelectProp" },
+        { "name": "onCreate", "value": "setOnCreateProp" },
+        { "name": "onClone", "value": "setOnCloneProp" },
+        { "name": "onDelete", "value": "setOnDeleteProp" },
+        { "name": "onMove", "value": "setOnMoveProp" },
+        { "name": "_this", "value": "setThis" }
+      ],
       "next": null,
       "previous": null,
       "child": null,
@@ -240,14 +290,19 @@
       "name": "iframeContainer",
       "element": "div",
       "text": null,
-      "attributes": {
-        "id": "iframeContainer"
-      },
-      "css": {
-        "overflow": "auto",
-        "height": "calc(100vh - 125px)",
-        "border": "solid 3px #ccc"
-      },
+      "attributes": [
+        { "name": "id", "value": "iframeContainer" }
+      ],
+      "css": [
+        {
+          "selector": "#id_19",
+          "properties": [
+            { "name": "overflow", "value": "auto" },
+            { "name": "height", "value": "calc(100vh - 125px)" },
+            { "name": "border", "value": "solid 3px #ccc" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
       "js": [],
       "next": null,
@@ -260,17 +315,22 @@
       "name": "h3Components",
       "element": "h3",
       "text": "components",
-      "attributes": {
-        "id": "h3Components"
-      },
-      "css": {
-        "text-transform": "uppercase",
-        "font-size": "1em",
-        "background-color": "#aaa",
-        "color": "#fff",
-        "padding": "10px",
-        "border-radius": "3px"
-      },
+      "attributes": [
+        { "name": "id", "value": "h3Components" }
+      ],
+      "css": [
+        {
+          "selector": "#id_20",
+          "properties": [
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "font-size", "value": "1em" },
+            { "name": "background-color", "value": "#aaa" },
+            { "name": "color", "value": "#fff" },
+            { "name": "padding", "value": "10px" },
+            { "name": "border-radius", "value": "3px" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
       "js": [],
       "next": "110",
@@ -283,17 +343,22 @@
       "name": "h3Designer",
       "element": "h3",
       "text": "designer",
-      "attributes": {
-        "id": "h3Designer"
-      },
-      "css": {
-        "text-transform": "uppercase",
-        "font-size": "1em",
-        "color": "#fff",
-        "border-radius": "3px",
-        "background-color": "#aaa",
-        "padding": "10px"
-      },
+      "attributes": [
+        { "name": "id", "value": "h3Designer" }
+      ],
+      "css": [
+        {
+          "selector": "#id_21",
+          "properties": [
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "font-size", "value": "1em" },
+            { "name": "color", "value": "#fff" },
+            { "name": "border-radius", "value": "3px" },
+            { "name": "background-color", "value": "#aaa" },
+            { "name": "padding", "value": "10px" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
       "js": [],
       "next": "132",
@@ -306,17 +371,22 @@
       "name": "Property List",
       "element": "h3",
       "text": "Properties",
-      "attributes": {
-        "id": "propertyList"
-      },
-      "css": {
-        "text-transform": "uppercase",
-        "font-size": "1em",
-        "background-color": "#aaa",
-        "color": "#fff",
-        "padding": "10px",
-        "border-radius": "3px"
-      },
+      "attributes": [
+        { "name": "id", "value": "propertyList" }
+      ],
+      "css": [
+        {
+          "selector": "#id_22",
+          "properties": [
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "font-size", "value": "1em" },
+            { "name": "background-color", "value": "#aaa" },
+            { "name": "color", "value": "#fff" },
+            { "name": "padding", "value": "10px" },
+            { "name": "border-radius", "value": "3px" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
       "js": [],
       "next": "129",
@@ -329,19 +399,27 @@
       "name": "JS Editor",
       "element": "div",
       "text": null,
-      "attributes": {
-        "id": "jsEditor"
-      },
-      "css": {
-        "overflow": "auto",
-        "height": "calc(100vh - 50px)"
-      },
-      "dynamicAttributes": {
-        "style": "getStyle"
-      },
-      "js": {
-        "getStyle": "function() {\n  var displayValue = (app.state.show_content === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
-      },
+      "attributes": [
+        { "name": "id", "value": "jsEditor" }
+      ],
+      "css": [
+        {
+          "selector": "#id_54",
+          "properties": [
+            { "name": "overflow", "value": "auto" },
+            { "name": "height", "value": "calc(100vh - 50px)" }
+          ]
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "style", "value": "getStyle" }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.show_content === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
       "next": "97",
       "previous": "80",
       "child": "55",
@@ -353,21 +431,29 @@
       "name": "h3Js",
       "element": "h3",
       "text": "",
-      "attributes": {
-        "id": "h3Js"
-      },
-      "css": {
-        "text-transform": "uppercase",
-        "font-size": "1em",
-        "background-color": "#aaa",
-        "color": "#fff",
-        "padding": "10px",
-        "border-radius": "3px"
-      },
+      "attributes": [
+        { "name": "id", "value": "h3Js" }
+      ],
+      "css": [
+        {
+          "selector": "#id_55",
+          "properties": [
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "font-size", "value": "1em" },
+            { "name": "background-color", "value": "#aaa" },
+            { "name": "color", "value": "#fff" },
+            { "name": "padding", "value": "10px" },
+            { "name": "border-radius", "value": "3px" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
-      "js": {
-        "getText": "function(scope, attributes) {\n  return (app.buildProject.components[app.state.active_component].name || '') + \" - JS\";\n};\n"
-      },
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return (app.buildProject.components[app.state.active_component].name || '') + \" - JS\";\n};\n"
+        }
+      ],
       "next": "56",
       "previous": null,
       "child": null,
@@ -379,14 +465,19 @@
       "name": "code",
       "element": "div",
       "text": "",
-      "attributes": {
-        "id": "code"
-      },
-      "css": {
-        "background": "#fff",
-        "overflow": "auto",
-        "height": "auto"
-      },
+      "attributes": [
+        { "name": "id", "value": "code" }
+      ],
+      "css": [
+        {
+          "selector": "#id_56",
+          "properties": [
+            { "name": "background", "value": "#fff" },
+            { "name": "overflow", "value": "auto" },
+            { "name": "height", "value": "auto" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
       "js": [],
       "next": null,
@@ -399,18 +490,23 @@
       "name": "properties",
       "element": "div",
       "text": null,
-      "attributes": {
-        "id": "propertiesContainer",
-        "className": "float-left"
-      },
-      "css": {
-        "background-color": "#eee",
-        "padding": "5px",
-        "border-left": "solid 1px #ccc",
-        "height": "calc(100vh - 38px)",
-        "overflow": "auto",
-        "width": "20%"
-      },
+      "attributes": [
+        { "name": "id", "value": "propertiesContainer" },
+        { "name": "className", "value": "float-left" }
+      ],
+      "css": [
+        {
+          "selector": "#id_77",
+          "properties": [
+            { "name": "background-color", "value": "#eee" },
+            { "name": "padding", "value": "5px" },
+            { "name": "border-left", "value": "solid 1px #ccc" },
+            { "name": "height", "value": "calc(100vh - 38px)" },
+            { "name": "overflow", "value": "auto" },
+            { "name": "width", "value": "20%" }
+          ]
+        }
+      ],
       "dynamicAttributes": [],
       "js": [],
       "next": null,
@@ -425,14 +521,20 @@
       "text": null,
       "attributes": [],
       "css": [],
-      "js": {
-        "setComponentProp": "function(scope, props) {\n  return app.buildProject.components[app.state.active_component];\n}",
-        "setOnChangeProp": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
-      },
-      "dynamicAttributes": {
-        "component": "setComponentProp",
-        "onChange": "setOnChangeProp"
-      },
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n  return app.buildProject.components[app.state.active_component];\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "component", "value": "setComponentProp" },
+        { "name": "onChange", "value": "setOnChangeProp" }
+      ],
       "next": null,
       "previous": null,
       "child": null,
@@ -448,12 +550,15 @@
       "repeatFn": null,
       "attributes": [],
       "css": [],
-      "js": {
-        "getStyle": "function() {\n  var displayValue = (app.state.show_content === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
-      },
-      "dynamicAttributes": {
-        "style": "getStyle"
-      },
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.show_content === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "style", "value": "getStyle" }
+      ],
       "next": "54",
       "previous": null,
       "child": "21",
@@ -467,21 +572,32 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "showJs"
-      },
-      "css": {
-        "outline": "none",
-        "cursor": "pointer"
-      },
-      "js": {
-        "getClass": "function() {\n  if(app.state.show_content === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}",
-        "setContentValue": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'js';\n  \t});\n  };\n}"
-      },
-      "dynamicAttributes": {
-        "onClick": "setContentValue",
-        "className": "getClass"
-      },
+      "attributes": [
+        { "name": "id", "value": "showJs" }
+      ],
+      "css": [
+        {
+          "selector": "#id_83",
+          "properties": [
+            { "name": "outline", "value": "none" },
+            { "name": "cursor", "value": "pointer" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.show_content === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'js';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "setContentValue" },
+        { "name": "className", "value": "getClass" }
+      ],
       "next": "113",
       "previous": "100",
       "child": null,
@@ -495,21 +611,29 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "newButton",
-        "className": "dropdown-item",
-        "href": "#"
-      },
-      "css": {
-        "margin-right": "5px",
-        "cursor": "pointer"
-      },
-      "js": {
-        "showInput": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"new\";\n    });\n  }\n};\n"
-      },
-      "dynamicAttributes": {
-        "onClick": "showInput"
-      },
+      "attributes": [
+        { "name": "id", "value": "newButton" },
+        { "name": "className", "value": "dropdown-item" },
+        { "name": "href", "value": "#" }
+      ],
+      "css": [
+        {
+          "selector": "#id_85",
+          "properties": [
+            { "name": "margin-right", "value": "5px" },
+            { "name": "cursor", "value": "pointer" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "showInput",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"new\";\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "showInput" }
+      ],
       "next": "90",
       "previous": null,
       "child": null,
@@ -523,13 +647,18 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "projectOptions",
-        "class": "float-left"
-      },
-      "css": {
-        "margin-right": "15px"
-      },
+      "attributes": [
+        { "name": "id", "value": "projectOptions" },
+        { "name": "class", "value": "float-left" }
+      ],
+      "css": [
+        {
+          "selector": "#id_88",
+          "properties": [
+            { "name": "margin-right", "value": "15px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "101",
@@ -545,21 +674,29 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "loadButton",
-        "href": "#",
-        "className": "dropdown-item"
-      },
-      "css": {
-        "margin-right": "5px",
-        "cursor": "pointer"
-      },
-      "js": {
-        "showInput": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"load\";\n    });\n  }\n};"
-      },
-      "dynamicAttributes": {
-        "onClick": "showInput"
-      },
+      "attributes": [
+        { "name": "id", "value": "loadButton" },
+        { "name": "href", "value": "#" },
+        { "name": "className", "value": "dropdown-item" }
+      ],
+      "css": [
+        {
+          "selector": "#id_90",
+          "properties": [
+            { "name": "margin-right", "value": "5px" },
+            { "name": "cursor", "value": "pointer" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "showInput",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"load\";\n    });\n  }\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "showInput" }
+      ],
       "next": "104",
       "previous": "85",
       "child": null,
@@ -573,21 +710,29 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "saveAsButton",
-        "className": "dropdown-item",
-        "href": "#"
-      },
-      "css": {
-        "margin-right": "5px",
-        "cursor": "pointer"
-      },
-      "js": {
-        "showInput": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"save as\";\n    });\n  }\n};"
-      },
-      "dynamicAttributes": {
-        "onClick": "showInput"
-      },
+      "attributes": [
+        { "name": "id", "value": "saveAsButton" },
+        { "name": "className", "value": "dropdown-item" },
+        { "name": "href", "value": "#" }
+      ],
+      "css": [
+        {
+          "selector": "#id_91",
+          "properties": [
+            { "name": "margin-right", "value": "5px" },
+            { "name": "cursor", "value": "pointer" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "showInput",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"save as\";\n    });\n  }\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "showInput" }
+      ],
       "next": null,
       "previous": "104",
       "child": null,
@@ -601,32 +746,64 @@
       "textFn": null,
       "ifFn": "shouldShow",
       "repeatFn": null,
-      "attributes": {
-        "id": "projectInput"
-      },
-      "css": {
-        "border-radius": "3px",
-        "border": "solid 1px #ccc",
-        "outline": "none",
-        "display": "inline-block",
-        "margin-right": "5px"
-      },
-      "js": {
-        "newProject": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"next_id\": 2,\n    \"root_id\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}",
-        "shouldShow": "function(scope, attributes) {\n  return (typeof app.state.showProjectInput === \"undefined\") ? false : app.state.showProjectInput;\n}",
-        "handleKeydown": "function(scope, attributes) {\n  var comp = this;\n  \n  return function(e) {\n    var ENTER = 13, ESCAPE = 27, key = e.which;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    if(key === ENTER && app.state.showProjectInputType === \"new\") {\n      comp.newProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"load\") {\n      comp.loadProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"save as\") {\n      comp.saveAsProject(app.state.projectInputValue);\n    }\n    \n    app.setState(function() {\n      app.state.showProjectInput = false;\n      app.state.showProjectInputType = \"\";\n      app.state.projectInputValue = \"\";\n    });\n  }\n};\n",
-        "handleChange": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.projectInputValue = e.target.value;\n    });\n  }\n};\n",
-        "getValue": "function(scope, attributes) {\n  return app.state.projectInputValue || '';\n}",
-        "loadProject": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  this.setStatus('Loading project ' + projectName + '...');\n  var comp = this;\n  $.ajax({\n    type: 'GET',\n    url: '/load',\n    data: {name: projectName},\n    success: function(data) {\n      console.log(\"Project loaded\", data);\n      comp.setProject(data.project);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}",
-        "setProject": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.active_component = project.root_id;\n    app.buildProject = project;\n    app.state.should_save = false;\n  });\n  app.js.build();\n}",
-        "saveAsProject": "function(projectName) {\n  var comp = this;\n  comp.setStatus('Saving project ' + projectName + '...');\n  var proj = app.buildProject;\n  proj.name = projectName;\n  var data = JSON.stringify(proj);\n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + projectName + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}",
-        "setStatus": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
-      },
-      "dynamicAttributes": {
-        "onKeyDown": "handleKeydown",
-        "onChange": "handleChange",
-        "value": "getValue"
-      },
+      "attributes": [
+        { "name": "id", "value": "projectInput" }
+      ],
+      "css": [
+        {
+          "selector": "#id_92",
+          "properties": [
+            { "name": "border-radius", "value": "3px" },
+            { "name": "border", "value": "solid 1px #ccc" },
+            { "name": "outline", "value": "none" },
+            { "name": "display", "value": "inline-block" },
+            { "name": "margin-right", "value": "5px" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "newProject",
+          "body": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"next_id\": 2,\n    \"root_id\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}"
+        },
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return (typeof app.state.showProjectInput === \"undefined\") ? false : app.state.showProjectInput;\n}"
+        },
+        {
+          "name": "handleKeydown",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  \n  return function(e) {\n    var ENTER = 13, ESCAPE = 27, key = e.which;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    if(key === ENTER && app.state.showProjectInputType === \"new\") {\n      comp.newProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"load\") {\n      comp.loadProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"save as\") {\n      comp.saveAsProject(app.state.projectInputValue);\n    }\n    \n    app.setState(function() {\n      app.state.showProjectInput = false;\n      app.state.showProjectInputType = \"\";\n      app.state.projectInputValue = \"\";\n    });\n  }\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.projectInputValue = e.target.value;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.projectInputValue || '';\n}"
+        },
+        {
+          "name": "loadProject",
+          "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  this.setStatus('Loading project ' + projectName + '...');\n  var comp = this;\n  $.ajax({\n    type: 'GET',\n    url: '/load',\n    data: {name: projectName},\n    success: function(data) {\n      console.log(\"Project loaded\", data);\n      comp.setProject(data.project);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        },
+        {
+          "name": "setProject",
+          "body": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.active_component = project.root_id;\n    app.buildProject = project;\n    app.state.should_save = false;\n  });\n  app.js.build();\n}"
+        },
+        {
+          "name": "saveAsProject",
+          "body": "function(projectName) {\n  var comp = this;\n  comp.setStatus('Saving project ' + projectName + '...');\n  var proj = app.buildProject;\n  proj.name = projectName;\n  var data = JSON.stringify(proj);\n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + projectName + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        },
+        {
+          "name": "setStatus",
+          "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onKeyDown", "value": "handleKeydown" },
+        { "name": "onChange", "value": "handleChange" },
+        { "name": "value", "value": "getValue" }
+      ],
       "next": "93",
       "previous": "105",
       "child": null,
@@ -640,22 +817,39 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "saveButton"
-      },
-      "css": {
-        "cursor": "pointer"
-      },
-      "js": {
-        "saveProject": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}",
-        "handleClick": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.saveProject();\n  }\n};",
-        "setStatus": "function(message) {\n  app.setState(function() {\n    app.state.should_save = false;\n  \tapp.state.status = message;\n  });\n}",
-        "getClass": "function(scope, attributes) {\n  if(app.state.should_save === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
-      },
-      "dynamicAttributes": {
-        "onClick": "handleClick",
-        "className": "getClass"
-      },
+      "attributes": [
+        { "name": "id", "value": "saveButton" }
+      ],
+      "css": [
+        {
+          "selector": "#id_93",
+          "properties": [
+            { "name": "cursor", "value": "pointer" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "saveProject",
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.saveProject();\n  }\n};"
+        },
+        {
+          "name": "setStatus",
+          "body": "function(message) {\n  app.setState(function() {\n    app.state.should_save = false;\n  \tapp.state.status = message;\n  });\n}"
+        },
+        {
+          "name": "getClass",
+          "body": "function(scope, attributes) {\n  if(app.state.should_save === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "handleClick" },
+        { "name": "className", "value": "getClass" }
+      ],
       "next": null,
       "previous": "92",
       "child": "94",
@@ -669,9 +863,9 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "className": "fa fa-floppy-o"
-      },
+      "attributes": [
+        { "name": "className", "value": "fa fa-floppy-o" }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
@@ -688,22 +882,30 @@
       "textFn": "showStatus",
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "statusBar"
-      },
-      "css": {
-        "position": "fixed",
-        "bottom": "0",
-        "border-top": "solid 3px #ddd",
-        "left": "0",
-        "right": "0",
-        "font-size": ".8em",
-        "background-color": "#fff",
-        "padding": "5px 10px"
-      },
-      "js": {
-        "showStatus": "function(scope, attributes) {\n  return app.state.status || 'Ready.';\n};\n"
-      },
+      "attributes": [
+        { "name": "id", "value": "statusBar" }
+      ],
+      "css": [
+        {
+          "selector": "#id_95",
+          "properties": [
+            { "name": "position", "value": "fixed" },
+            { "name": "bottom", "value": "0" },
+            { "name": "border-top", "value": "solid 3px #ddd" },
+            { "name": "left", "value": "0" },
+            { "name": "right", "value": "0" },
+            { "name": "font-size", "value": ".8em" },
+            { "name": "background-color", "value": "#fff" },
+            { "name": "padding", "value": "5px 10px" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "showStatus",
+          "body": "function(scope, attributes) {\n  return app.state.status || 'Ready.';\n};\n"
+        }
+      ],
       "dynamicAttributes": [],
       "next": null,
       "previous": "96",
@@ -718,12 +920,17 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "container"
-      },
-      "css": {
-        "margin-top": "38px"
-      },
+      "attributes": [
+        { "name": "id", "value": "container" }
+      ],
+      "css": [
+        {
+          "selector": "#id_96",
+          "properties": [
+            { "name": "margin-top", "value": "38px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "95",
@@ -739,19 +946,27 @@
       "textFn": null,
       "ifFn": "",
       "repeatFn": null,
-      "attributes": {
-        "id": "generalEditor"
-      },
-      "css": {
-        "overflow": "auto",
-        "height": "calc(100vh - 50px)"
-      },
-      "js": {
-        "getStyle": "function() {\n  var displayValue = (app.state.show_content === 'general') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
-      },
-      "dynamicAttributes": {
-        "style": "getStyle"
-      },
+      "attributes": [
+        { "name": "id", "value": "generalEditor" }
+      ],
+      "css": [
+        {
+          "selector": "#id_97",
+          "properties": [
+            { "name": "overflow", "value": "auto" },
+            { "name": "height", "value": "calc(100vh - 50px)" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.show_content === 'general') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "style", "value": "getStyle" }
+      ],
       "next": null,
       "previous": "54",
       "child": "98",
@@ -765,17 +980,22 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "h3General"
-      },
-      "css": {
-        "text-transform": "uppercase",
-        "font-size": "1em",
-        "background-color": "#aaa",
-        "color": "#fff",
-        "padding": "10px",
-        "border-radius": "3px"
-      },
+      "attributes": [
+        { "name": "id", "value": "h3General" }
+      ],
+      "css": [
+        {
+          "selector": "#id_98",
+          "properties": [
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "font-size", "value": "1em" },
+            { "name": "background-color", "value": "#aaa" },
+            { "name": "color", "value": "#fff" },
+            { "name": "padding", "value": "10px" },
+            { "name": "border-radius", "value": "3px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "103",
@@ -791,21 +1011,32 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "showGeneral"
-      },
-      "css": {
-        "cursor": "pointer",
-        "outline": "none"
-      },
-      "js": {
-        "getClass": "function() {\n  if(app.state.show_content === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}",
-        "setContentValue": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'general';\n  \t});\n  };\n}"
-      },
-      "dynamicAttributes": {
-        "className": "getClass",
-        "onClick": "setContentValue"
-      },
+      "attributes": [
+        { "name": "id", "value": "showGeneral" }
+      ],
+      "css": [
+        {
+          "selector": "#id_100",
+          "properties": [
+            { "name": "cursor", "value": "pointer" },
+            { "name": "outline", "value": "none" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.show_content === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'general';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "className", "value": "getClass" },
+        { "name": "onClick", "value": "setContentValue" }
+      ],
       "next": "83",
       "previous": null,
       "child": null,
@@ -819,13 +1050,18 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "className": "btn-group",
-        "id": "toggleContent"
-      },
-      "css": {
-        "margin-right": "5px"
-      },
+      "attributes": [
+        { "name": "className", "value": "btn-group" },
+        { "name": "id", "value": "toggleContent" }
+      ],
+      "css": [
+        {
+          "selector": "#id_101",
+          "properties": [
+            { "name": "margin-right", "value": "5px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -843,14 +1079,20 @@
       "repeatFn": null,
       "attributes": [],
       "css": [],
-      "js": {
-        "getValue": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n",
-        "handleChange": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.should_save = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
-      },
-      "dynamicAttributes": {
-        "onChange": "handleChange",
-        "value": "getValue"
-      },
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.should_save = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onChange", "value": "handleChange" },
+        { "name": "value", "value": "getValue" }
+      ],
       "next": "109",
       "previous": "103",
       "child": null,
@@ -881,23 +1123,37 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "exportButton",
-        "href": "#",
-        "className": "dropdown-item"
-      },
-      "css": {
-        "cursor": "pointer",
-        "margin-right": "5px"
-      },
-      "js": {
-        "handleClick": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.exportProject();\n  }\n};",
-        "setStatus": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}",
-        "exportProject": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Exported project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
-      },
-      "dynamicAttributes": {
-        "onClick": "handleClick"
-      },
+      "attributes": [
+        { "name": "id", "value": "exportButton" },
+        { "name": "href", "value": "#" },
+        { "name": "className", "value": "dropdown-item" }
+      ],
+      "css": [
+        {
+          "selector": "#id_104",
+          "properties": [
+            { "name": "cursor", "value": "pointer" },
+            { "name": "margin-right", "value": "5px" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.exportProject();\n  }\n};"
+        },
+        {
+          "name": "setStatus",
+          "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
+        },
+        {
+          "name": "exportProject",
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Exported project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "handleClick" }
+      ],
       "next": "91",
       "previous": "90",
       "child": null,
@@ -911,13 +1167,18 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "projectDropdown",
-        "className": "btn-group"
-      },
-      "css": {
-        "margin-right": "5px"
-      },
+      "attributes": [
+        { "name": "id", "value": "projectDropdown" },
+        { "name": "className", "value": "btn-group" }
+      ],
+      "css": [
+        {
+          "selector": "#id_105",
+          "properties": [
+            { "name": "margin-right", "value": "5px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "92",
@@ -933,11 +1194,11 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "type": "button",
-        "data-toggle": "dropdown",
-        "className": "btn btn-default dropdown-toggle btn-sm"
-      },
+      "attributes": [
+        { "name": "type", "value": "button" },
+        { "name": "data-toggle", "value": "dropdown" },
+        { "name": "className", "value": "btn btn-default dropdown-toggle btn-sm" }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
@@ -954,9 +1215,9 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "className": "dropdown-menu"
-      },
+      "attributes": [
+        { "name": "className", "value": "dropdown-menu" }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
@@ -975,14 +1236,20 @@
       "repeatFn": null,
       "attributes": [],
       "css": [],
-      "js": {
-        "setComponentProp": "function(scope, props) {\n  return app.buildProject;\n}",
-        "setOnChangeProp": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.js = newComponent.js;\n    });\n  }\n}"
-      },
-      "dynamicAttributes": {
-        "component": "setComponentProp",
-        "onChange": "setOnChangeProp"
-      },
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n  return app.buildProject;\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.js = newComponent.js;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "component", "value": "setComponentProp" },
+        { "name": "onChange", "value": "setOnChangeProp" }
+      ],
       "next": null,
       "previous": "109",
       "child": null,
@@ -996,18 +1263,23 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "h3GeneralJs"
-      },
-      "css": {
-        "text-transform": "uppercase",
-        "font-size": "1em",
-        "background-color": "#aaa",
-        "color": "#fff",
-        "margin-top": "15px",
-        "padding": "10px",
-        "border-radius": "3px"
-      },
+      "attributes": [
+        { "name": "id", "value": "h3GeneralJs" }
+      ],
+      "css": [
+        {
+          "selector": "#id_109",
+          "properties": [
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "font-size", "value": "1em" },
+            { "name": "background-color", "value": "#aaa" },
+            { "name": "color", "value": "#fff" },
+            { "name": "margin-top", "value": "15px" },
+            { "name": "padding", "value": "10px" },
+            { "name": "border-radius", "value": "3px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "108",
@@ -1023,13 +1295,18 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "treeContainer"
-      },
-      "css": {
-        "overflow": "auto",
-        "height": "calc(100vh - 220px)"
-      },
+      "attributes": [
+        { "name": "id", "value": "treeContainer" }
+      ],
+      "css": [
+        {
+          "selector": "#id_110",
+          "properties": [
+            { "name": "overflow", "value": "auto" },
+            { "name": "height", "value": "calc(100vh - 220px)" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -1045,20 +1322,25 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "mainNav"
-      },
-      "css": {
-        "position": "fixed",
-        "top": "0",
-        "left": "0",
-        "right": "0",
-        "z-index": "100",
-        "background-color": "#eee",
-        "border-bottom": "solid 1px #ccc",
-        "padding": "5px",
-        "height": "auto"
-      },
+      "attributes": [
+        { "name": "id", "value": "mainNav" }
+      ],
+      "css": [
+        {
+          "selector": "#id_111",
+          "properties": [
+            { "name": "position", "value": "fixed" },
+            { "name": "top", "value": "0" },
+            { "name": "left", "value": "0" },
+            { "name": "right", "value": "0" },
+            { "name": "z-index", "value": "100" },
+            { "name": "background-color", "value": "#eee" },
+            { "name": "border-bottom", "value": "solid 1px #ccc" },
+            { "name": "padding", "value": "5px" },
+            { "name": "height", "value": "auto" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "96",
@@ -1074,21 +1356,32 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "showDesigner"
-      },
-      "css": {
-        "outline": "none",
-        "cursor": "pointer"
-      },
-      "js": {
-        "getClass": "function() {\n  if(app.state.show_content === 'designer') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}",
-        "setContentValue": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'designer';\n  \t});\n  };\n}"
-      },
-      "dynamicAttributes": {
-        "onClick": "setContentValue",
-        "className": "getClass"
-      },
+      "attributes": [
+        { "name": "id", "value": "showDesigner" }
+      ],
+      "css": [
+        {
+          "selector": "#id_113",
+          "properties": [
+            { "name": "outline", "value": "none" },
+            { "name": "cursor", "value": "pointer" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.show_content === 'designer') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'designer';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onClick", "value": "setContentValue" },
+        { "name": "className", "value": "getClass" }
+      ],
       "next": null,
       "previous": "83",
       "child": null,
@@ -1102,26 +1395,37 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "type": "color",
-        "id": "colorPicker",
-        "value": "#ffffff"
-      },
-      "css": {
-        "opacity": "0",
-        "display": "block",
-        "border": "solid 1px #000",
-        "height": "100%",
-        "width": "100%"
-      },
-      "js": {
-        "handleChange": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  \n  return function(e) {\n    var val = e.target.value;\n    app.setState(function() {\n      color.setData('currentColor', val);\n    });\n  }\n};\n",
-        "getValue": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  return color.getData('currentColor');\n}"
-      },
-      "dynamicAttributes": {
-        "onChange": "handleChange",
-        "value": "getValue"
-      },
+      "attributes": [
+        { "name": "type", "value": "color" },
+        { "name": "id", "value": "colorPicker" },
+        { "name": "value", "value": "#ffffff" }
+      ],
+      "css": [
+        {
+          "selector": "#id_127",
+          "properties": [
+            { "name": "opacity", "value": "0" },
+            { "name": "display", "value": "block" },
+            { "name": "border", "value": "solid 1px #000" },
+            { "name": "height", "value": "100%" },
+            { "name": "width", "value": "100%" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  \n  return function(e) {\n    var val = e.target.value;\n    app.setState(function() {\n      color.setData('currentColor', val);\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  return color.getData('currentColor');\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onChange", "value": "handleChange" },
+        { "name": "value", "value": "getValue" }
+      ],
       "next": null,
       "previous": null,
       "child": null,
@@ -1135,28 +1439,39 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "colorValue",
-        "value": "#ffffff"
-      },
-      "css": {
-        "padding": "0",
-        "display": "block",
-        "float": "left",
-        "font-size": "14px",
-        "margin": "0 0 0 -1px",
-        "width": "25%",
-        "text-align": "center",
-        "outline": "none"
-      },
-      "js": {
-        "handleChange": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  \n  return function(e) {\n    var val = e.target.value;\n    app.setState(function() {\n      color.setData('currentColor', val);\n    });\n  }\n};\n",
-        "getValue": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  return color.getData('currentColor');\n}"
-      },
-      "dynamicAttributes": {
-        "onChange": "handleChange",
-        "value": "getValue"
-      },
+      "attributes": [
+        { "name": "id", "value": "colorValue" },
+        { "name": "value", "value": "#ffffff" }
+      ],
+      "css": [
+        {
+          "selector": "#id_128",
+          "properties": [
+            { "name": "padding", "value": "0" },
+            { "name": "display", "value": "block" },
+            { "name": "float", "value": "left" },
+            { "name": "font-size", "value": "14px" },
+            { "name": "margin", "value": "0 0 0 -1px" },
+            { "name": "width", "value": "25%" },
+            { "name": "text-align", "value": "center" },
+            { "name": "outline", "value": "none" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  \n  return function(e) {\n    var val = e.target.value;\n    app.setState(function() {\n      color.setData('currentColor', val);\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  return color.getData('currentColor');\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onChange", "value": "handleChange" },
+        { "name": "value", "value": "getValue" }
+      ],
       "next": "131",
       "previous": "130",
       "child": null,
@@ -1170,9 +1485,9 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "class": "clearfix"
-      },
+      "attributes": [
+        { "name": "class", "value": "clearfix" }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
@@ -1189,23 +1504,28 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "colorPickerContainer"
-      },
-      "css": {
-        "overflow": "hidden",
-        "display": "block",
-        "float": "left",
-        "width": "50%",
-        "border": "solid 1px #ccc",
-        "height": "25px",
-        "text-transform": "uppercase",
-        "padding": "2px 5px",
-        "text-align": "right",
-        "color": "#999",
-        "font-size": "13px",
-        "background-color": "#eee"
-      },
+      "attributes": [
+        { "name": "id", "value": "colorPickerContainer" }
+      ],
+      "css": [
+        {
+          "selector": "#id_130",
+          "properties": [
+            { "name": "overflow", "value": "hidden" },
+            { "name": "display", "value": "block" },
+            { "name": "float", "value": "left" },
+            { "name": "width", "value": "50%" },
+            { "name": "border", "value": "solid 1px #ccc" },
+            { "name": "height", "value": "25px" },
+            { "name": "text-transform", "value": "uppercase" },
+            { "name": "padding", "value": "2px 5px" },
+            { "name": "text-align", "value": "right" },
+            { "name": "color", "value": "#999" },
+            { "name": "font-size", "value": "13px" },
+            { "name": "background-color", "value": "#eee" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "128",
@@ -1221,24 +1541,32 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "selectColor"
-      },
-      "css": {
-        "display": "block",
-        "float": "left",
-        "width": "25%",
-        "padding": "2px 5px",
-        "height": "25px",
-        "border": "solid 1px #ccc",
-        "margin": "0 0 0 -1px"
-      },
-      "js": {
-        "getStyle": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  var bg = color.getData('currentColor');\n  \n  return {\n    backgroundColor: bg\n  };\n}"
-      },
-      "dynamicAttributes": {
-        "style": "getStyle"
-      },
+      "attributes": [
+        { "name": "id", "value": "selectColor" }
+      ],
+      "css": [
+        {
+          "selector": "#id_131",
+          "properties": [
+            { "name": "display", "value": "block" },
+            { "name": "float", "value": "left" },
+            { "name": "width", "value": "25%" },
+            { "name": "padding", "value": "2px 5px" },
+            { "name": "height", "value": "25px" },
+            { "name": "border", "value": "solid 1px #ccc" },
+            { "name": "margin", "value": "0 0 0 -1px" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  var bg = color.getData('currentColor');\n  \n  return {\n    backgroundColor: bg\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "style", "value": "getStyle" }
+      ],
       "next": null,
       "previous": "128",
       "child": "127",
@@ -1252,13 +1580,18 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "class": "clearfix",
-        "id": "toggleResolution"
-      },
-      "css": {
-        "margin-bottom": "5px"
-      },
+      "attributes": [
+        { "name": "class", "value": "clearfix" },
+        { "name": "id", "value": "toggleResolution" }
+      ],
+      "css": [
+        {
+          "selector": "#id_132",
+          "properties": [
+            { "name": "margin-bottom", "value": "5px" }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "19",
@@ -1274,19 +1607,30 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {
-        "id": "resolution"
-      },
-      "css": {
-        "float": "right"
-      },
-      "js": {
-        "handleChange": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n      \n      console.log('selected', res.getData('selected'));\n    });\n  }\n};\n",
-        "getValue": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  return res.getData('selected');\n}"
-      },
-      "dynamicAttributes": {
-        "onChange": "handleChange"
-      },
+      "attributes": [
+        { "name": "id", "value": "resolution" }
+      ],
+      "css": [
+        {
+          "selector": "#id_133",
+          "properties": [
+            { "name": "float", "value": "right" }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n      \n      console.log('selected', res.getData('selected'));\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  return res.getData('selected');\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "onChange", "value": "handleChange" }
+      ],
       "next": null,
       "previous": null,
       "child": "134",
@@ -1302,14 +1646,23 @@
       "repeatFn": "repeater",
       "attributes": [],
       "css": [],
-      "js": {
-        "repeater": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  return res.getAll();\n};\n",
-        "getText": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].label;\n};\n",
-        "getValue": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].value;\n}"
-      },
-      "dynamicAttributes": {
-        "value": "getValue"
-      },
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  return res.getAll();\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].label;\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].value;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        { "name": "value", "value": "getValue" }
+      ],
       "next": null,
       "previous": null,
       "child": null,
