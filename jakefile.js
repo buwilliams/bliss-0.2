@@ -69,7 +69,7 @@ desc('Build bliss json');
 task('build-bliss', function() {
   // read bliss.json
   var projectStr = fs.readFileSync('./src/bliss/workspace/bliss/projects/bliss.json');
-  var projectJson = JSON.parse(projectStr).project;
+  var projectJson = JSON.parse(projectStr);
   projectJson.build = 'bliss';
 
   // compile bliss.json
