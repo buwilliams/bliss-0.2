@@ -1,6 +1,7 @@
-var html = require('./exports/html.js');
-var css = require('./exports/css.js');
-var js = require('./exports/javascript.js');
+const path = require('path');
+const html = require('./exports/html.js');
+const css = require('./exports/css.js');
+const js = require('./exports/javascript.js');
 
 module.exports = {
   getComponentId: function(projectJson, componentId) {
@@ -11,8 +12,8 @@ module.exports = {
   compile: function(outputPath, projectJson, componentId) {
     var startId = this.getComponentId(projectJson, componentId);
     html.write(outputPath, projectJson, startId);
-    js.write(outputPath, projectJson, startId);
-    css.write(outputPath, projectJson, startId);
+    js.write(path.join(outputPath, 'js'), projectJson, startId);
+    css.write(path.join(outputPath, 'css'), projectJson, startId);
   },
 
   export: function(workspace, projectJson, componentId) {

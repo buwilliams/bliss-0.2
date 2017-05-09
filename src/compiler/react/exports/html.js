@@ -24,7 +24,7 @@ module.exports = {
 
     // CSS
     out += html.getExternalCss(projectJson.externalCss);
-    out += html.getExternalCss([`${projectJson.build}.css`]);
+    out += html.getExternalCss([`/bliss/bliss/css/${projectJson.build}.css`]);
 
     out += html.closeTag('head');
     out += html.openTag('body');
@@ -39,8 +39,8 @@ module.exports = {
     out += html.closeTag('script');
 
     out += html.getExternalJs(projectJson.externalJs);
-    out += html.getExternalJs([`${projectJson.build}-project.js`]);
-    out += html.getExternalJs([`${projectJson.build}.js`]);
+    out += html.getExternalJs([`/bliss/bliss/js/${projectJson.build}-project.js`]);
+    out += html.getExternalJs([`/bliss/bliss/js/${projectJson.build}.js`]);
 
     out += html.openTag('script');
     out += "if (window.module) module = window.module;";

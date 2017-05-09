@@ -6,12 +6,7 @@ const low = require('lowdb');
 const app = express();
 
 module.exports = function(options) {
-  var getBlissPath = function() {
-    return path.join(__dirname, '..', '..', '..', 'build');
-  };
-
   var getCompiler = function(projectJson) {
-    var version = projectJson.version || "v0.1";
     var compilerPath = path.join(__dirname, "react.js");
     return require(compilerPath);
   };
@@ -47,8 +42,9 @@ module.exports = function(options) {
   });
 
   app.use('/designer', express.static(options.workspace));
-  app.use('/', express.static(options.app));
-  app.use('/node_modules', express.static(options.node_modules));
+  app.use('/designer/node_modules', express.static(path.join(options.workspace, 'node_modules')));
+  app.use('/bliss', express.static(options.app));
+  app.use('/bliss/node_modules', express.static(options.node_modules));
 
   app.listen(options.port, function () {
     console.log(`Find your bliss on port ${options.port}!`);

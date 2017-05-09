@@ -7,10 +7,23 @@ var mkdirp = require('mkdirp');
 
 module.exports = {
   write: function(outputPath, projectJson, startId) {
+    // write bliss javascript
     var filename = `${projectJson.build}.js`;
-    var strData = this.build(projectJson, startId);
+    var builtStr = this.build(projectJson, startId);
     var fullpath = path.join(outputPath, filename);
-    fs.writeFileSync(fullpath, strData);
+    fs.writeFileSync(fullpath, builtStr);
+
+    // write new project javascript
+    builtStr = this.buildNewProjectJson(projectJson);
+    filename = `${projectJson.build}-new-project.js`;
+    fullpath = path.join(outputPath, filename);
+    fs.writeFileSync(fullpath, builtStr);
+
+    // write current json
+    var projectJsonStr = this.buildProjectJson(projectJson);
+    filename = `${projectJson.build}-project.js`;
+    fullpath = path.join(outputPath, filename);
+    fs.writeFileSync(fullpath, projectJsonStr);
   },
 
   build: function(projectJson, startId) {
@@ -25,9 +38,9 @@ module.exports = {
   },
 
   buildProjectJson: function(projectJson) {
-    //var out = "var projectJson = " + JSON.stringify(projectJson, null, 2);
-    //out += `if(typeof module !== "undefined") module.exports = blissProject;\n`;
-    return "var projectJson = " + JSON.stringify(projectJson, null, 2);
+    var out = "var blissProject = " + JSON.stringify(projectJson, null, 2);
+    out += `\nif(typeof module !== "undefined") module.exports = blissProject;\n`;
+    return out;
   },
 
   buildNewProjectJson: function() {
@@ -73,6 +86,8 @@ module.exports = {
       }
     };
 
-    return "var projectJson = " + JSON.stringify(newProjectJson, null, 2);
+    var out = "var newBlissProject = " + JSON.stringify(newProjectJson, null, 2);
+    out += `\nif(typeof module !== "undefined") module.exports = newBlissProject;\n`;
+    return out;
   }
 }

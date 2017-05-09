@@ -75,6 +75,8 @@ task('build-bliss', function() {
   // compile bliss.json
   var workspace = 'build/bliss';
   jake.mkdirP(workspace);
+  jake.mkdirP(path.join(workspace, 'js'));
+  jake.mkdirP(path.join(workspace, 'css'));
   compiler.compile(workspace, projectJson);
 
   // copy assets
