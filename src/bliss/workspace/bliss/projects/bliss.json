@@ -3,8 +3,8 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "next_id": 135,
-  "root_id": "1",
+  "nextId": 135,
+  "rootId": "1",
   "externalCss": [
     "/bliss/node_modules/tether/dist/css/tether.min.css",
     "/bliss/node_modules/bootstrap/dist/css/bootstrap.min.css",

@@ -64,7 +64,7 @@ describe('css', function() {
                     '  font-family: courier;',
                     '  font-size: 12px;',
                     '  background-color: #fff;',
-                    '}'];
+                    "}\n\n"];
     expect(css.getCssDef(cssDef, project.cssVars)).toEqual(expected);
   });
 
@@ -88,7 +88,7 @@ describe('css', function() {
                    "\n" +
                    "a:hover {\n" +
                    "  background-color: #ccc;\n" +
-                   "}";
+                   "}\n\n";
     expect(css.getCss(project.css, project.cssVars)).toEqual(expected);
   });
 });

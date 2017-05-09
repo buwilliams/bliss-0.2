@@ -54,7 +54,7 @@ module.exports = {
     this.getRules(cssDef.properties, cssVars).map(function(rule){
       out.push("  " + rule);
     });
-    out.push('}');
+    out.push("}\n\n");
     return out;
   },
 
@@ -68,6 +68,6 @@ module.exports = {
     css.forEach(function(rules) {
       data.push(that.cssDefToStr(rules, cssVars));
     })
-    return data.join("\n\n");
+    return data.join("");
   }
 };
