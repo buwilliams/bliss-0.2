@@ -1,6 +1,14 @@
 var _ = require('lodash');
 
 module.exports = {
+  aryToObj: function(ary, key, value) {
+    var out = {};
+    ary.forEach(function(item) {
+      out[item[key]] = item[value];
+    });
+    return out;
+  },
+
   getCamel: function(str) {
     str = str.replace(/[^a-z]/gi, ' ').trim();
     var out = str.split(" ").map(function(word, index) {
@@ -17,7 +25,7 @@ module.exports = {
     if(_.isNil(namespace) || namespace === '') {
       return "app.js";
     } else {
-      return `app.js["${namespace}"]`;
+      return `app.methods["${namespace}"]`;
     }
   },
 

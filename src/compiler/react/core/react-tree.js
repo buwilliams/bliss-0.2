@@ -39,16 +39,20 @@ module.exports = {
     var out = "";
     var attrs = [];
 
-    var dynamicAttributes = JSON.stringify(component.dynamicAttributes);
+
+    var dynamicAttributes = js.aryToObj(component.dynamicAttributes, "name", "value");
+    dynamicAttributes = JSON.stringify(dynamicAttributes);
     out += `app.mergeAttributes('${component.id}', scope, ${dynamicAttributes}, {`;
 
-    if(typeof component.attributes['class'] === "string") {
-      component.attributes['className'] = component.attributes['class'];
-      delete component.attributes['class'];
+    var attributes = js.aryToObj(component.attributes, "name", "value");
+
+    if(typeof attributes['class'] === "string") {
+      attributes['className'] = attributes['class'];
+      delete attributes['class'];
     }
 
-    Object.keys(component.attributes).forEach(function(key) {
-      attrs.push(`"${key}":"${component.attributes[key]}"`);
+    Object.keys(attributes).forEach(function(key) {
+      attrs.push(`"${key}":"${attributes[key]}"`);
     });
 
     out += attrs.join(',');
@@ -187,7 +191,7 @@ module.exports = {
 
   buildReactClass: function() {
     var out = "";
-    out += `app.component = React.createClass({\n`;
+    out += `app.reactClass = React.createClass({\n`;
     out += `  componentDidMount: function() {\n`;
     out += `    app.props = this.props;\n`;
     out += `  },\n`;
@@ -198,20 +202,21 @@ module.exports = {
     out += `    return app.rootComponent(this.props);\n`;
     out += `  }\n`;
     out += `});\n`;
-    out += `return app;\n`;
+    //out += `return app;\n`;
     return out;
   },
 
   buildReact: function(projectJson, startId, attachToDom) {
-    var exportName = projectJson.name.replace(/\s/g, '_');
+    //var exportName = projectJson.name.replace(/\s/g, '_');
     attachToDom = typeof attachToDom === "undefined" ? true : attachToDom;
     var designMode = (projectJson.build === "designer") ? true : false;
-    var out = `var ${exportName} = (function() {\n`;
-    out += "var app = {};\n";
-    out += "app.state = " + JSON.stringify(projectJson.state, null, 2) + ";\n";
+    var out = "";
+    //var out = `var ${exportName} = (function() {\n`;
+    //out += "var app = {};\n";
+    //out += "app.state = " + JSON.stringify(projectJson.state, null, 2) + ";\n";
     //out += this.renderProjectJson(projectJson);
     //out += "app.project = {};\n";
-    out += "app.props = {}\n";
+    //out += "app.props = {}\n";
     out += this.buildGetKey();
     out += this.buildMergeAttributesFn();
     //out += js.buildJs(projectJson.components, startId);
@@ -220,8 +225,8 @@ module.exports = {
     //out += this.buildSetStateMethod(attachToDom);
     //if(attachToDom) out += this.buildLoad(projectJson);
     out += this.buildReactClass(projectJson);
-    out += "})();\n";
-    out += `if(typeof module !== "undefined") module.exports = ${exportName};\n`;
+    //out += "})();\n";
+    //out += `if(typeof module !== "undefined") module.exports = ${exportName};\n`;
     return out;
   }
 };

@@ -12,7 +12,7 @@ module.exports = {
     var builtStr = this.buildAppJs(projectJson, startId);
     builtStr += this.build(projectJson, startId);
     var fullpath = path.join(outputPath, filename);
-    builtStr = this.buildWrapper(builtStr);
+    builtStr = this.buildWrapper(projectJson, builtStr);
     builtStr = beautify(builtStr, { indent_size: 2 });
     fs.writeFileSync(fullpath, builtStr);
 
@@ -36,13 +36,14 @@ module.exports = {
     return out;
   },
 
-  buildWrapper: function(jsStr) {
+  buildWrapper: function(projectJson, jsStr) {
+    var name = js.getCamel(projectJson.name);
     var out = "";
-    out += "(function() {\n";
-    out += "var app = { js: {} };\n";
+    out += `var ${name} = (function() {\n`;
+    out += "var app = { js: {}, methods: {}, props: {}, state: {} };\n";
     out += jsStr + "\n";
     out += "return app;"
-    out += ")()";
+    out += "})();";
     return out;
   },
 

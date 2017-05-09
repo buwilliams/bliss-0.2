@@ -2,6 +2,13 @@ var js = require('./js.js');
 var project = require('./project.js');
 
 describe('js', function() {
+  describe('aryToObj', function() {
+    it('performs single conversion', function() {
+      expect(js.aryToObj([{"name":"buddy", "value": "williams"}], "name", "value"))
+        .toEqual({"buddy":"williams"});
+    });
+  });
+
   describe('getCamel', function() {
     it('supports single world', function() {
       expect(js.getCamel("bliss")).toEqual("bliss");
@@ -34,7 +41,7 @@ describe('js', function() {
     });
 
     it('supports component names', function() {
-      expect(js.getNamespace('foobar')).toEqual('app.js["foobar"]');
+      expect(js.getNamespace('foobar')).toEqual('app.methods["foobar"]');
     })
   });
 
