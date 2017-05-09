@@ -1,16 +1,19 @@
-var beautify = require('js-beautify').js_beautify;
-var js = require('../core/js.js');
-var reactTree = require('../core/react-tree.js');
-var path = require('path');
-var fs = require('fs');
-var mkdirp = require('mkdirp');
+const beautify = require('js-beautify').js_beautify;
+const path = require('path');
+const fs = require('fs');
+const js = require('../core/js.js');
+const reactTree = require('../core/react-tree.js');
+const tree = require('../core/tree.js');
 
 module.exports = {
   write: function(outputPath, projectJson, startId) {
     // write bliss javascript
     var filename = `${projectJson.build}.js`;
-    var builtStr = this.build(projectJson, startId);
+    var builtStr = this.buildAppJs(projectJson, startId);
+    builtStr += this.build(projectJson, startId);
     var fullpath = path.join(outputPath, filename);
+    builtStr = this.buildWrapper(builtStr);
+    builtStr = beautify(builtStr, { indent_size: 2 });
     fs.writeFileSync(fullpath, builtStr);
 
     // write new project javascript
@@ -28,12 +31,33 @@ module.exports = {
 
   build: function(projectJson, startId) {
     var out = "";
-    // build the app javascript
-    // build the react javascript
+    out = reactTree.buildReact(projectJson, startId);
     // build the helper methods
-    //var js = beautify(reactDom.buildReact(projectJson, startId), {
-      //indent_size: 2
-    //});
+    return out;
+  },
+
+  buildWrapper: function(jsStr) {
+    var out = "";
+    out += "(function() {\n";
+    out += "var app = { js: {} };\n";
+    out += jsStr + "\n";
+    out += "return app;"
+    out += ")()";
+    return out;
+  },
+
+  buildAppJs: function(projectJson, startId) {
+    var out = "";
+
+    if(typeof projectJson.js !== "undefined" && projectJson.js !== null) {
+      out += js.getFnsString(projectJson.js, null);
+    }
+
+    tree.traverse(projectJson, startId, function(proj, component) {
+      if(typeof component.js === "undefined" || component.js === null) return;
+      out += js.getFnsString(component.js, component.id);
+    });
+
     return out;
   },
 

@@ -214,11 +214,11 @@ module.exports = {
     out += "app.props = {}\n";
     out += this.buildGetKey();
     out += this.buildMergeAttributesFn();
-    out += js.buildJs(projectJson.components, startId);
+    //out += js.buildJs(projectJson.components, startId);
     out += this.buildComponents(projectJson.components, startId, designMode);
-    if(attachToDom) out += this.buildRenderMethod("app.rootComponent", "app");
-    out += this.buildSetStateMethod(attachToDom);
-    if(attachToDom) out += this.buildLoad(projectJson);
+    //if(attachToDom) out += this.buildRenderMethod("app.rootComponent", "app");
+    //out += this.buildSetStateMethod(attachToDom);
+    //if(attachToDom) out += this.buildLoad(projectJson);
     out += this.buildReactClass(projectJson);
     out += "})();\n";
     out += `if(typeof module !== "undefined") module.exports = ${exportName};\n`;
