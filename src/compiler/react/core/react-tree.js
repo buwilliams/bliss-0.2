@@ -51,6 +51,9 @@ module.exports = {
       delete attributes['class'];
     }
 
+    // TODO: replace with better solution
+    attributes.id = `id_${component.id}`;
+
     Object.keys(attributes).forEach(function(key) {
       attrs.push(`"${key}":"${attributes[key]}"`);
     });
