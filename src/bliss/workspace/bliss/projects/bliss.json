@@ -6,28 +6,28 @@
   "nextId": 135,
   "rootId": "1",
   "externalCss": [
-    "/bliss/node_modules/tether/dist/css/tether.min.css",
-    "/bliss/node_modules/bootstrap/dist/css/bootstrap.min.css",
-    "/bliss/node_modules/font-awesome/css/font-awesome.css",
-    "/bliss/node_modules/codemirror/lib/codemirror.css",
-    "/bliss/node_modules/codemirror/theme/solarized.css",
-    "/bliss/bliss-tree/css/bliss-tree.css",
-    "/bliss/bliss-properties/css/bliss-properties.css",
-    "/bliss/bliss-javascript/css/bliss-javascript.css"
+    "node_modules/tether/dist/css/tether.min.css",
+    "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "node_modules/font-awesome/css/font-awesome.css",
+    "node_modules/codemirror/lib/codemirror.css",
+    "node_modules/codemirror/theme/solarized.css",
+    "components/bliss-tree/css/bliss-tree.css",
+    "components/bliss-properties/css/bliss-properties.css",
+    "components/bliss-javascript/css/bliss-javascript.css"
   ],
   "externalJs": [
-    "/bliss/node_modules/tether/dist/js/tether.min.js",
-    "/bliss/node_modules/jquery/dist/jquery.min.js",
-    "/bliss/node_modules/bootstrap/dist/js/bootstrap.min.js",
-    "/bliss/node_modules/codemirror/lib/codemirror.js",
-    "/bliss/node_modules/codemirror/mode/javascript/javascript.js",
-    "/bliss/node_modules/react/dist/react.js",
-    "/bliss/node_modules/react-dom/dist/react-dom.js",
-    "/bliss/node_modules/react-code-mirror/standalone.js",
-    "/bliss/bliss-tree/js/bliss-tree.js",
-    "/bliss/bliss-properties/js/bliss-property.js",
-    "/bliss/bliss-properties/js/bliss-properties.js",
-    "/bliss/bliss-javascript/js/bliss-javascript.js"
+    "node_modules/tether/dist/js/tether.min.js",
+    "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/bootstrap/dist/js/bootstrap.min.js",
+    "node_modules/codemirror/lib/codemirror.js",
+    "node_modules/codemirror/mode/javascript/javascript.js",
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js",
+    "node_modules/react-code-mirror/standalone.js",
+    "components/bliss-tree/js/bliss-tree.js",
+    "components/bliss-properties/js/bliss-property.js",
+    "components/bliss-properties/js/bliss-properties.js",
+    "components/bliss-javascript/js/bliss-javascript.js"
   ],
   "state": {
     "active_component": null,
@@ -44,7 +44,7 @@
     },
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = blissProject.project;\n    \n    // Set State\n    app.state.show_content = 'designer';\n    app.state.active_component = app.buildProject.root_id;\n    \n    var color = app.js.createState('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = app.js.createState('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = blissProject;\n    \n    // Set State\n    app.state.show_content = 'designer';\n    app.state.active_component = app.buildProject.rootId;\n    \n    var color = app.js.createState('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = app.js.createState('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
     },
     {
       "name": "build",
@@ -764,7 +764,7 @@
       "js": [
         {
           "name": "newProject",
-          "body": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"next_id\": 2,\n    \"root_id\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}"
+          "body": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"next_id\": 2,\n    \"rootId\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}"
         },
         {
           "name": "shouldShow",
@@ -788,7 +788,7 @@
         },
         {
           "name": "setProject",
-          "body": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.active_component = project.root_id;\n    app.buildProject = project;\n    app.state.should_save = false;\n  });\n  app.js.build();\n}"
+          "body": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.active_component = project.rootId;\n    app.buildProject = project;\n    app.state.should_save = false;\n  });\n  app.js.build();\n}"
         },
         {
           "name": "saveAsProject",

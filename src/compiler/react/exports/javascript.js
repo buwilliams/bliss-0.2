@@ -10,7 +10,8 @@ module.exports = {
     // write bliss javascript
     var filename = `${projectJson.build}.js`;
     var builtStr = this.buildAppJs(projectJson, startId);
-    builtStr += this.build(projectJson, startId);
+    builtStr += this.buildReact(projectJson, startId);
+    builtStr += this.buildHelpers(projectJson);
     var fullpath = path.join(outputPath, filename);
     builtStr = this.buildWrapper(projectJson, builtStr);
     builtStr = beautify(builtStr, { indent_size: 2 });
@@ -29,13 +30,6 @@ module.exports = {
     fs.writeFileSync(fullpath, projectJsonStr);
   },
 
-  build: function(projectJson, startId) {
-    var out = "";
-    out = reactTree.buildReact(projectJson, startId);
-    // build the helper methods
-    return out;
-  },
-
   buildWrapper: function(projectJson, jsStr) {
     var name = js.getCamel(projectJson.name);
     var out = "";
@@ -44,6 +38,37 @@ module.exports = {
     out += jsStr + "\n";
     out += "return app;"
     out += "})();";
+    return out;
+  },
+
+  buildHelpers: function(projectJson) {
+    var out = "";
+
+    // app.render
+    out += `app.render = function() {\n`;
+    out += `  ReactDOM.render(app.rootComponent(), document.getElementById('app'));\n`;
+    out += `}\n`;
+
+    // app.setState(fn)
+    out += `app.setState = function(fn) {\n`;
+    out += `  fn();\n`;
+    out += `  app.render();\n`;
+    out += `}\n`;
+
+    // app.load
+    out += `app.load = function() {\n`;
+    projectJson.load.forEach(function(fnName) {
+      out += `  app.js.${fnName}();`;
+    });
+    out += `}\n`;
+    out += `app.load();\n`;
+
+    return out;
+  },
+
+  buildReact: function(projectJson, startId) {
+    var out = "";
+    out = reactTree.buildReact(projectJson, startId);
     return out;
   },
 
@@ -56,7 +81,10 @@ module.exports = {
 
     tree.traverse(projectJson, startId, function(proj, component) {
       if(typeof component.js === "undefined" || component.js === null) return;
-      out += js.getFnsString(component.js, component.id);
+      if(component.js.length > 0) {
+        out += `app.methods["${component.id}"] = {};\n`;
+        out += js.getFnsString(component.js, component.id);
+      }
     });
 
     return out;
@@ -69,7 +97,6 @@ module.exports = {
   },
 
   buildNewProjectJson: function() {
-    //if(typeof module !== "undefined") module.exports = blissProject;
     var newProjectJson = {
       "name": "New Project",
       "compiler": "react",

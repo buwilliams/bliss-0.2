@@ -42,9 +42,8 @@ module.exports = function(options) {
   });
 
   app.use('/designer', express.static(options.workspace));
-  app.use('/designer/node_modules', express.static(path.join(options.workspace, 'node_modules')));
-  app.use('/bliss', express.static(options.app));
-  app.use('/bliss/node_modules', express.static(options.node_modules));
+  app.use('/node_modules', express.static(options.node_modules));
+  app.use('/', express.static(options.app));
 
   app.listen(options.port, function () {
     console.log(`Find your bliss on port ${options.port}!`);

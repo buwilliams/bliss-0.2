@@ -5,7 +5,7 @@ var projectJson = {
     "build": "app",
     "compiler": "react",
     "next_id": 80,
-    "root_id": "1",
+    "rootId": "1",
     "externalCss": [
       "node_modules/tether/dist/css/tether.min.css",
       "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -42,7 +42,7 @@ var projectJson = {
     },
     "js": {
       "global": "function() { window.app = app; }",
-      "init": "function() {\n        app.setState(function() {\n          app.project = app.blissProject;\n          app.state.active_component = app.project.root_id\n        });\n      }",
+      "init": "function() {\n        app.setState(function() {\n          app.project = app.blissProject;\n          app.state.active_component = app.project.rootId\n        });\n      }",
       "build": "function() {\n        if(app.project.type === \"bliss\") {\n          app.project.build = \"designer\";\n        }\n\n        var data = JSON.stringify(app.project);\n\n        $.ajax({\n          type: 'POST',\n          url: '/build',\n          data: data,\n          success: function(data) {\n            var iframe = $('#preview');\n            var url = location.origin + '/designer.html';\n            if(iframe.attr('src') !== url) {\n              iframe.attr('src', url);\n            } else {\n              try {\n                iframe[0].contentWindow.location.reload();\n              } catch(e){\n                console.log(e);\n              }\n            }\n          },\n          contentType: \"application/json\",\n          dataType: 'json'\n        });\n      }",
       "selectComponent": "function(id) {\n        app.setState(function() {\n          app.state.active_component = id;\n        });\n      }",
       "update": "function(fn) {\n        app.setState(function() { fn(); });\n        clearTimeout(app.state.timer);\n        app.state.timer = setTimeout(function() {\n          console.log('building');\n          app.js.build();\n        }, 500);\n      }"

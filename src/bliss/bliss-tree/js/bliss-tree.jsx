@@ -16,7 +16,7 @@ var BlissTree = {
         state.dragOver[k+"_between"] = false;
       });
 
-      state.selected = this.props.data.root_id;
+      state.selected = this.props.data.rootId;
 
       return state;
     },
@@ -39,7 +39,7 @@ var BlissTree = {
         newCollapsed[k] = true;
       });
       this.setState({collapsed: newCollapsed}, function() {
-        this.setSelected(this.props.data.root_id);
+        this.setSelected(this.props.data.rootId);
       });
     },
 
@@ -279,7 +279,7 @@ var BlissTree = {
       if(typeof this.props.onDelete !== "undefined") {
         var selectedId = this.state.selected;
         var parentId = this.get(this.state.selected).parent;
-        if(parentId === null) parentId = this.props.data.root_id;
+        if(parentId === null) parentId = this.props.data.rootId;
         this.handleSelect(parentId);
         this.props.onDelete.call(this.props._this, selectedId);
       }
@@ -355,7 +355,7 @@ var BlissTree = {
 
     renderRootNode: function() {
       var that = this;
-      var id = this.props.data.root_id;
+      var id = this.props.data.rootId;
       var component = this.get(id);
 
       var getClassName = function() {
@@ -486,7 +486,7 @@ var BlissTree = {
   deleteComponent: function(proj, id) {
     console.log('delete', id);
     var that = this;
-    if(proj.root_id === id) return proj;
+    if(proj.rootId === id) return proj;
 
     this.removeFromTree(proj, id);
 
@@ -564,7 +564,7 @@ var BlissTree = {
 
     this.removeFromTree(proj, fromId);
 
-    if(toId === proj.root_id || shouldBeChild === true) {
+    if(toId === proj.rootId || shouldBeChild === true) {
       this.addChild(proj, toId, fromId);
     } else {
       this.addNext(proj, toId, fromId);

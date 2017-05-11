@@ -43,16 +43,19 @@ desc('Build single component');
 task('build-component', function(name) {
   var t;
 
+  var buildPath = `build/bliss/components/${name}`;
+  jake.mkdirP(buildPath);
+
   t = jake.Task['util:clean-dir'];
-  t.execute.apply(t, [`build/${name}`]);
+  t.execute.apply(t, [buildPath]);
 
   t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['html',`src/bliss/${name}`,`build/${name}`]);
-  t.execute.apply(t, ['css',`src/bliss/${name}`,`build/${name}`]);
-  t.execute.apply(t, ['js',`src/bliss/${name}`,`build/${name}`]);
+  t.execute.apply(t, ['html',`src/bliss/${name}`, buildPath]);
+  t.execute.apply(t, ['css',`src/bliss/${name}`, buildPath]);
+  t.execute.apply(t, ['js',`src/bliss/${name}`, buildPath]);
 
   t = jake.Task['util:compile-jsx'];
-  t.execute.apply(t, [`src/bliss/${name}`,`build/${name}`]);
+  t.execute.apply(t, [`src/bliss/${name}`, buildPath]);
 });
 
 desc('Build all components');
@@ -130,13 +133,15 @@ task('build', function(){
   t = jake.Task['build-bliss'];
   t.invoke();
 
-  //t = jake.Task['install-deps'];
-  //t.invoke();
-
   jake.mkdirP('build/workspace/projects');
   jake.mkdirP('build/workspace/components');
   jake.mkdirP('build/workspace/css');
   jake.mkdirP('build/workspace/js');
+
+  t = jake.Task['util:copy-files'];
+  t.execute.apply(t, ['json',`src/bliss/workspace/bliss/projects`, 'build/workspace/projects']);
+  t.execute.apply(t, ['css',`src/bliss/workspace/bliss/css`, 'build/workspace/css']);
+  t.execute.apply(t, ['js',`src/bliss/workspace/bliss/js`, 'build/workspace/js']);
 });
 
 desc('Execute all tests.');
@@ -146,6 +151,11 @@ task('test', function() {
     console.log('All tests passed.');
     complete();
   });
+});
+
+task('clean', function(){
+  var t = jake.Task['util:clean-dir'];
+  t.execute.apply(t, ['build']);
 });
 
 desc('Start bliss web server');
