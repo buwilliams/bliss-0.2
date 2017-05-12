@@ -17,35 +17,40 @@ module.exports = function(options) {
     var projectJson = req.body;
     var compiler = getCompiler(projectJson);
     compiler.compile(options.workspace, projectJson, null);
-    console.log(`Build ${projectJson.name} finished.`);
     res.send({success: true});
+    console.log(`Built '${projectJson.name}'`);
   });
 
   app.post('/export', function (req, res) {
     var projectJson = req.body;
     var compiler = getCompiler(projectJson);
     compiler.export(options.workspace, projectJson, null);
-    console.log(`Component '${projectJson.name}' build finished.`);
     res.send({success: true});
+    console.log(`Built component '${projectJson.name}'`);
   });
 
   app.post('/save', function (req, res) {
     var project = req.body;
     file.writeProject(options.workspace, project);
     res.send({success: true});
+    console.log(`Saved '${project.name}'`);
   });
 
   app.get('/load', function (req, res) {
     var name = req.query.name;
     var json = file.readProject(options.workspace, name);
     res.send({success: true, project: json});
+    console.log(`Loaded '${json.name}'`);
   });
 
   app.use('/designer', express.static(options.workspace));
+  app.use('/designer/bliss-tree', express.static(path.join(options.app, 'bliss-tree')));
+  app.use('/designer/bliss-properties', express.static(path.join(options.app, 'bliss-properties')));
+  app.use('/designer/bliss-javascript', express.static(path.join(options.app, 'bliss-javascript')));
   app.use('/node_modules', express.static(options.node_modules));
   app.use('/', express.static(options.app));
 
   app.listen(options.port, function () {
-    console.log(`Find your bliss on port ${options.port}!`);
+    console.log(`Find your Bliss on port ${options.port}!`);
   });
 }
