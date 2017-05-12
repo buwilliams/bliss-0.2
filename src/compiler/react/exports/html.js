@@ -39,6 +39,7 @@ module.exports = {
     out += html.closeTag('script');
 
     out += html.getExternalJs(projectJson.externalJs);
+    out += html.getExternalJs([`js/${projectJson.build}-new-project.js`]);
     out += html.getExternalJs([`js/${projectJson.build}-project.js`]);
     out += html.getExternalJs([`js/${projectJson.build}.js`]);
 

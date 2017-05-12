@@ -15,7 +15,7 @@ module.exports = {
   writeProject: function(workspace, json) {
     var fullpath = path.join(workspace, 'projects',
       this.formatJsonName(json.name));
-    var jsonStr = JSON.stringify({"project":json}, null, 2);
+    var jsonStr = JSON.stringify(json, null, 2);
     fs.writeFileSync(fullpath, jsonStr);
   },
   writeComponent: function(workspace, project, filename, content) {

@@ -106,8 +106,8 @@ module.exports = {
       "version": "v0.2",
       "type": "app",
       "build": "designer",
-      "next_id": 2,
-      "root_id": "1",
+      "nextId": 2,
+      "rootId": "1",
       "externalCss": [],
       "externalJs": [
         "node_modules/react/dist/react.js",
