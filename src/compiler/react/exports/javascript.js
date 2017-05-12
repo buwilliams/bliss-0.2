@@ -44,6 +44,9 @@ module.exports = {
   buildHelpers: function(projectJson) {
     var out = "";
 
+    // app.state
+    out += `app.state = ` + JSON.stringify(projectJson.state, null, 2) + ';';
+
     // app.render
     out += `app.render = function() {\n`;
     out += `  ReactDOM.render(app.rootComponent(), document.getElementById('app'));\n`;
