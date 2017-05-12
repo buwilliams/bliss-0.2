@@ -10,7 +10,7 @@ module.exports = {
     var fullpath = path.join(workspace, 'projects',
       this.formatJsonName(name));
     var jsonStr = fs.readFileSync(fullpath);
-    return JSON.parse(jsonStr).project;
+    return JSON.parse(jsonStr);
   },
   writeProject: function(workspace, json) {
     var fullpath = path.join(workspace, 'projects',
