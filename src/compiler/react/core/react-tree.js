@@ -1,5 +1,6 @@
-var js = require('./js.js');
-var htmlElements = require('./html-elements.js');
+const js = require('./js.js');
+const htmlElements = require('./html-elements.js');
+const str = require('./str.js');
 
 module.exports = {
   buildGetKey: function() {
@@ -39,7 +40,6 @@ module.exports = {
     var out = "";
     var attrs = [];
 
-
     var dynamicAttributes = js.aryToObj(component.dynamicAttributes, "name", "value");
     dynamicAttributes = JSON.stringify(dynamicAttributes);
     out += `app.mergeAttributes('${component.id}', scope, ${dynamicAttributes}, {`;
@@ -52,7 +52,9 @@ module.exports = {
     }
 
     // TODO: replace with better solution
-    attributes.id = `id_${component.id}`;
+    if(attributes.hasOwnProperty('id') === false) {
+      attributes.id = str.getRefId(component.name, component.id);
+    }
 
     Object.keys(attributes).forEach(function(key) {
       attrs.push(`"${key}":"${attributes[key]}"`);

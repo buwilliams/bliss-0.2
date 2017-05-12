@@ -2,6 +2,7 @@ const beautify = require('js-beautify').js_beautify;
 const path = require('path');
 const fs = require('fs');
 const js = require('../core/js.js');
+const str = require('../core/str.js');
 const reactTree = require('../core/react-tree.js');
 const tree = require('../core/tree.js');
 
@@ -31,7 +32,7 @@ module.exports = {
   },
 
   buildWrapper: function(projectJson, jsStr) {
-    var name = js.getCamel(projectJson.name);
+    var name = str.getCamel(projectJson.name);
     var out = "";
     out += `var ${name} = (function() {\n`;
     out += "var app = { js: {}, methods: {}, props: {}, state: {} };\n";

@@ -9,18 +9,6 @@ module.exports = {
     return out;
   },
 
-  getCamel: function(str) {
-    str = str.replace(/[^a-z]/gi, ' ').trim();
-    var out = str.split(" ").map(function(word, index) {
-      if(index === 0) {
-        return word.toLowerCase();
-      } else {
-        return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
-      }
-    }).join("");
-    return out;
-  },
-
   getNamespace: function(namespace) {
     if(_.isNil(namespace) || namespace === '') {
       return "app.js";
