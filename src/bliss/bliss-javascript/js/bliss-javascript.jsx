@@ -25,10 +25,10 @@ var BlissJavascript = {
       }
     },
 
-    findIndex: function(component, name) {
+    findIndex: function(array, name) {
       var index = -1;
-      for(var i=0; i < component.js.length; i++) {
-        var fn = component.js[i];
+      for(var i=0; i < array.length; i++) {
+        var fn = array[i];
         if(fn.name === name) {
           index = i;
           break;
@@ -38,10 +38,11 @@ var BlissJavascript = {
     },
 
     addJsTemplate: function(jsStr) {
-      var newComponent = Object.assign({}, this.props.component);
       var newKey = "new_" + this.state.newCount;
 
-      newComponent.js.push({
+      var ref = this.props.component.js;
+
+      ref.push({
         "name": newKey,
         "body": jsStr
       });
@@ -52,7 +53,7 @@ var BlissJavascript = {
       };
 
       this.setState(newState, function() {
-        this.handleChange(newComponent);
+        this.handleChange(this.props.component);
       }.bind(this));
     },
 
@@ -96,17 +97,23 @@ var BlissJavascript = {
     },
 
     handleDelete: function() {
+      var that = this;
       if(this.state.selected === null) return;
-      var newComponent = Object.assign({}, this.props.component);
 
-      var index = this.findIndex(newComponent, this.state.selected);
-      newComponent.splice(index, 1);
+      var ref = this.props.component.js;
+
+      var index = this.findIndex(ref, this.state.selected);
+      ref.splice(index, 1);
 
       var newState = { selected: null };
-      if(newComponent.js.length > 0) newState.selected = newComponent.js[0].name;
+      if((index - 1) >= 0) {
+        newState.selected = ref[index - 1].name;
+      } else if(ref.length > 0) {
+        newState.selected = ref[0].name;
+      }
 
       this.setState(newState, function() {
-        this.handleChange(newComponent);
+        this.handleChange(that.props.component);
       }.bind(this));
     },
 
@@ -114,14 +121,16 @@ var BlissJavascript = {
       var that = this;
       var out = [];
 
+      var ref = this.props.component.js;
+
       var handleClick = function(e) {
         var key = e.target.name;
         e.preventDefault();
-        var index = that.findIndex(that.props.component, key);
-        that.setState({selected: that.props.component.js[index].name});
+        var index = that.findIndex(ref, key);
+        that.setState({selected: ref[index].name});
       };
 
-      this.props.component.js.forEach(function(fn) {
+      ref.forEach(function(fn) {
         var value = fn.body;
         var classValue = (fn.name === that.state.selected) ? "js-left-menu-item js-selected" : "js-left-menu-item";
         out.push(
@@ -138,10 +147,11 @@ var BlissJavascript = {
 
       var handleNameChange = function(e) {
         var newName = e.target.value;
-        var index = that.findIndex(that.props.component, that.state.selected);
+        var index = that.findIndex(that.props.component.js, that.state.selected);
         that.props.component.js[index].name = newName;
-        that.handleChange(this.props.component);
-        that.setState({selected: newName});
+        that.setState({selected: newName}, function() {
+          that.handleChange(this.props.component);
+        });
       };
 
       return (<input onChange={handleNameChange} value={this.state.selected} placeholder="Name..." />);
@@ -153,12 +163,12 @@ var BlissJavascript = {
 
       var handleChange = function(e) {
         var newValue = e.target.value;
-        var index = that.findIndex(that.props.component, that.state.selected);
+        var index = that.findIndex(that.props.component.js, that.state.selected);
         that.props.component.js[index].body = newValue;
         that.handleChange(that.props.component);
       };
 
-      var index = this.findIndex(this.props.component, this.state.selected);
+      var index = this.findIndex(this.props.component.js, this.state.selected);
       var fn = this.props.component.js[index];
 
       return this.state.CodeMirror({
