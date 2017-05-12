@@ -30,11 +30,11 @@
     "components/bliss-javascript/js/bliss-javascript.js"
   ],
   "state": {
-    "active_component": null,
+    "activeComponent": null,
     "timer": null,
-    "show_javascript": false,
-    "show_content": "designer",
-    "should_save": false
+    "showJavascript": false,
+    "showContent": "designer",
+    "shouldSave": false
   },
   "packages": [],
   "js": [
@@ -44,7 +44,7 @@
     },
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = blissProject;\n    \n    // Set State\n    app.state.show_content = 'designer';\n    app.state.active_component = app.buildProject.rootId;\n    \n    var color = app.js.createState('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = app.js.createState('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = blissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = app.js.createState('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = app.js.createState('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
     },
     {
       "name": "build",
@@ -52,11 +52,11 @@
     },
     {
       "name": "selectComponent",
-      "body": "function(id) {\n  app.setState(function() {\n    app.state.active_component = id;\n  });\n}"
+      "body": "function(id) {\n  app.setState(function() {\n    app.state.activeComponent = id;\n  });\n}"
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.should_save = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    console.log('building');\n    app.js.build();\n  }, 500);\n}"
+      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    console.log('building');\n    app.js.build();\n  }, 500);\n}"
     },
     {
       "name": "createState",
@@ -174,11 +174,11 @@
       "js": [
         {
           "name": "setComponentProp",
-          "body": "function(scope, props) {\n\treturn app.buildProject.components[app.state.active_component];\n}"
+          "body": "function(scope, props) {\n\treturn app.buildProject.components[app.state.activeComponent];\n}"
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.activeComponent] = newComponent;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -417,7 +417,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var displayValue = (app.state.show_content === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "next": "97",
@@ -451,7 +451,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  return (app.buildProject.components[app.state.active_component].name || '') + \" - JS\";\n};\n"
+          "body": "function(scope, attributes) {\n  return (app.buildProject.components[app.state.activeComponent].name || '') + \" - JS\";\n};\n"
         }
       ],
       "next": "56",
@@ -524,11 +524,11 @@
       "js": [
         {
           "name": "setComponentProp",
-          "body": "function(scope, props) {\n  return app.buildProject.components[app.state.active_component];\n}"
+          "body": "function(scope, props) {\n  return app.buildProject.components[app.state.activeComponent];\n}"
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.active_component] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.activeComponent] = newComponent;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -553,7 +553,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var displayValue = (app.state.show_content === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -587,11 +587,11 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  if(app.state.show_content === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  if(app.state.showContent === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'js';\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'js';\n  \t});\n  };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -764,7 +764,7 @@
       "js": [
         {
           "name": "newProject",
-          "body": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"next_id\": 2,\n    \"rootId\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}"
+          "body": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"nextId\": 2,\n    \"rootId\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}"
         },
         {
           "name": "shouldShow",
@@ -788,7 +788,7 @@
         },
         {
           "name": "setProject",
-          "body": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.active_component = project.rootId;\n    app.buildProject = project;\n    app.state.should_save = false;\n  });\n  app.js.build();\n}"
+          "body": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.activeComponent = project.rootId;\n    app.buildProject = project;\n    app.state.shouldSave = false;\n  });\n  app.js.build();\n}"
         },
         {
           "name": "saveAsProject",
@@ -839,11 +839,11 @@
         },
         {
           "name": "setStatus",
-          "body": "function(message) {\n  app.setState(function() {\n    app.state.should_save = false;\n  \tapp.state.status = message;\n  });\n}"
+          "body": "function(message) {\n  app.setState(function() {\n    app.state.shouldSave = false;\n  \tapp.state.status = message;\n  });\n}"
         },
         {
           "name": "getClass",
-          "body": "function(scope, attributes) {\n  if(app.state.should_save === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
+          "body": "function(scope, attributes) {\n  if(app.state.shouldSave === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -961,7 +961,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var displayValue = (app.state.show_content === 'general') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'general') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1026,11 +1026,11 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  if(app.state.show_content === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  if(app.state.showContent === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'general';\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'general';\n  \t});\n  };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1086,7 +1086,7 @@
         },
         {
           "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.should_save = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.shouldSave = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -1371,11 +1371,11 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  if(app.state.show_content === 'designer') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  if(app.state.showContent === 'designer') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.show_content = 'designer';\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'designer';\n  \t});\n  };\n}"
         }
       ],
       "dynamicAttributes": [
