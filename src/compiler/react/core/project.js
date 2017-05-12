@@ -37,18 +37,15 @@ module.exports = {
       "properties": [
         {
           "name": "font-family",
-          "value": "courier",
-          "variable": null
+          "value": "courier"
         },
         {
           "name": "font-size",
-          "value": "12px",
-          "variable": null
+          "value": "12px"
         },
         {
           "name": "background-color",
-          "value": "#000",
-          "variable": "background"
+          "value": "$background"
         }
       ]
     },

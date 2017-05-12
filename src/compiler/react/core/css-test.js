@@ -3,9 +3,41 @@ var css = require('./css.js');
 var project = require('./project.js');
 
 describe('css', function() {
+  describe('isVariable', function() {
+    it('returns false doesn\t begin with dollar sign', function() {
+      expect(css.isVariable('foo')).toEqual(false);
+    });
+
+    it('return false contains dollar signs', function() {
+      expect(css.isVariable('fo$o$')).toEqual(false);
+    });
+
+    it('return true begins with dollar signs', function() {
+      expect(css.isVariable('$foo')).toEqual(true);
+    });
+
+    it('returns false begins with dollar signs but no length', function() {
+      expect(css.isVariable('$')).toEqual(false);
+    });
+  });
+
   it('should read project json', function() {
     expect(project.css[0].selector).toEqual("body");
     expect(project.css[0].properties[0].name).toEqual("font-family");
+  });
+
+  describe('getVarFromValue', function() {
+    it('returns foo', function() {
+      expect(css.getVarFromValue('$foo')).toEqual('foo');
+    });
+
+    it('returns empty string', function() {
+      expect(css.getVarFromValue('$')).toEqual('');
+    });
+
+    it('returns empty string when given an empty string', function() {
+      expect(css.getVarFromValue('')).toEqual('');
+    });
   });
 
   it('standard css rule', function() {

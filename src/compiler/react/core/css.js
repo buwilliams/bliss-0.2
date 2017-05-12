@@ -1,14 +1,28 @@
 module.exports = {
+  isVariable: function(ruleValue) {
+    var firstChar = ruleValue.charAt(0);
+    if(firstChar === '$' && ruleValue.length > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  getVarFromValue: function(ruleValue) {
+    return ruleValue.substring(1);
+  },
+
   getVariableRule: function(rule, cssVars) {
     if(typeof rule === "undefined") return "";
     if(typeof rule.name === "undefined") return "";
     if(typeof rule.value === "undefined") return "";
-    if(rule.variable === "") return "";
+
+    var varName = this.getVarFromValue(rule.value);
 
     var varValue = '';
     for(var i=0; i<cssVars.length; i++) {
       var cssVar = cssVars[i];
-      if(rule.variable === cssVar.name) {
+      if(varName === cssVar.name) {
         varValue = cssVar.value;
         break;
       }
@@ -29,11 +43,10 @@ module.exports = {
   },
 
   getRule: function(rule, cssVars) {
-    if(typeof rule.variable === "undefined" || rule.variable === null ||
-      rule.variable === '') {
-      return this.getStandardRule(rule);
-    } else {
+    if(this.isVariable(rule.value)) {
       return this.getVariableRule(rule, cssVars);
+    } else {
+      return this.getStandardRule(rule);
     }
   },
 
