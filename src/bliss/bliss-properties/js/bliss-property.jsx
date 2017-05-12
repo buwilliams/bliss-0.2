@@ -1,27 +1,7 @@
 var BlissProperty = {
   "component": React.createClass({
-    hasZZZ: function() {
-      if (this.props.originalKey.substring(0, 3) === "zzz") {
-        return true;
-      } else {
-        return false;
-      }
-    },
-
-    getZZZ: function() {
-      if (this.hasZZZ()) {
-        return this.props.propertyKey.substring(0, this.props.propertyKey.indexOf('~') + 1);
-      } else {
-        return "";
-      }
-    },
-
     getKey: function() {
-      if (this.hasZZZ()) {
-        return this.props.propertyKey.substring(this.props.propertyKey.indexOf('~') + 1);
-      } else {
-        return this.props.propertyKey;
-      }
+      return this.props.propertyKey;
     },
 
     handleKeyChange: function(e) {

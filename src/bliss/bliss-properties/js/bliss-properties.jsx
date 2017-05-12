@@ -3,6 +3,18 @@ var BlissProperties = {
     _keyIndex: 0,
     _internalKeys: {},
 
+    getCamel: function(str) {
+      str = str.replace(/[^a-z]/gi, ' ').trim();
+      var out = str.split(" ").map(function(word, index) {
+        if(index === 0) {
+          return word.toLowerCase();
+        } else {
+          return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+        }
+      }).join("");
+      return out;
+    },
+
     getReactKey: function(prefix, key) {
       var tmpKey = prefix + '_' + key;
       if(typeof this._internalKeys[tmpKey] === "undefined") {
@@ -36,17 +48,21 @@ var BlissProperties = {
       var that = this;
 
       var handleChange = function(originalKey, newKey, value) {
-        var newComponent = Object.assign({}, that.props.component);
+        var ref = that.props.component[refName];
 
-        that.setReactKey(refName, originalKey, newKey);
+        if(originalKey === ref.length) {
+          ref.push({
+            "name": newKey,
+            "value": value
+          });
+        } else if(newKey === "") {
+          ref.splice(originalKey, 1);
+        } else {
+          ref[originalKey].name = newKey;
+          ref[originalKey].value = value;
+        }
 
-        delete newComponent[refName][originalKey];
-        newComponent[refName][newKey] = value;
-
-        // delete blank ones
-        delete newComponent[refName][""];
-
-        that.handleChange(newComponent);
+        that.handleChange(that.props.component);
       };
 
       var render = function() {
@@ -54,25 +70,27 @@ var BlissProperties = {
         var attrs = that.props.component[refName];
         if(typeof attrs === "undefined") return null;
 
-        Object.keys(attrs).forEach(function(key, index) {
-          var reactKey = that.getReactKey(refName, key);
+        attrs.forEach(function(property, index) {
+          var reactKey = that.getReactKey(refName, index);
           out.push(
             <BlissProperty.component
-              key={reactKey} type="key-value"
+              key={reactKey}
+              type="key-value"
               changeFn={handleChange}
-              originalKey={key}
-              propertyKey={key}
-              propertyValue={attrs[key]} />
+              originalKey={index}
+              propertyKey={property.name}
+              propertyValue={property.value} />
           );
         });
 
-        var reactKey = that.getReactKey(refName, "zzz~");
+        var reactKey = that.getReactKey(refName, attrs.length);
         out.push(
           <BlissProperty.component
-            key={reactKey} type="key-value"
+            key={reactKey}
+            type="key-value"
             changeFn={handleChange}
-            originalKey={"zzz~"}
-            propertyKey={"zzz~"}
+            originalKey={attrs.length}
+            propertyKey=""
             propertyValue="" />
         );
 
@@ -134,12 +152,82 @@ var BlissProperties = {
       );
     },
 
+    renderCss: function(title) {
+      var that = this;
+
+      var css = that.props.component.css;
+      var selector = '#' + this.getCamel(that.props.component.name) + that.props.component.id;
+      if(css.length === 0) {
+        css.push({
+          "selector": selector,
+          "properties": []
+        });
+      } else {
+        css[0].selector = selector;
+      }
+
+      var ref = that.props.component.css[0].properties; // grab the first selector
+
+      var handleChange = function(originalKey, newKey, value) {
+        if(originalKey === ref.length) {
+          ref.push({
+            "name": newKey,
+            "value": value
+          });
+        } else if(newKey === "") {
+          ref.splice(originalKey, 1);
+        } else {
+          ref[originalKey].name = newKey;
+          ref[originalKey].value = value;
+        }
+
+        that.handleChange(that.props.component);
+      };
+
+      var render = function() {
+        var out = [];
+
+        ref.forEach(function(property, index) {
+          var reactKey = that.getReactKey('css', index);
+          out.push(
+            <BlissProperty.component
+              key={reactKey}
+              type="key-value"
+              changeFn={handleChange}
+              originalKey={index}
+              propertyKey={property.name}
+              propertyValue={property.value} />
+          );
+        });
+
+        var reactKey = that.getReactKey('css', ref.length);
+        out.push(
+          <BlissProperty.component
+            key={reactKey}
+            type="key-value"
+            changeFn={handleChange}
+            originalKey={ref.length}
+            propertyKey=""
+            propertyValue="" />
+        );
+
+        return (
+          <div>
+            <div className="title">{title}</div>
+            {out}
+          </div>
+        );
+      };
+
+      return render();
+    },
+
     render: function() {
       return (
         <div>
           {this.renderGeneral()}
           {this.renderObject("attributes", "Attributes")}
-          {this.renderObject("css", "CSS")}
+          {this.renderCss("CSS")}
           {this.renderObject("dynamicAttributes", "Dynamic Attributes")}
         </div>
       );
