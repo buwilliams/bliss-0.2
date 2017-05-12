@@ -2,7 +2,7 @@ var BlissJavascript = {
   "component": React.createClass({
     getInitialState: function() {
       var state = {
-        new_count: 1,
+        newCount: 1,
         selected: null,
         CodeMirror: React.createFactory(CodeMirrorEditor)
       };
@@ -25,14 +25,29 @@ var BlissJavascript = {
       }
     },
 
+    findIndex: function(component, name) {
+      var index = -1;
+      for(var i=0; i < component.js.length; i++) {
+        var fn = component.js[i];
+        if(fn.name === name) {
+          index = i;
+          break;
+        }
+      }
+      return index;
+    },
+
     addJsTemplate: function(jsStr) {
       var newComponent = Object.assign({}, this.props.component);
-      var newKey = "new_" + this.state.new_count;
+      var newKey = "new_" + this.state.newCount;
 
-      newComponent.js[newKey] = jsStr;
+      newComponent.js.push({
+        "name": newKey,
+        "body": jsStr
+      });
 
       var newState = {
-        new_count: this.state.new_count + 1,
+        newCount: this.state.newCount + 1,
         selected: newKey
       };
 
@@ -83,12 +98,12 @@ var BlissJavascript = {
     handleDelete: function() {
       if(this.state.selected === null) return;
       var newComponent = Object.assign({}, this.props.component);
-      delete newComponent.js[this.state.selected];
+
+      var index = this.findIndex(newComponent, this.state.selected);
+      newComponent.splice(index, 1);
 
       var newState = { selected: null };
-
-      var keys = Object.keys(newComponent.js).sort();
-      if(keys.length > 0) newState.selected = keys[keys.length - 1];
+      if(newComponent.js.length > 0) newState.selected = newComponent.js[0].name;
 
       this.setState(newState, function() {
         this.handleChange(newComponent);
@@ -102,14 +117,15 @@ var BlissJavascript = {
       var handleClick = function(e) {
         var key = e.target.name;
         e.preventDefault();
-        that.setState({selected: key});
+        var index = that.findIndex(that.props.component, key);
+        that.setState({selected: that.props.component.js[index].name});
       };
 
-      Object.keys(this.props.component.js).sort().forEach(function(key) {
-        var value = that.props.component.js[key];
-        var classValue = (key === that.state.selected) ? "js-left-menu-item js-selected" : "js-left-menu-item";
+      this.props.component.js.forEach(function(fn) {
+        var value = fn.body;
+        var classValue = (fn.name === that.state.selected) ? "js-left-menu-item js-selected" : "js-left-menu-item";
         out.push(
-          <a href="#" className={classValue} key={key} name={key} onClick={handleClick}>{key}</a>
+          <a href="#" className={classValue} key={fn.name} name={fn.name} onClick={handleClick}>{fn.name}</a>
         );
       });
 
@@ -121,15 +137,10 @@ var BlissJavascript = {
       if(this.state.selected === null) return null;
 
       var handleNameChange = function(e) {
-        var currentName = that.state.selected;
         var newName = e.target.value;
-        var newValue = that.props.component.js[that.state.selected];
-
-        var newComponent = Object.assign({}, that.props.component);
-        newComponent.js[newName] = newValue;
-        delete newComponent.js[currentName];
-
-        that.handleChange(newComponent);
+        var index = that.findIndex(that.props.component, that.state.selected);
+        that.props.component.js[index].name = newName;
+        that.handleChange(this.props.component);
         that.setState({selected: newName});
       };
 
@@ -142,17 +153,18 @@ var BlissJavascript = {
 
       var handleChange = function(e) {
         var newValue = e.target.value;
-        var newComponent = Object.assign({}, that.props.component);
-        newComponent.js[that.state.selected] = newValue;
-        that.handleChange(newComponent);
+        var index = that.findIndex(that.props.component, that.state.selected);
+        that.props.component.js[index].body = newValue;
+        that.handleChange(that.props.component);
       };
 
-      var js = this.props.component.js[this.state.selected];
+      var index = this.findIndex(this.props.component, this.state.selected);
+      var fn = this.props.component.js[index];
 
       return this.state.CodeMirror({
         textAreaClassName: ['form-control'],
         textAreaStyle: {minHeight: '10em'},
-        value: js,
+        value: fn.body,
         onChange: handleChange,
         mode: 'javascript',
         theme: 'solarized',
