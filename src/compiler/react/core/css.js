@@ -1,4 +1,5 @@
 const str = require('./str.js');
+const data = require('./data.js');
 
 module.exports = {
   isVariable: function(ruleValue) {
@@ -61,8 +62,13 @@ module.exports = {
 
   getSelector: function(component, selector) {
     if(selector === '$id' && component !== null) {
-      var id = str.getRefId(component.name, component.id);
-      return `#${id}`;
+      if(data.hasKey(component.attributes, 'id')) {
+        var id = data.getKey(component.attributes, 'id');
+        return `#${id}`;
+      } else {
+        var id = str.getRefId(component.name, component.id);
+        return `#${id}`;
+      }
     } else {
       return selector;
     }

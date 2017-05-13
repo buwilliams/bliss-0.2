@@ -1,6 +1,6 @@
-var _ = require('lodash');
-var css = require('./css.js');
-var project = require('./project.js');
+const _ = require('lodash');
+const css = require('./css.js');
+const project = require('./project.js');
 
 describe('css', function() {
   describe('isVariable', function() {
@@ -87,7 +87,7 @@ describe('css', function() {
   it('should return the selector', function() {
     var selector = project.css[0].selector;
     var expected = 'body';
-    expect(css.getSelector(selector)).toEqual(expected);
+    expect(css.getSelector(null, selector)).toEqual(expected);
   });
 
   it('merge selector and rules', function() {
@@ -97,7 +97,7 @@ describe('css', function() {
                     '  font-size: 12px;',
                     '  background-color: #fff;',
                     "}\n\n"];
-    expect(css.getCssDef(cssDef, project.cssVars)).toEqual(expected);
+    expect(css.getCssDef(null, cssDef, project.cssVars)).toEqual(expected);
   });
 
   it('merge css def to string', function() {
@@ -107,7 +107,7 @@ describe('css', function() {
                    "  font-size: 12px;\n" +
                    "  background-color: #fff;\n" +
                    "}";
-    var defStr = css.cssDefToStr(cssDef, project.cssVars);
+    var defStr = css.cssDefToStr(null, cssDef, project.cssVars);
   });
 
   it('get css', function() {
@@ -121,6 +121,6 @@ describe('css', function() {
                    "a:hover {\n" +
                    "  background-color: #ccc;\n" +
                    "}\n\n";
-    expect(css.getCss(project.css, project.cssVars)).toEqual(expected);
+    expect(css.getCss(null, project.css, project.cssVars)).toEqual(expected);
   });
 });
