@@ -1,19 +1,19 @@
 module.exports = {
-  hasKey: function(array, key) {
+  hasKey: function(array, key, value) {
     for(var i=0; i < array.length; i++) {
       var item = array[i];
       if(item.hasOwnProperty(key)) {
-        return true;
+        if(item[key] === value) return true;
       }
     }
     return false;
   },
 
-  findKey: function(array, key) {
+  findObj: function(array, key, value) {
     for(var i=0; i < array.length; i++) {
       var item = array[i];
       if(item.hasOwnProperty(key)) {
-        return item;
+        if(item[key] === value) return item;
       }
     }
     return null;

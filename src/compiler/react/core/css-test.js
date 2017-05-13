@@ -84,10 +84,39 @@ describe('css', function() {
     expect(css.getRules(cssRules, project.cssVars)).toEqual(expected);
   });
 
-  it('should return the selector', function() {
-    var selector = project.css[0].selector;
-    var expected = 'body';
-    expect(css.getSelector(null, selector)).toEqual(expected);
+  describe('selector', function() {
+    it('should return the selector', function() {
+      var selector = project.css[0].selector;
+      var expected = 'body';
+      expect(css.getSelector(null, selector)).toEqual(expected);
+    });
+
+    it('should return dynamic id', function() {
+      var component = {
+        "id": "5",
+        "name": "my component",
+        "attributes": [
+          {"name": "value"},
+          {"name": "value"}
+        ]
+      };
+      var selector = "$id";
+      var expected = "#myComponent_5";
+      expect(css.getSelector(component, selector)).toEqual(expected);
+    });
+
+    it('should return user-defined id', function() {
+      var component = {
+        "id": "5",
+        "name": "my component",
+        "attributes": [
+          {"name": "id", "value": "myComponent"}
+        ]
+      };
+      var selector = "$id";
+      var expected = "#myComponent";
+      expect(css.getSelector(component, selector)).toEqual(expected);
+    });
   });
 
   it('merge selector and rules', function() {

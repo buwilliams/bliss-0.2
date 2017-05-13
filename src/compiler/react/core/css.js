@@ -62,8 +62,8 @@ module.exports = {
 
   getSelector: function(component, selector) {
     if(selector === '$id' && component !== null) {
-      if(data.hasKey(component.attributes, 'id')) {
-        var id = data.getKey(component.attributes, 'id');
+      if(data.hasKey(component.attributes, 'name', 'id')) {
+        var id = data.findObj(component.attributes, 'name', 'id').value;
         return `#${id}`;
       } else {
         var id = str.getRefId(component.name, component.id);
