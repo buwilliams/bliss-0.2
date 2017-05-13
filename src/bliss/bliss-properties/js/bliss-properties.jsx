@@ -156,7 +156,7 @@ var BlissProperties = {
       var that = this;
 
       var css = that.props.component.css;
-      var selector = '#' + this.getCamel(that.props.component.name) + that.props.component.id;
+      var selector = '$id';
       if(css.length === 0) {
         css.push({
           "selector": selector,
