@@ -84,7 +84,7 @@ describe('css', function() {
     expect(css.getRules(cssRules, project.cssVars)).toEqual(expected);
   });
 
-  describe('selector', function() {
+  describe('getSelector', function() {
     it('should return the selector', function() {
       var selector = project.css[0].selector;
       var expected = 'body';
@@ -95,10 +95,7 @@ describe('css', function() {
       var component = {
         "id": "5",
         "name": "my component",
-        "attributes": [
-          {"name": "value"},
-          {"name": "value"}
-        ]
+        "attributes": []
       };
       var selector = "$id";
       var expected = "#myComponent_5";
