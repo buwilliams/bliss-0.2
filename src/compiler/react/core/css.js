@@ -1,3 +1,5 @@
+const str = require('./str.js');
+
 module.exports = {
   isVariable: function(ruleValue) {
     var firstChar = ruleValue.charAt(0);
@@ -57,13 +59,18 @@ module.exports = {
     });
   },
 
-  getSelector: function(selector) {
-    return selector;
+  getSelector: function(component, selector) {
+    if(selector === '$id' && component !== null) {
+      var id = str.getRefId(component.name, component.id);
+      return `#${id}`;
+    } else {
+      return selector;
+    }
   },
 
-  getCssDef: function(cssDef, cssVars) {
+  getCssDef: function(component, cssDef, cssVars) {
     var out = [];
-    out.push(this.getSelector(cssDef.selector) + ' {');
+    out.push(this.getSelector(component, cssDef.selector) + ' {');
     this.getRules(cssDef.properties, cssVars).map(function(rule){
       out.push("  " + rule);
     });
@@ -71,15 +78,15 @@ module.exports = {
     return out;
   },
 
-  cssDefToStr: function(cssDef, cssVars) {
-    return this.getCssDef(cssDef, cssVars).join("\n");
+  cssDefToStr: function(component, cssDef, cssVars) {
+    return this.getCssDef(component, cssDef, cssVars).join("\n");
   },
 
-  getCss: function(css, cssVars) {
+  getCss: function(component, css, cssVars) {
     var that = this;
     var data = [];
     css.forEach(function(rules) {
-      data.push(that.cssDefToStr(rules, cssVars));
+      data.push(that.cssDefToStr(component, rules, cssVars));
     })
     return data.join("");
   }

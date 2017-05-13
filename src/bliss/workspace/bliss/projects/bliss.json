@@ -121,7 +121,7 @@
       ],
       "css": [
         {
-          "selector": "#id_3",
+          "selector": "$id",
           "properties": [
             { "name": "background-color", "value": "#eee" },
             { "name": "padding", "value": "5px" },
@@ -150,7 +150,7 @@
       ],
       "css": [
         {
-          "selector": "#id_4",
+          "selector": "$id",
           "properties": [
             { "name": "padding", "value": "5px" },
             { "name": "width", "value": "60%" }
@@ -202,7 +202,7 @@
       ],
       "css": [
         {
-          "selector": "#id_17",
+          "selector": "$id",
           "properties": [
             { "name": "width", "value": "100%" },
             { "name": "height", "value": "calc(100vh - 50px)" },
@@ -234,7 +234,7 @@
       ],
       "css": [
         {
-          "selector": "#id_18",
+          "selector": "$id",
           "properties": [
             { "name": "height", "value": "100px" },
             { "name": "overflow", "value": "auto" }
@@ -295,7 +295,7 @@
       ],
       "css": [
         {
-          "selector": "#id_19",
+          "selector": "$id",
           "properties": [
             { "name": "overflow", "value": "auto" },
             { "name": "height", "value": "calc(100vh - 125px)" },
@@ -320,7 +320,7 @@
       ],
       "css": [
         {
-          "selector": "#id_20",
+          "selector": "$id",
           "properties": [
             { "name": "text-transform", "value": "uppercase" },
             { "name": "font-size", "value": "1em" },
@@ -348,7 +348,7 @@
       ],
       "css": [
         {
-          "selector": "#id_21",
+          "selector": "$id",
           "properties": [
             { "name": "text-transform", "value": "uppercase" },
             { "name": "font-size", "value": "1em" },
@@ -376,7 +376,7 @@
       ],
       "css": [
         {
-          "selector": "#id_22",
+          "selector": "$id",
           "properties": [
             { "name": "text-transform", "value": "uppercase" },
             { "name": "font-size", "value": "1em" },
@@ -404,7 +404,7 @@
       ],
       "css": [
         {
-          "selector": "#id_54",
+          "selector": "$id",
           "properties": [
             { "name": "overflow", "value": "auto" },
             { "name": "height", "value": "calc(100vh - 50px)" }
@@ -436,7 +436,7 @@
       ],
       "css": [
         {
-          "selector": "#id_55",
+          "selector": "$id",
           "properties": [
             { "name": "text-transform", "value": "uppercase" },
             { "name": "font-size", "value": "1em" },
@@ -470,7 +470,7 @@
       ],
       "css": [
         {
-          "selector": "#id_56",
+          "selector": "$id",
           "properties": [
             { "name": "background", "value": "#fff" },
             { "name": "overflow", "value": "auto" },
@@ -496,7 +496,7 @@
       ],
       "css": [
         {
-          "selector": "#id_77",
+          "selector": "$id",
           "properties": [
             { "name": "background-color", "value": "#eee" },
             { "name": "padding", "value": "5px" },
@@ -577,7 +577,7 @@
       ],
       "css": [
         {
-          "selector": "#id_83",
+          "selector": "$id",
           "properties": [
             { "name": "outline", "value": "none" },
             { "name": "cursor", "value": "pointer" }
@@ -618,7 +618,7 @@
       ],
       "css": [
         {
-          "selector": "#id_85",
+          "selector": "$id",
           "properties": [
             { "name": "margin-right", "value": "5px" },
             { "name": "cursor", "value": "pointer" }
@@ -653,7 +653,7 @@
       ],
       "css": [
         {
-          "selector": "#id_88",
+          "selector": "$id",
           "properties": [
             { "name": "margin-right", "value": "15px" }
           ]
@@ -681,7 +681,7 @@
       ],
       "css": [
         {
-          "selector": "#id_90",
+          "selector": "$id",
           "properties": [
             { "name": "margin-right", "value": "5px" },
             { "name": "cursor", "value": "pointer" }
@@ -717,7 +717,7 @@
       ],
       "css": [
         {
-          "selector": "#id_91",
+          "selector": "$id",
           "properties": [
             { "name": "margin-right", "value": "5px" },
             { "name": "cursor", "value": "pointer" }
@@ -751,7 +751,7 @@
       ],
       "css": [
         {
-          "selector": "#id_92",
+          "selector": "$id",
           "properties": [
             { "name": "border-radius", "value": "3px" },
             { "name": "border", "value": "solid 1px #ccc" },
@@ -822,7 +822,7 @@
       ],
       "css": [
         {
-          "selector": "#id_93",
+          "selector": "$id",
           "properties": [
             { "name": "cursor", "value": "pointer" }
           ]
@@ -887,7 +887,7 @@
       ],
       "css": [
         {
-          "selector": "#id_95",
+          "selector": "$id",
           "properties": [
             { "name": "position", "value": "fixed" },
             { "name": "bottom", "value": "0" },
@@ -925,7 +925,7 @@
       ],
       "css": [
         {
-          "selector": "#id_96",
+          "selector": "$id",
           "properties": [
             { "name": "margin-top", "value": "38px" }
           ]
@@ -951,7 +951,7 @@
       ],
       "css": [
         {
-          "selector": "#id_97",
+          "selector": "$id",
           "properties": [
             { "name": "overflow", "value": "auto" },
             { "name": "height", "value": "calc(100vh - 50px)" }
@@ -985,7 +985,7 @@
       ],
       "css": [
         {
-          "selector": "#id_98",
+          "selector": "$id",
           "properties": [
             { "name": "text-transform", "value": "uppercase" },
             { "name": "font-size", "value": "1em" },
@@ -1016,7 +1016,7 @@
       ],
       "css": [
         {
-          "selector": "#id_100",
+          "selector": "$id",
           "properties": [
             { "name": "cursor", "value": "pointer" },
             { "name": "outline", "value": "none" }
@@ -1056,7 +1056,7 @@
       ],
       "css": [
         {
-          "selector": "#id_101",
+          "selector": "$id",
           "properties": [
             { "name": "margin-right", "value": "5px" }
           ]
@@ -1130,7 +1130,7 @@
       ],
       "css": [
         {
-          "selector": "#id_104",
+          "selector": "$id",
           "properties": [
             { "name": "cursor", "value": "pointer" },
             { "name": "margin-right", "value": "5px" }
@@ -1173,7 +1173,7 @@
       ],
       "css": [
         {
-          "selector": "#id_105",
+          "selector": "$id",
           "properties": [
             { "name": "margin-right", "value": "5px" }
           ]
@@ -1268,7 +1268,7 @@
       ],
       "css": [
         {
-          "selector": "#id_109",
+          "selector": "$id",
           "properties": [
             { "name": "text-transform", "value": "uppercase" },
             { "name": "font-size", "value": "1em" },
@@ -1300,7 +1300,7 @@
       ],
       "css": [
         {
-          "selector": "#id_110",
+          "selector": "$id",
           "properties": [
             { "name": "overflow", "value": "auto" },
             { "name": "height", "value": "calc(100vh - 220px)" }
@@ -1327,7 +1327,7 @@
       ],
       "css": [
         {
-          "selector": "#id_111",
+          "selector": "$id",
           "properties": [
             { "name": "position", "value": "fixed" },
             { "name": "top", "value": "0" },
@@ -1361,7 +1361,7 @@
       ],
       "css": [
         {
-          "selector": "#id_113",
+          "selector": "$id",
           "properties": [
             { "name": "outline", "value": "none" },
             { "name": "cursor", "value": "pointer" }
@@ -1402,7 +1402,7 @@
       ],
       "css": [
         {
-          "selector": "#id_127",
+          "selector": "$id",
           "properties": [
             { "name": "opacity", "value": "0" },
             { "name": "display", "value": "block" },
@@ -1445,7 +1445,7 @@
       ],
       "css": [
         {
-          "selector": "#id_128",
+          "selector": "$id",
           "properties": [
             { "name": "padding", "value": "0" },
             { "name": "display", "value": "block" },
@@ -1509,7 +1509,7 @@
       ],
       "css": [
         {
-          "selector": "#id_130",
+          "selector": "$id",
           "properties": [
             { "name": "overflow", "value": "hidden" },
             { "name": "display", "value": "block" },
@@ -1546,7 +1546,7 @@
       ],
       "css": [
         {
-          "selector": "#id_131",
+          "selector": "$id",
           "properties": [
             { "name": "display", "value": "block" },
             { "name": "float", "value": "left" },
@@ -1586,7 +1586,7 @@
       ],
       "css": [
         {
-          "selector": "#id_132",
+          "selector": "$id",
           "properties": [
             { "name": "margin-bottom", "value": "5px" }
           ]
@@ -1612,7 +1612,7 @@
       ],
       "css": [
         {
-          "selector": "#id_133",
+          "selector": "$id",
           "properties": [
             { "name": "float", "value": "right" }
           ]

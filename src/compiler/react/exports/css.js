@@ -14,10 +14,11 @@ module.exports = {
   build: function(projectJson, startId) {
     var out = "";
 
+    out += css.getCss(null, projectJson.css, projectJson.cssVars);
+
     tree.traverse(projectJson, startId, function(proj, component) {
-      //console.log('traversing ', component.id);
       if(typeof component.css === "undefined" || component.css === null) return;
-      out += css.getCss(component.css, proj.cssVars);
+      out += css.getCss(component, component.css, proj.cssVars);
     });
 
     return out;
