@@ -4,25 +4,30 @@ Painless Front-end Design & Development
 
 ## Todo
 
+- rename workspace to project names
+- generic properties editor (bliss-properties)
+- move workspace to documents (start-up with workspace location)
+- put json files in `components` dir
+- move `export` dir to `compiled` dir
+- npm management (read json, write package.json, install deps)
+- bliss theme
+- import HTML
+
 ## Backlog
 
-- add design mode (only building bliss)
-- add global css
-- add css for react compiler
 
 ## Roadmap
 
-- Feature: Properties Editor
+- Open project (open components from a project)
+- New UI Theme
 - Feature: Build Environment (npm packages)
-- Feature: Rearrange components (up, down)
-- Feature: Load & Save Project
-- Feature: Upgrade Project (uses the new project json)
 - Feature: Zoom, focus on one component and children
 - Feature: Endpoint Mocks (with functions for dynamic data)
 
 ## Ideas to Explore
 
-- Compile to react, angular, and electron (needed?)
+- Compile to Angular
+- Feature: Upgrade Project (uses the new project json)
 
 ## Recently Completed Todos
 
@@ -60,3 +65,9 @@ Painless Front-end Design & Development
 - move and rename dynamic.repeatOn to repeatFn
 - move and rename dynamic.renderIf to ifFn
 - refactor compiler for mergeAttributes
+- add global css
+- add css for react compiler
+- add design mode (only building bliss)
+- Feature: Rearrange components (up, down)
+- Feature: Load & Save Project
+- Feature: Properties Editor
