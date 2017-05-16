@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 142,
+  "nextId": 144,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -37,7 +37,36 @@
     "showContent": "designer",
     "shouldSave": false
   },
-  "packages": [],
+  "packages": [
+    {
+      "name": "bootstrap",
+      "version": "^4.0.0-alpha.6"
+    },
+    {
+      "name": "codemirror",
+      "version": "^5.24.2"
+    },
+    {
+      "name": "font-awesome",
+      "version": "^4.7.0"
+    },
+    {
+      "name": "lodash",
+      "version": "^4.17.4"
+    },
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-code-mirror",
+      "version": "^3.1.0"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    }
+  ],
   "js": [
     {
       "name": "global",
@@ -2616,7 +2645,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "139",
-      "previous": "141",
+      "previous": "143",
       "child": null,
       "parent": "97"
     },
@@ -2799,8 +2828,136 @@
           "value": "setItemValue"
         }
       ],
-      "next": "138",
+      "next": "142",
       "previous": "140",
+      "child": null,
+      "parent": "97"
+    },
+    "142": {
+      "id": "142",
+      "name": "h3 packages",
+      "element": "h3",
+      "text": "Packages",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "143",
+      "previous": "141",
+      "child": null,
+      "parent": "97"
+    },
+    "143": {
+      "id": "143",
+      "name": "packages",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"packages\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"object\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newPackages) {\n    app.js.update(function() {\n      app.buildProject.packages = newPackages;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "setItemKey",
+          "body": "function(scope, attributes) {\n  return \"name\";\n}"
+        },
+        {
+          "name": "setItemValue",
+          "body": "function(scope, attributes) {\n  return \"version\";\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        },
+        {
+          "name": "itemKey",
+          "value": "setItemKey"
+        },
+        {
+          "name": "itemValue",
+          "value": "setItemValue"
+        }
+      ],
+      "next": "138",
+      "previous": "142",
       "child": null,
       "parent": "97"
     }

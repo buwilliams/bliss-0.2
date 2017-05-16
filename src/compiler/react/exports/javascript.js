@@ -115,6 +115,7 @@ module.exports = {
         "node_modules/react-dom/dist/react-dom.js",
       ],
       "state": {},
+      "packages": [],
       "js": [
         {
           "name": "init",

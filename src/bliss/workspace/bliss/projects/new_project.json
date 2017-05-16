@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 2,
+  "nextId": 3,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -18,7 +18,12 @@
       "body": "function() { app.render(); }"
     }
   ],
-  "cssVars": [],
+  "cssVars": [
+    {
+      "name": "buddy",
+      "value": "#123456"
+    }
+  ],
   "css": [],
   "load": [
     "init"
@@ -40,8 +45,35 @@
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": null,
+      "child": "2",
       "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "new_2",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$buddy"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "1"
     }
   }
 }
