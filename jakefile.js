@@ -8,7 +8,7 @@ namespace('util', function() {
     jake.mkdirP(path);
   });
 
-  task('compile-jsx', function(inputPath, outputPath) {
+  task('compile-jsx', {async: true}, function(inputPath, outputPath) {
     var list = new jake.FileList();
     list.include(`${inputPath}/**/*.jsx`);
 
@@ -19,9 +19,11 @@ namespace('util', function() {
       return `./node_modules/.bin/babel ./${file} -o ./${outDir}/${pathData.name}.js`;
     });
 
-    jake.exec(cmds, {interactive: false}, function () {
+    jake.exec(cmds, {async: true, interactive: false}, function () {
       complete();
     });
+
+    complete();
   });
 
   task('copy-files', function(ext, inputPath, outputPath) {
@@ -66,6 +68,8 @@ task('build-all-components', function() {
   t.execute.apply(t, [`bliss-tree`]);
   t.execute.apply(t, [`bliss-properties`]);
   t.execute.apply(t, [`bliss-javascript`]);
+
+  complete();
 });
 
 desc('Build bliss json');
@@ -88,40 +92,7 @@ task('build-bliss', function() {
                             `build/bliss/css`]);
 });
 
-task('init-deps', {async: true}, function() {
-  // read package.json
-  var packageStr = fs.readFileSync('./package.json');
-  var deps = JSON.parse(packageStr).dependencies;
-  var devDeps = JSON.parse(packageStr).devDependencies;
-
-  // create new
-  var cmd = 'cd build && npm init -y && cd -';
-  jake.exec(cmd, {printStdout: true}, function () {
-    console.log('Initialized npm.');
-
-    var packageStr = fs.readFileSync('./build/package.json');
-    var packageJson = JSON.parse(packageStr);
-
-    packageJson.dependencies = deps;
-    packageJson.devDependencies = devDeps;
-    packageStr = JSON.stringify(packageJson, null, 2);
-
-    fs.writeFileSync('./build/package.json', packageStr, 'utf8');
-
-    complete();
-  });
-});
-
-desc('Update bliss node dependencies');
-task('install-deps', ['init-deps'], {async: true}, function() {
-  // install deps
-  var cmd = 'cd build && npm install && cd -';
-  jake.exec(cmd, {printStdout: true}, function () {
-    complete();
-  });
-});
-
-task('build', function(){
+task('build-all', function(){
   var t;
 
   t = jake.Task['util:clean-dir'];
@@ -142,6 +113,14 @@ task('build', function(){
   t.execute.apply(t, ['json',`src/bliss/workspace/bliss/projects`, 'build/workspace/projects']);
   t.execute.apply(t, ['css',`src/bliss/workspace/bliss/css`, 'build/workspace/css']);
   t.execute.apply(t, ['js',`src/bliss/workspace/bliss/js`, 'build/workspace/js']);
+});
+
+desc('Build');
+task('build', ['build-all'], function(){
+  setTimeout(function() {
+    t = jake.Task['util:copy-files'];
+    t.execute.apply(t, ['*',`build/bliss/components`, 'build/workspace/components']);
+  }, 2000);
 });
 
 desc('Execute all tests.');
