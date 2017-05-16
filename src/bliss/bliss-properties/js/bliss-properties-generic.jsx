@@ -33,7 +33,7 @@ var BlissPropertiesGeneric = {
         } else if(newValue === "") {
           // handle delete
           ref.splice(index, 1);
-        } else if() {
+        } else {
           // handle update
           ref[index] = e.target.value;
         }

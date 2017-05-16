@@ -449,10 +449,10 @@ var BlissTree = {
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": {},
-      "css": {},
-      "js": {},
-      "dynamicAttributes": {},
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
       "next": null,
       "previous": null,
       "child": null,
@@ -473,10 +473,10 @@ var BlissTree = {
     tmpl.name = component.name + "_copy";
     tmpl.element = component.element;
     tmpl.text = component.text;
-    tmpl.attributes = Object.assign({}, component.attributes);
-    tmpl.css = Object.assign({}, component.css);
-    tmpl.js = Object.assign({}, component.js);
-    tmpl.dynamicAttributes = Object.assign({}, component.dynamicAttributes);
+    tmpl.attributes = component.attributes.slice(0);
+    tmpl.css = component.css.slice(0);
+    tmpl.js = component.js.slice(0);
+    tmpl.dynamicAttributes = component.dynamicAttributes.slice(0);
 
     proj.components[tmpl.id] = tmpl;
 
@@ -484,7 +484,6 @@ var BlissTree = {
   },
 
   deleteComponent: function(proj, id) {
-    console.log('delete', id);
     var that = this;
     if(proj.rootId === id) return proj;
 
