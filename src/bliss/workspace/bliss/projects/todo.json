@@ -36,7 +36,7 @@
     {
       "name": "getState",
       "body": "function (rawName) {\n    var name = rawName.replace(/[^\\w]/gi, '');\n    return app.state._managed[name];\n  }"
-    },
+    }
   ],
   "load": ["init"],
   "components": {
