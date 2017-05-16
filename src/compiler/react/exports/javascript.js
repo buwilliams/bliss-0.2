@@ -115,7 +115,16 @@ module.exports = {
         "node_modules/react-dom/dist/react-dom.js",
       ],
       "state": {},
-      "packages": [],
+      "packages": [
+        {
+          "name": "react",
+          "version": "15.4.2"
+        },
+        {
+          "name": "react-dom",
+          "version": "15.4.2"
+        }
+      ],
       "js": [
         {
           "name": "init",
