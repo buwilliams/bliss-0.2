@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 138,
+  "nextId": 140,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -2533,7 +2533,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "135",
-      "previous": "137",
+      "previous": "139",
       "child": null,
       "parent": "97"
     },
@@ -2559,9 +2559,121 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "136",
+      "next": "138",
       "previous": "109",
       "child": "108",
+      "parent": "97"
+    },
+    "138": {
+      "id": "138",
+      "name": "h3Stylesheets",
+      "element": "h3",
+      "text": "Stylesheets",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "139",
+      "previous": "137",
+      "child": null,
+      "parent": "97"
+    },
+    "139": {
+      "id": "139",
+      "name": "stylesheet properties",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"externalCss\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"primitive\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newExternalCss) {\n    app.js.update(function() {\n      app.buildProject.externalCss = newExternalCss;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        }
+      ],
+      "next": "136",
+      "previous": "138",
+      "child": null,
       "parent": "97"
     }
   }
