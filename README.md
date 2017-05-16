@@ -4,17 +4,23 @@ Painless Front-end Design & Development
 
 ## Todo
 
-- rename workspace to project names
-- generic properties editor (bliss-properties)
-- move workspace to documents (start-up with workspace location)
-- put json files in `components` dir
-- move `export` dir to `compiled` dir
-- npm management (read json, write package.json, install deps)
-- bliss theme
-- import HTML
+- feature: global css editor
+- feature: edit css selectors and properties (missing selectors)
 
 ## Backlog
 
+- bug: clone gives weird js bugs, doesn't work until project is saved, not sure why
+- bug: remove color picker from properties (move to experiments project json)
+- bug: scroll bliss-tree horizontally
+- bug: on bliss page load, dependencies are missing
+- improvement: auto-save project
+- improvement: collapse tree on load
+- improvement: reload deps on packages update
+- improvement: electron, move workspace to documents
+- feature: list projects pane
+- feature: theme layout
+- feature: theme colors
+- feature: import HTML
 
 ## Roadmap
 
@@ -71,3 +77,8 @@ Painless Front-end Design & Development
 - Feature: Rearrange components (up, down)
 - Feature: Load & Save Project
 - Feature: Properties Editor
+- rename workspace to project names
+- generic properties editor (bliss-properties)
+- put json files in `components` dir
+- move `export` dir to `compiled` dir
+- npm management (read json, write package.json, install deps)
