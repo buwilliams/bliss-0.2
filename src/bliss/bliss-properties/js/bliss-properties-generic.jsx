@@ -61,7 +61,6 @@ var BlissPropertiesGeneric = {
     },
 
     renderObjectArray: function() {
-      console.log('renderObjectArray', this.props);
       var that = this;
       var ref = this.props.objectContainer[this.props.objectKey];
 
