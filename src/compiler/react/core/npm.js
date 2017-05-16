@@ -3,8 +3,11 @@ const path = require('path');
 const execSync = require('child_process').execSync;
 
 module.exports = {
-  removePackageJson: function(path) {
-    fs.unlinkSync(path.join(path, "package.json"));
+  removePackageJson: function(workspace) {
+    var packagePath = path.join(workspace, "package.json");
+    if(fs.existsSync(packagePath)) {
+      fs.unlinkSync(packagePath);
+    }
   },
 
   createPackageJson: function(projectJson) {
@@ -27,18 +30,18 @@ module.exports = {
     return packageJson;
   },
 
-  writePackageJson: function(path, projectJson) {
+  writePackageJson: function(workspace, projectJson) {
     var packageJson = this.createPackageJson(projectJson);
-    fs.writeFileSync(path.join(path, "package.json"), JSON.stringify(packageJson, null, 2));
+    fs.writeFileSync(path.join(workspace, "package.json"), JSON.stringify(packageJson, null, 2));
   },
 
-  installPackageJson: function(path) {
-    var code = execSync('npm install', {"cwd", path});
+  installPackageJson: function(workspace) {
+    var code = execSync('npm install', {"cwd": workspace});
   },
 
-  update: function(path, projectJson) {
-    this.removePackageJson(path);
-    this.writePackageJson(path, projectJson);
-    this.installPackageJson(path);
+  update: function(workspace, projectJson) {
+    this.removePackageJson(workspace);
+    this.writePackageJson(workspace, projectJson);
+    this.installPackageJson(workspace);
   }
 };
