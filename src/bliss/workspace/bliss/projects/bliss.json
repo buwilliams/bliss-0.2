@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 135,
+  "nextId": 138,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -27,6 +27,7 @@
     "components/bliss-tree/js/bliss-tree.js",
     "components/bliss-properties/js/bliss-property.js",
     "components/bliss-properties/js/bliss-properties.js",
+    "components/bliss-properties/js/bliss-properties-generic.js",
     "components/bliss-javascript/js/bliss-javascript.js"
   ],
   "state": {
@@ -48,7 +49,7 @@
     },
     {
       "name": "build",
-      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  if(typeof app.buildProject.js.createState === \"undefined\") {\n\t\tapp.buildProject.js.createState = app.js.createState.toString();\n  }\n\n  if(typeof app.buildProject.js.getState === \"undefined\") {\n    app.buildProject.js.getState = app.js.getState.toString();\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      var iframe = $('#preview');\n      var url = location.origin + '/designer/designer.html';\n      if(iframe.attr('src') !== url) {\n        iframe.attr('src', url);\n      } else {\n        try {\n          iframe[0].contentWindow.location.reload();\n        } catch(e){\n          console.log(e);\n        }\n      }\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  if(typeof app.buildProject.js.createState === \"undefined\") {\n\t\tapp.buildProject.js.createState = app.js.createState.toString();\n  }\n\n  if(typeof app.buildProject.js.getState === \"undefined\") {\n    app.buildProject.js.getState = app.js.getState.toString();\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      return;\n      var iframe = $('#preview');\n      var url = location.origin + '/designer/designer.html';\n      if(iframe.attr('src') !== url) {\n        iframe.attr('src', url);\n      } else {\n        try {\n          iframe[0].contentWindow.location.reload();\n        } catch(e){\n          console.log(e);\n        }\n      }\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -56,7 +57,7 @@
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    console.log('building');\n    app.js.build();\n  }, 500);\n}"
+      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    //console.log('building');\n    app.js.build();\n  }, 500);\n}"
     },
     {
       "name": "createState",
@@ -69,7 +70,11 @@
   ],
   "cssVars": [],
   "css": [],
-  "load": [ "global", "init", "build" ],
+  "load": [
+    "global",
+    "init",
+    "build"
+  ],
   "components": {
     "1": {
       "id": "1",
@@ -77,7 +82,12 @@
       "element": "div",
       "text": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -96,7 +106,12 @@
           "value": "clearfix"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -123,12 +138,30 @@
         {
           "selector": "$id",
           "properties": [
-            { "name": "background-color", "value": "#eee" },
-            { "name": "padding", "value": "5px" },
-            { "name": "border-right", "value": "solid 1px #ccc" },
-            { "name": "width", "value": "20%" },
-            { "name": "height", "value": "calc(100vh - 38px)" },
-            { "name": "overflow", "value": "auto" }
+            {
+              "name": "background-color",
+              "value": "#eee"
+            },
+            {
+              "name": "padding",
+              "value": "5px"
+            },
+            {
+              "name": "border-right",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "width",
+              "value": "20%"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 38px)"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            }
           ]
         }
       ],
@@ -145,15 +178,27 @@
       "element": "div",
       "text": null,
       "attributes": [
-        { "name": "id", "value": "designer" },
-        { "name": "className", "value": "float-left" }
+        {
+          "name": "id",
+          "value": "designer"
+        },
+        {
+          "name": "className",
+          "value": "float-left"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "padding", "value": "5px" },
-            { "name": "width", "value": "60%" }
+            {
+              "name": "padding",
+              "value": "5px"
+            },
+            {
+              "name": "width",
+              "value": "60%"
+            }
           ]
         }
       ],
@@ -182,8 +227,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "component", "value": "setComponentProp" },
-        { "name": "onChange", "value": "setOnChangeProp" }
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
       ],
       "next": null,
       "previous": "129",
@@ -197,16 +248,31 @@
       "designMode": false,
       "text": null,
       "attributes": [
-        { "name": "id", "value": "preview" },
-        { "name": "src", "value": "about:blank" }
+        {
+          "name": "id",
+          "value": "preview"
+        },
+        {
+          "name": "src",
+          "value": "about:blank"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "width", "value": "100%" },
-            { "name": "height", "value": "calc(100vh - 50px)" },
-            { "name": "border", "value": "none" }
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 50px)"
+            },
+            {
+              "name": "border",
+              "value": "none"
+            }
           ]
         }
       ],
@@ -217,7 +283,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "style", "value": "getStyles" }
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
       ],
       "next": null,
       "previous": null,
@@ -230,14 +299,23 @@
       "element": "BlissTree.component",
       "text": null,
       "attributes": [
-        { "name": "id", "value": "componentTree" }
+        {
+          "name": "id",
+          "value": "componentTree"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "height", "value": "100px" },
-            { "name": "overflow", "value": "auto" }
+            {
+              "name": "height",
+              "value": "100px"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            }
           ]
         }
       ],
@@ -272,13 +350,34 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "data", "value": "setDataProp" },
-        { "name": "onSelect", "value": "setOnSelectProp" },
-        { "name": "onCreate", "value": "setOnCreateProp" },
-        { "name": "onClone", "value": "setOnCloneProp" },
-        { "name": "onDelete", "value": "setOnDeleteProp" },
-        { "name": "onMove", "value": "setOnMoveProp" },
-        { "name": "_this", "value": "setThis" }
+        {
+          "name": "data",
+          "value": "setDataProp"
+        },
+        {
+          "name": "onSelect",
+          "value": "setOnSelectProp"
+        },
+        {
+          "name": "onCreate",
+          "value": "setOnCreateProp"
+        },
+        {
+          "name": "onClone",
+          "value": "setOnCloneProp"
+        },
+        {
+          "name": "onDelete",
+          "value": "setOnDeleteProp"
+        },
+        {
+          "name": "onMove",
+          "value": "setOnMoveProp"
+        },
+        {
+          "name": "_this",
+          "value": "setThis"
+        }
       ],
       "next": null,
       "previous": null,
@@ -291,15 +390,27 @@
       "element": "div",
       "text": null,
       "attributes": [
-        { "name": "id", "value": "iframeContainer" }
+        {
+          "name": "id",
+          "value": "iframeContainer"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "overflow", "value": "auto" },
-            { "name": "height", "value": "calc(100vh - 125px)" },
-            { "name": "border", "value": "solid 3px #ccc" }
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 153px)"
+            },
+            {
+              "name": "border",
+              "value": "solid 3px #ccc"
+            }
           ]
         }
       ],
@@ -316,18 +427,39 @@
       "element": "h3",
       "text": "components",
       "attributes": [
-        { "name": "id", "value": "h3Components" }
+        {
+          "name": "id",
+          "value": "h3Components"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "font-size", "value": "1em" },
-            { "name": "background-color", "value": "#aaa" },
-            { "name": "color", "value": "#fff" },
-            { "name": "padding", "value": "10px" },
-            { "name": "border-radius", "value": "3px" }
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
           ]
         }
       ],
@@ -344,18 +476,39 @@
       "element": "h3",
       "text": "designer",
       "attributes": [
-        { "name": "id", "value": "h3Designer" }
+        {
+          "name": "id",
+          "value": "h3Designer"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "font-size", "value": "1em" },
-            { "name": "color", "value": "#fff" },
-            { "name": "border-radius", "value": "3px" },
-            { "name": "background-color", "value": "#aaa" },
-            { "name": "padding", "value": "10px" }
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
           ]
         }
       ],
@@ -372,18 +525,39 @@
       "element": "h3",
       "text": "Properties",
       "attributes": [
-        { "name": "id", "value": "propertyList" }
+        {
+          "name": "id",
+          "value": "propertyList"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "font-size", "value": "1em" },
-            { "name": "background-color", "value": "#aaa" },
-            { "name": "color", "value": "#fff" },
-            { "name": "padding", "value": "10px" },
-            { "name": "border-radius", "value": "3px" }
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
           ]
         }
       ],
@@ -400,19 +574,31 @@
       "element": "div",
       "text": null,
       "attributes": [
-        { "name": "id", "value": "jsEditor" }
+        {
+          "name": "id",
+          "value": "jsEditor"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "overflow", "value": "auto" },
-            { "name": "height", "value": "calc(100vh - 50px)" }
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            }
           ]
         }
       ],
       "dynamicAttributes": [
-        { "name": "style", "value": "getStyle" }
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
       ],
       "js": [
         {
@@ -432,18 +618,39 @@
       "element": "h3",
       "text": "",
       "attributes": [
-        { "name": "id", "value": "h3Js" }
+        {
+          "name": "id",
+          "value": "h3Js"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "font-size", "value": "1em" },
-            { "name": "background-color", "value": "#aaa" },
-            { "name": "color", "value": "#fff" },
-            { "name": "padding", "value": "10px" },
-            { "name": "border-radius", "value": "3px" }
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
           ]
         }
       ],
@@ -466,15 +673,27 @@
       "element": "div",
       "text": "",
       "attributes": [
-        { "name": "id", "value": "code" }
+        {
+          "name": "id",
+          "value": "code"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "background", "value": "#fff" },
-            { "name": "overflow", "value": "auto" },
-            { "name": "height", "value": "auto" }
+            {
+              "name": "background",
+              "value": "#fff"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "auto"
+            }
           ]
         }
       ],
@@ -491,19 +710,43 @@
       "element": "div",
       "text": null,
       "attributes": [
-        { "name": "id", "value": "propertiesContainer" },
-        { "name": "className", "value": "float-left" }
+        {
+          "name": "id",
+          "value": "propertiesContainer"
+        },
+        {
+          "name": "className",
+          "value": "float-left"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "background-color", "value": "#eee" },
-            { "name": "padding", "value": "5px" },
-            { "name": "border-left", "value": "solid 1px #ccc" },
-            { "name": "height", "value": "calc(100vh - 38px)" },
-            { "name": "overflow", "value": "auto" },
-            { "name": "width", "value": "20%" }
+            {
+              "name": "background-color",
+              "value": "#eee"
+            },
+            {
+              "name": "padding",
+              "value": "5px"
+            },
+            {
+              "name": "border-left",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 38px)"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "width",
+              "value": "20%"
+            }
           ]
         }
       ],
@@ -532,8 +775,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "component", "value": "setComponentProp" },
-        { "name": "onChange", "value": "setOnChangeProp" }
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
       ],
       "next": null,
       "previous": null,
@@ -549,7 +798,12 @@
       "ifFn": "",
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [
         {
           "name": "getStyle",
@@ -557,7 +811,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "style", "value": "getStyle" }
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
       ],
       "next": "54",
       "previous": null,
@@ -573,14 +830,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "showJs" }
+        {
+          "name": "id",
+          "value": "showJs"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "outline", "value": "none" },
-            { "name": "cursor", "value": "pointer" }
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
           ]
         }
       ],
@@ -595,8 +861,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "setContentValue" },
-        { "name": "className", "value": "getClass" }
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
       ],
       "next": "113",
       "previous": "100",
@@ -612,16 +884,31 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "newButton" },
-        { "name": "className", "value": "dropdown-item" },
-        { "name": "href", "value": "#" }
+        {
+          "name": "id",
+          "value": "newButton"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-right", "value": "5px" },
-            { "name": "cursor", "value": "pointer" }
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
           ]
         }
       ],
@@ -632,7 +919,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "showInput" }
+        {
+          "name": "onClick",
+          "value": "showInput"
+        }
       ],
       "next": "90",
       "previous": null,
@@ -648,14 +938,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "projectOptions" },
-        { "name": "class", "value": "float-left" }
+        {
+          "name": "id",
+          "value": "projectOptions"
+        },
+        {
+          "name": "class",
+          "value": "float-left"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-right", "value": "15px" }
+            {
+              "name": "margin-right",
+              "value": "15px"
+            }
           ]
         }
       ],
@@ -675,16 +974,31 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "loadButton" },
-        { "name": "href", "value": "#" },
-        { "name": "className", "value": "dropdown-item" }
+        {
+          "name": "id",
+          "value": "loadButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-right", "value": "5px" },
-            { "name": "cursor", "value": "pointer" }
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
           ]
         }
       ],
@@ -695,7 +1009,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "showInput" }
+        {
+          "name": "onClick",
+          "value": "showInput"
+        }
       ],
       "next": "104",
       "previous": "85",
@@ -711,16 +1028,31 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "saveAsButton" },
-        { "name": "className", "value": "dropdown-item" },
-        { "name": "href", "value": "#" }
+        {
+          "name": "id",
+          "value": "saveAsButton"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-right", "value": "5px" },
-            { "name": "cursor", "value": "pointer" }
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
           ]
         }
       ],
@@ -731,7 +1063,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "showInput" }
+        {
+          "name": "onClick",
+          "value": "showInput"
+        }
       ],
       "next": null,
       "previous": "104",
@@ -747,17 +1082,35 @@
       "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "projectInput" }
+        {
+          "name": "id",
+          "value": "projectInput"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "border-radius", "value": "3px" },
-            { "name": "border", "value": "solid 1px #ccc" },
-            { "name": "outline", "value": "none" },
-            { "name": "display", "value": "inline-block" },
-            { "name": "margin-right", "value": "5px" }
+            {
+              "name": "border-radius",
+              "value": "3px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            }
           ]
         }
       ],
@@ -784,7 +1137,7 @@
         },
         {
           "name": "loadProject",
-          "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  this.setStatus('Loading project ' + projectName + '...');\n  var comp = this;\n  $.ajax({\n    type: 'GET',\n    url: '/load',\n    data: {name: projectName},\n    success: function(data) {\n      console.log(\"Project loaded\", data);\n      comp.setProject(data.project);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  this.setStatus('Loading project ' + projectName + '...');\n  var comp = this;\n  $.ajax({\n    type: 'GET',\n    url: '/load',\n    data: {name: projectName},\n    success: function(data) {\n      //console.log(\"Project loaded\", data);\n      comp.setProject(data.project);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         },
         {
           "name": "setProject",
@@ -800,9 +1153,18 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onKeyDown", "value": "handleKeydown" },
-        { "name": "onChange", "value": "handleChange" },
-        { "name": "value", "value": "getValue" }
+        {
+          "name": "onKeyDown",
+          "value": "handleKeydown"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
       ],
       "next": "93",
       "previous": "105",
@@ -818,13 +1180,19 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "saveButton" }
+        {
+          "name": "id",
+          "value": "saveButton"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "cursor", "value": "pointer" }
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
           ]
         }
       ],
@@ -847,8 +1215,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "handleClick" },
-        { "name": "className", "value": "getClass" }
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
       ],
       "next": null,
       "previous": "92",
@@ -864,7 +1238,10 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "className", "value": "fa fa-floppy-o" }
+        {
+          "name": "className",
+          "value": "fa fa-floppy-o"
+        }
       ],
       "css": [],
       "js": [],
@@ -883,20 +1260,47 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "statusBar" }
+        {
+          "name": "id",
+          "value": "statusBar"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "position", "value": "fixed" },
-            { "name": "bottom", "value": "0" },
-            { "name": "border-top", "value": "solid 3px #ddd" },
-            { "name": "left", "value": "0" },
-            { "name": "right", "value": "0" },
-            { "name": "font-size", "value": ".8em" },
-            { "name": "background-color", "value": "#fff" },
-            { "name": "padding", "value": "5px 10px" }
+            {
+              "name": "position",
+              "value": "fixed"
+            },
+            {
+              "name": "bottom",
+              "value": "0"
+            },
+            {
+              "name": "border-top",
+              "value": "solid 3px #ddd"
+            },
+            {
+              "name": "left",
+              "value": "0"
+            },
+            {
+              "name": "right",
+              "value": "0"
+            },
+            {
+              "name": "font-size",
+              "value": ".8em"
+            },
+            {
+              "name": "background-color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "5px 10px"
+            }
           ]
         }
       ],
@@ -921,13 +1325,19 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "container" }
+        {
+          "name": "id",
+          "value": "container"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-top", "value": "38px" }
+            {
+              "name": "margin-top",
+              "value": "38px"
+            }
           ]
         }
       ],
@@ -947,14 +1357,23 @@
       "ifFn": "",
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "generalEditor" }
+        {
+          "name": "id",
+          "value": "generalEditor"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "overflow", "value": "auto" },
-            { "name": "height", "value": "calc(100vh - 50px)" }
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            }
           ]
         }
       ],
@@ -965,7 +1384,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "style", "value": "getStyle" }
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
       ],
       "next": null,
       "previous": "54",
@@ -981,18 +1403,39 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "h3General" }
+        {
+          "name": "id",
+          "value": "h3General"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "font-size", "value": "1em" },
-            { "name": "background-color", "value": "#aaa" },
-            { "name": "color", "value": "#fff" },
-            { "name": "padding", "value": "10px" },
-            { "name": "border-radius", "value": "3px" }
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
           ]
         }
       ],
@@ -1012,14 +1455,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "showGeneral" }
+        {
+          "name": "id",
+          "value": "showGeneral"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "cursor", "value": "pointer" },
-            { "name": "outline", "value": "none" }
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            }
           ]
         }
       ],
@@ -1034,8 +1486,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "className", "value": "getClass" },
-        { "name": "onClick", "value": "setContentValue" }
+        {
+          "name": "className",
+          "value": "getClass"
+        },
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        }
       ],
       "next": "83",
       "previous": null,
@@ -1051,14 +1509,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "className", "value": "btn-group" },
-        { "name": "id", "value": "toggleContent" }
+        {
+          "name": "className",
+          "value": "btn-group"
+        },
+        {
+          "name": "id",
+          "value": "toggleContent"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-right", "value": "5px" }
+            {
+              "name": "margin-right",
+              "value": "5px"
+            }
           ]
         }
       ],
@@ -1090,8 +1557,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onChange", "value": "handleChange" },
-        { "name": "value", "value": "getValue" }
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
       ],
       "next": "109",
       "previous": "103",
@@ -1124,16 +1597,31 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "exportButton" },
-        { "name": "href", "value": "#" },
-        { "name": "className", "value": "dropdown-item" }
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "cursor", "value": "pointer" },
-            { "name": "margin-right", "value": "5px" }
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            }
           ]
         }
       ],
@@ -1152,7 +1640,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "handleClick" }
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
       ],
       "next": "91",
       "previous": "90",
@@ -1168,14 +1659,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "projectDropdown" },
-        { "name": "className", "value": "btn-group" }
+        {
+          "name": "id",
+          "value": "projectDropdown"
+        },
+        {
+          "name": "className",
+          "value": "btn-group"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-right", "value": "5px" }
+            {
+              "name": "margin-right",
+              "value": "5px"
+            }
           ]
         }
       ],
@@ -1195,9 +1695,18 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "type", "value": "button" },
-        { "name": "data-toggle", "value": "dropdown" },
-        { "name": "className", "value": "btn btn-default dropdown-toggle btn-sm" }
+        {
+          "name": "type",
+          "value": "button"
+        },
+        {
+          "name": "data-toggle",
+          "value": "dropdown"
+        },
+        {
+          "name": "className",
+          "value": "btn btn-default dropdown-toggle btn-sm"
+        }
       ],
       "css": [],
       "js": [],
@@ -1216,7 +1725,10 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "className", "value": "dropdown-menu" }
+        {
+          "name": "className",
+          "value": "dropdown-menu"
+        }
       ],
       "css": [],
       "js": [],
@@ -1235,7 +1747,12 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [
         {
           "name": "setComponentProp",
@@ -1247,13 +1764,19 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "component", "value": "setComponentProp" },
-        { "name": "onChange", "value": "setOnChangeProp" }
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
       ],
       "next": null,
-      "previous": "109",
+      "previous": null,
       "child": null,
-      "parent": "97"
+      "parent": "137"
     },
     "109": {
       "id": "109",
@@ -1264,25 +1787,49 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "h3GeneralJs" }
+        {
+          "name": "id",
+          "value": "h3GeneralJs"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "font-size", "value": "1em" },
-            { "name": "background-color", "value": "#aaa" },
-            { "name": "color", "value": "#fff" },
-            { "name": "margin-top", "value": "15px" },
-            { "name": "padding", "value": "10px" },
-            { "name": "border-radius", "value": "3px" }
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
           ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "108",
+      "next": "137",
       "previous": "102",
       "child": null,
       "parent": "97"
@@ -1296,14 +1843,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "treeContainer" }
+        {
+          "name": "id",
+          "value": "treeContainer"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "overflow", "value": "auto" },
-            { "name": "height", "value": "calc(100vh - 220px)" }
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 220px)"
+            }
           ]
         }
       ],
@@ -1323,21 +1879,51 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "mainNav" }
+        {
+          "name": "id",
+          "value": "mainNav"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "position", "value": "fixed" },
-            { "name": "top", "value": "0" },
-            { "name": "left", "value": "0" },
-            { "name": "right", "value": "0" },
-            { "name": "z-index", "value": "100" },
-            { "name": "background-color", "value": "#eee" },
-            { "name": "border-bottom", "value": "solid 1px #ccc" },
-            { "name": "padding", "value": "5px" },
-            { "name": "height", "value": "auto" }
+            {
+              "name": "position",
+              "value": "fixed"
+            },
+            {
+              "name": "top",
+              "value": "0"
+            },
+            {
+              "name": "left",
+              "value": "0"
+            },
+            {
+              "name": "right",
+              "value": "0"
+            },
+            {
+              "name": "z-index",
+              "value": "100"
+            },
+            {
+              "name": "background-color",
+              "value": "#eee"
+            },
+            {
+              "name": "border-bottom",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "padding",
+              "value": "5px"
+            },
+            {
+              "name": "height",
+              "value": "auto"
+            }
           ]
         }
       ],
@@ -1357,14 +1943,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "showDesigner" }
+        {
+          "name": "id",
+          "value": "showDesigner"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "outline", "value": "none" },
-            { "name": "cursor", "value": "pointer" }
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
           ]
         }
       ],
@@ -1379,8 +1974,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onClick", "value": "setContentValue" },
-        { "name": "className", "value": "getClass" }
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
       ],
       "next": null,
       "previous": "83",
@@ -1396,19 +1997,43 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "type", "value": "color" },
-        { "name": "id", "value": "colorPicker" },
-        { "name": "value", "value": "#ffffff" }
+        {
+          "name": "type",
+          "value": "color"
+        },
+        {
+          "name": "id",
+          "value": "colorPicker"
+        },
+        {
+          "name": "value",
+          "value": "#ffffff"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "opacity", "value": "0" },
-            { "name": "display", "value": "block" },
-            { "name": "border", "value": "solid 1px #000" },
-            { "name": "height", "value": "100%" },
-            { "name": "width", "value": "100%" }
+            {
+              "name": "opacity",
+              "value": "0"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #000"
+            },
+            {
+              "name": "height",
+              "value": "100%"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            }
           ]
         }
       ],
@@ -1423,8 +2048,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onChange", "value": "handleChange" },
-        { "name": "value", "value": "getValue" }
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
       ],
       "next": null,
       "previous": null,
@@ -1440,21 +2071,51 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "colorValue" },
-        { "name": "value", "value": "#ffffff" }
+        {
+          "name": "id",
+          "value": "colorValue"
+        },
+        {
+          "name": "value",
+          "value": "#ffffff"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "padding", "value": "0" },
-            { "name": "display", "value": "block" },
-            { "name": "float", "value": "left" },
-            { "name": "font-size", "value": "14px" },
-            { "name": "margin", "value": "0 0 0 -1px" },
-            { "name": "width", "value": "25%" },
-            { "name": "text-align", "value": "center" },
-            { "name": "outline", "value": "none" }
+            {
+              "name": "padding",
+              "value": "0"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "float",
+              "value": "left"
+            },
+            {
+              "name": "font-size",
+              "value": "14px"
+            },
+            {
+              "name": "margin",
+              "value": "0 0 0 -1px"
+            },
+            {
+              "name": "width",
+              "value": "25%"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            }
           ]
         }
       ],
@@ -1469,8 +2130,14 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onChange", "value": "handleChange" },
-        { "name": "value", "value": "getValue" }
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
       ],
       "next": "131",
       "previous": "130",
@@ -1486,7 +2153,10 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "class", "value": "clearfix" }
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
       ],
       "css": [],
       "js": [],
@@ -1505,24 +2175,63 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "colorPickerContainer" }
+        {
+          "name": "id",
+          "value": "colorPickerContainer"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "overflow", "value": "hidden" },
-            { "name": "display", "value": "block" },
-            { "name": "float", "value": "left" },
-            { "name": "width", "value": "50%" },
-            { "name": "border", "value": "solid 1px #ccc" },
-            { "name": "height", "value": "25px" },
-            { "name": "text-transform", "value": "uppercase" },
-            { "name": "padding", "value": "2px 5px" },
-            { "name": "text-align", "value": "right" },
-            { "name": "color", "value": "#999" },
-            { "name": "font-size", "value": "13px" },
-            { "name": "background-color", "value": "#eee" }
+            {
+              "name": "overflow",
+              "value": "hidden"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "float",
+              "value": "left"
+            },
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "height",
+              "value": "25px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "padding",
+              "value": "2px 5px"
+            },
+            {
+              "name": "text-align",
+              "value": "right"
+            },
+            {
+              "name": "color",
+              "value": "#999"
+            },
+            {
+              "name": "font-size",
+              "value": "13px"
+            },
+            {
+              "name": "background-color",
+              "value": "#eee"
+            }
           ]
         }
       ],
@@ -1542,19 +2251,43 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "selectColor" }
+        {
+          "name": "id",
+          "value": "selectColor"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "display", "value": "block" },
-            { "name": "float", "value": "left" },
-            { "name": "width", "value": "25%" },
-            { "name": "padding", "value": "2px 5px" },
-            { "name": "height", "value": "25px" },
-            { "name": "border", "value": "solid 1px #ccc" },
-            { "name": "margin", "value": "0 0 0 -1px" }
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "float",
+              "value": "left"
+            },
+            {
+              "name": "width",
+              "value": "25%"
+            },
+            {
+              "name": "padding",
+              "value": "2px 5px"
+            },
+            {
+              "name": "height",
+              "value": "25px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "margin",
+              "value": "0 0 0 -1px"
+            }
           ]
         }
       ],
@@ -1565,7 +2298,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "style", "value": "getStyle" }
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
       ],
       "next": null,
       "previous": "128",
@@ -1581,14 +2317,23 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "class", "value": "clearfix" },
-        { "name": "id", "value": "toggleResolution" }
+        {
+          "name": "class",
+          "value": "clearfix"
+        },
+        {
+          "name": "id",
+          "value": "toggleResolution"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "margin-bottom", "value": "5px" }
+            {
+              "name": "margin-bottom",
+              "value": "5px"
+            }
           ]
         }
       ],
@@ -1608,13 +2353,19 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        { "name": "id", "value": "resolution" }
+        {
+          "name": "id",
+          "value": "resolution"
+        }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            { "name": "float", "value": "right" }
+            {
+              "name": "float",
+              "value": "right"
+            }
           ]
         }
       ],
@@ -1629,7 +2380,10 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "onChange", "value": "handleChange" }
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
       ],
       "next": null,
       "previous": null,
@@ -1661,12 +2415,154 @@
         }
       ],
       "dynamicAttributes": [
-        { "name": "value", "value": "getValue" }
+        {
+          "name": "value",
+          "value": "getValue"
+        }
       ],
       "next": null,
       "previous": null,
       "child": null,
       "parent": "133"
+    },
+    "135": {
+      "id": "135",
+      "name": "script properties",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"externalJs\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"primitive\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newExternalJs) {\n    app.js.update(function() {\n      app.buildProject.externalJs = newExternalJs;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        }
+      ],
+      "next": null,
+      "previous": "136",
+      "child": null,
+      "parent": "97"
+    },
+    "136": {
+      "id": "136",
+      "name": "h3Scripts",
+      "element": "h3",
+      "text": "Scripts",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "135",
+      "previous": "137",
+      "child": null,
+      "parent": "97"
+    },
+    "137": {
+      "id": "137",
+      "name": "general js editor container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "136",
+      "previous": "109",
+      "child": "108",
+      "parent": "97"
     }
   }
 }

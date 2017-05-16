@@ -15,7 +15,8 @@
 var BlissPropertiesGeneric = {
   "component": React.createClass({
     handleChange: function() {
-      this.props.onChange(this.props.objectContainer, this.props.objectKey);
+      var newObject = this.props.objectContainer[this.props.objectKey].slice(0);
+      this.props.onChange(newObject);
     },
 
     renderPrimitiveArray: function() {
@@ -24,7 +25,7 @@ var BlissPropertiesGeneric = {
 
       // on change method
       var _handleChange = function(e) {
-        var index = e.target.dataset.id;
+        var index = e.target.dataset.index;
         var newValue = e.target.value;
 
         if(index === ref.length) {
@@ -45,13 +46,18 @@ var BlissPropertiesGeneric = {
       var out = [];
       ref.forEach(function(item, index) {
         // write inputs
-        out.push(<input key={"key_" + index} data-index={index} type="text" onChange={_handleChange} value={item} />);
+        out.push(<input className="form-control" key={"key_" + index}
+                        data-index={index} type="text"
+                        onChange={_handleChange} value={item} />);
       });
 
       // write new output
-      out.push(<input key={"key_" + ref.length} data-index={ref.length} type="text" onChange={_handleChange} value="" />);
+      out.push(<input className="form-control" key={"key_" + ref.length}
+                      data-index={ref.length} type="text"
+                      onChange={_handleChange} value=""
+                      placeholder="new..." />);
 
-      return out;
+      return (<div>{out}</div>);
     },
 
     renderObjectArray: function() {

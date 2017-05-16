@@ -440,7 +440,7 @@ var BlissTree = {
   },
 
   getTemplate: function(proj) {
-    var newId = String(proj.next_id++);
+    var newId = String(proj.nextId++);
     return {
       "id": newId,
       "name": "new_"+newId,

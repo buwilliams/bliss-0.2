@@ -190,4 +190,13 @@ task('dist', function() {
   });
 });
 
+desc('Update Bliss');
+task('update-bliss', function() {
+  var t = jake.Task['util:copy-files'];
+  t.execute.apply(t, ['json','build/workspace/projects', 'src/bliss/workspace/bliss/projects']);
+
+  var t = jake.Task['build'];
+  t.execute.apply(t);
+});
+
 task('default', ['build-bliss']);
