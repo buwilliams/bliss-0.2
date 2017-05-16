@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 140,
+  "nextId": 142,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -2559,7 +2559,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "138",
+      "next": "140",
       "previous": "109",
       "child": "108",
       "parent": "97"
@@ -2616,7 +2616,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "139",
-      "previous": "137",
+      "previous": "141",
       "child": null,
       "parent": "97"
     },
@@ -2673,6 +2673,134 @@
       ],
       "next": "136",
       "previous": "138",
+      "child": null,
+      "parent": "97"
+    },
+    "140": {
+      "id": "140",
+      "name": "h3 global css vars",
+      "element": "h3",
+      "text": "Global CSS Vars",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "141",
+      "previous": "137",
+      "child": null,
+      "parent": "97"
+    },
+    "141": {
+      "id": "141",
+      "name": "global css vars",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"cssVars\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"object\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newCssVars) {\n    app.js.update(function() {\n      app.buildProject.cssVars = newCssVars;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "setItemKey",
+          "body": "function(scope, attributes) {\n  return \"name\";\n}"
+        },
+        {
+          "name": "setItemValue",
+          "body": "function(scope, attributes) {\n  return \"value\";\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        },
+        {
+          "name": "itemKey",
+          "value": "setItemKey"
+        },
+        {
+          "name": "itemValue",
+          "value": "setItemValue"
+        }
+      ],
+      "next": "138",
+      "previous": "140",
       "child": null,
       "parent": "97"
     }

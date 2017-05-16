@@ -25,7 +25,7 @@ var BlissPropertiesGeneric = {
 
       // on change method
       var _handleChange = function(e) {
-        var index = e.target.dataset.index;
+        var index = parseInt(e.target.dataset.index);
         var newValue = e.target.value;
 
         if(index === ref.length) {
@@ -36,7 +36,7 @@ var BlissPropertiesGeneric = {
           ref.splice(index, 1);
         } else {
           // handle update
-          ref[index] = e.target.value;
+          ref[index] = newValue;
         }
 
         that.handleChange();
@@ -61,10 +61,79 @@ var BlissPropertiesGeneric = {
     },
 
     renderObjectArray: function() {
+      var that = this;
+      var ref = this.props.objectContainer[this.props.objectKey];
+
       // on change method
-      // loop through the array of objects
-      // write inputs
-      return null;
+      var _handleChangeKey = function(e) {
+        var index = parseInt(e.target.dataset.index);
+        var newValue = e.target.value;
+
+        if(index === ref.length) {
+          // handle add
+          var newObj = {};
+          newObj[that.props.itemKey] = newValue;
+          newObj[that.props.itemValue] = "";
+          ref.push(newObj);
+        } else if(newValue === "") {
+          // handle delete
+          ref.splice(index, 1);
+        } else {
+          // handle update
+          ref[index][that.props.itemKey] = newValue;
+        }
+
+        that.handleChange();
+      };
+
+      var _handleChangeValue = function(e) {
+        var index = parseInt(e.target.dataset.index);
+        var newValue = e.target.value;
+
+        if(index < ref.length) {
+          ref[index][that.props.itemValue] = newValue;
+          that.handleChange();
+        }
+      };
+
+      // loop through the array
+      var out = [];
+      ref.forEach(function(item, index) {
+        // write inputs
+        out.push(
+          <div className="clearfix" key={"key_" + index}>
+            <div className="small">
+              <input className="form-control"
+                     data-index={index} type="text"
+                     onChange={_handleChangeKey} value={item[that.props.itemKey]} />
+            </div>
+            <div className="small">
+              <input className="form-control"
+                     data-index={index} type="text"
+                     onChange={_handleChangeValue} value={item[that.props.itemValue]} />
+            </div>
+          </div>
+        );
+      });
+
+      out.push(
+        <div className="clearfix" key={"key_" + ref.length}>
+          <div className="small">
+            <input className="form-control"
+                   data-index={ref.length} type="text"
+                   onChange={_handleChangeKey} value=""
+                   placeholder="new..."/>
+          </div>
+          <div className="small">
+            <input className="form-control"
+                   data-index={ref.length} type="text"
+                   onChange={_handleChangeValue} value=""
+                   placeholder="new..."/>
+          </div>
+        </div>
+      );
+
+      return (<div>{out}</div>);
     },
 
     render: function() {
