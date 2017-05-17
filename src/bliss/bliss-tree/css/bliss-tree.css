@@ -30,7 +30,16 @@ body {
     cursor:         grabbing;
 }
 
+.menu-container {
+  position: relative;
+  min-height: 1px;
+}
+
 .menu-options {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
   z-index: 100;
   background: #fff;
   width: 100%;
@@ -39,6 +48,10 @@ body {
 }
 
 .node-tree {
+  margin-top: 40px;
+  overflow: auto;
+  height: 300px;
+  width: 100%;
 }
 
 .menu-options a {
@@ -48,7 +61,6 @@ body {
 
 .menu {
   font-size: 12px;
-  overflow: hidden;
   border-left: solid 3px #ccc;
   outline:none;
 }

@@ -48,14 +48,17 @@ var BlissTree = {
       this.setState({collapsed: {}});
     },
 
-    handleSelect: function(id) {
+    handleSelect: function(id, shouldUpdateCollapse) {
+      if(_.isNil(shouldUpdateCollapse)) shouldUpdateCollapse = true;
       var copyState = Object.assign({}, this.state);
       copyState.selected = id;
 
-      if(copyState.collapsed[id] === true) {
-        delete copyState.collapsed[id];
-      } else {
-        copyState.collapsed[id] = true;
+      if(shouldUpdateCollapse) {
+        if(copyState.collapsed[id] === true) {
+          delete copyState.collapsed[id];
+        } else {
+          copyState.collapsed[id] = true;
+        }
       }
 
       if(typeof this.props.onSelect !== "undefined") {
@@ -211,9 +214,9 @@ var BlissTree = {
     handleNodeDrop: function(e, to_component_id, inBetween) {
       if(typeof inBetween === "undefined") inBetween = false;
 
-      console.log('from:', this.state.drag_from,
+      /*console.log('from:', this.state.drag_from,
         'to:', to_component_id,
-        'inBetween', inBetween);
+        'inBetween', inBetween);*/
 
       var shouldBeChild = !inBetween;
 
@@ -278,9 +281,10 @@ var BlissTree = {
       e.preventDefault();
       if(typeof this.props.onDelete !== "undefined") {
         var selectedId = this.state.selected;
-        var parentId = this.get(this.state.selected).parent;
-        if(parentId === null) parentId = this.props.data.rootId;
-        this.handleSelect(parentId);
+        var newSelectedId = this.get(this.state.selected).previous;
+        if(newSelectedId === null) newSelectedId = this.get(this.state.selected).parent;
+        if(newSelectedId === null) newSelectedId = this.props.data.rootId;
+        this.handleSelect(newSelectedId, false);
         this.props.onDelete.call(this.props._this, selectedId);
       }
     },
@@ -371,13 +375,15 @@ var BlissTree = {
              tabIndex="0"
              onFocus={this.handleFocus}
              onBlur={this.handleBlur}>
-          <div className="menu-options clearfix">
-            <a title="Add" className="float-left" href="#" onClick={this.handleCreateClick}><i className="fa fa-plus" aria-hidden="true"></i></a>
-            <a title="Clone" className="float-left" href="#" onClick={this.handleCloneClick}><i className="fa fa-clone" aria-hidden="true"></i></a>
-            <a title="Delete" className="float-left" href="#" onClick={this.handleDeleteClick}><i className="fa fa-trash" aria-hidden="true"></i></a>
-            <a title="Full Screen" className="float-right" href="/designer/designer.html" target="_blank"><i className="fa fa-external-link-square" aria-hidden="true"></i></a>
-            <a title="Expand" className="float-right" href="#" onClick={this.handleExpandClick}><i className="fa fa-expand" aria-hidden="true"></i></a>
-            <a title="Collapse" className="float-right" href="#" onClick={this.handleCollapseClick}><i className="fa fa-compress" aria-hidden="true"></i></a>
+          <div className="menu-container">
+            <div className="menu-options clearfix">
+              <a title="Add" className="float-left" href="#" onClick={this.handleCreateClick}><i className="fa fa-plus" aria-hidden="true"></i></a>
+              <a title="Clone" className="float-left" href="#" onClick={this.handleCloneClick}><i className="fa fa-clone" aria-hidden="true"></i></a>
+              <a title="Delete" className="float-left" href="#" onClick={this.handleDeleteClick}><i className="fa fa-trash" aria-hidden="true"></i></a>
+              <a title="Full Screen" className="float-right" href="/designer/designer.html" target="_blank"><i className="fa fa-external-link-square" aria-hidden="true"></i></a>
+              <a title="Expand" className="float-right" href="#" onClick={this.handleExpandClick}><i className="fa fa-expand" aria-hidden="true"></i></a>
+              <a title="Collapse" className="float-right" href="#" onClick={this.handleCollapseClick}><i className="fa fa-compress" aria-hidden="true"></i></a>
+            </div>
           </div>
           <div className="node-tree">
             {this.renderNode(id)}
@@ -463,24 +469,25 @@ var BlissTree = {
   createComponent: function(proj, toId) {
     var tmpl = this.getTemplate(proj);
     proj.components[tmpl.id] = tmpl;
-    return this.moveComponent(proj, tmpl.id, toId, true);
+    var shouldBeChild = (toId === proj.rootId) ? true : false;
+    return this.moveComponent(proj, tmpl.id, toId, shouldBeChild);
   },
 
   cloneComponent: function(proj, cloneId) {
+    var newId = String(proj.nextId++);
     var component = this.get(proj, cloneId);
-    var tmpl = this.getTemplate(proj);
+    var clone = _.cloneDeep(component);
 
-    tmpl.name = component.name + "_copy";
-    tmpl.element = component.element;
-    tmpl.text = component.text;
-    tmpl.attributes = component.attributes.slice(0);
-    tmpl.css = component.css.slice(0);
-    tmpl.js = component.js.slice(0);
-    tmpl.dynamicAttributes = component.dynamicAttributes.slice(0);
+    clone.id = newId;
+    clone.name = clone.name + "_copy";
+    clone.next = null;
+    clone.previous = null;
+    clone.parent = null;
+    clone.child = null;
 
-    proj.components[tmpl.id] = tmpl;
+    proj.components[newId] = clone;
 
-    return this.moveComponent(proj, tmpl.id, cloneId, false);
+    return this.moveComponent(proj, newId, cloneId, false);
   },
 
   deleteComponent: function(proj, id) {

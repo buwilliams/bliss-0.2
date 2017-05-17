@@ -4,22 +4,31 @@ Painless Front-end Design & Development
 
 ## Todo
 
+- bug: render problems with deeply nested tree structure
+- bug: tree menu fixed position
+- bug: tree scroll in right place
+
+- bug: remove color picker from properties (move to experiments project json)
+- bug: scroll bliss-tree horizontally
 - feature: global css editor
 - feature: edit css selectors and properties (missing selectors)
+- bug: on bliss page load, dependencies are missing
+
+## Done Today
+
+- bug: delete always collapsed
+- bug: delete always went to parent
+- bug: clone component is shallow and causes bugs
+- improvement: collapse tree on load
 
 ## Backlog
 
-- bug: clone gives weird js bugs, doesn't work until project is saved, not sure why
-- bug: remove color picker from properties (move to experiments project json)
-- bug: scroll bliss-tree horizontally
-- bug: on bliss page load, dependencies are missing
 - improvement: auto-save project
-- improvement: collapse tree on load
 - improvement: reload deps on packages update
 - improvement: electron, move workspace to documents
 - feature: list projects pane
 - feature: theme layout
-- feature: theme colors
+- feature: theme colors (dark gray-blue, gray-white text)
 - feature: import HTML
 
 ## Roadmap

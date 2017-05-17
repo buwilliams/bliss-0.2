@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 144,
+  "nextId": 146,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -24,6 +24,7 @@
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js",
     "node_modules/react-code-mirror/standalone.js",
+    "node_modules/lodash/lodash.min.js",
     "components/bliss-tree/js/bliss-tree.js",
     "components/bliss-properties/js/bliss-property.js",
     "components/bliss-properties/js/bliss-properties.js",
@@ -327,25 +328,11 @@
       "name": "Component Tree",
       "element": "BlissTree.component",
       "text": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "componentTree"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
-          "properties": [
-            {
-              "name": "height",
-              "value": "100px"
-            },
-            {
-              "name": "overflow",
-              "value": "auto"
-            }
-          ]
+          "properties": []
         }
       ],
       "js": [
@@ -1871,25 +1858,11 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "treeContainer"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
-          "properties": [
-            {
-              "name": "overflow",
-              "value": "auto"
-            },
-            {
-              "name": "height",
-              "value": "calc(100vh - 220px)"
-            }
-          ]
+          "properties": []
         }
       ],
       "js": [],
