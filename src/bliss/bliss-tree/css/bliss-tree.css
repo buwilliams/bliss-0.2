@@ -36,22 +36,28 @@ body {
 }
 
 .menu-options {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  z-index: 100;
+  position: relative;
   background: #fff;
-  width: 100%;
   padding: 10px;
-  border-bottom: solid 3px #ccc;
+  border-left: solid 3px #ccc;
+}
+
+.focus .menu-options {
+  border-left: solid 3px rgb(15, 108, 251);
 }
 
 .node-tree {
-  margin-top: 40px;
+  position: absolute;
   overflow: auto;
-  height: 300px;
-  width: 100%;
+  top: 38px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-left: solid 3px #ccc;
+}
+
+.focus .node-tree {
+  border-left: solid 3px rgb(15, 108, 251);
 }
 
 .menu-options a {
@@ -61,7 +67,7 @@ body {
 
 .menu {
   font-size: 12px;
-  border-left: solid 3px #ccc;
+  /*border-left: solid 3px #ccc;*/
   outline:none;
 }
 
@@ -72,13 +78,16 @@ body {
   color: blue;
 }
 
+/*
 .menu.focus {
   border-left: solid 3px rgb(15, 108, 251);
 }
+*/
 
 .tree {
-  padding-left: 20px;
   position: relative;
+  display: block;
+  padding-left: 20px;
 }
 
 .node {
@@ -88,10 +97,18 @@ body {
   white-space: nowrap;
 }
 
+.node-child-container {
+  position: relative;
+  min-height: 1px;
+}
+
 .node-child {
-  height: 3px;
-  overflow: hidden;
-  padding: 3px 0 0 0;
+  position: absolute;
+  top: -7px;
+  left: -2000px;
+  right: -10px;
+  height: 8px;
+  padding: 0px;
 }
 
 .node-drag-over {
@@ -106,14 +123,12 @@ body {
 
 .selected {
   position: absolute;
-  /*left: -1000px;*/
   top: 0;
-  /*width: 5000px;*/
+  left: -2000px;
+  right: -10px;
   height: 100%;
   background-color: #ccc;
   z-index: 1;
-  left: calc(100% * -1);
-  width: calc(100% * 2);
 }
 
 .selected-text {

@@ -2,49 +2,55 @@
 
 Painless Front-end Design & Development
 
-## Todo
-
-- bug: render problems with deeply nested tree structure
-- bug: tree menu fixed position
-- bug: tree scroll in right place
+## Todo this week
 
 - bug: remove color picker from properties (move to experiments project json)
-- bug: scroll bliss-tree horizontally
+- bug: on bliss page load, dependencies are missing
+- bug: reload deps on packages update
 - feature: global css editor
 - feature: edit css selectors and properties (missing selectors)
-- bug: on bliss page load, dependencies are missing
+- improvement: reworking navigation layout for bliss (modals)
+- feature: list projects pane
 
-## Done Today
+## Done this week
 
 - bug: delete always collapsed
 - bug: delete always went to parent
 - bug: clone component is shallow and causes bugs
 - improvement: collapse tree on load
+- bug: render problems with deeply nested tree structure
+- bug: tree menu fixed position
+- bug: tree scroll in right place
+- bug: scroll bliss-tree horizontally
+- bug: selecting unselected nodes perform expand/collapse, should only expand, not collapse
 
 ## Backlog
 
 - improvement: auto-save project
-- improvement: reload deps on packages update
+- bug: tree, expand will expand all children
+- bug: bliss-tree, drag onto node doesn't highlight full row
 - improvement: electron, move workspace to documents
-- feature: list projects pane
-- feature: theme layout
-- feature: theme colors (dark gray-blue, gray-white text)
-- feature: import HTML
 
 ## Roadmap
 
+- feature: theme layout
+- feature: theme colors (dark gray-blue, gray-white text)
+- feature: import HTML
 - Open project (open components from a project)
 - New UI Theme
 - Feature: Build Environment (npm packages)
 - Feature: Zoom, focus on one component and children
 - Feature: Endpoint Mocks (with functions for dynamic data)
+- Feature: Add JSX to React Compiler
+- Feature: Unit Tests
 
 ## Ideas to Explore
 
+- Feature: Automated user-testing via browser test framework like Rspec
 - Compile to Angular
 - Feature: Upgrade Project (uses the new project json)
 
-## Recently Completed Todos
+## Recently completed todos
 
 - use bootstrap to make basic layout for app
 - 3 column layout in bootstrap (preview, tree, properties)

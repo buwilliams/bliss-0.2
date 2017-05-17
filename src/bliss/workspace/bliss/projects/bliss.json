@@ -1724,7 +1724,12 @@
           "value": "btn btn-default dropdown-toggle btn-sm"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "107",
@@ -1862,7 +1867,20 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 126px)"
+            }
+          ]
         }
       ],
       "js": [],

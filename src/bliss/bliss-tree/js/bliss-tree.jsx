@@ -48,16 +48,15 @@ var BlissTree = {
       this.setState({collapsed: {}});
     },
 
-    handleSelect: function(id, shouldUpdateCollapse) {
-      if(_.isNil(shouldUpdateCollapse)) shouldUpdateCollapse = true;
+    handleSelect: function(id, shouldUpdateCollapse, e) {
       var copyState = Object.assign({}, this.state);
       copyState.selected = id;
 
       if(shouldUpdateCollapse) {
-        if(copyState.collapsed[id] === true) {
-          delete copyState.collapsed[id];
-        } else {
+        if(this.isExpanded(id) && this.isSelected(id)) {
           copyState.collapsed[id] = true;
+        } else if(!this.isExpanded(id)) {
+          delete copyState.collapsed[id];
         }
       }
 
@@ -140,6 +139,14 @@ var BlissTree = {
       }
     },
 
+    isExpanded: function(id) {
+      return (this.state.collapsed[id] !== true);
+    },
+
+    isSelected: function(id) {
+      return (this.state.selected === id);
+    },
+
     collaspeSelection: function() {
       var copyState = Object.assign({}, this.state);
       var component = this.get(this.state.selected);
@@ -214,10 +221,6 @@ var BlissTree = {
     handleNodeDrop: function(e, to_component_id, inBetween) {
       if(typeof inBetween === "undefined") inBetween = false;
 
-      /*console.log('from:', this.state.drag_from,
-        'to:', to_component_id,
-        'inBetween', inBetween);*/
-
       var shouldBeChild = !inBetween;
 
       if(typeof this.props.onMove !== "undefined") {
@@ -262,7 +265,7 @@ var BlissTree = {
         }
         this.setState(copyState, function() {
           if(component.child !== null) {
-            that.handleSelect(component.child);
+            that.handleSelect(component.child, true);
           }
         });
       }
@@ -313,7 +316,7 @@ var BlissTree = {
                onDragEnter={this.handleNodeDragEnter.bind(this, event, id)}
                onDragOver={this.handleNodeDragOver}
                onDragLeave={this.handleNodeDragLeave.bind(this, event, id)}
-               onClick={this.handleSelect.bind(this, id)}>
+               onClick={this.handleSelect.bind(this, id, true)}>
             {this.getNodeIcon(id)}{component.name}
             <div className="selected-text" draggable="true" onDragStart={this.handleNodeDragStart.bind(this, event, id)}>
               {this.getNodeIcon(id)}{component.name}
@@ -322,27 +325,32 @@ var BlissTree = {
           </div>
         );
       } else {
-        out.push(<div key={`node_${id}`}
-                      className={getClass(id, "node draggable")}
-                      draggable="true"
-                      onDrop={this.handleNodeDrop.bind(this, event, id, false)}
-                      onDragStart={this.handleNodeDragStart.bind(this, event, id)}
-                      onDragEnter={this.handleNodeDragEnter.bind(this, event, id)}
-                      onDragOver={this.handleNodeDragOver}
-                      onDragLeave={this.handleNodeDragLeave.bind(this, event, id)}
-                      onClick={this.handleSelect.bind(this, id)}>
-                  {this.getNodeIcon(id)}{component.name}</div>);
+        out.push(
+          <div key={`node_${id}`}
+               className={getClass(id, "node draggable")}
+               draggable="true"
+               onDrop={this.handleNodeDrop.bind(this, event, id, false)}
+               onDragStart={this.handleNodeDragStart.bind(this, event, id)}
+               onDragEnter={this.handleNodeDragEnter.bind(this, event, id)}
+               onDragOver={this.handleNodeDragOver}
+               onDragLeave={this.handleNodeDragLeave.bind(this, event, id)}
+               onClick={this.handleSelect.bind(this, id, true)}>
+            {this.getNodeIcon(id)}{component.name}
+          </div>
+        );
       }
 
       var betweenId = id+"_between";
-      out.push(<div key={`node_between_${id}`}
-                    className={getClass(betweenId, "node node-child")}
-                    onDrop={this.handleNodeDrop.bind(this, event, id, true)}
-                    onDragEnter={this.handleNodeDragEnter.bind(this, event, betweenId)}
-                    onDragOver={this.handleNodeDragOver}
-                    onDragLeave={this.handleNodeDragLeave.bind(this, event, betweenId)}>
-                    <i className="fa" aria-hidden="true"></i>
-              </div>);
+      out.push(
+        <div className="node-child-container"
+             key={`node_between_${id}`}>
+          <div className={getClass(betweenId, "node node-child")}
+               onDrop={this.handleNodeDrop.bind(this, event, id, true)}
+               onDragEnter={this.handleNodeDragEnter.bind(this, event, betweenId)}
+               onDragOver={this.handleNodeDragOver}
+               onDragLeave={this.handleNodeDragLeave.bind(this, event, betweenId)}></div>
+        </div>
+      );
 
       if(component.child !== null && this.state.collapsed[id] !== true) {
         out.push(<div key={`tree_${id}`}
