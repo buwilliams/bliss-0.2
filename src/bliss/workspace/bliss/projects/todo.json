@@ -24,6 +24,8 @@
     }
   ],
   "state": {},
+  "cssVars": [],
+  "css": [],
   "js": [
     {
       "name": "init",

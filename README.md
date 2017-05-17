@@ -4,6 +4,7 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
+- bug: todo.json is not converted to new json format yet, sigh...
 - move app state manager to library (consider using different state manager and don't force new apps to have it right away)
 - ui: make components and properties toggle work as expected
 - ui: settings pane/modal ???
