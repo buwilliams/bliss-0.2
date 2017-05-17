@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 146,
+  "nextId": 152,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -173,10 +173,6 @@
               "value": "#eee"
             },
             {
-              "name": "padding",
-              "value": "5px"
-            },
-            {
               "name": "border-right",
               "value": "solid 1px #ccc"
             },
@@ -221,10 +217,6 @@
         {
           "selector": "$id",
           "properties": [
-            {
-              "name": "padding",
-              "value": "5px"
-            },
             {
               "name": "width",
               "value": "60%"
@@ -272,9 +264,9 @@
         }
       ],
       "next": null,
-      "previous": "22",
+      "previous": null,
       "child": null,
-      "parent": "77"
+      "parent": "151"
     },
     "17": {
       "id": "17",
@@ -426,11 +418,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 153px)"
-            },
-            {
-              "name": "border",
-              "value": "solid 3px #ccc"
+              "value": "calc(100vh - 70px)"
             }
           ]
         }
@@ -438,13 +426,13 @@
       "dynamicAttributes": [],
       "js": [],
       "next": null,
-      "previous": "132",
+      "previous": null,
       "child": "17",
       "parent": "80"
     },
     "20": {
       "id": "20",
-      "name": "h3Components",
+      "name": "Components header",
       "element": "h3",
       "text": "components",
       "attributes": [
@@ -458,12 +446,8 @@
           "selector": "$id",
           "properties": [
             {
-              "name": "text-transform",
-              "value": "uppercase"
-            },
-            {
               "name": "font-size",
-              "value": "1em"
+              "value": "12pt"
             },
             {
               "name": "background-color",
@@ -475,11 +459,15 @@
             },
             {
               "name": "padding",
-              "value": "10px"
+              "value": "15px 10px 10px 10px"
             },
             {
-              "name": "border-radius",
-              "value": "3px"
+              "name": "margin",
+              "value": "0"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
             }
           ]
         }
@@ -491,58 +479,9 @@
       "child": null,
       "parent": "3"
     },
-    "21": {
-      "id": "21",
-      "name": "h3Designer",
-      "element": "h3",
-      "text": "designer",
-      "attributes": [
-        {
-          "name": "id",
-          "value": "h3Designer"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-transform",
-              "value": "uppercase"
-            },
-            {
-              "name": "font-size",
-              "value": "1em"
-            },
-            {
-              "name": "color",
-              "value": "#fff"
-            },
-            {
-              "name": "border-radius",
-              "value": "3px"
-            },
-            {
-              "name": "background-color",
-              "value": "#aaa"
-            },
-            {
-              "name": "padding",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "dynamicAttributes": [],
-      "js": [],
-      "next": "132",
-      "previous": null,
-      "child": null,
-      "parent": "80"
-    },
     "22": {
       "id": "22",
-      "name": "Property List",
+      "name": "Property header",
       "element": "h3",
       "text": "Properties",
       "attributes": [
@@ -561,7 +500,7 @@
             },
             {
               "name": "font-size",
-              "value": "1em"
+              "value": "12pt"
             },
             {
               "name": "background-color",
@@ -573,18 +512,18 @@
             },
             {
               "name": "padding",
-              "value": "10px"
+              "value": "15px 10px 10px 10px"
             },
             {
-              "name": "border-radius",
-              "value": "3px"
+              "name": "margin",
+              "value": "0"
             }
           ]
         }
       ],
       "dynamicAttributes": [],
       "js": [],
-      "next": "11",
+      "next": "151",
       "previous": null,
       "child": null,
       "parent": "77"
@@ -749,10 +688,6 @@
               "value": "#eee"
             },
             {
-              "name": "padding",
-              "value": "5px"
-            },
-            {
               "name": "border-left",
               "value": "solid 1px #ccc"
             },
@@ -839,7 +774,7 @@
       ],
       "next": "54",
       "previous": null,
-      "child": "21",
+      "child": "19",
       "parent": "4"
     },
     "83": {
@@ -1552,7 +1487,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "147",
       "previous": "88",
       "child": "100",
       "parent": "111"
@@ -1711,7 +1646,7 @@
       "id": "106",
       "name": "dropdown button",
       "element": "button",
-      "text": "Menu",
+      "text": "Project",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1883,7 +1818,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 126px)"
+              "value": "calc(100vh - 111px)"
             }
           ]
         }
@@ -2013,42 +1948,6 @@
       "child": null,
       "parent": "101"
     },
-    "132": {
-      "id": "132",
-      "name": "toggle resolution",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        },
-        {
-          "name": "id",
-          "value": "toggleResolution"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-bottom",
-              "value": "5px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "19",
-      "previous": "21",
-      "child": "133",
-      "parent": "80"
-    },
     "133": {
       "id": "133",
       "name": "resolution",
@@ -2059,19 +1958,14 @@
       "repeatFn": null,
       "attributes": [
         {
-          "name": "id",
-          "value": "resolution"
+          "name": "class",
+          "value": "form-control form-control-sm"
         }
       ],
       "css": [
         {
           "selector": "$id",
-          "properties": [
-            {
-              "name": "float",
-              "value": "right"
-            }
-          ]
+          "properties": []
         }
       ],
       "js": [
@@ -2093,7 +1987,7 @@
       "next": null,
       "previous": null,
       "child": "134",
-      "parent": "132"
+      "parent": "147"
     },
     "134": {
       "id": "134",
@@ -2104,7 +1998,12 @@
       "ifFn": null,
       "repeatFn": "repeater",
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [
         {
           "name": "repeater",
@@ -2636,6 +2535,162 @@
       "previous": "142",
       "child": null,
       "parent": "97"
+    },
+    "147": {
+      "id": "147",
+      "name": "Resolution container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn-group"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "149",
+      "previous": "101",
+      "child": "133",
+      "parent": "111"
+    },
+    "149": {
+      "id": "149",
+      "name": "Show Properties",
+      "element": "button",
+      "text": "Properties",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.showContent === 'general') {\n    return \"btn btn-sm btn-primary pull-right\";\n  } else {\n    return \"btn btn-sm btn-default pull-right\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'general';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "className",
+          "value": "getClass"
+        },
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        }
+      ],
+      "next": "150",
+      "previous": "147",
+      "child": null,
+      "parent": "111"
+    },
+    "150": {
+      "id": "150",
+      "name": "Show Components",
+      "element": "button",
+      "text": "Components",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.showContent === 'js') {\n    return \"btn btn-sm btn-primary pull-right\";\n  } else {\n    return \"btn btn-sm btn-default pull-right\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'js';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
+      ],
+      "next": null,
+      "previous": "149",
+      "child": null,
+      "parent": "111"
+    },
+    "151": {
+      "id": "151",
+      "name": "properties padding",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "22",
+      "child": "11",
+      "parent": "77"
     }
   }
 }

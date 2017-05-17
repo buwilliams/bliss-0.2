@@ -4,13 +4,14 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
-- bug: remove color picker from properties (move to experiments project json)
+- bug: adding new component expands currently selected on???
 - bug: on bliss page load, dependencies are missing
-- bug: reload deps on packages update
+- bug: reload deps on packages update (save, load)
 - feature: global css editor
 - feature: edit css selectors and properties (missing selectors)
 - improvement: reworking navigation layout for bliss (modals)
 - feature: list projects pane
+- move app state manager to library
 
 ## Done this week
 
@@ -23,6 +24,7 @@ Painless Front-end Design & Development
 - bug: tree scroll in right place
 - bug: scroll bliss-tree horizontally
 - bug: selecting unselected nodes perform expand/collapse, should only expand, not collapse
+- bug: remove color picker from properties (move to experiments project json)
 
 ## Backlog
 
