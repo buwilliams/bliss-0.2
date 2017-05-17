@@ -245,7 +245,12 @@
       "element": "BlissProperties.component",
       "text": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [
         {
           "name": "setComponentProp",
@@ -267,7 +272,7 @@
         }
       ],
       "next": null,
-      "previous": "129",
+      "previous": "22",
       "child": null,
       "parent": "77"
     },
@@ -579,7 +584,7 @@
       ],
       "dynamicAttributes": [],
       "js": [],
-      "next": "129",
+      "next": "11",
       "previous": null,
       "child": null,
       "parent": "77"
@@ -2007,326 +2012,6 @@
       "previous": "83",
       "child": null,
       "parent": "101"
-    },
-    "127": {
-      "id": "127",
-      "name": "color picker",
-      "element": "input",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "type",
-          "value": "color"
-        },
-        {
-          "name": "id",
-          "value": "colorPicker"
-        },
-        {
-          "name": "value",
-          "value": "#ffffff"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "opacity",
-              "value": "0"
-            },
-            {
-              "name": "display",
-              "value": "block"
-            },
-            {
-              "name": "border",
-              "value": "solid 1px #000"
-            },
-            {
-              "name": "height",
-              "value": "100%"
-            },
-            {
-              "name": "width",
-              "value": "100%"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "handleChange",
-          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  \n  return function(e) {\n    var val = e.target.value;\n    app.setState(function() {\n      color.setData('currentColor', val);\n    });\n  }\n};\n"
-        },
-        {
-          "name": "getValue",
-          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  return color.getData('currentColor');\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onChange",
-          "value": "handleChange"
-        },
-        {
-          "name": "value",
-          "value": "getValue"
-        }
-      ],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "131"
-    },
-    "128": {
-      "id": "128",
-      "name": "color value",
-      "element": "input",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "colorValue"
-        },
-        {
-          "name": "value",
-          "value": "#ffffff"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "padding",
-              "value": "0"
-            },
-            {
-              "name": "display",
-              "value": "block"
-            },
-            {
-              "name": "float",
-              "value": "left"
-            },
-            {
-              "name": "font-size",
-              "value": "14px"
-            },
-            {
-              "name": "margin",
-              "value": "0 0 0 -1px"
-            },
-            {
-              "name": "width",
-              "value": "25%"
-            },
-            {
-              "name": "text-align",
-              "value": "center"
-            },
-            {
-              "name": "outline",
-              "value": "none"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "handleChange",
-          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  \n  return function(e) {\n    var val = e.target.value;\n    app.setState(function() {\n      color.setData('currentColor', val);\n    });\n  }\n};\n"
-        },
-        {
-          "name": "getValue",
-          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  return color.getData('currentColor');\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onChange",
-          "value": "handleChange"
-        },
-        {
-          "name": "value",
-          "value": "getValue"
-        }
-      ],
-      "next": "131",
-      "previous": "130",
-      "child": null,
-      "parent": "129"
-    },
-    "129": {
-      "id": "129",
-      "name": "colors",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "11",
-      "previous": "22",
-      "child": "130",
-      "parent": "77"
-    },
-    "130": {
-      "id": "130",
-      "name": "color picker container",
-      "element": "div",
-      "text": "Color Picker",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "colorPickerContainer"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "overflow",
-              "value": "hidden"
-            },
-            {
-              "name": "display",
-              "value": "block"
-            },
-            {
-              "name": "float",
-              "value": "left"
-            },
-            {
-              "name": "width",
-              "value": "50%"
-            },
-            {
-              "name": "border",
-              "value": "solid 1px #ccc"
-            },
-            {
-              "name": "height",
-              "value": "25px"
-            },
-            {
-              "name": "text-transform",
-              "value": "uppercase"
-            },
-            {
-              "name": "padding",
-              "value": "2px 5px"
-            },
-            {
-              "name": "text-align",
-              "value": "right"
-            },
-            {
-              "name": "color",
-              "value": "#999"
-            },
-            {
-              "name": "font-size",
-              "value": "13px"
-            },
-            {
-              "name": "background-color",
-              "value": "#eee"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "128",
-      "previous": null,
-      "child": null,
-      "parent": "129"
-    },
-    "131": {
-      "id": "131",
-      "name": "select color",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "selectColor"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "display",
-              "value": "block"
-            },
-            {
-              "name": "float",
-              "value": "left"
-            },
-            {
-              "name": "width",
-              "value": "25%"
-            },
-            {
-              "name": "padding",
-              "value": "2px 5px"
-            },
-            {
-              "name": "height",
-              "value": "25px"
-            },
-            {
-              "name": "border",
-              "value": "solid 1px #ccc"
-            },
-            {
-              "name": "margin",
-              "value": "0 0 0 -1px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "getStyle",
-          "body": "function(scope, attributes) {\n  var color = app.js.getState('color');\n  var bg = color.getData('currentColor');\n  \n  return {\n    backgroundColor: bg\n  };\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "style",
-          "value": "getStyle"
-        }
-      ],
-      "next": null,
-      "previous": "128",
-      "child": "127",
-      "parent": "129"
     },
     "132": {
       "id": "132",
