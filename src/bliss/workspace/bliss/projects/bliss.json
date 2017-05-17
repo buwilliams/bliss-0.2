@@ -294,7 +294,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 50px)"
+              "value": "99%"
             },
             {
               "name": "border",
@@ -757,7 +757,12 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#f7fff9"
+            }
+          ]
         }
       ],
       "js": [

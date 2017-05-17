@@ -4,6 +4,9 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
+- move app state manager to library (consider using different state manager and don't force new apps to have it right away)
+- ui: make components and properties toggle work as expected
+- ui: settings pane/modal ???
 - bug: adding new component expands currently selected on???
 - bug: on bliss page load, dependencies are missing
 - bug: reload deps on packages update (save, load)
@@ -11,7 +14,7 @@ Painless Front-end Design & Development
 - feature: edit css selectors and properties (missing selectors)
 - improvement: reworking navigation layout for bliss (modals)
 - feature: list projects pane
-- move app state manager to library
+- test: ensure export feature still works
 
 ## Done this week
 
