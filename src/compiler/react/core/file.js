@@ -33,5 +33,12 @@ module.exports = {
     mkdirp.sync(workspace);
     mkdirp.sync(path.join(workspace, "components"));
     mkdirp.sync(path.join(workspace, "projects"));
+  },
+  listProjects: function(workspace) {
+    var out = [];
+    fs.readdirSync(path.join(workspace, 'projects')).forEach(function(file) {
+      out.push(path.parse(file).name);
+    });
+    return out;
   }
 };

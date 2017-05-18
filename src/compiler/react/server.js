@@ -45,6 +45,12 @@ module.exports = function(options) {
     console.log(`Loaded '${json.name}'`);
   });
 
+  app.get('/list', function (req, res) {
+    var json = file.listProjects(options.workspace);
+    res.send({success: true, projects: json});
+    console.log(`Listed projects`);
+  });
+
   app.use('/designer', express.static(options.workspace));
   app.use('/designer/bliss-tree', express.static(path.join(options.app, 'bliss-tree')));
   app.use('/designer/bliss-properties', express.static(path.join(options.app, 'bliss-properties')));

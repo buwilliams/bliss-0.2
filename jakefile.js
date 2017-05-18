@@ -68,6 +68,7 @@ task('build-all-components', function() {
   t.execute.apply(t, [`bliss-tree`]);
   t.execute.apply(t, [`bliss-properties`]);
   t.execute.apply(t, [`bliss-javascript`]);
+  t.execute.apply(t, [`bliss-utils`]);
 
   complete();
 });

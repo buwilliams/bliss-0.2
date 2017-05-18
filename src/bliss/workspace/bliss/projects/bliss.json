@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 152,
+  "nextId": 157,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -29,7 +29,8 @@
     "components/bliss-properties/js/bliss-property.js",
     "components/bliss-properties/js/bliss-properties.js",
     "components/bliss-properties/js/bliss-properties-generic.js",
-    "components/bliss-javascript/js/bliss-javascript.js"
+    "components/bliss-javascript/js/bliss-javascript.js",
+    "components/bliss-utils/js/state.js"
   ],
   "state": {
     "activeComponent": null,
@@ -75,11 +76,11 @@
     },
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = app.js.createState('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = app.js.createState('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
     },
     {
       "name": "build",
-      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  if(typeof app.buildProject.js.createState === \"undefined\") {\n\t\tapp.buildProject.js.createState = app.js.createState.toString();\n  }\n\n  if(typeof app.buildProject.js.getState === \"undefined\") {\n    app.buildProject.js.getState = app.js.getState.toString();\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      var iframe = $('#preview');\n      var url = location.origin + '/designer/designer.html';\n      if(iframe.attr('src') !== url) {\n        iframe.attr('src', url);\n      } else {\n        try {\n          iframe[0].contentWindow.location.reload();\n        } catch(e){\n          console.log(e);\n        }\n      }\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      var iframe = $('#preview');\n      var url = location.origin + '/designer/designer.html';\n      if(iframe.attr('src') !== url) {\n        iframe.attr('src', url);\n      } else {\n        try {\n          iframe[0].contentWindow.location.reload();\n        } catch(e){\n          console.log(e);\n        }\n      }\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -87,15 +88,11 @@
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    //console.log('building');\n    app.js.build();\n  }, 500);\n}"
+      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    app.js.build();\n  }, 500);\n}"
     },
     {
-      "name": "createState",
-      "body": "function(rawName) {\n  var name = rawName.replace(/[^\\w]/gi, '');\n  \n  var hasValue = function(item) {\n    return (typeof item !== \"undefined\" && item !== null);\n  };\n  \n  if(!hasValue(app.state._managed)) app.state._managed = {};\n  if(!hasValue(app.state._managed[name])) app.state._managed[name] = {};\n  \n  var managed = app.state._managed[name];\n  \n  var getNewId = function() {\n    return managed.nextId++;\n  };\n  \n  var getAll = function() {\n    return managed.data;\n  };\n  \n  var find = function(id) {\n    var found = null;\n    for(var i=0; i<managed.data.length; i++) {\n      var item = managed.data[i];\n      if(item.id === id) {\n        found = item;\n        break;\n      }\n    }\n    return found;\n  };\n  \n  var findBy = function(key, value) {\n    var found = null;\n    for(var i=0; i<managed.data.length; i++) {\n      var item = managed.data[i];\n      if(item[key] === value) {\n        found = item;\n        break;\n      }\n    }\n    return found;\n  };\n  \n  var findIndex = function(id) {\n    var found = -1;\n    for(var i=0; i<managed.data.length; i++) {\n      var item = managed.data[i];\n      if(item.id === id) {\n        found = i;\n        break;\n      }\n    }\n    return found;\n  };\n  \n  var create = function(data) {\n    if(!hasValue(data)) return;\n    if(!hasValue(data.id)) data.id = getNewId();\n    managed.data.push(data);\n  };\n  \n  var update = function(id, data) {\n    var item = find(id);\n    for(key in data) {\n      if(data.hasOwnProperty(key)) {\n        item[key] = data[key];\n      }\n    }\n  };\n  \n  var remove = function(id) {\n    var index = findIndex(id);\n    if(index) managed.data.splice(index, 1);\n  };\n  \n  var removeAll = function() {\n    managed.data.splice(0, managed.data.length);\n  };\n  \n  var replaceAll = function(dataArray) {\n    removeAll();\n    for(var i=0; i<dataArray.length; i++) {\n      create(dataArray[i]);\n    }\n  };\n  \n  var setData = function(key, value) {\n    managed.internalData[key] = value;\n  };\n  \n  var getData = function(key) {\n    return managed.internalData[key];\n  };\n  \n  managed.selected = null;\n  managed.nextId = 0;\n  managed.data = [];\n  managed.internalData = {};\n  managed.getNewId = getNewId;\n  managed.hasValue = hasValue;\n  managed.getAll = getAll;\n  managed.find = find;\n  managed.findIndex = findIndex;\n  managed.findBy = findBy;\n  managed.create = create;\n  managed.update = update;\n  managed.remove = remove;\n  managed.removeAll = removeAll;\n  managed.replaceAll = replaceAll;\n  managed.setData = setData;\n  managed.getData = getData;\n  \n  return managed;\n}"
-    },
-    {
-      "name": "getState",
-      "body": "function(rawName) {\n  var name = rawName.replace(/[^\\w]/gi, '');\n  return app.state._managed[name];\n}"
+      "name": "server",
+      "body": "function(path, success, data, requestType) {\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/' + path,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [],
@@ -306,7 +303,7 @@
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = app.js.getState('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1696,7 +1693,12 @@
           "value": "dropdown-menu"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -1976,11 +1978,11 @@
       "js": [
         {
           "name": "handleChange",
-          "body": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n      \n      console.log('selected', res.getData('selected'));\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n      \n      console.log('selected', res.getData('selected'));\n    });\n  }\n};\n"
         },
         {
           "name": "getValue",
-          "body": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  return res.getData('selected');\n}"
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  return res.getData('selected');\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2012,7 +2014,7 @@
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  var res = app.js.getState('res');\n  return res.getAll();\n};\n"
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  return res.getAll();\n};\n"
         },
         {
           "name": "getText",
@@ -2085,7 +2087,7 @@
           "value": "setOnChange"
         }
       ],
-      "next": null,
+      "next": "155",
       "previous": "136",
       "child": null,
       "parent": "97"
@@ -2599,7 +2601,7 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  if(app.state.showContent === 'general') {\n    return \"btn btn-sm btn-primary pull-right\";\n  } else {\n    return \"btn btn-sm btn-default pull-right\";\n  }\n}"
+          "body": "function() {\n  if(app.state.showContent === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
@@ -2641,6 +2643,10 @@
             {
               "name": "cursor",
               "value": "pointer"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
             }
           ]
         }
@@ -2648,7 +2654,7 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  if(app.state.showContent === 'js') {\n    return \"btn btn-sm btn-primary pull-right\";\n  } else {\n    return \"btn btn-sm btn-default pull-right\";\n  }\n}"
+          "body": "function() {\n  if(app.state.showContent === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
@@ -2665,7 +2671,7 @@
           "value": "getClass"
         }
       ],
-      "next": null,
+      "next": "152",
       "previous": "149",
       "child": null,
       "parent": "111"
@@ -2696,6 +2702,302 @@
       "previous": "22",
       "child": "11",
       "parent": "77"
+    },
+    "152": {
+      "id": "152",
+      "name": "color picker",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-right"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "200px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "150",
+      "child": "153",
+      "parent": "111"
+    },
+    "153": {
+      "id": "153",
+      "name": "input text",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-right"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "100px"
+            },
+            {
+              "name": "margin-right",
+              "value": "50px"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var color = state.get('color');\n  return color.getData('currentColor');\n}"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var color = state.get('color');\n    app.setState(function() {\n      color.setData('currentColor', e.target.value);\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": "154",
+      "previous": null,
+      "child": null,
+      "parent": "152"
+    },
+    "154": {
+      "id": "154",
+      "name": "input color",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "type",
+          "value": "color"
+        },
+        {
+          "name": "class",
+          "value": "pull-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "50px"
+            },
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "-webkit-appearance",
+              "value": "none"
+            },
+            {
+              "name": "padding",
+              "value": "0"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            },
+            {
+              "name": "height",
+              "value": "38px"
+            },
+            {
+              "name": "background-color",
+              "value": "transparent"
+            },
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "top",
+              "value": "1px"
+            },
+            {
+              "name": "right",
+              "value": "5px"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      var color = state.get('color');\n      color.setData('currentColor', e.target.value);\n    });\n  };\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var color = state.get('color');\n  return color.getData('currentColor');\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": null,
+      "previous": "153",
+      "child": null,
+      "parent": "152"
+    },
+    "155": {
+      "id": "155",
+      "name": "load header",
+      "element": "h3",
+      "text": "Load Functions",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "156",
+      "previous": "135",
+      "child": null,
+      "parent": "97"
+    },
+    "156": {
+      "id": "156",
+      "name": "load functions",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"load\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"primitive\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newLoad) {\n    app.js.update(function() {\n      app.buildProject.load = load;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        }
+      ],
+      "next": null,
+      "previous": "155",
+      "child": null,
+      "parent": "97"
     }
   }
 }

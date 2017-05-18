@@ -2,6 +2,15 @@
 
 Painless Front-end Design & Development
 
+## UI/UX Design
+
+- Purpose: discover new UIs by experimentation, rapid prototyping
+- Purpose: see your ideas come to life instantly
+- Purpose: produce functioning apps
+- Purpose: accessible to designers and creators
+
+- How would it feel? Clean and trustworthy. Very accessible features.
+
 ## Todo this week
 
 - bug: todo.json is not converted to new json format yet, sigh...
