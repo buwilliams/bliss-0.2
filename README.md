@@ -5,10 +5,12 @@ Painless Front-end Design & Development
 ## Todo this week
 
 - bug: add new CSS, duplicate react keys
+- bug: bliss-tree, deep nav selection doesn't expand fully
 - bug: new project doesn't work
 - bug: on bliss page load, dependencies are missing
 - bug: reload deps on packages update (save, load)
 - bug: todo.json is not converted to new json format yet, sigh...
+- feature: up and down to change pixel values for property
 - feature: global css editor
 - feature: edit css selectors and properties (missing selectors)
 - feature: list projects pane
