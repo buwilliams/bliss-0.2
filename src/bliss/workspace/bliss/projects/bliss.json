@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 157,
+  "nextId": 162,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -76,7 +76,7 @@
     },
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n    var display = state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n    \n    var projects = state.create('projects');\n    app.js.getProjects();\n  });\n}"
     },
     {
       "name": "build",
@@ -93,6 +93,18 @@
     {
       "name": "server",
       "body": "function(path, success, data, requestType) {\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/' + path,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "getProjects",
+      "body": "function(scope, attributes) {\n  var projects = state.get('projects');\n  app.js.server('list', function(data) {\n    projects.removeAll();\n    app.js.update(function() {\n      data.projects.forEach(function(project) {\n        projects.create({name: project});\n      });\n    });\n  });\n}"
+    },
+    {
+      "name": "loadProject",
+      "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  app.js.setStatus('Loading project ' + projectName + '...');\n  \n  var setProject = function(project) {\n    app.js.setStatus('Loaded project ' + project.name + '.');\n    app.setState(function() {\n      app.state.activeComponent = project.rootId;\n      app.buildProject = project;\n      app.state.shouldSave = false;\n    });\n    app.js.build();\n  };\n  \n  app.js.server('load', function(data) {\n    setProject(data.project);\n  }, {name: projectName});\n}"
+    },
+    {
+      "name": "setStatus",
+      "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
     }
   ],
   "cssVars": [],
@@ -188,12 +200,18 @@
           ]
         }
       ],
-      "js": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var display = state.get('display');\n  var show = display.findBy('name', 'components').active;\n  return show;\n}"
+        }
+      ],
       "dynamicAttributes": [],
       "next": "4",
       "previous": null,
       "child": "20",
-      "parent": "2"
+      "parent": "2",
+      "ifFn": "shouldShow"
     },
     "4": {
       "id": "4",
@@ -221,8 +239,18 @@
           ]
         }
       ],
-      "js": [],
-      "dynamicAttributes": [],
+      "js": [
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var designer = state.get('display').findBy('name', 'designer');\n  var properties = state.get('display').findBy('name', 'properties');\n  var components = state.get('display').findBy('name', 'components');\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
       "next": "77",
       "previous": "3",
       "child": "80",
@@ -704,11 +732,17 @@
         }
       ],
       "dynamicAttributes": [],
-      "js": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var display = state.get('display');\n  var show = display.findBy('name', 'properties').active;\n  return show;\n}"
+        }
+      ],
       "next": null,
       "previous": "4",
       "child": "22",
-      "parent": "2"
+      "parent": "2",
+      "ifFn": "shouldShow"
     },
     "79": {
       "id": "79",
@@ -757,7 +791,7 @@
           "properties": [
             {
               "name": "background-color",
-              "value": "#f7fff9"
+              "value": "#ebf2f6"
             }
           ]
         }
@@ -882,7 +916,7 @@
           "value": "showInput"
         }
       ],
-      "next": "90",
+      "next": "158",
       "previous": null,
       "child": null,
       "parent": "107"
@@ -973,7 +1007,7 @@
         }
       ],
       "next": "104",
-      "previous": "85",
+      "previous": "159",
       "child": null,
       "parent": "107"
     },
@@ -1331,6 +1365,10 @@
             {
               "name": "height",
               "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
             }
           ]
         }
@@ -2565,62 +2603,9 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "149",
+      "next": "150",
       "previous": "101",
       "child": "133",
-      "parent": "111"
-    },
-    "149": {
-      "id": "149",
-      "name": "Show Properties",
-      "element": "button",
-      "text": "Properties",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "cursor",
-              "value": "pointer"
-            },
-            {
-              "name": "outline",
-              "value": "none"
-            },
-            {
-              "name": "margin-left",
-              "value": "5px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "getClass",
-          "body": "function() {\n  if(app.state.showContent === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
-        },
-        {
-          "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'general';\n  \t});\n  };\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "className",
-          "value": "getClass"
-        },
-        {
-          "name": "onClick",
-          "value": "setContentValue"
-        }
-      ],
-      "next": "150",
-      "previous": "147",
-      "child": null,
       "parent": "111"
     },
     "150": {
@@ -2654,11 +2639,11 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  if(app.state.showContent === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  var show = state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'js';\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    var components = state.get('display').findBy('name', 'components');\n    app.setState(function() {\n      state.get('display').update(components.id, {active: !components.active});\n  \t});\n  };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2671,8 +2656,8 @@
           "value": "getClass"
         }
       ],
-      "next": "152",
-      "previous": "149",
+      "next": "157",
+      "previous": "147",
       "child": null,
       "parent": "111"
     },
@@ -2731,7 +2716,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "150",
+      "previous": "157",
       "child": "153",
       "parent": "111"
     },
@@ -2998,6 +2983,171 @@
       "previous": "155",
       "child": null,
       "parent": "97"
+    },
+    "157": {
+      "id": "157",
+      "name": "Show Properties",
+      "element": "button",
+      "text": "Properties",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  var show = state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    var properties = state.get('display').findBy('name', 'properties');\n    app.setState(function() {\n      state.get('display').update(properties.id, {active: !properties.active});\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
+      ],
+      "next": "152",
+      "previous": "150",
+      "child": null,
+      "parent": "111"
+    },
+    "158": {
+      "id": "158",
+      "name": "divider",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "161",
+      "previous": "85",
+      "child": null,
+      "parent": "107"
+    },
+    "159": {
+      "id": "159",
+      "name": "divider 2",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "90",
+      "previous": "161",
+      "child": null,
+      "parent": "107"
+    },
+    "161": {
+      "id": "161",
+      "name": "existing project",
+      "element": "a",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  return state.get('projects').getAll();\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};\n"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var project = scope.repeater[scope.repeater_index].name;\n  return function(e) {\n    app.setState(function() {\n      app.js.loadProject(project);\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "159",
+      "previous": "158",
+      "child": null,
+      "parent": "107"
     }
   }
 }

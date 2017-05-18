@@ -13,8 +13,8 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
-- bug: todo.json is not converted to new json format yet, sigh...
-- move app state manager to library (consider using different state manager and don't force new apps to have it right away)
+- ui: list projects in projects drop-down
+
 - ui: make components and properties toggle work as expected
 - ui: settings pane/modal ???
 - bug: adding new component expands currently selected on???
@@ -25,8 +25,11 @@ Painless Front-end Design & Development
 - improvement: reworking navigation layout for bliss (modals)
 - feature: list projects pane
 - test: ensure export feature still works
+- bug: todo.json is not converted to new json format yet, sigh...
 
 ## Done this week
+
+- move app state manager to library (consider using different state manager and don't force new apps to have it right away)
 
 - bug: delete always collapsed
 - bug: delete always went to parent
