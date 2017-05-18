@@ -4,6 +4,8 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
+- goal: build node.js api for todo app
+
 - bug: add new CSS, duplicate react keys
 - bug: bliss-tree, deep nav selection doesn't expand fully
 - bug: new project doesn't work
