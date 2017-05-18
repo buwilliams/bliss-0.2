@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 162,
+  "nextId": 181,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -575,6 +575,10 @@
             {
               "name": "height",
               "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
             }
           ]
         }
@@ -863,15 +867,15 @@
         }
       ],
       "next": "113",
-      "previous": "100",
+      "previous": null,
       "child": null,
       "parent": "101"
     },
     "85": {
       "id": "85",
-      "name": "new button",
+      "name": "new project",
       "element": "a",
-      "text": "New",
+      "text": "",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -900,6 +904,10 @@
             {
               "name": "cursor",
               "value": "pointer"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
             }
           ]
         }
@@ -916,9 +924,9 @@
           "value": "showInput"
         }
       ],
-      "next": "158",
+      "next": "104",
       "previous": null,
-      "child": null,
+      "child": "163",
       "parent": "107"
     },
     "88": {
@@ -956,212 +964,6 @@
       "previous": null,
       "child": "105",
       "parent": "111"
-    },
-    "90": {
-      "id": "90",
-      "name": "open button",
-      "element": "a",
-      "text": "Open",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "loadButton"
-        },
-        {
-          "name": "href",
-          "value": "#"
-        },
-        {
-          "name": "className",
-          "value": "dropdown-item"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-right",
-              "value": "5px"
-            },
-            {
-              "name": "cursor",
-              "value": "pointer"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "showInput",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"load\";\n    });\n  }\n};"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "showInput"
-        }
-      ],
-      "next": "104",
-      "previous": "159",
-      "child": null,
-      "parent": "107"
-    },
-    "91": {
-      "id": "91",
-      "name": "save as button",
-      "element": "a",
-      "text": "Save As",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "saveAsButton"
-        },
-        {
-          "name": "className",
-          "value": "dropdown-item"
-        },
-        {
-          "name": "href",
-          "value": "#"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-right",
-              "value": "5px"
-            },
-            {
-              "name": "cursor",
-              "value": "pointer"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "showInput",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"save as\";\n    });\n  }\n};"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "showInput"
-        }
-      ],
-      "next": null,
-      "previous": "104",
-      "child": null,
-      "parent": "107"
-    },
-    "92": {
-      "id": "92",
-      "name": "project input",
-      "element": "input",
-      "text": null,
-      "textFn": null,
-      "ifFn": "shouldShow",
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "projectInput"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "border-radius",
-              "value": "3px"
-            },
-            {
-              "name": "border",
-              "value": "solid 1px #ccc"
-            },
-            {
-              "name": "outline",
-              "value": "none"
-            },
-            {
-              "name": "display",
-              "value": "inline-block"
-            },
-            {
-              "name": "margin-right",
-              "value": "5px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "newProject",
-          "body": "function(projectName) {\n  var comp = this;\n  if(!confirm('Are you sure you want to create a new project?')) return;\n  var tmpl = {\n    \"name\": projectName,\n    \"type\": \"designer\",\n    \"build\": \"designer\",\n    \"compiler\": \"react\",\n    \"nextId\": 2,\n    \"rootId\": \"1\",\n    \"externalCss\": [],\n    \"externalJs\": [\n      \"node_modules/react/dist/react.js\",\n      \"node_modules/react-dom/dist/react-dom.js\",\n    ],\n    \"state\": {},\n    \"js\": {\n      \"init\": \"function() { app.render(); }\"\n    },\n    \"load\": [\"init\"],\n    \"components\": {\n      \"1\": {\n        \"id\": \"1\",\n        \"name\": projectName,\n        \"element\": \"div\",\n        \"text\": null,\n        \"attributes\": {},\n        \"css\": {},\n        \"js\": {},\n        \"dynamicAttributes\": {},\n        \"next\": null,\n        \"previous\": null,\n        \"child\": null,\n        \"parent\": null\n      }\n    }\n  };\n  comp.setProject(tmpl);\n}"
-        },
-        {
-          "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  return (typeof app.state.showProjectInput === \"undefined\") ? false : app.state.showProjectInput;\n}"
-        },
-        {
-          "name": "handleKeydown",
-          "body": "function(scope, attributes) {\n  var comp = this;\n  \n  return function(e) {\n    var ENTER = 13, ESCAPE = 27, key = e.which;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    if(key === ENTER && app.state.showProjectInputType === \"new\") {\n      comp.newProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"load\") {\n      comp.loadProject(app.state.projectInputValue);\n    } else if(key === ENTER && app.state.showProjectInputType === \"save as\") {\n      comp.saveAsProject(app.state.projectInputValue);\n    }\n    \n    app.setState(function() {\n      app.state.showProjectInput = false;\n      app.state.showProjectInputType = \"\";\n      app.state.projectInputValue = \"\";\n    });\n  }\n};\n"
-        },
-        {
-          "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.projectInputValue = e.target.value;\n    });\n  }\n};\n"
-        },
-        {
-          "name": "getValue",
-          "body": "function(scope, attributes) {\n  return app.state.projectInputValue || '';\n}"
-        },
-        {
-          "name": "loadProject",
-          "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  this.setStatus('Loading project ' + projectName + '...');\n  var comp = this;\n  $.ajax({\n    type: 'GET',\n    url: '/load',\n    data: {name: projectName},\n    success: function(data) {\n      //console.log(\"Project loaded\", data);\n      comp.setProject(data.project);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
-        },
-        {
-          "name": "setProject",
-          "body": "function(project) {\n  this.setStatus('Loaded project ' + project.name + '.');\n  app.setState(function() {\n    app.state.activeComponent = project.rootId;\n    app.buildProject = project;\n    app.state.shouldSave = false;\n  });\n  app.js.build();\n}"
-        },
-        {
-          "name": "saveAsProject",
-          "body": "function(projectName) {\n  var comp = this;\n  comp.setStatus('Saving project ' + projectName + '...');\n  var proj = app.buildProject;\n  proj.name = projectName;\n  var data = JSON.stringify(proj);\n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + projectName + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
-        },
-        {
-          "name": "setStatus",
-          "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onKeyDown",
-          "value": "handleKeydown"
-        },
-        {
-          "name": "onChange",
-          "value": "handleChange"
-        },
-        {
-          "name": "value",
-          "value": "getValue"
-        }
-      ],
-      "next": "93",
-      "previous": "105",
-      "child": null,
-      "parent": "88"
     },
     "93": {
       "id": "93",
@@ -1217,7 +1019,7 @@
         }
       ],
       "next": null,
-      "previous": "92",
+      "previous": "105",
       "child": "94",
       "parent": "88"
     },
@@ -1342,7 +1144,7 @@
     },
     "97": {
       "id": "97",
-      "name": "General Editor",
+      "name": "Settings Editor",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1376,7 +1178,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var displayValue = (app.state.showContent === 'general') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'settings') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1385,16 +1187,16 @@
           "value": "getStyle"
         }
       ],
-      "next": null,
+      "next": "179",
       "previous": "54",
       "child": "98",
       "parent": "4"
     },
     "98": {
       "id": "98",
-      "name": "h3General",
+      "name": "settings header",
       "element": "h3",
-      "text": "General",
+      "text": "Settings",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1442,60 +1244,6 @@
       "child": null,
       "parent": "97"
     },
-    "100": {
-      "id": "100",
-      "name": "Show General",
-      "element": "button",
-      "text": "General",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "showGeneral"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "cursor",
-              "value": "pointer"
-            },
-            {
-              "name": "outline",
-              "value": "none"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "getClass",
-          "body": "function() {\n  if(app.state.showContent === 'general') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
-        },
-        {
-          "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'general';\n  \t});\n  };\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "className",
-          "value": "getClass"
-        },
-        {
-          "name": "onClick",
-          "value": "setContentValue"
-        }
-      ],
-      "next": "83",
-      "previous": null,
-      "child": null,
-      "parent": "101"
-    },
     "101": {
       "id": "101",
       "name": "Toggle Content Container",
@@ -1529,7 +1277,7 @@
       "dynamicAttributes": [],
       "next": "147",
       "previous": "88",
-      "child": "100",
+      "child": "83",
       "parent": "111"
     },
     "102": {
@@ -1562,7 +1310,7 @@
           "value": "getValue"
         }
       ],
-      "next": "109",
+      "next": "142",
       "previous": "103",
       "child": null,
       "parent": "97"
@@ -1586,9 +1334,9 @@
     },
     "104": {
       "id": "104",
-      "name": "export button",
+      "name": "export project",
       "element": "a",
-      "text": "Export",
+      "text": "",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1617,6 +1365,10 @@
             {
               "name": "margin-right",
               "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
             }
           ]
         }
@@ -1641,9 +1393,9 @@
           "value": "handleClick"
         }
       ],
-      "next": "91",
-      "previous": "90",
-      "child": null,
+      "next": "158",
+      "previous": "85",
+      "child": "167",
       "parent": "107"
     },
     "105": {
@@ -1677,7 +1429,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "92",
+      "next": "93",
       "previous": null,
       "child": "106",
       "parent": "88"
@@ -1686,7 +1438,7 @@
       "id": "106",
       "name": "dropdown button",
       "element": "button",
-      "text": "Project",
+      "text": "Projects",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1786,9 +1538,9 @@
     },
     "109": {
       "id": "109",
-      "name": "h3GeneralJs",
+      "name": "global js header",
       "element": "h3",
-      "text": "General JavaScript",
+      "text": "Global JavaScript",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1819,10 +1571,6 @@
               "value": "#fff"
             },
             {
-              "name": "margin-top",
-              "value": "15px"
-            },
-            {
               "name": "padding",
               "value": "10px"
             },
@@ -1836,9 +1584,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "137",
-      "previous": "102",
+      "previous": null,
       "child": null,
-      "parent": "97"
+      "parent": "179"
     },
     "110": {
       "id": "110",
@@ -2125,14 +1873,14 @@
           "value": "setOnChange"
         }
       ],
-      "next": "155",
+      "next": "138",
       "previous": "136",
       "child": null,
       "parent": "97"
     },
     "136": {
       "id": "136",
-      "name": "h3Scripts",
+      "name": "scripts header",
       "element": "h3",
       "text": "Scripts",
       "textFn": null,
@@ -2182,7 +1930,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "135",
-      "previous": "139",
+      "previous": "143",
       "child": null,
       "parent": "97"
     },
@@ -2208,14 +1956,14 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "140",
+      "next": "155",
       "previous": "109",
       "child": "108",
-      "parent": "97"
+      "parent": "179"
     },
     "138": {
       "id": "138",
-      "name": "h3Stylesheets",
+      "name": "stylesheet header",
       "element": "h3",
       "text": "Stylesheets",
       "textFn": null,
@@ -2265,7 +2013,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "139",
-      "previous": "143",
+      "previous": "135",
       "child": null,
       "parent": "97"
     },
@@ -2320,7 +2068,7 @@
           "value": "setOnChange"
         }
       ],
-      "next": "136",
+      "next": null,
       "previous": "138",
       "child": null,
       "parent": "97"
@@ -2377,9 +2125,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "141",
-      "previous": "137",
+      "previous": null,
       "child": null,
-      "parent": "97"
+      "parent": "180"
     },
     "141": {
       "id": "141",
@@ -2448,16 +2196,16 @@
           "value": "setItemValue"
         }
       ],
-      "next": "142",
+      "next": null,
       "previous": "140",
       "child": null,
-      "parent": "97"
+      "parent": "180"
     },
     "142": {
       "id": "142",
-      "name": "h3 packages",
+      "name": "packages header",
       "element": "h3",
-      "text": "Packages",
+      "text": "npm packages (name, version)",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2505,13 +2253,13 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "143",
-      "previous": "141",
+      "previous": "102",
       "child": null,
       "parent": "97"
     },
     "143": {
       "id": "143",
-      "name": "packages",
+      "name": "packages properties",
       "element": "BlissPropertiesGeneric.component",
       "text": null,
       "textFn": null,
@@ -2576,7 +2324,7 @@
           "value": "setItemValue"
         }
       ],
-      "next": "138",
+      "next": "136",
       "previous": "142",
       "child": null,
       "parent": "97"
@@ -2876,7 +2624,7 @@
       "id": "155",
       "name": "load header",
       "element": "h3",
-      "text": "Load Functions",
+      "text": "Page Load",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2924,9 +2672,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "156",
-      "previous": "135",
+      "previous": "137",
       "child": null,
-      "parent": "97"
+      "parent": "179"
     },
     "156": {
       "id": "156",
@@ -2982,7 +2730,7 @@
       "next": null,
       "previous": "155",
       "child": null,
-      "parent": "97"
+      "parent": "179"
     },
     "157": {
       "id": "157",
@@ -3059,8 +2807,8 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "161",
-      "previous": "85",
+      "next": "162",
+      "previous": "104",
       "child": null,
       "parent": "107"
     },
@@ -3086,7 +2834,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "90",
+      "next": "172",
       "previous": "161",
       "child": null,
       "parent": "107"
@@ -3096,7 +2844,7 @@
       "name": "existing project",
       "element": "a",
       "text": "",
-      "textFn": "getText",
+      "textFn": "",
       "ifFn": null,
       "repeatFn": "repeater",
       "attributes": [
@@ -3120,6 +2868,10 @@
             {
               "name": "cursor",
               "value": "pointer"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
             }
           ]
         }
@@ -3145,9 +2897,685 @@
         }
       ],
       "next": "159",
+      "previous": "162",
+      "child": "166",
+      "parent": "107"
+    },
+    "162": {
+      "id": "162",
+      "name": "existing project labels",
+      "element": "h6",
+      "text": "Open project",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "161",
       "previous": "158",
       "child": null,
       "parent": "107"
+    },
+    "163": {
+      "id": "163",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-plus"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "164",
+      "previous": null,
+      "child": null,
+      "parent": "85"
+    },
+    "164": {
+      "id": "164",
+      "name": "label",
+      "element": "span",
+      "text": "New project",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "163",
+      "child": null,
+      "parent": "85"
+    },
+    "165": {
+      "id": "165",
+      "name": "label",
+      "element": "span",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "166",
+      "child": null,
+      "parent": "161"
+    },
+    "166": {
+      "id": "166",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-file-o"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "165",
+      "previous": null,
+      "child": null,
+      "parent": "161"
+    },
+    "167": {
+      "id": "167",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-download"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "168",
+      "previous": null,
+      "child": null,
+      "parent": "104"
+    },
+    "168": {
+      "id": "168",
+      "name": "label",
+      "element": "span",
+      "text": "Export project",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "167",
+      "child": null,
+      "parent": "104"
+    },
+    "169": {
+      "id": "169",
+      "name": "settings",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'settings';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "178",
+      "child": "170",
+      "parent": "107"
+    },
+    "170": {
+      "id": "170",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-cog"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "171",
+      "previous": null,
+      "child": null,
+      "parent": "169"
+    },
+    "171": {
+      "id": "171",
+      "name": "label",
+      "element": "span",
+      "text": "Settings",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "170",
+      "child": null,
+      "parent": "169"
+    },
+    "172": {
+      "id": "172",
+      "name": "global javascript",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'global_js';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "175",
+      "previous": "159",
+      "child": "173",
+      "parent": "107"
+    },
+    "173": {
+      "id": "173",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-code"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "174",
+      "previous": null,
+      "child": null,
+      "parent": "172"
+    },
+    "174": {
+      "id": "174",
+      "name": "label",
+      "element": "span",
+      "text": "Global Javascript",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "173",
+      "child": null,
+      "parent": "172"
+    },
+    "175": {
+      "id": "175",
+      "name": "global css",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'global_css';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "178",
+      "previous": "172",
+      "child": "176",
+      "parent": "107"
+    },
+    "176": {
+      "id": "176",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-css3"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "177",
+      "previous": null,
+      "child": null,
+      "parent": "175"
+    },
+    "177": {
+      "id": "177",
+      "name": "label",
+      "element": "span",
+      "text": "Global CSS",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "176",
+      "child": null,
+      "parent": "175"
+    },
+    "178": {
+      "id": "178",
+      "name": "divider 3",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "169",
+      "previous": "175",
+      "child": null,
+      "parent": "107"
+    },
+    "179": {
+      "id": "179",
+      "name": "Global Javascript Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'global_js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "180",
+      "previous": "97",
+      "child": "109",
+      "parent": "4"
+    },
+    "180": {
+      "id": "180",
+      "name": "Global CSS Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'global_css') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": null,
+      "previous": "179",
+      "child": "140",
+      "parent": "4"
     }
   }
 }
