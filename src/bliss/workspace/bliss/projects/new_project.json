@@ -62,7 +62,7 @@
       "id": "2",
       "name": "new_2",
       "element": "div",
-      "text": null,
+      "text": "hello, world",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
