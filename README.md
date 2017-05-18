@@ -2,33 +2,28 @@
 
 Painless Front-end Design & Development
 
-## UI/UX Design
-
-- Purpose: discover new UIs by experimentation, rapid prototyping
-- Purpose: see your ideas come to life instantly
-- Purpose: produce functioning apps
-- Purpose: accessible to designers and creators
-
-- How would it feel? Clean and trustworthy. Very accessible features.
-
 ## Todo this week
 
-- ui: list projects in projects drop-down
-
-- ui: make components and properties toggle work as expected
-- ui: settings pane/modal ???
-- bug: adding new component expands currently selected on???
+- bug: add new CSS, duplicate react keys
+- bug: new project doesn't work
 - bug: on bliss page load, dependencies are missing
 - bug: reload deps on packages update (save, load)
+- bug: todo.json is not converted to new json format yet, sigh...
 - feature: global css editor
 - feature: edit css selectors and properties (missing selectors)
-- improvement: reworking navigation layout for bliss (modals)
 - feature: list projects pane
-- test: ensure export feature still works
-- bug: todo.json is not converted to new json format yet, sigh...
+- feature: creating and including components (refactor existing code)
+- feature: export project (concat and minify)
+- feature: image support
+- feature: typeahead for css properties (my hands are getting tired)
+- feature: http mocks
 
 ## Done this week
 
+- improvement: reworking navigation layout for bliss (modals)
+- ui: settings pane/modal ???
+- ui: make components and properties toggle work as expected
+- ui: list projects in projects drop-down
 - move app state manager to library (consider using different state manager and don't force new apps to have it right away)
 
 - bug: delete always collapsed
@@ -42,8 +37,17 @@ Painless Front-end Design & Development
 - bug: selecting unselected nodes perform expand/collapse, should only expand, not collapse
 - bug: remove color picker from properties (move to experiments project json)
 
+## UI/UX Design
+
+- Purpose: discover new UIs by experimentation, rapid prototyping
+- Purpose: see your ideas come to life instantly
+- Purpose: produce functioning apps
+- Purpose: accessible to designers and creators
+- How would it feel? Clean and trustworthy. Very accessible features.
+
 ## Backlog
 
+- bug: adding new component expands currently selected on???
 - improvement: auto-save project
 - bug: tree, expand will expand all children
 - bug: bliss-tree, drag onto node doesn't highlight full row
