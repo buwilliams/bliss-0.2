@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 184,
+  "nextId": 190,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -108,7 +108,7 @@
     },
     {
       "name": "getCssVar",
-      "body": "function(dollarName) {\n  var name = dollarName.substring(1);\n  var found = _.find(app.buildProject.cssVars, {'name': name});\n  console.log('found', found);\n  return found;\n}"
+      "body": "function(dollarName) {\n  var name = dollarName.substring(1);\n  var found = _.find(blissProject.cssVars, {'name': name});\n  return (_.isNil(found)) ? '' : found.value;\n}"
     }
   ],
   "cssVars": [
@@ -123,6 +123,14 @@
     {
       "name": "menuHighlight",
       "value": "#0c5c88"
+    },
+    {
+      "name": "headerBg",
+      "value": "#698290"
+    },
+    {
+      "name": "menuWarn",
+      "value": "#9b0000"
     }
   ],
   "css": [],
@@ -208,7 +216,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 38px)"
+              "value": "calc(100vh - 80px)"
             },
             {
               "name": "overflow",
@@ -460,7 +468,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 70px)"
+              "value": "calc(100vh - 80px)"
             }
           ]
         }
@@ -488,7 +496,7 @@
             },
             {
               "name": "background-color",
-              "value": "#698290"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -589,7 +597,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -685,7 +693,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 38px)"
+              "value": "calc(100vh - 80px)"
             },
             {
               "name": "overflow",
@@ -788,12 +796,7 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "showJs"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
@@ -829,6 +832,10 @@
         {
           "name": "setContentValue",
           "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'js';\n  \t});\n  };\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.showContent === 'js') {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -839,10 +846,14 @@
         {
           "name": "className",
           "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
         }
       ],
       "next": "113",
-      "previous": null,
+      "previous": "189",
       "child": null,
       "parent": "101"
     },
@@ -996,7 +1007,7 @@
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuWarn');\n    styles.borderColor = app.js.getCssVar('$menuWarn');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1210,7 +1221,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -1257,8 +1268,8 @@
           "selector": "$id",
           "properties": [
             {
-              "name": "margin-right",
-              "value": "5px"
+              "name": "margin-left",
+              "value": "15px"
             }
           ]
         }
@@ -1267,7 +1278,7 @@
       "dynamicAttributes": [],
       "next": "147",
       "previous": "88",
-      "child": "83",
+      "child": "189",
       "parent": "111"
     },
     "102": {
@@ -1279,7 +1290,12 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [
         {
           "name": "getValue",
@@ -1314,7 +1330,12 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "102",
@@ -1567,7 +1588,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -1614,7 +1635,7 @@
             },
             {
               "name": "height",
-              "value": "calc(100vh - 111px)"
+              "value": "calc(100vh - 117px)"
             }
           ]
         }
@@ -1698,12 +1719,7 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "showDesigner"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
@@ -1739,6 +1755,10 @@
         {
           "name": "setContentValue",
           "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'designer';\n  \t});\n  };\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.showContent === 'designer') {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1749,6 +1769,10 @@
         {
           "name": "className",
           "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
         }
       ],
       "next": null,
@@ -1802,7 +1826,7 @@
         }
       ],
       "next": null,
-      "previous": null,
+      "previous": "185",
       "child": "134",
       "parent": "147"
     },
@@ -1930,7 +1954,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -2013,7 +2037,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -2099,7 +2123,7 @@
     },
     "140": {
       "id": "140",
-      "name": "h3 global css vars",
+      "name": "global css header",
       "element": "h3",
       "text": "Global CSS Vars",
       "textFn": null,
@@ -2125,15 +2149,11 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
               "value": "#fff"
-            },
-            {
-              "name": "margin-top",
-              "value": "15px"
             },
             {
               "name": "padding",
@@ -2253,7 +2273,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -2370,14 +2390,19 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "15px"
+            }
+          ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "150",
+      "next": "187",
       "previous": "101",
-      "child": "133",
+      "child": "185",
       "parent": "111"
     },
     "150": {
@@ -2428,6 +2453,10 @@
         {
           "name": "setContentValue",
           "body": "function() {\n  return function() {\n    var components = state.get('display').findBy('name', 'components');\n    app.setState(function() {\n      state.get('display').update(components.id, {active: !components.active});\n  \t});\n  };\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  var show = state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2438,12 +2467,16 @@
         {
           "name": "className",
           "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
         }
       ],
       "next": "157",
-      "previous": "147",
+      "previous": "188",
       "child": null,
-      "parent": "111"
+      "parent": "187"
     },
     "151": {
       "id": "151",
@@ -2507,8 +2540,8 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "183",
-      "previous": "157",
+      "next": "186",
+      "previous": "187",
       "child": "153",
       "parent": "111"
     },
@@ -2695,7 +2728,7 @@
             },
             {
               "name": "background-color",
-              "value": "#aaa"
+              "value": "$headerBg"
             },
             {
               "name": "color",
@@ -2827,6 +2860,10 @@
         {
           "name": "setContentValue",
           "body": "function() {\n  return function() {\n    var properties = state.get('display').findBy('name', 'properties');\n    app.setState(function() {\n      state.get('display').update(properties.id, {active: !properties.active});\n  \t});\n  };\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  var show = state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2837,12 +2874,16 @@
         {
           "name": "className",
           "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
         }
       ],
-      "next": "152",
+      "next": null,
       "previous": "150",
       "child": null,
-      "parent": "111"
+      "parent": "187"
     },
     "158": {
       "id": "158",
@@ -3728,11 +3769,58 @@
       "child": null,
       "parent": "77"
     },
-    "183": {
-      "id": "183",
+    "185": {
+      "id": "185",
+      "name": "resolution label",
+      "element": "div",
+      "text": "Resolution",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "margin-right",
+              "value": "10px"
+            },
+            {
+              "name": "margin-top",
+              "value": "7px"
+            },
+            {
+              "name": "white-space",
+              "value": "nowrap"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "133",
+      "previous": null,
+      "child": null,
+      "parent": "147"
+    },
+    "186": {
+      "id": "186",
       "name": "color picker label",
       "element": "div",
-      "text": "Color picker:",
+      "text": "Color picker",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3756,7 +3844,19 @@
             },
             {
               "name": "margin-top",
-              "value": "2px"
+              "value": "7px"
+            },
+            {
+              "name": "white-space",
+              "value": "nowrap"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "10px"
             }
           ]
         }
@@ -3767,6 +3867,132 @@
       "previous": "152",
       "child": null,
       "parent": "111"
+    },
+    "187": {
+      "id": "187",
+      "name": "Toggle Layout Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn-group"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "15px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "152",
+      "previous": "147",
+      "child": "188",
+      "parent": "111"
+    },
+    "188": {
+      "id": "188",
+      "name": "layout label",
+      "element": "div",
+      "text": "Layout",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "margin-top",
+              "value": "7px"
+            },
+            {
+              "name": "white-space",
+              "value": "nowrap"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "150",
+      "previous": null,
+      "child": null,
+      "parent": "187"
+    },
+    "189": {
+      "id": "189",
+      "name": "toggle label",
+      "element": "div",
+      "text": "Current View",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "margin-top",
+              "value": "7px"
+            },
+            {
+              "name": "white-space",
+              "value": "nowrap"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "83",
+      "previous": null,
+      "child": null,
+      "parent": "101"
     }
   }
 }
