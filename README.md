@@ -4,9 +4,11 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
+- goal: hello world app just for integrations
 - goal: build node.js api for todo app
 - goal: new project, export component, use component, export build
 
+- bug: need loading screen (or a way to pre-build deps for startup)
 - bug: bliss-tree, deep nav selection doesn't expand fully
 - bug: todo.json is not converted to new json format yet, sigh...
 - bug: on selected drag in between room is too small, like 1px
