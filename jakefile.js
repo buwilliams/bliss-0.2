@@ -76,7 +76,7 @@ task('build-all-components', function() {
 desc('Build bliss json');
 task('build-bliss', function() {
   // read bliss.json
-  var projectStr = fs.readFileSync('./src/bliss/workspace/bliss/projects/bliss.json');
+  var projectStr = fs.readFileSync('./src/bliss/workspace/bliss/projects/bliss_ui.json');
   var projectJson = JSON.parse(projectStr);
   projectJson.build = 'bliss';
 

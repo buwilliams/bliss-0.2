@@ -1,0 +1,3772 @@
+{
+  "name": "Bliss UI",
+  "type": "bliss",
+  "build": "designer",
+  "compiler": "react",
+  "nextId": 184,
+  "rootId": "1",
+  "externalCss": [
+    "node_modules/tether/dist/css/tether.min.css",
+    "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "node_modules/font-awesome/css/font-awesome.css",
+    "node_modules/codemirror/lib/codemirror.css",
+    "node_modules/codemirror/theme/solarized.css",
+    "components/bliss-tree/css/bliss-tree.css",
+    "components/bliss-properties/css/bliss-properties.css",
+    "components/bliss-javascript/css/bliss-javascript.css"
+  ],
+  "externalJs": [
+    "node_modules/tether/dist/js/tether.min.js",
+    "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/bootstrap/dist/js/bootstrap.min.js",
+    "node_modules/codemirror/lib/codemirror.js",
+    "node_modules/codemirror/mode/javascript/javascript.js",
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js",
+    "node_modules/react-code-mirror/standalone.js",
+    "node_modules/lodash/lodash.min.js",
+    "components/bliss-tree/js/bliss-tree.js",
+    "components/bliss-properties/js/bliss-property.js",
+    "components/bliss-properties/js/bliss-properties.js",
+    "components/bliss-properties/js/bliss-properties-generic.js",
+    "components/bliss-javascript/js/bliss-javascript.js",
+    "components/bliss-utils/js/state.js"
+  ],
+  "state": {
+    "activeComponent": null,
+    "timer": null,
+    "showJavascript": false,
+    "showContent": "designer",
+    "shouldSave": false
+  },
+  "packages": [
+    {
+      "name": "bootstrap",
+      "version": "^4.0.0-alpha.6"
+    },
+    {
+      "name": "codemirror",
+      "version": "^5.24.2"
+    },
+    {
+      "name": "font-awesome",
+      "version": "^4.7.0"
+    },
+    {
+      "name": "lodash",
+      "version": "^4.17.4"
+    },
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-code-mirror",
+      "version": "^3.1.0"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    }
+  ],
+  "js": [
+    {
+      "name": "global",
+      "body": "function() { window.app = app; }"
+    },
+    {
+      "name": "init",
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n    var display = state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n    \n    var projects = state.create('projects');\n    app.js.getProjects();\n  });\n}"
+    },
+    {
+      "name": "build",
+      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      var iframe = $('#preview');\n      var url = location.origin + '/designer/designer.html';\n      if(iframe.attr('src') !== url) {\n        iframe.attr('src', url);\n      } else {\n        try {\n          iframe[0].contentWindow.location.reload();\n        } catch(e){\n          console.log(e);\n        }\n      }\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "selectComponent",
+      "body": "function(id) {\n  app.setState(function() {\n    app.state.activeComponent = id;\n  });\n}"
+    },
+    {
+      "name": "update",
+      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    app.js.build();\n  }, 500);\n}"
+    },
+    {
+      "name": "server",
+      "body": "function(path, success, data, requestType) {\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/' + path,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "getProjects",
+      "body": "function(scope, attributes) {\n  var projects = state.get('projects');\n  app.js.server('list', function(data) {\n    projects.removeAll();\n    app.js.update(function() {\n      data.projects.forEach(function(project) {\n        projects.create({name: project});\n      });\n    });\n  });\n}"
+    },
+    {
+      "name": "loadProject",
+      "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  app.js.setStatus('Loading project ' + projectName + '...');\n  \n  var setProject = function(project) {\n    app.js.setStatus('Loaded project ' + project.name + '.');\n    app.setState(function() {\n      app.state.activeComponent = project.rootId;\n      app.buildProject = project;\n      app.state.shouldSave = false;\n    });\n    app.js.build();\n  };\n  \n  app.js.server('load', function(data) {\n    setProject(data.project);\n  }, {name: projectName});\n}"
+    },
+    {
+      "name": "setStatus",
+      "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
+    },
+    {
+      "name": "getCssVar",
+      "body": "function(dollarName) {\n  var name = dollarName.substring(1);\n  var found = _.find(app.buildProject.cssVars, {'name': name});\n  console.log('found', found);\n  return found;\n}"
+    }
+  ],
+  "cssVars": [
+    {
+      "name": "menuFg",
+      "value": "#e0ebf0"
+    },
+    {
+      "name": "menuBg",
+      "value": "#313e45"
+    },
+    {
+      "name": "menuHighlight",
+      "value": "#0c5c88"
+    }
+  ],
+  "css": [],
+  "load": [
+    "global",
+    "init",
+    "build"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "Bliss UI",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "111",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "row",
+      "element": "div",
+      "text": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "3",
+      "parent": "96"
+    },
+    "3": {
+      "id": "3",
+      "name": "components",
+      "element": "div",
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "components"
+        },
+        {
+          "name": "class",
+          "value": "float-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#eee"
+            },
+            {
+              "name": "border-right",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "width",
+              "value": "20%"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 38px)"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var display = state.get('display');\n  var show = display.findBy('name', 'components').active;\n  return show;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "4",
+      "previous": null,
+      "child": "20",
+      "parent": "2",
+      "ifFn": "shouldShow"
+    },
+    "4": {
+      "id": "4",
+      "name": "designer",
+      "element": "div",
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "designer"
+        },
+        {
+          "name": "className",
+          "value": "float-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "60%"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var designer = state.get('display').findBy('name', 'designer');\n  var properties = state.get('display').findBy('name', 'properties');\n  var components = state.get('display').findBy('name', 'components');\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
+      "next": "77",
+      "previous": "3",
+      "child": "80",
+      "parent": "2"
+    },
+    "11": {
+      "id": "11",
+      "name": "bliss properties",
+      "element": "BlissProperties.component",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n\treturn app.buildProject.components[app.state.activeComponent];\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.activeComponent] = newComponent;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "151"
+    },
+    "17": {
+      "id": "17",
+      "name": "designerIframe",
+      "element": "iframe",
+      "designMode": false,
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "preview"
+        },
+        {
+          "name": "src",
+          "value": "about:blank"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "height",
+              "value": "99%"
+            },
+            {
+              "name": "border",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "19"
+    },
+    "18": {
+      "id": "18",
+      "name": "Component Tree",
+      "element": "BlissTree.component",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setDataProp",
+          "body": "function(scope, props){\n  return app.buildProject;\n}"
+        },
+        {
+          "name": "setOnSelectProp",
+          "body": "function(scope, props) {\n  return function(id) {\n    app.js.selectComponent(id);\n  };\n}"
+        },
+        {
+          "name": "setOnCreateProp",
+          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+        },
+        {
+          "name": "setOnCloneProp",
+          "body": "function(scope, props) {\n  return function(cloneId) {\n    var proj = BlissTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+        },
+        {
+          "name": "setOnDeleteProp",
+          "body": "function(scope, props) {\n  return function(id) {\n    var proj = BlissTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+        },
+        {
+          "name": "setOnMoveProp",
+          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() { app.buildProject = proj; });\n  }\n}"
+        },
+        {
+          "name": "setThis",
+          "body": "function(scope, props) {\n  var that = app;\n  return function() {\n    return that;\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "data",
+          "value": "setDataProp"
+        },
+        {
+          "name": "onSelect",
+          "value": "setOnSelectProp"
+        },
+        {
+          "name": "onCreate",
+          "value": "setOnCreateProp"
+        },
+        {
+          "name": "onClone",
+          "value": "setOnCloneProp"
+        },
+        {
+          "name": "onDelete",
+          "value": "setOnDeleteProp"
+        },
+        {
+          "name": "onMove",
+          "value": "setOnMoveProp"
+        },
+        {
+          "name": "_this",
+          "value": "setThis"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "110"
+    },
+    "19": {
+      "id": "19",
+      "name": "iframeContainer",
+      "element": "div",
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "iframeContainer"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 70px)"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": null,
+      "previous": null,
+      "child": "17",
+      "parent": "80"
+    },
+    "20": {
+      "id": "20",
+      "name": "Components header",
+      "element": "h3",
+      "text": "components",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "12pt"
+            },
+            {
+              "name": "background-color",
+              "value": "#698290"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": "110",
+      "previous": null,
+      "child": null,
+      "parent": "3"
+    },
+    "54": {
+      "id": "54",
+      "name": "JS Editor",
+      "element": "div",
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "jsEditor"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "next": "97",
+      "previous": "80",
+      "child": "55",
+      "parent": "4",
+      "ifFn": ""
+    },
+    "55": {
+      "id": "55",
+      "name": "h3Js",
+      "element": "h3",
+      "text": "",
+      "attributes": [
+        {
+          "name": "id",
+          "value": "h3Js"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return (app.buildProject.components[app.state.activeComponent].name || '') + \" - JS\";\n};\n"
+        }
+      ],
+      "next": "56",
+      "previous": null,
+      "child": null,
+      "parent": "54",
+      "textFn": "getText"
+    },
+    "56": {
+      "id": "56",
+      "name": "code",
+      "element": "div",
+      "text": "",
+      "attributes": [
+        {
+          "name": "id",
+          "value": "code"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background",
+              "value": "#fff"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "auto"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": null,
+      "previous": "55",
+      "child": "79",
+      "parent": "54"
+    },
+    "77": {
+      "id": "77",
+      "name": "properties",
+      "element": "div",
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "propertiesContainer"
+        },
+        {
+          "name": "className",
+          "value": "float-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#eee"
+            },
+            {
+              "name": "border-left",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 38px)"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "width",
+              "value": "20%"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var display = state.get('display');\n  var show = display.findBy('name', 'properties').active;\n  return show;\n}"
+        }
+      ],
+      "next": null,
+      "previous": "4",
+      "child": "182",
+      "parent": "2",
+      "ifFn": "shouldShow"
+    },
+    "79": {
+      "id": "79",
+      "name": "Bliss JavaScript",
+      "element": "BlissJavascript.component",
+      "text": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n  return app.buildProject.components[app.state.activeComponent];\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.components[app.state.activeComponent] = newComponent;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "56"
+    },
+    "80": {
+      "id": "80",
+      "name": "Designer Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#ebf2f6"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "54",
+      "previous": null,
+      "child": "19",
+      "parent": "4"
+    },
+    "83": {
+      "id": "83",
+      "name": "Show JS",
+      "element": "button",
+      "text": "JS",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "showJs"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.showContent === 'js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'js';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
+      ],
+      "next": "113",
+      "previous": null,
+      "child": null,
+      "parent": "101"
+    },
+    "85": {
+      "id": "85",
+      "name": "new project",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "newButton"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "showInput",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"new\";\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "showInput"
+        }
+      ],
+      "next": "104",
+      "previous": null,
+      "child": "163",
+      "parent": "107"
+    },
+    "88": {
+      "id": "88",
+      "name": "Project Options",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "float-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-right",
+              "value": "15px"
+            },
+            {
+              "name": "margin-left",
+              "value": "15px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "101",
+      "previous": "181",
+      "child": "105",
+      "parent": "111"
+    },
+    "93": {
+      "id": "93",
+      "name": "save button",
+      "element": "button",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "saveButton"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "saveProject",
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.saveProject();\n  }\n};"
+        },
+        {
+          "name": "setStatus",
+          "body": "function(message) {\n  app.setState(function() {\n    app.state.shouldSave = false;\n  \tapp.state.status = message;\n  });\n}"
+        },
+        {
+          "name": "getClass",
+          "body": "function(scope, attributes) {\n  if(app.state.shouldSave === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
+      "next": null,
+      "previous": "105",
+      "child": "94",
+      "parent": "88"
+    },
+    "94": {
+      "id": "94",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "className",
+          "value": "fa fa-floppy-o"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "93"
+    },
+    "95": {
+      "id": "95",
+      "name": "status bar",
+      "element": "div",
+      "text": "",
+      "textFn": "showStatus",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "statusBar"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "fixed"
+            },
+            {
+              "name": "bottom",
+              "value": "0"
+            },
+            {
+              "name": "border-top",
+              "value": "solid 3px #ddd"
+            },
+            {
+              "name": "left",
+              "value": "0"
+            },
+            {
+              "name": "right",
+              "value": "0"
+            },
+            {
+              "name": "font-size",
+              "value": ".8em"
+            },
+            {
+              "name": "background-color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "5px 10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "showStatus",
+          "body": "function(scope, attributes) {\n  return app.state.status || 'Ready.';\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "96",
+      "child": null,
+      "parent": "1"
+    },
+    "96": {
+      "id": "96",
+      "name": "container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "48px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "95",
+      "previous": "111",
+      "child": "2",
+      "parent": "1"
+    },
+    "97": {
+      "id": "97",
+      "name": "Settings Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "generalEditor"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'settings') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "179",
+      "previous": "54",
+      "child": "98",
+      "parent": "4"
+    },
+    "98": {
+      "id": "98",
+      "name": "settings header",
+      "element": "h3",
+      "text": "Settings",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "h3General"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "103",
+      "previous": null,
+      "child": null,
+      "parent": "97"
+    },
+    "101": {
+      "id": "101",
+      "name": "Toggle Content Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "className",
+          "value": "btn-group"
+        },
+        {
+          "name": "id",
+          "value": "toggleContent"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-right",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "147",
+      "previous": "88",
+      "child": "83",
+      "parent": "111"
+    },
+    "102": {
+      "id": "102",
+      "name": "project name",
+      "element": "input",
+      "text": null,
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.shouldSave = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "142",
+      "previous": "103",
+      "child": null,
+      "parent": "97"
+    },
+    "103": {
+      "id": "103",
+      "name": "name label",
+      "element": "span",
+      "text": "Project name: ",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "102",
+      "previous": "98",
+      "child": null,
+      "parent": "97"
+    },
+    "104": {
+      "id": "104",
+      "name": "export project",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.exportProject();\n  }\n};"
+        },
+        {
+          "name": "setStatus",
+          "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
+        },
+        {
+          "name": "exportProject",
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Exported project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "158",
+      "previous": "85",
+      "child": "167",
+      "parent": "107"
+    },
+    "105": {
+      "id": "105",
+      "name": "project dropdown",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "projectDropdown"
+        },
+        {
+          "name": "className",
+          "value": "btn-group"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-right",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "93",
+      "previous": null,
+      "child": "106",
+      "parent": "88"
+    },
+    "106": {
+      "id": "106",
+      "name": "dropdown button",
+      "element": "button",
+      "text": "Projects",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "type",
+          "value": "button"
+        },
+        {
+          "name": "data-toggle",
+          "value": "dropdown"
+        },
+        {
+          "name": "className",
+          "value": "btn btn-default dropdown-toggle btn-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "online",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "107",
+      "previous": null,
+      "child": null,
+      "parent": "105"
+    },
+    "107": {
+      "id": "107",
+      "name": "options",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "className",
+          "value": "dropdown-menu"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "106",
+      "child": "85",
+      "parent": "105"
+    },
+    "108": {
+      "id": "108",
+      "name": "proj js",
+      "element": "BlissJavascript.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n  return app.buildProject;\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.buildProject.js = newComponent.js;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "137"
+    },
+    "109": {
+      "id": "109",
+      "name": "global js header",
+      "element": "h3",
+      "text": "Global JavaScript",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "h3GeneralJs"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "137",
+      "previous": null,
+      "child": null,
+      "parent": "179"
+    },
+    "110": {
+      "id": "110",
+      "name": "Tree Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 111px)"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "20",
+      "child": "18",
+      "parent": "3"
+    },
+    "111": {
+      "id": "111",
+      "name": "main navigation",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "mainNav"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "fixed"
+            },
+            {
+              "name": "top",
+              "value": "0"
+            },
+            {
+              "name": "left",
+              "value": "0"
+            },
+            {
+              "name": "right",
+              "value": "0"
+            },
+            {
+              "name": "z-index",
+              "value": "100"
+            },
+            {
+              "name": "background-color",
+              "value": "#263036"
+            },
+            {
+              "name": "border-bottom",
+              "value": "solid 5px #435560"
+            },
+            {
+              "name": "padding",
+              "value": "7px 14px"
+            },
+            {
+              "name": "height",
+              "value": "auto"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "96",
+      "previous": null,
+      "child": "181",
+      "parent": "1"
+    },
+    "113": {
+      "id": "113",
+      "name": "Show Designer",
+      "element": "button",
+      "text": "Designer",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "showDesigner"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.showContent === 'designer') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'designer';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
+      ],
+      "next": null,
+      "previous": "83",
+      "child": null,
+      "parent": "101"
+    },
+    "133": {
+      "id": "133",
+      "name": "resolution",
+      "element": "select",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control form-control-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n      \n      console.log('selected', res.getData('selected'));\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  return res.getData('selected');\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": "134",
+      "parent": "147"
+    },
+    "134": {
+      "id": "134",
+      "name": "resolution options",
+      "element": "option",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  return res.getAll();\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].label;\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].value;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "133"
+    },
+    "135": {
+      "id": "135",
+      "name": "script properties",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"externalJs\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"primitive\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newExternalJs) {\n    app.js.update(function() {\n      app.buildProject.externalJs = newExternalJs;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        }
+      ],
+      "next": "138",
+      "previous": "136",
+      "child": null,
+      "parent": "97"
+    },
+    "136": {
+      "id": "136",
+      "name": "scripts header",
+      "element": "h3",
+      "text": "Scripts",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "135",
+      "previous": "143",
+      "child": null,
+      "parent": "97"
+    },
+    "137": {
+      "id": "137",
+      "name": "general js editor container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "155",
+      "previous": "109",
+      "child": "108",
+      "parent": "179"
+    },
+    "138": {
+      "id": "138",
+      "name": "stylesheet header",
+      "element": "h3",
+      "text": "Stylesheets",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "139",
+      "previous": "135",
+      "child": null,
+      "parent": "97"
+    },
+    "139": {
+      "id": "139",
+      "name": "stylesheet properties",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"externalCss\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"primitive\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newExternalCss) {\n    app.js.update(function() {\n      app.buildProject.externalCss = newExternalCss;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        }
+      ],
+      "next": null,
+      "previous": "138",
+      "child": null,
+      "parent": "97"
+    },
+    "140": {
+      "id": "140",
+      "name": "h3 global css vars",
+      "element": "h3",
+      "text": "Global CSS Vars",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "141",
+      "previous": null,
+      "child": null,
+      "parent": "180"
+    },
+    "141": {
+      "id": "141",
+      "name": "global css vars",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"cssVars\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"object\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newCssVars) {\n    app.js.update(function() {\n      app.buildProject.cssVars = newCssVars;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "setItemKey",
+          "body": "function(scope, attributes) {\n  return \"name\";\n}"
+        },
+        {
+          "name": "setItemValue",
+          "body": "function(scope, attributes) {\n  return \"value\";\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        },
+        {
+          "name": "itemKey",
+          "value": "setItemKey"
+        },
+        {
+          "name": "itemValue",
+          "value": "setItemValue"
+        }
+      ],
+      "next": null,
+      "previous": "140",
+      "child": null,
+      "parent": "180"
+    },
+    "142": {
+      "id": "142",
+      "name": "packages header",
+      "element": "h3",
+      "text": "npm packages (name, version)",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "143",
+      "previous": "102",
+      "child": null,
+      "parent": "97"
+    },
+    "143": {
+      "id": "143",
+      "name": "packages properties",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"packages\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"object\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newPackages) {\n    app.js.update(function() {\n      app.buildProject.packages = newPackages;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "setItemKey",
+          "body": "function(scope, attributes) {\n  return \"name\";\n}"
+        },
+        {
+          "name": "setItemValue",
+          "body": "function(scope, attributes) {\n  return \"version\";\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        },
+        {
+          "name": "itemKey",
+          "value": "setItemKey"
+        },
+        {
+          "name": "itemValue",
+          "value": "setItemValue"
+        }
+      ],
+      "next": "136",
+      "previous": "142",
+      "child": null,
+      "parent": "97"
+    },
+    "147": {
+      "id": "147",
+      "name": "Resolution container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn-group"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "150",
+      "previous": "101",
+      "child": "133",
+      "parent": "111"
+    },
+    "150": {
+      "id": "150",
+      "name": "Show Components",
+      "element": "button",
+      "text": "Components",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  var show = state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    var components = state.get('display').findBy('name', 'components');\n    app.setState(function() {\n      state.get('display').update(components.id, {active: !components.active});\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
+      ],
+      "next": "157",
+      "previous": "147",
+      "child": null,
+      "parent": "111"
+    },
+    "151": {
+      "id": "151",
+      "name": "properties padding",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "182",
+      "child": "11",
+      "parent": "77"
+    },
+    "152": {
+      "id": "152",
+      "name": "color picker",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-right"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "153px"
+            },
+            {
+              "name": "overflow",
+              "value": "hidden"
+            },
+            {
+              "name": "height",
+              "value": "29px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "183",
+      "previous": "157",
+      "child": "153",
+      "parent": "111"
+    },
+    "153": {
+      "id": "153",
+      "name": "input text",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "110px"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "padding",
+              "value": "4px 5px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var color = state.get('color');\n  return color.getData('currentColor');\n}"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var color = state.get('color');\n    app.setState(function() {\n      color.setData('currentColor', e.target.value);\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": "154",
+      "previous": null,
+      "child": null,
+      "parent": "152"
+    },
+    "154": {
+      "id": "154",
+      "name": "input color",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "type",
+          "value": "color"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "-webkit-appearance",
+              "value": "none"
+            },
+            {
+              "name": "background-color",
+              "value": "transparent"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "height",
+              "value": "46px"
+            },
+            {
+              "name": "width",
+              "value": "46px"
+            },
+            {
+              "name": "margin",
+              "value": "-13px 0 -14px -3px"
+            },
+            {
+              "name": "overflow",
+              "value": "hidden"
+            },
+            {
+              "name": "padding",
+              "value": "0px"
+            },
+            {
+              "name": "top",
+              "value": "5px"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      var color = state.get('color');\n      color.setData('currentColor', e.target.value);\n    });\n  };\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  var color = state.get('color');\n  return color.getData('currentColor');\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": null,
+      "previous": "153",
+      "child": null,
+      "parent": "152"
+    },
+    "155": {
+      "id": "155",
+      "name": "load header",
+      "element": "h3",
+      "text": "Page Load",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "#aaa"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "156",
+      "previous": "137",
+      "child": null,
+      "parent": "179"
+    },
+    "156": {
+      "id": "156",
+      "name": "load functions",
+      "element": "BlissPropertiesGeneric.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"load\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"primitive\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newLoad) {\n    app.js.update(function() {\n      app.buildProject.load = load;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "objectContainer",
+          "value": "setObjectContainer"
+        },
+        {
+          "name": "objectKey",
+          "value": "setObjectKey"
+        },
+        {
+          "name": "objectType",
+          "value": "setObjectType"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        }
+      ],
+      "next": null,
+      "previous": "155",
+      "child": null,
+      "parent": "179"
+    },
+    "157": {
+      "id": "157",
+      "name": "Show Properties",
+      "element": "button",
+      "text": "Properties",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  var show = state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    var properties = state.get('display').findBy('name', 'properties');\n    app.setState(function() {\n      state.get('display').update(properties.id, {active: !properties.active});\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        }
+      ],
+      "next": "152",
+      "previous": "150",
+      "child": null,
+      "parent": "111"
+    },
+    "158": {
+      "id": "158",
+      "name": "divider",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "162",
+      "previous": "104",
+      "child": null,
+      "parent": "107"
+    },
+    "159": {
+      "id": "159",
+      "name": "divider 2",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "172",
+      "previous": "161",
+      "child": null,
+      "parent": "107"
+    },
+    "161": {
+      "id": "161",
+      "name": "existing project",
+      "element": "a",
+      "text": "",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  return state.get('projects').getAll();\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};\n"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var project = scope.repeater[scope.repeater_index].name;\n  return function(e) {\n    app.setState(function() {\n      app.js.loadProject(project);\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "159",
+      "previous": "162",
+      "child": "166",
+      "parent": "107"
+    },
+    "162": {
+      "id": "162",
+      "name": "existing project labels",
+      "element": "h6",
+      "text": "Open project",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "161",
+      "previous": "158",
+      "child": null,
+      "parent": "107"
+    },
+    "163": {
+      "id": "163",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-plus"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "164",
+      "previous": null,
+      "child": null,
+      "parent": "85"
+    },
+    "164": {
+      "id": "164",
+      "name": "label",
+      "element": "span",
+      "text": "New project",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "163",
+      "child": null,
+      "parent": "85"
+    },
+    "165": {
+      "id": "165",
+      "name": "label",
+      "element": "span",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "166",
+      "child": null,
+      "parent": "161"
+    },
+    "166": {
+      "id": "166",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-file-o"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "165",
+      "previous": null,
+      "child": null,
+      "parent": "161"
+    },
+    "167": {
+      "id": "167",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-download"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "168",
+      "previous": null,
+      "child": null,
+      "parent": "104"
+    },
+    "168": {
+      "id": "168",
+      "name": "label",
+      "element": "span",
+      "text": "Export project",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "167",
+      "child": null,
+      "parent": "104"
+    },
+    "169": {
+      "id": "169",
+      "name": "settings",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'settings';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "178",
+      "child": "170",
+      "parent": "107"
+    },
+    "170": {
+      "id": "170",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-cog"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "171",
+      "previous": null,
+      "child": null,
+      "parent": "169"
+    },
+    "171": {
+      "id": "171",
+      "name": "label",
+      "element": "span",
+      "text": "Settings",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "170",
+      "child": null,
+      "parent": "169"
+    },
+    "172": {
+      "id": "172",
+      "name": "global javascript",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'global_js';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "175",
+      "previous": "159",
+      "child": "173",
+      "parent": "107"
+    },
+    "173": {
+      "id": "173",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-code"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "174",
+      "previous": null,
+      "child": null,
+      "parent": "172"
+    },
+    "174": {
+      "id": "174",
+      "name": "label",
+      "element": "span",
+      "text": "Global Javascript",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "173",
+      "child": null,
+      "parent": "172"
+    },
+    "175": {
+      "id": "175",
+      "name": "global css",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'global_css';\n  \t});\n  };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "178",
+      "previous": "172",
+      "child": "176",
+      "parent": "107"
+    },
+    "176": {
+      "id": "176",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-css3"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "177",
+      "previous": null,
+      "child": null,
+      "parent": "175"
+    },
+    "177": {
+      "id": "177",
+      "name": "label",
+      "element": "span",
+      "text": "Global CSS",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "176",
+      "child": null,
+      "parent": "175"
+    },
+    "178": {
+      "id": "178",
+      "name": "divider 3",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "169",
+      "previous": "175",
+      "child": null,
+      "parent": "107"
+    },
+    "179": {
+      "id": "179",
+      "name": "Global Javascript Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'global_js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "180",
+      "previous": "97",
+      "child": "109",
+      "parent": "4"
+    },
+    "180": {
+      "id": "180",
+      "name": "Global CSS Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var displayValue = (app.state.showContent === 'global_css') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": null,
+      "previous": "179",
+      "child": "140",
+      "parent": "4"
+    },
+    "181": {
+      "id": "181",
+      "name": "app header",
+      "element": "div",
+      "text": "Bliss UI",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "font-size",
+              "value": "14pt"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "color",
+              "value": "#5fc0ec"
+            },
+            {
+              "name": "padding-top",
+              "value": "1px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "88",
+      "previous": null,
+      "child": null,
+      "parent": "111"
+    },
+    "182": {
+      "id": "182",
+      "name": "Property header",
+      "element": "h3",
+      "text": "properties",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "12pt"
+            },
+            {
+              "name": "background-color",
+              "value": "#698290"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": "151",
+      "previous": null,
+      "child": null,
+      "parent": "77"
+    },
+    "183": {
+      "id": "183",
+      "name": "color picker label",
+      "element": "div",
+      "text": "Color picker:",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-right"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "margin-right",
+              "value": "10px"
+            },
+            {
+              "name": "margin-top",
+              "value": "2px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "152",
+      "child": null,
+      "parent": "111"
+    }
+  }
+}
