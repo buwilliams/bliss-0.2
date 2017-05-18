@@ -26,7 +26,7 @@ function createWindow(port) {
     resizable: true
   });
 
-  var url = `http://127.0.0.1:${port}/bliss/bliss.html`;
+  var url = `http://127.0.0.1:${port}/bliss.html`;
   console.log(`Opening url: ${url}`)
   win.loadURL(url);
 
@@ -93,13 +93,14 @@ function init() {
   var options = {
     port: db.get('port').value(),
     workspace: db.get('workspace').value(),
-    app: path.join(__dirname, '..', '..', '..', 'build'),
+    app: path.join(__dirname, '..', '..', '..', 'build', 'bliss'),
     node_modules: path.join(__dirname, '..', '..', '..', 'node_modules')
   };
 
   console.log(`App settings path: ${app.getPath("appData")}`);
-  console.log(`Creating workspace: ${options.workspace}`);
+
   file.createWorkspace(options.workspace);
+  console.log(`Using workspace: ${options.workspace}`);
 
   server(options);
 
