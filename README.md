@@ -5,13 +5,14 @@ Painless Front-end Design & Development
 ## Todo this week
 
 - goal: build node.js api for todo app
+- goal: new project, export component, use component, export build
 
-- bug: add new CSS, duplicate react keys
 - bug: bliss-tree, deep nav selection doesn't expand fully
-- bug: new project doesn't work
-- bug: on bliss page load, dependencies are missing
-- bug: reload deps on packages update (save, load)
 - bug: todo.json is not converted to new json format yet, sigh...
+- bug: on selected drag in between room is too small, like 1px
+- bug: state is saved when switching projects (new, load, delete)
+- bug: reload deps on packages update (save, load)
+- feature: delete project
 - feature: up and down to change pixel values for property
 - feature: global css editor
 - feature: edit css selectors and properties (missing selectors)
@@ -24,6 +25,9 @@ Painless Front-end Design & Development
 
 ## Done this week
 
+- bug: on bliss page load, dependencies are missing
+- bug: new project doesn't work (load new project json, prompt for name, load deps)
+- bug: add new CSS, duplicate react keys (unknown cause at the moment)
 - improvement: reworking navigation layout for bliss (modals)
 - ui: settings pane/modal ???
 - ui: make components and properties toggle work as expected
@@ -51,6 +55,8 @@ Painless Front-end Design & Development
 
 ## Backlog
 
+- feature: javascript function in alphabetical order
+- feature: one-click copy function to global js functions (protect from overwrite)
 - bug: adding new component expands currently selected on???
 - improvement: auto-save project
 - bug: tree, expand will expand all children

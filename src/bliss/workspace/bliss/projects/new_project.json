@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 17,
+  "nextId": 2,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -28,20 +28,7 @@
       "body": "function() { app.render(); }"
     }
   ],
-  "cssVars": [
-    {
-      "name": "fg",
-      "value": "#601612"
-    },
-    {
-      "name": "bg",
-      "value": "#feea30"
-    },
-    {
-      "name": "fg2",
-      "value": "#5f7dbe"
-    }
-  ],
+  "cssVars": [],
   "css": [],
   "load": [
     "init"
@@ -53,80 +40,13 @@
       "element": "div",
       "text": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
+      "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "15",
+      "child": null,
       "parent": null
-    },
-    "15": {
-      "id": "15",
-      "name": "hello world",
-      "element": "div",
-      "text": "hello, world",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "color",
-              "value": "$fg"
-            },
-            {
-              "name": "background-color",
-              "value": "$bg"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "16",
-      "previous": null,
-      "child": null,
-      "parent": "1"
-    },
-    "16": {
-      "id": "16",
-      "name": "new_16",
-      "element": "div",
-      "text": "hi there",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "$fg2"
-            },
-            {
-              "name": "padding",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "15",
-      "child": null,
-      "parent": "1"
     }
   }
 }

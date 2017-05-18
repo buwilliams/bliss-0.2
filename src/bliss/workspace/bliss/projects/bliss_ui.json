@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 190,
+  "nextId": 200,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -76,7 +76,7 @@
     },
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n    var display = state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n    \n    var projects = state.create('projects');\n    app.js.getProjects();\n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n    var display = state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n    \n    var projects = state.create('projects');\n    app.js.getProjects();\n    \n    app.js.setupNewProject();\n  });\n}"
     },
     {
       "name": "build",
@@ -100,7 +100,7 @@
     },
     {
       "name": "loadProject",
-      "body": "function(projectName) {\n  if(!confirm('Are you sure you want to create leave your current project?')) return;\n  app.js.setStatus('Loading project ' + projectName + '...');\n  \n  var setProject = function(project) {\n    app.js.setStatus('Loaded project ' + project.name + '.');\n    app.setState(function() {\n      app.state.activeComponent = project.rootId;\n      app.buildProject = project;\n      app.state.shouldSave = false;\n    });\n    app.js.build();\n  };\n  \n  app.js.server('load', function(data) {\n    setProject(data.project);\n  }, {name: projectName});\n}"
+      "body": "function(projectName, shouldConfirm) {\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.js.setStatus('Loading project ' + projectName + '...');\n  \n  var setProject = function(project) {\n    app.js.setStatus('Loaded project ' + project.name + '.');\n    app.setState(function() {\n      app.state.activeComponent = project.rootId;\n      app.buildProject = project;\n      app.state.shouldSave = false;\n    });\n    app.js.build();\n  };\n  \n  app.js.server('load', function(data) {\n    setProject(data.project);\n  }, {name: projectName});\n}"
     },
     {
       "name": "setStatus",
@@ -109,6 +109,18 @@
     {
       "name": "getCssVar",
       "body": "function(dollarName) {\n  var name = dollarName.substring(1);\n  var found = _.find(blissProject.cssVars, {'name': name});\n  return (_.isNil(found)) ? '' : found.value;\n}"
+    },
+    {
+      "name": "setupNewProject",
+      "body": "function(scope, attributes) {\n  // save new project json, and load new project\n  app.js.saveProject(function() {\n    app.js.loadProject(app.buildProject.name, false);\n  });\n}"
+    },
+    {
+      "name": "saveProject",
+      "body": "function(success) {\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      app.js.getProjects();\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "createNewProject",
+      "body": "function(shouldConfirm) {\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function() {\n    app.buildProject = newBlissProject;\n\n    app.js.saveProject(function() {\n      app.js.loadProject(app.buildProject.name, false);\n    });\n  });\n}"
     }
   ],
   "cssVars": [
@@ -194,10 +206,6 @@
       "text": null,
       "attributes": [
         {
-          "name": "id",
-          "value": "components"
-        },
-        {
           "name": "class",
           "value": "float-left"
         }
@@ -208,11 +216,7 @@
           "properties": [
             {
               "name": "background-color",
-              "value": "#eee"
-            },
-            {
-              "name": "border-right",
-              "value": "solid 1px #ccc"
+              "value": "#eee;"
             },
             {
               "name": "width",
@@ -225,6 +229,18 @@
             {
               "name": "overflow",
               "value": "auto"
+            },
+            {
+              "name": "border-right-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "border-right-width",
+              "value": "1px"
+            },
+            {
+              "name": "border-right-style",
+              "value": "solid"
             }
           ]
         }
@@ -692,10 +708,6 @@
               "value": "#eee"
             },
             {
-              "name": "border-left",
-              "value": "solid 1px #ccc"
-            },
-            {
               "name": "height",
               "value": "calc(100vh - 80px)"
             },
@@ -706,6 +718,18 @@
             {
               "name": "width",
               "value": "20%"
+            },
+            {
+              "name": "border-left-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "border-left-style",
+              "value": "solid"
+            },
+            {
+              "name": "border-left-width",
+              "value": "1px"
             }
           ]
         }
@@ -904,17 +928,17 @@
       ],
       "js": [
         {
-          "name": "showInput",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.showProjectInput = true;\n      app.state.showProjectInputType = \"new\";\n    });\n  }\n};\n"
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.createNewProject();\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
         {
           "name": "onClick",
-          "value": "showInput"
+          "value": "handleClick"
         }
       ],
-      "next": "104",
+      "next": "158",
       "previous": null,
       "child": "163",
       "parent": "107"
@@ -1244,7 +1268,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "103",
+      "next": "199",
       "previous": null,
       "child": null,
       "parent": "97"
@@ -1293,11 +1317,25 @@
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [],
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control pull-left input-sm"
+        }
+      ],
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
         }
       ],
       "js": [
@@ -1320,10 +1358,10 @@
           "value": "getValue"
         }
       ],
-      "next": "142",
+      "next": "196",
       "previous": "103",
       "child": null,
-      "parent": "97"
+      "parent": "199"
     },
     "103": {
       "id": "103",
@@ -1333,19 +1371,29 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [],
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-left"
+        }
+      ],
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "8px"
+            }
+          ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
       "next": "102",
-      "previous": "98",
+      "previous": null,
       "child": null,
-      "parent": "97"
+      "parent": "199"
     },
     "104": {
       "id": "104",
@@ -1408,8 +1456,8 @@
           "value": "handleClick"
         }
       ],
-      "next": "158",
-      "previous": "85",
+      "next": "193",
+      "previous": "190",
       "child": "167",
       "parent": "107"
     },
@@ -2301,7 +2349,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "143",
-      "previous": "102",
+      "previous": "199",
       "child": null,
       "parent": "97"
     },
@@ -2912,7 +2960,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "162",
-      "previous": "104",
+      "previous": "85",
       "child": null,
       "parent": "107"
     },
@@ -2938,7 +2986,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "172",
+      "next": "194",
       "previous": "161",
       "child": null,
       "parent": "107"
@@ -3025,7 +3073,11 @@
           "properties": [
             {
               "name": "font-size",
-              "value": "10pt"
+              "value": "10px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
             }
           ]
         }
@@ -3189,7 +3241,7 @@
       "id": "168",
       "name": "label",
       "element": "span",
-      "text": "Export project",
+      "text": "Export build",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -3270,7 +3322,7 @@
         }
       ],
       "next": null,
-      "previous": "178",
+      "previous": "175",
       "child": "170",
       "parent": "107"
     },
@@ -3386,7 +3438,7 @@
         }
       ],
       "next": "175",
-      "previous": "159",
+      "previous": "195",
       "child": "173",
       "parent": "107"
     },
@@ -3501,7 +3553,7 @@
           "value": "handleClick"
         }
       ],
-      "next": "178",
+      "next": "169",
       "previous": "172",
       "child": "176",
       "parent": "107"
@@ -3563,33 +3615,6 @@
       "previous": "176",
       "child": null,
       "parent": "175"
-    },
-    "178": {
-      "id": "178",
-      "name": "divider 3",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "dropdown-divider"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "169",
-      "previous": "175",
-      "child": null,
-      "parent": "107"
     },
     "179": {
       "id": "179",
@@ -3997,6 +4022,358 @@
       "previous": null,
       "child": null,
       "parent": "101"
+    },
+    "190": {
+      "id": "190",
+      "name": "export component",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "exportButton"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.exportProject();\n  }\n};"
+        },
+        {
+          "name": "setStatus",
+          "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
+        },
+        {
+          "name": "exportProject",
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Exported project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "104",
+      "previous": "194",
+      "child": "191",
+      "parent": "107"
+    },
+    "191": {
+      "id": "191",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-puzzle-piece"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "192",
+      "previous": null,
+      "child": null,
+      "parent": "190"
+    },
+    "192": {
+      "id": "192",
+      "name": "label",
+      "element": "span",
+      "text": "Export component",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "191",
+      "child": null,
+      "parent": "190"
+    },
+    "193": {
+      "id": "193",
+      "name": "divider 4",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "195",
+      "previous": "104",
+      "child": null,
+      "parent": "107"
+    },
+    "194": {
+      "id": "194",
+      "name": "export label",
+      "element": "h6",
+      "text": "export",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "190",
+      "previous": "159",
+      "child": null,
+      "parent": "107"
+    },
+    "195": {
+      "id": "195",
+      "name": "config label",
+      "element": "h6",
+      "text": "config",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "172",
+      "previous": "193",
+      "child": null,
+      "parent": "107"
+    },
+    "196": {
+      "id": "196",
+      "name": "delete project",
+      "element": "button",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-default btn-sm pull-right"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$menuWarn"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-top",
+              "value": "6px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "102",
+      "child": "197",
+      "parent": "199"
+    },
+    "197": {
+      "id": "197",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-trash"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "198",
+      "previous": null,
+      "child": null,
+      "parent": "196"
+    },
+    "198": {
+      "id": "198",
+      "name": "delete label",
+      "element": "span",
+      "text": "Delete project",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "197",
+      "child": null,
+      "parent": "196"
+    },
+    "199": {
+      "id": "199",
+      "name": "project details container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "142",
+      "previous": "98",
+      "child": "103",
+      "parent": "97"
     }
   }
 }
