@@ -3108,7 +3108,7 @@
       "id": "168",
       "name": "label",
       "element": "span",
-      "text": "Export build",
+      "text": "Export project",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
