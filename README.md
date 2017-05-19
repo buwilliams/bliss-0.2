@@ -10,6 +10,8 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
+- feature: app state manager
+- feature: api manager
 - feature: creating and including components (refactor existing code)
 - feature: export project (concat and minify)
 - feature: global css editor
@@ -20,6 +22,7 @@ Painless Front-end Design & Development
 - feature: http mocks
 - feature: up and down to change pixel values for property
 
+- bug: remove console.log statement from switching resolutions
 - bug: bliss-properties, new project > update css is broken after two adds
 - bug: bliss-tree, deep nav selection doesn't expand fully
 - bug: on selected drag in between room is too small, like 1px

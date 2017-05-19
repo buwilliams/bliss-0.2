@@ -38,9 +38,14 @@
       "id": "1",
       "name": "New Project",
       "element": "div",
-      "text": null,
+      "text": "hello",
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,

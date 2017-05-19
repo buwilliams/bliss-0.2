@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 203,
+  "nextId": 208,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -76,11 +76,11 @@
     },
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    \n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    \n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n    \n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%' });\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px'});\n    res.setData('selected', 'full');\n    \n    var display = state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n    \n    var projects = state.create('projects');\n    app.js.getProjects();\n    \n    app.js.setupNewProject();\n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    // Configure Project\n    app.buildProject = newBlissProject;\n    app.state.shouldBuild = false;\n    \n    // Reset application state\n    app.js.cleanState();\n  });\n}"
     },
     {
       "name": "build",
-      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      var iframe = $('#preview');\n      var url = location.origin + '/designer/designer.html';\n      if(iframe.attr('src') !== url) {\n        iframe.attr('src', url);\n      } else {\n        try {\n          iframe[0].contentWindow.location.reload();\n        } catch(e){\n          console.log(e);\n        }\n      }\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/build',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -88,7 +88,7 @@
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.setState(function() { fn(); });\n  app.state.shouldSave = true;\n  clearTimeout(app.state.timer);\n  app.state.timer = setTimeout(function() {\n    app.js.build();\n  }, 500);\n}"
+      "body": "function(fn) {\n  app.setState(function() {\n    app.state.shouldSave = true;\n    clearTimeout(app.state.timer);\n    try { fn(); } catch(e) { console.error('app.js.update', e); }\n    app.state.timer = setTimeout(function() {\n    \tif(app.state.shouldBuild === true) {\n        app.js.build();\n      } else {\n        app.js.saveAndReloadProject();\n      }\n  \t}, 500);\n  });\n}"
     },
     {
       "name": "server",
@@ -96,11 +96,11 @@
     },
     {
       "name": "getProjects",
-      "body": "function(scope, attributes) {\n  var projects = state.get('projects');\n  app.js.server('list', function(data) {\n    projects.removeAll();\n    app.js.update(function() {\n      data.projects.forEach(function(project) {\n        projects.create({name: project});\n      });\n    });\n  });\n}"
+      "body": "function(scope, attributes) {\n  var projects = state.get('projects');\n  app.js.server('list', function(data) {\n    projects.removeAll();\n    app.setState(function() {\n      data.projects.forEach(function(project) {\n        projects.create({name: project});\n      });\n    });\n  });\n}"
     },
     {
       "name": "loadProject",
-      "body": "function(projectName, shouldConfirm) {\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.js.setStatus('Loading project ' + projectName + '...');\n  \n  var setProject = function(project) {\n    app.js.setStatus('Loaded project ' + project.name + '.');\n    app.setState(function() {\n      app.state.activeComponent = project.rootId;\n      app.buildProject = project;\n      app.state.shouldSave = false;\n    });\n    app.js.build();\n  };\n  \n  app.js.server('load', function(data) {\n    setProject(data.project);\n  }, {name: projectName});\n}"
+      "body": "function(projectName, shouldConfirm) {\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.js.setStatus('Loading project ' + projectName + '...');\n  \n  var setProject = function(project) {\n    app.js.setStatus('Loaded project ' + project.name + '.');\n    app.setState(function() {\n      app.buildProject = project;\n      app.state.shouldBuild = true;\n      app.js.cleanState();\n      app.js.build();\n    });\n  };\n  \n  app.js.server('load', function(data) {\n    setProject(data.project);\n  }, {name: projectName});\n}"
     },
     {
       "name": "setStatus",
@@ -111,16 +111,28 @@
       "body": "function(dollarName) {\n  var name = dollarName.substring(1);\n  var found = _.find(blissProject.cssVars, {'name': name});\n  return (_.isNil(found)) ? '' : found.value;\n}"
     },
     {
-      "name": "setupNewProject",
-      "body": "function(scope, attributes) {\n  // save new project json, and load new project\n  app.js.saveProject(function() {\n    app.js.loadProject(app.buildProject.name, false);\n  });\n}"
-    },
-    {
       "name": "saveProject",
-      "body": "function(success) {\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      app.js.getProjects();\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "createNewProject",
-      "body": "function(shouldConfirm) {\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function() {\n    app.buildProject = newBlissProject;\n\n    app.js.saveProject(function() {\n      app.js.loadProject(app.buildProject.name, false);\n    });\n  });\n}"
+      "body": "function(shouldConfirm) {\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function() {\n    app.buildProject = newBlissProject;\n\t\tapp.state.shouldBuild = false;\n  });\n}"
+    },
+    {
+      "name": "saveAndReloadProject",
+      "body": "function() {\n  // save current json\n  app.js.saveProject(function() {\n    // load project\n    app.js.loadProject(app.buildProject.name, false);\n  });\n}"
+    },
+    {
+      "name": "refreshIframe",
+      "body": "function() {\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + '/designer/designer.html';\n  iframe.attr('src', url);\n}"
+    },
+    {
+      "name": "refresh",
+      "body": "function() {\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  app.js.refreshIframe();\n}"
+    },
+    {
+      "name": "cleanState",
+      "body": "function() {\n  app.setState(function() {\n    // Clean existing state\n    state.reset();\n\n    // Set State\n    app.state.showContent = 'designer';\n    app.state.activeComponent = app.buildProject.rootId;\n    app.state.shouldSave = false;\n\n    var color = state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = state.create('res');\n    res.create({value: 'full', label: 'Full width', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = state.create('projects');\n    app.js.getProjects();\n  });\n}"
     }
   ],
   "cssVars": [
@@ -152,8 +164,7 @@
   "css": [],
   "load": [
     "global",
-    "init",
-    "build"
+    "init"
   ],
   "components": {
     "1": {
@@ -165,7 +176,12 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "min-width",
+              "value": "1400px"
+            }
+          ]
         }
       ],
       "js": [],
@@ -377,6 +393,10 @@
         {
           "name": "getStyles",
           "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
+        },
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return (app.state.shouldBuild === true);\n}"
         }
       ],
       "dynamicAttributes": [
@@ -386,9 +406,10 @@
         }
       ],
       "next": null,
-      "previous": null,
+      "previous": "204",
       "child": null,
-      "parent": "19"
+      "parent": "205",
+      "ifFn": "shouldShow"
     },
     "18": {
       "id": "18",
@@ -466,39 +487,6 @@
       "previous": null,
       "child": null,
       "parent": "110"
-    },
-    "19": {
-      "id": "19",
-      "name": "iframeContainer",
-      "element": "div",
-      "text": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "iframeContainer"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "overflow",
-              "value": "auto"
-            },
-            {
-              "name": "height",
-              "value": "calc(100vh - 80px)"
-            }
-          ]
-        }
-      ],
-      "dynamicAttributes": [],
-      "js": [],
-      "next": null,
-      "previous": null,
-      "child": "17",
-      "parent": "80"
     },
     "20": {
       "id": "20",
@@ -795,6 +783,18 @@
             {
               "name": "background-color",
               "value": "$lightBg"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
             }
           ]
         }
@@ -813,7 +813,7 @@
       ],
       "next": "54",
       "previous": null,
-      "child": "19",
+      "child": "205",
       "parent": "4"
     },
     "83": {
@@ -881,7 +881,7 @@
         }
       ],
       "next": "113",
-      "previous": "189",
+      "previous": "207",
       "child": null,
       "parent": "101"
     },
@@ -961,10 +961,6 @@
         {
           "selector": "$id",
           "properties": [
-            {
-              "name": "margin-right",
-              "value": "15px"
-            },
             {
               "name": "margin-left",
               "value": "15px"
@@ -1280,7 +1276,7 @@
     },
     "101": {
       "id": "101",
-      "name": "Toggle Content Container",
+      "name": "Toggle View",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1724,7 +1720,7 @@
           "properties": [
             {
               "name": "position",
-              "value": "fixed"
+              "value": "absolute"
             },
             {
               "name": "top",
@@ -1757,6 +1753,10 @@
             {
               "name": "height",
               "value": "auto"
+            },
+            {
+              "name": "min-width",
+              "value": "1400px"
             }
           ]
         }
@@ -1869,7 +1869,7 @@
       "js": [
         {
           "name": "handleChange",
-          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n      \n      console.log('selected', res.getData('selected'));\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  \n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      res.setData('selected', value);\n    });\n  }\n};\n"
         },
         {
           "name": "getValue",
@@ -2843,7 +2843,7 @@
         },
         {
           "name": "setOnChange",
-          "body": "function(scope, attributes) {\n  return function(newLoad) {\n    app.js.update(function() {\n      app.buildProject.load = load;\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(newLoad) {\n    app.js.update(function() {\n      app.buildProject.load = newLoad;\n    });\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -4026,7 +4026,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "83",
+      "next": "206",
       "previous": null,
       "child": null,
       "parent": "101"
@@ -4427,7 +4427,7 @@
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    var iframe = $('#preview');\n    try {\n      iframe[0].contentWindow.location.reload();\n    } catch(e){\n      console.log(e);\n    }\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    //var iframe = $('#preview');\n    try {\n      //iframe[0].contentWindow.location.reload();\n      $('#preview').attr(\"src\", $('#preview').attr(\"src\"));\n    } catch(e){\n      console.log('Unable to refresh preview iframe', e);\n    }\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -4467,6 +4467,254 @@
       "previous": null,
       "child": null,
       "parent": "201"
+    },
+    "204": {
+      "id": "204",
+      "name": "iframe header",
+      "element": "h3",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "5px 10px 10px 10px"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var res = state.get('res');\n  var currentRes = res.findBy('value', res.getData('selected'));\n  return currentRes.label;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "17",
+      "previous": null,
+      "child": null,
+      "parent": "205"
+    },
+    "205": {
+      "id": "205",
+      "name": "preview container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "border-width",
+              "value": "10px"
+            },
+            {
+              "name": "border-style",
+              "value": "solid"
+            },
+            {
+              "name": "border-radius",
+              "value": "10px"
+            },
+            {
+              "name": "background-color",
+              "value": "#fff"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {\n    width: 'auto',\n    height: 'auto'\n  };\n  \n  var res = state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.previewWidth;\n  styles.height = selected.previewHeight;\n  \n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": "204",
+      "parent": "80"
+    },
+    "206": {
+      "id": "206",
+      "name": "Show Global JS",
+      "element": "button",
+      "text": "Global JS",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.showContent === 'global_js') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'global_js';\n  \t});\n  };\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.showContent === 'global_js') {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
+      "next": "207",
+      "previous": "189",
+      "child": null,
+      "parent": "101"
+    },
+    "207": {
+      "id": "207",
+      "name": "Show Global CSS",
+      "element": "button",
+      "text": "Global CSS",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getClass",
+          "body": "function() {\n  if(app.state.showContent === 'global_css') {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+        },
+        {
+          "name": "setContentValue",
+          "body": "function() {\n  return function() {\n    app.setState(function() {\n    \tapp.state.showContent = 'global_css';\n  \t});\n  };\n}"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.showContent === 'global_css') {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "setContentValue"
+        },
+        {
+          "name": "className",
+          "value": "getClass"
+        },
+        {
+          "name": "style",
+          "value": "getStyles"
+        }
+      ],
+      "next": "83",
+      "previous": "206",
+      "child": null,
+      "parent": "101"
     }
   }
 }

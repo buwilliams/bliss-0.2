@@ -1,6 +1,10 @@
 var state = (function() {
   var _state = {};
 
+  var resetState = function() {
+    _state = {};
+  };
+
   var getState = function(rawName) {
     var name = rawName.replace(/[^\w]/gi, '');
     return _state[name];
@@ -124,6 +128,7 @@ var state = (function() {
 
   return {
     get: getState,
-    create: createState
+    create: createState,
+    reset: resetState
   };
 })();
