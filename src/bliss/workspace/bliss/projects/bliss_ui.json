@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 200,
+  "nextId": 203,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -201,7 +201,7 @@
     },
     "3": {
       "id": "3",
-      "name": "components",
+      "name": "elements",
       "element": "div",
       "text": null,
       "attributes": [
@@ -392,7 +392,7 @@
     },
     "18": {
       "id": "18",
-      "name": "Component Tree",
+      "name": "Element Tree",
       "element": "BlissTree.component",
       "text": null,
       "attributes": [],
@@ -502,9 +502,9 @@
     },
     "20": {
       "id": "20",
-      "name": "Components header",
+      "name": "Elements header",
       "element": "h3",
-      "text": "components",
+      "text": "Elements",
       "attributes": [],
       "css": [
         {
@@ -1052,7 +1052,7 @@
           "value": "getStyles"
         }
       ],
-      "next": null,
+      "next": "201",
       "previous": "105",
       "child": "94",
       "parent": "88"
@@ -1071,7 +1071,12 @@
           "value": "fa fa-floppy-o"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -2459,9 +2464,9 @@
     },
     "150": {
       "id": "150",
-      "name": "Show Components",
+      "name": "Show Elements",
       "element": "button",
-      "text": "Components",
+      "text": "Elements",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3905,12 +3910,7 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "btn-group"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
@@ -3918,6 +3918,14 @@
             {
               "name": "margin-left",
               "value": "15px"
+            },
+            {
+              "name": "display",
+              "value": "inline-flex"
+            },
+            {
+              "name": "vertical-align",
+              "value": "middle"
             }
           ]
         }
@@ -4374,6 +4382,91 @@
       "previous": "98",
       "child": "103",
       "parent": "97"
+    },
+    "201": {
+      "id": "201",
+      "name": "refresh button",
+      "element": "button",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-default btn-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var iframe = $('#preview');\n    try {\n      iframe[0].contentWindow.location.reload();\n    } catch(e){\n      console.log(e);\n    }\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "93",
+      "child": "202",
+      "parent": "88"
+    },
+    "202": {
+      "id": "202",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "className",
+          "value": "fa fa-refresh"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "201"
     }
   }
 }

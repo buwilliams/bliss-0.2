@@ -2,30 +2,34 @@
 
 Painless Front-end Design & Development
 
-## Todo this week
+## Goals this week
 
-- goal: hello world app just for integrations
 - goal: build node.js api for todo app
 - goal: new project, export component, use component, export build
+- goal: hello world app just for integrations
 
-- bug: need loading screen (or a way to pre-build deps for startup)
-- bug: bliss-tree, deep nav selection doesn't expand fully
-- bug: todo.json is not converted to new json format yet, sigh...
-- bug: on selected drag in between room is too small, like 1px
-- bug: state is saved when switching projects (new, load, delete)
-- bug: reload deps on packages update (save, load)
-- feature: delete project
-- feature: up and down to change pixel values for property
-- feature: global css editor
-- feature: edit css selectors and properties (missing selectors)
-- feature: list projects pane
+## Todo this week
+
 - feature: creating and including components (refactor existing code)
 - feature: export project (concat and minify)
+- feature: global css editor
 - feature: image support
-- feature: typeahead for css properties (my hands are getting tired)
+- feature: edit css selectors and properties (missing selectors)
+
+- feature: delete project
 - feature: http mocks
+- feature: up and down to change pixel values for property
+
+- bug: bliss-properties, new project > update css is broken after two adds
+- bug: bliss-tree, deep nav selection doesn't expand fully
+- bug: on selected drag in between room is too small, like 1px
+- bug: todo.json is not converted to new json format yet, sigh...
 
 ## Done this week
+
+- feature: list projects pane
+- bug: refresh iframe (it gets stuck)
+- improvement: rename component to element in the UI
 
 - bug: on bliss page load, dependencies are missing
 - bug: new project doesn't work (load new project json, prompt for name, load deps)
@@ -35,7 +39,6 @@ Painless Front-end Design & Development
 - ui: make components and properties toggle work as expected
 - ui: list projects in projects drop-down
 - move app state manager to library (consider using different state manager and don't force new apps to have it right away)
-
 - bug: delete always collapsed
 - bug: delete always went to parent
 - bug: clone component is shallow and causes bugs
@@ -47,16 +50,16 @@ Painless Front-end Design & Development
 - bug: selecting unselected nodes perform expand/collapse, should only expand, not collapse
 - bug: remove color picker from properties (move to experiments project json)
 
-## UI/UX Design
+## Roadmap
 
-- Purpose: discover new UIs by experimentation, rapid prototyping
-- Purpose: see your ideas come to life instantly
-- Purpose: produce functioning apps
-- Purpose: accessible to designers and creators
-- How would it feel? Clean and trustworthy. Very accessible features.
-
-## Backlog
-
+- idea: resolution could show an image of the device
+- feature: import component
+- feature: typeahead for css properties (my hands are getting tired)
+- bug: reload deps on packages update (save, load)
+- bug: state is saved when switching projects (new, load, delete)
+- bug: need loading screen (or a way to pre-build deps for startup)
+- improvement: make status more obvious so that the user can see what is going on
+- cleanup: rename components to element throughout all the code
 - feature: javascript function in alphabetical order
 - feature: one-click copy function to global js functions (protect from overwrite)
 - bug: adding new component expands currently selected on???
@@ -64,9 +67,6 @@ Painless Front-end Design & Development
 - bug: tree, expand will expand all children
 - bug: bliss-tree, drag onto node doesn't highlight full row
 - improvement: electron, move workspace to documents
-
-## Roadmap
-
 - feature: theme layout
 - feature: theme colors (dark gray-blue, gray-white text)
 - feature: import HTML
@@ -83,6 +83,14 @@ Painless Front-end Design & Development
 - Feature: Automated user-testing via browser test framework like Rspec
 - Compile to Angular
 - Feature: Upgrade Project (uses the new project json)
+
+## UI/UX Design
+
+- Purpose: discover new UIs by experimentation, rapid prototyping
+- Purpose: see your ideas come to life instantly
+- Purpose: produce functioning apps
+- Purpose: accessible to designers and creators
+- How would it feel? Clean and trustworthy. Very accessible features.
 
 ## Recently completed todos
 

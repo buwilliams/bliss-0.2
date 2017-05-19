@@ -78,12 +78,6 @@ body {
   color: blue;
 }
 
-/*
-.menu.focus {
-  border-left: solid 3px rgb(15, 108, 251);
-}
-*/
-
 .tree {
   position: relative;
   display: block;
@@ -92,6 +86,7 @@ body {
 
 .node {
   position: relative;
+  /* display: inline-block; */
   padding: 5px 10px;
   cursor: pointer;
   white-space: nowrap;
