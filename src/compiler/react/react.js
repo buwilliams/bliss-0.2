@@ -1,5 +1,7 @@
 const path = require('path');
 const mkdirp = require('mkdirp');
+const fsutils = require('fs-utils');
+const npm = require('./core/npm.js');
 const str = require('./core/str.js');
 const html = require('./exports/html.js');
 const css = require('./exports/css.js');
@@ -58,8 +60,11 @@ module.exports = {
     css.write(path.join(sourcePath, 'css'), projectJson, startId);
 
     // write package.json
-    // download deps
+    npm.update(outputPath, projectJson, {
+      "express": "^4.15.2"
+    });
+
     // include a web server
-    // download as zip file?
+    fsutils.copyFileSync(path.join(__dirname, 'express-mini-server.js'), path.join(outputPath, 'index.js'));
   }
 };

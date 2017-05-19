@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
+const _ = require('lodash');
 
 module.exports = {
   removePackageJson: function(workspace) {
@@ -10,17 +11,27 @@ module.exports = {
     }
   },
 
-  createPackageJson: function(projectJson) {
+  createPackageJson: function(projectJson, additionalDeps) {
     var packageJson = {
       "name": "tmp",
       "version": "1.0.0",
       "description": "",
       "main": "index.js",
-      "scripts": {},
+      "scripts": {
+        "start": "node index.js"
+      },
       "keywords": [],
       "author": "",
-      "license": "ISC",
+      "license": "UNLICENSED",
       "dependencies": {}
+    }
+
+    packageJson.name = projectJson.build;
+
+    if(!_.isNil(additionalDeps)) {
+      Object.keys(additionalDeps).forEach(function(dep) {
+        packageJson.dependencies[dep] = additionalDeps[dep];
+      });
     }
 
     projectJson.packages.forEach(function(dep) {
@@ -30,8 +41,8 @@ module.exports = {
     return packageJson;
   },
 
-  writePackageJson: function(workspace, projectJson) {
-    var packageJson = this.createPackageJson(projectJson);
+  writePackageJson: function(workspace, projectJson, additionalDeps) {
+    var packageJson = this.createPackageJson(projectJson, additionalDeps);
     fs.writeFileSync(path.join(workspace, "package.json"), JSON.stringify(packageJson, null, 2));
   },
 
@@ -39,9 +50,9 @@ module.exports = {
     var code = execSync('npm install', {"cwd": workspace});
   },
 
-  update: function(workspace, projectJson) {
+  update: function(workspace, projectJson, additionalDeps) {
     this.removePackageJson(workspace);
-    this.writePackageJson(workspace, projectJson);
+    this.writePackageJson(workspace, projectJson, additionalDeps);
     this.installPackageJson(workspace);
   }
 };

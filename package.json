@@ -1,5 +1,5 @@
 {
-  "name": "Bliss UI",
+  "name": "BlissUI",
   "version": "0.2.0",
   "description": "UI design for creatives",
   "main": "./src/compiler/react/electron.js",
@@ -39,6 +39,7 @@
     "electron-log": "^2.0.0",
     "express": "^4.15.2",
     "font-awesome": "^4.7.0",
+    "fs-utils": "^0.7.0",
     "glob": "^7.1.1",
     "js-beautify": "^1.6.11",
     "lodash": "^4.17.4",
