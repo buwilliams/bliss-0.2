@@ -19,7 +19,7 @@ function createWindow(port) {
 
   win = new BrowserWindow({
     title: "Bliss",
-    width: 1280,
+    width: 1400,
     height: 720,
     autoHideMenuBar: true,
     useContentSize: true,
@@ -83,16 +83,21 @@ function createWindow(port) {
 }
 
 function init() {
-  var defaultUserData = path.join(app.getPath("appData"), 'bliss.json');
-  var defaultPort = '3456';
-  var defaultWorkspace = path.join(app.getPath("home"), "bliss");
+  var userDataPath = path.join(app.getPath("appData"), 'bliss.json');
 
-  const db = low(defaultUserData);
-  db.defaults({ port: defaultPort, workspace: defaultWorkspace}).write();
+  var userDataDefaults = {
+    port: '3456',
+    workspace: path.join(app.getPath("home"), "bliss"),
+    npm_path: '/usr/local/bin/npm'
+  };
+
+  const db = low(userDataPath);
+  db.defaults(userDataDefaults).write();
 
   var options = {
     port: db.get('port').value(),
     workspace: db.get('workspace').value(),
+    npm_path: db.get('npm_path').value(),
     app: path.join(__dirname, '..', '..', '..', 'build', 'bliss'),
     node_modules: path.join(__dirname, '..', '..', '..', 'node_modules')
   };

@@ -39,7 +39,7 @@ module.exports = {
     css.write(path.join(outputPath, 'css'), projectJson, startId);
   },
 
-  dist: function(workspace, projectJson, componentId) {
+  dist: function(workspace, npmPath, projectJson, componentId) {
     // similar to export
     var projectName = str.getSnake(projectJson.name);
     var outputPath = path.join(workspace, 'dist', projectName);

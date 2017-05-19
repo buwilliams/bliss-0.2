@@ -46,13 +46,17 @@ module.exports = {
     fs.writeFileSync(path.join(workspace, "package.json"), JSON.stringify(packageJson, null, 2));
   },
 
-  installPackageJson: function(workspace) {
-    var code = execSync('npm install', {"cwd": workspace});
+  installPackageJson: function(workspace, npmPath) {
+    try {
+      var code = execSync(`${npmPath} install`, {"cwd": workspace});
+    } catch(e){
+      console.log('Error launching npm', e);
+    }
   },
 
-  update: function(workspace, projectJson, additionalDeps) {
+  update: function(workspace, npmPath, projectJson, additionalDeps) {
     this.removePackageJson(workspace);
     this.writePackageJson(workspace, projectJson, additionalDeps);
-    this.installPackageJson(workspace);
+    this.installPackageJson(workspace, npmPath);
   }
 };
