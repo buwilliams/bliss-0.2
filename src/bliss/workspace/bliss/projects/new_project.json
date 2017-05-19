@@ -43,7 +43,24 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "blue"
+            },
+            {
+              "name": "color",
+              "value": "white"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "5px"
+            }
+          ]
         }
       ],
       "js": [],

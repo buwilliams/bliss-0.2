@@ -27,7 +27,7 @@ module.exports = function(options) {
     var compiler = getCompiler(projectJson);
     compiler.export(options.workspace, projectJson, null);
     res.send({success: true});
-    console.log(`Built component '${projectJson.name}'`);
+    console.log(`Exported component '${projectJson.name}'`);
   });
 
   app.post('/save', function (req, res) {

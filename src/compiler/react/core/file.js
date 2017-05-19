@@ -1,10 +1,11 @@
-var path = require('path');
-var fs = require('fs');
-var mkdirp = require('mkdirp');
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const str = require('./str.js');
 
 module.exports = {
   formatJsonName: function(name) {
-    return name.replace(/\s/g, '_').toLowerCase() + '.json';
+    return str.getSnake(name) + '.json';
   },
   readProject: function(workspace, name) {
     var fullpath = path.join(workspace, 'projects',
