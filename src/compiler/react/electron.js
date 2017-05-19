@@ -87,8 +87,7 @@ function init() {
 
   var userDataDefaults = {
     port: '3456',
-    workspace: path.join(app.getPath("home"), "bliss"),
-    npm_path: '/usr/local/bin/npm'
+    workspace: path.join(app.getPath("home"), "bliss")
   };
 
   const db = low(userDataPath);
@@ -97,7 +96,6 @@ function init() {
   var options = {
     port: db.get('port').value(),
     workspace: db.get('workspace').value(),
-    npm_path: db.get('npm_path').value(),
     app: path.join(__dirname, '..', '..', '..', 'build', 'bliss'),
     node_modules: path.join(__dirname, '..', '..', '..', 'node_modules')
   };

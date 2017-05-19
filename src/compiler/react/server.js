@@ -33,7 +33,7 @@ module.exports = function(options) {
   app.post('/dist', function (req, res) {
     var projectJson = req.body;
     var compiler = getCompiler(projectJson);
-    compiler.dist(options.workspace, options.npm_path, projectJson, null);
+    compiler.dist(options.workspace, projectJson, null);
     res.send({success: true});
     console.log(`Created dist '${projectJson.name}'`);
   });
@@ -48,7 +48,7 @@ module.exports = function(options) {
   app.get('/load', function (req, res) {
     var name = req.query.name;
     var json = file.readProject(options.workspace, name);
-    npm.update(options.workspace, options.npm_path, json);
+    npm.update(options.workspace, json);
     res.send({success: true, project: json});
     console.log(`Loaded '${json.name}'`);
   });

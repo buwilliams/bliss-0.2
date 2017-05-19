@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 const _ = require('lodash');
+const fixPath = require('fix-path');
 
 module.exports = {
   removePackageJson: function(workspace) {
@@ -46,17 +47,14 @@ module.exports = {
     fs.writeFileSync(path.join(workspace, "package.json"), JSON.stringify(packageJson, null, 2));
   },
 
-  installPackageJson: function(workspace, npmPath) {
-    try {
-      var code = execSync(`${npmPath} install`, {"cwd": workspace});
-    } catch(e){
-      console.log('Error launching npm', e);
-    }
+  installPackageJson: function(workspace) {
+    fixPath();
+    var code = execSync(`npm install`, {"cwd": workspace});
   },
 
-  update: function(workspace, npmPath, projectJson, additionalDeps) {
+  update: function(workspace, projectJson, additionalDeps) {
     this.removePackageJson(workspace);
     this.writePackageJson(workspace, projectJson, additionalDeps);
-    this.installPackageJson(workspace, npmPath);
+    this.installPackageJson(workspace);
   }
 };
