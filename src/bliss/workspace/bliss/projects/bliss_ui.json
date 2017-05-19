@@ -1371,15 +1371,15 @@
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.exportProject();\n  }\n};"
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.createProjectDist();\n  }\n};"
         },
         {
           "name": "setStatus",
           "body": "function(message) {\n  app.setState(function() {\n  \tapp.state.status = message;\n  });\n}"
         },
         {
-          "name": "exportProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Exported project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "name": "createProjectDist",
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Creating dist of project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/dist',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Dist of project ' + proj.name + ' finished.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [

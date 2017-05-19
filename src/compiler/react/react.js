@@ -23,7 +23,7 @@ module.exports = {
     var outputPath = path.join(workspace, 'components', projectName);
 
     // resets all the file names
-    projectJson.build = "index";
+    projectJson.build = projectName;
 
     // mkdirs
     mkdirp.sync(outputPath);
@@ -35,5 +35,31 @@ module.exports = {
     html.write(outputPath, projectJson, startId);
     js.write(path.join(outputPath, 'js'), projectJson, startId);
     css.write(path.join(outputPath, 'css'), projectJson, startId);
+  },
+
+  dist: function(workspace, projectJson, componentId) {
+    // similar to export
+    var projectName = str.getSnake(projectJson.name);
+    var outputPath = path.join(workspace, 'dist', projectName);
+    var sourcePath = path.join(outputPath, 'app');
+
+    // resets all the file names
+    projectJson.build = projectName;
+
+    // mkdirs
+    mkdirp.sync(sourcePath);
+    mkdirp.sync(path.join(sourcePath, 'js'));
+    mkdirp.sync(path.join(sourcePath, 'css'));
+
+    var startId = this.getComponentId(projectJson, componentId);
+
+    html.write(sourcePath, projectJson, startId);
+    js.write(path.join(sourcePath, 'js'), projectJson, startId);
+    css.write(path.join(sourcePath, 'css'), projectJson, startId);
+
+    // write package.json
+    // download deps
+    // include a web server
+    // download as zip file?
   }
 };

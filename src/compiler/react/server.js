@@ -30,6 +30,14 @@ module.exports = function(options) {
     console.log(`Exported component '${projectJson.name}'`);
   });
 
+  app.post('/dist', function (req, res) {
+    var projectJson = req.body;
+    var compiler = getCompiler(projectJson);
+    compiler.dist(options.workspace, projectJson, null);
+    res.send({success: true});
+    console.log(`Created dist '${projectJson.name}'`);
+  });
+
   app.post('/save', function (req, res) {
     var project = req.body;
     file.writeProject(options.workspace, project);

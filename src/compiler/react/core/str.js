@@ -16,7 +16,6 @@ module.exports = {
   getSnake: function(str) {
     var newStr = str.replace(/[^a-z0-9\s_]/gi, '').trim();
     newStr = newStr.replace(/\s/g, '_').toLowerCase();
-    console.log('getSnake', str, newStr);
     return newStr;
   },
 
