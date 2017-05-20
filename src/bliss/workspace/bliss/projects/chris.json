@@ -1,5 +1,5 @@
 {
-  "name": "New Project",
+  "name": "Chris",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
@@ -36,9 +36,9 @@
   "components": {
     "1": {
       "id": "1",
-      "name": "File Explorer",
+      "name": "New Project",
       "element": "div",
-      "text": null,
+      "text": "Hey, Chris",
       "attributes": [],
       "css": [
         {
