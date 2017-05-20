@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const npm = require('./core/npm.js');
@@ -57,6 +58,19 @@ module.exports = function(options) {
     var json = file.listProjects(options.workspace);
     res.send({success: true, projects: json});
     console.log(`Listed projects`);
+  });
+
+  app.get('/explore', function(req, res) {
+    var pathName = req.query.path;
+    var list = fs.readdirSync(path.join(options.workspace, pathName));
+    list = list.map(function(entry) {
+      return {
+        file: fs.statSync(path.join(options.workspace, pathName, entry)).isFile(),
+        path: path.join(pathName),
+        name: entry
+      };
+    });
+    res.send({success: true, entries: list});
   });
 
   app.use('/designer', express.static(options.workspace));
