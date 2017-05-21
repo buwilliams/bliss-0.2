@@ -53,8 +53,15 @@ module.exports = {
     out += `  ReactDOM.render(app.rootComponent(), document.getElementById('app'));\n`;
     out += `}\n`;
 
+    // let's think about state management using a queue
+    // setState() invoked
+    // push fn onto the stack
+    // need a variable to track if it's being processed
+    // if stack is not empty and I'm not working on anything
+
     // app.setState(fn)
     out += `app.setState = function(fn) {\n`;
+    out += `  console.log('setState() invoked.');\n`;
     out += `  fn();\n`;
     out += `  app.render();\n`;
     out += `}\n`;
