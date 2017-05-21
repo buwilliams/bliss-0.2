@@ -53,18 +53,32 @@ module.exports = {
     out += `  ReactDOM.render(app.rootComponent(), document.getElementById('app'));\n`;
     out += `}\n`;
 
-    // let's think about state management using a queue
-    // setState() invoked
-    // push fn onto the stack
-    // need a variable to track if it's being processed
-    // if stack is not empty and I'm not working on anything
+    // app.setState(fn, callback)
+    out += `app.stateQueue = [];\n`;
+    out += `app.stateProcessing = false;\n`;
+    out += `app.setState = function(fn, callback) {\n`;
+    out += `console.log('new setState() invoked.');\n`;
+    out += `app.stateQueue.push({ fn: fn, callback: callback });\n`;
+    out += `var _process = function() {\n`;
+    out += `app.stateProcessing = true;\n`;
+    out += `var _item = app.stateQueue.shift();\n`;
+    out += `_item.fn();\n`;
+    out += `app.render();\n`;
+    out += `if(typeof _item.callback !== "undefined") _item.callback();\n`;
+    out += `if(app.stateQueue.length === 0) {\n`;
+    out += `app.stateProcessing = false;\n`;
+    out += `} else { _process(); }\n`;
+    out += `};\n`;
+    out += `if(!app.stateProcessing) _process();\n`;
+    out += `};\n`;
 
-    // app.setState(fn)
+    /*
     out += `app.setState = function(fn) {\n`;
     out += `  console.log('setState() invoked.');\n`;
     out += `  fn();\n`;
     out += `  app.render();\n`;
     out += `}\n`;
+    */
 
     // app.load
     out += `app.load = function() {\n`;

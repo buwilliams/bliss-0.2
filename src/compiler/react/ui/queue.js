@@ -1,35 +1,22 @@
-module.exports = {
-  queue: [],
-  processing: false,
-  process: function(fn, callback) {
-    var that = this;
-    this.queue.push({ fn: fn, callback: callback });
+var app = {};
 
-    var _process = function() {
-      that.processing = true;
-      // pull item off the queue
-      var _item = that.queue.shift();
+app.stateQueue = [];
+app.stateProcessing = false;
+app.setState = function(fn, callback) {
+  app.stateQueue.push({ fn: fn, callback: callback });
+  var _process = function() {
+    app.stateProcessing = true;
+    var _item = app.stateQueue.shift();
+    _item.fn();
+    // TODO: render the app
+    if(typeof _item.callback !== "undefined") _item.callback();
+    if(app.stateQueue.length === 0) {
+      app.stateProcessing = false;
+    } else { _process(); }
+  };
+  if(!app.stateProcessing) _process();
+};
 
-      // run the method
-      _item.fn();
+app.stack = function(fn) { fn(); };
 
-      // render the app
-      // console.log('rendering');
-
-      // invoke callback
-      if(typeof _item.callback !== "undefined") _item.callback();
-
-      if(that.queue.length === 0) {
-        that.processing = false;
-      } else {
-        _process();
-      }
-    };
-
-    if(!this.processing) _process();
-  },
-
-  oldProcess: function(fn) {
-    fn();
-  }
-}
+module.exports = app;

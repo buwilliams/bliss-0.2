@@ -42,6 +42,7 @@
     "font-awesome": "^4.7.0",
     "fs-utils": "^0.7.0",
     "glob": "^7.1.1",
+    "jquery": "^3.2.1",
     "js-beautify": "^1.6.11",
     "lodash": "^4.17.4",
     "lowdb": "^0.16.0",

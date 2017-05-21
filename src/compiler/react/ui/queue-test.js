@@ -4,10 +4,10 @@ describe('queue', function() {
   it('should display single log statement', function() {
     var got = [];
     var expected = [1, 2, 3, 4, 5];
-    queue.process(function() {
-      queue.process(function() { got.push(2); });
-      queue.process(function() {
-        queue.process(function() { got.push(4); }, function() { got.push(5); });
+    queue.setState(function() {
+      queue.setState(function() { got.push(2); });
+      queue.setState(function() {
+        queue.setState(function() { got.push(4); }, function() { got.push(5); });
         got.push(3);
       });
       got.push(1);
@@ -18,9 +18,9 @@ describe('queue', function() {
   it('should display single log statement', function() {
     var got = [];
     var expected = [3, 2, 1];
-    queue.oldProcess(function() {
-      queue.oldProcess(function() {
-        queue.oldProcess(function() {
+    queue.stack(function() {
+      queue.stack(function() {
+        queue.stack(function() {
           got.push(3);
         });
         got.push(2);
