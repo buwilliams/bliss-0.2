@@ -20,7 +20,24 @@ var BlissTree = {
     },
 
     componentWillReceiveProps: function(nextProps) {
-      this.setState(this.resetState(nextProps));
+      return;
+      
+      var state = {
+        focused: false,
+        selected: this.props.data.rootId,
+        drag_from: null,
+        drag_to: null,
+        collapsed: {},
+        dragOver: {}
+      };
+
+      Object.keys(this.props.data.components).forEach(function(k) {
+        state.collapsed[k] = true;
+        state.dragOver[k] = false;
+        state.dragOver[k+"_between"] = false;
+      });
+
+      this.setState(state);
     },
 
     componentDidMount: function() {

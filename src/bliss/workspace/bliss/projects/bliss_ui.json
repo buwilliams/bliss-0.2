@@ -448,6 +448,10 @@
         {
           "name": "setThis",
           "body": "function(scope, props) {\n  var that = app;\n  return function() {\n    return that;\n  };\n}"
+        },
+        {
+          "name": "getSelected",
+          "body": "function(scope, attributes) {\n  var selected = app._state.get('internal').getData('activeComponent');\n  return selected;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -478,6 +482,10 @@
         {
           "name": "_this",
           "value": "setThis"
+        },
+        {
+          "name": "selected",
+          "value": "getSelected"
         }
       ],
       "next": null,
