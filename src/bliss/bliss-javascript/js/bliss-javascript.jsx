@@ -16,12 +16,12 @@ var BlissJavascript = {
          typeof this.props.component !== "undefined" &&
          this.props.component !== null) {
         if(newProps.component.id !== this.props.component.id) {
-          this.setState({selected: null});
+          this.setState({selected: null, CodeMirror: React.createFactory(CodeMirrorEditor)});
         } else {
           return;
         }
       } else {
-        this.setState({selected: null});
+        this.setState({selected: null, CodeMirror: React.createFactory(CodeMirrorEditor)});
       }
     },
 

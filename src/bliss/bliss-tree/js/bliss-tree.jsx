@@ -3,7 +3,7 @@ var BlissTree = {
     getInitialState: function() {
       var state = {
         focused: false,
-        selected: null,
+        selected: this.props.data.rootId,
         drag_from: null,
         drag_to: null,
         collapsed: {},
@@ -16,9 +16,11 @@ var BlissTree = {
         state.dragOver[k+"_between"] = false;
       });
 
-      state.selected = this.props.data.rootId;
-
       return state;
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+      this.setState(this.resetState(nextProps));
     },
 
     componentDidMount: function() {
