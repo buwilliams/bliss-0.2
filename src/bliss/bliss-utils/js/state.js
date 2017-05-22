@@ -1,4 +1,4 @@
-var state = (function() {
+var state = function() {
   var _state = {};
 
   var resetState = function() {
@@ -131,4 +131,4 @@ var state = (function() {
     create: createState,
     reset: resetState
   };
-})();
+}

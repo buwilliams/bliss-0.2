@@ -57,7 +57,9 @@ module.exports = {
     out += `app.stateQueue = [];\n`;
     out += `app.stateProcessing = false;\n`;
     out += `app.setState = function(fn, callback) {\n`;
+    out += `if(typeof app.js.log !== 'undefined') {\n`;
     out += `console.log('new setState() invoked.', app);\n`;
+    out += `}\n`;
     out += `app.stateQueue.push({ fn: fn, callback: callback });\n`;
     out += `var _process = function() {\n`;
     out += `app.stateProcessing = true;\n`;
