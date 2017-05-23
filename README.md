@@ -10,6 +10,9 @@ Painless Front-end Design & Development
 
 ## Todo this week
 
+- bug: flattenChildren(...): Encountered two children with the same key, `1:$1`. Child keys must be unique; when two children share a key, only the first child will be used.
+- bug: switching projects when global_js selected, bliss-tree
+
 - feature: app state manager
 - feature: api manager
 - feature: creating and including components (refactor existing code)
