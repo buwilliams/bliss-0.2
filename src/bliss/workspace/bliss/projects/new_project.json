@@ -36,9 +36,9 @@
   "components": {
     "1": {
       "id": "1",
-      "name": "File Explorer",
+      "name": "New Project",
       "element": "div",
-      "text": null,
+      "text": "Hello, world!",
       "attributes": [],
       "css": [
         {
