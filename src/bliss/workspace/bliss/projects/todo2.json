@@ -1,0 +1,276 @@
+{
+  "name": "Todo2",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "nextId": 9,
+  "rootId": "1",
+  "externalCss": [
+    "css/reset.css"
+  ],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js"
+  ],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() { app.render(); }"
+    }
+  ],
+  "cssVars": [],
+  "css": [],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "Todo app",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#eee"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "6",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "new todo",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "new todo..."
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "padding",
+              "value": "15px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "border-radius",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "14px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "5",
+      "previous": "6",
+      "child": null,
+      "parent": "1"
+    },
+    "3": {
+      "id": "3",
+      "name": "unordered list",
+      "element": "ul",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "5",
+      "child": "4",
+      "parent": "1"
+    },
+    "4": {
+      "id": "4",
+      "name": "list item",
+      "element": "li",
+      "text": "new list item -",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "7",
+      "parent": "3"
+    },
+    "5": {
+      "id": "5",
+      "name": "todo header",
+      "element": "h3",
+      "text": "List of Todos",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "3",
+      "previous": "2",
+      "child": null,
+      "parent": "1"
+    },
+    "6": {
+      "id": "6",
+      "name": "new todo header",
+      "element": "h3",
+      "text": "Create new todo",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "2",
+      "previous": null,
+      "child": null,
+      "parent": "1"
+    },
+    "7": {
+      "id": "7",
+      "name": "delete todo",
+      "element": "a",
+      "text": "delete",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "8",
+      "previous": null,
+      "child": null,
+      "parent": "4"
+    },
+    "8": {
+      "id": "8",
+      "name": "mark completed",
+      "element": "a",
+      "text": "mark completed",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "7",
+      "child": null,
+      "parent": "4"
+    }
+  }
+}

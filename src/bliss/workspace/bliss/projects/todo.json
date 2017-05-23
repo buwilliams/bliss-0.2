@@ -25,7 +25,17 @@
   ],
   "state": {},
   "cssVars": [],
-  "css": [],
+  "css": [
+    {
+      "selector": "body",
+      "properties": [
+        {
+          "name": "background-color",
+          "value": "#3c3338"
+        }
+      ]
+    }
+  ],
   "js": [
     {
       "name": "init",
@@ -40,31 +50,20 @@
       "body": "function (rawName) {\n    var name = rawName.replace(/[^\\w]/gi, '');\n    return app.state._managed[name];\n  }"
     }
   ],
-  "load": ["init"],
+  "load": [
+    "init"
+  ],
   "components": {
     "1": {
       "id": "1",
       "name": "todo",
       "element": "div",
       "text": "",
-      "attributes": [
-        {
-          "name": "id",
-          "value": "todoContainer"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
-          "selector": "#id_1",
-          "properties": [
-            {"name": "top", "value": "0"},
-            {"name": "left", "value": "0"},
-            {"name": "right", "value": "0"},
-            {"name": "background-color", "value": "#3c3338"},
-            {"name": "padding", "value": "50px"},
-            {"name": "bottom", "value": "0"},
-            {"name": "position", "value": "absolute"}
-          ]
+          "selector": "$id",
+          "properties": []
         }
       ],
       "js": [],
@@ -83,26 +82,76 @@
       "ifFn": null,
       "repeatFn": "repeatTodos",
       "attributes": [],
-      "css": {
-        "padding": "20px",
-        "background-color": "blue",
-        "color": "#fff",
-        "font-size": "2em",
-        "cursor": "pointer",
-        "width": "100%",
-        "display": "block"
-      },
-      "js": {
-        "repeatTodos": "function(scope, attributes) {\n  return app.todo.getAll();\n};\n",
-        "showTodo": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  return t.label;\n};\n",
-        "getStyles": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  var styles = { 'backgroundColor': t.color };\n  \n  if(t.done === true) {\n    styles.backgroundColor = '#444';\n    styles.textDecoration = 'line-through';\n  }\n  \n  return styles;\n}",
-        "handleClick": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  \n  return function(e) {\n    app.setState(function() {\n      app.todo.update(t.id, { 'done': !t.done });\n    });\n  }\n};\n",
-        "getKey": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  return t.id;\n}"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "20px"
+            },
+            {
+              "name": "background-color",
+              "value": "blue"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "font-size",
+              "value": "2em"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeatTodos",
+          "body": "function(scope, attributes) {\n  return app.todo.getAll();\n};\n"
+        },
+        {
+          "name": "showTodo",
+          "body": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  return t.label;\n};\n"
+        },
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  var styles = { 'backgroundColor': t.color };\n  \n  if(t.done === true) {\n    styles.backgroundColor = '#444';\n    styles.textDecoration = 'line-through';\n  }\n  \n  return styles;\n}"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  \n  return function(e) {\n    app.setState(function() {\n      app.todo.update(t.id, { 'done': !t.done });\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getKey",
+          "body": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  return t.id;\n}"
+        }
+      ],
       "dynamicAttributes": [
-        {"name": "style", "value": "getStyles"},
-        {"name": "onClick", "value": "handleClick"},
-        {"name": "key", "value": "getKey"}
+        {
+          "name": "style",
+          "value": "getStyles"
+        },
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        },
+        {
+          "name": "key",
+          "value": "getKey"
+        }
       ],
       "next": null,
       "previous": null,
@@ -118,26 +167,80 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": {
-        "display": "block",
-        "padding": "20px",
-        "border": "none",
-        "color": "#fff",
-        "font-size": "2em",
-        "outline": "none",
-        "background-color": "#3ba97b",
-        "width": "100%"
-      },
-      "js": {
-        "handleChange": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.todo.setData('currentTodo', e.target.value);\n    });\n  }\n};\n",
-        "getValue": "function(scope, attributes) {\n  return app.todo.getData('currentTodo');\n}",
-        "changeHue": "function(rgb, degree) {\n  function changeHue(rgb, degree) {\n    var hsl = rgbToHSL(rgb);\n    hsl.h += degree;\n    if (hsl.h > 360) {\n      hsl.h -= 360;\n    }\n    else if (hsl.h < 0) {\n      hsl.h += 360;\n    }\n    return hslToRGB(hsl);\n  }\n\n  // exepcts a string and returns an object\n  function rgbToHSL(rgb) {\n      // strip the leading # if it's there\n      rgb = rgb.replace(/^\\s*#|\\s*$/g, '');\n\n      // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`\n      if(rgb.length == 3){\n          rgb = rgb.replace(/(.)/g, '$1$1');\n      }\n\n      var r = parseInt(rgb.substr(0, 2), 16) / 255,\n          g = parseInt(rgb.substr(2, 2), 16) / 255,\n          b = parseInt(rgb.substr(4, 2), 16) / 255,\n          cMax = Math.max(r, g, b),\n          cMin = Math.min(r, g, b),\n          delta = cMax - cMin,\n          l = (cMax + cMin) / 2,\n          h = 0,\n          s = 0;\n\n      if (delta == 0) {\n          h = 0;\n      }\n      else if (cMax == r) {\n          h = 60 * (((g - b) / delta) % 6);\n      }\n      else if (cMax == g) {\n          h = 60 * (((b - r) / delta) + 2);\n      }\n      else {\n          h = 60 * (((r - g) / delta) + 4);\n      }\n\n      if (delta == 0) {\n          s = 0;\n      }\n      else {\n          s = (delta/(1-Math.abs(2*l - 1)))\n      }\n\n      return {\n          h: h,\n          s: s,\n          l: l\n      }\n  }\n\n  // expects an object and returns a string\n  function hslToRGB(hsl) {\n      var h = hsl.h,\n          s = hsl.s,\n          l = hsl.l,\n          c = (1 - Math.abs(2*l - 1)) * s,\n          x = c * ( 1 - Math.abs((h / 60 ) % 2 - 1 )),\n          m = l - c/ 2,\n          r, g, b;\n\n      if (h < 60) {\n          r = c;\n          g = x;\n          b = 0;\n      }\n      else if (h < 120) {\n          r = x;\n          g = c;\n          b = 0;\n      }\n      else if (h < 180) {\n          r = 0;\n          g = c;\n          b = x;\n      }\n      else if (h < 240) {\n          r = 0;\n          g = x;\n          b = c;\n      }\n      else if (h < 300) {\n          r = x;\n          g = 0;\n          b = c;\n      }\n      else {\n          r = c;\n          g = 0;\n          b = x;\n      }\n\n      r = normalize_rgb_value(r, m);\n      g = normalize_rgb_value(g, m);\n      b = normalize_rgb_value(b, m);\n\n      return rgbToHex(r,g,b);\n  }\n\n  function normalize_rgb_value(color, m) {\n      color = Math.floor((color + m) * 255);\n      if (color < 0) {\n          color = 0;\n      }\n      return color;\n  }\n\n  function rgbToHex(r, g, b) {\n      return \"#\" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);\n  }\n  \n  return changeHue(rgb, degree);\n}",
-        "handleKeyDown": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    var key = e.which, ENTER = 13, ESCAPE = 27;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    app.setState(function() {\n      if(key === ENTER) {\n        app.todo.setData(\n          'currentColor',\n          comp.changeHue(app.todo.getData('currentColor'), 15)\n        );\n        app.todo.create({\n          \"label\": app.todo.getData('currentTodo'),\n          \"done\": false,\n          \"color\": app.todo.getData('currentColor')\n        });\n      }\n      app.todo.setData('currentTodo', '');\n    });\n  }\n};\n"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "",
+              "value": ""
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "padding",
+              "value": "20px"
+            },
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "font-size",
+              "value": "2em"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "background-color",
+              "value": "#3ba97b"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.todo.setData('currentTodo', e.target.value);\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.todo.getData('currentTodo');\n}"
+        },
+        {
+          "name": "changeHue",
+          "body": "function(rgb, degree) {\n  function changeHue(rgb, degree) {\n    var hsl = rgbToHSL(rgb);\n    hsl.h += degree;\n    if (hsl.h > 360) {\n      hsl.h -= 360;\n    }\n    else if (hsl.h < 0) {\n      hsl.h += 360;\n    }\n    return hslToRGB(hsl);\n  }\n\n  // exepcts a string and returns an object\n  function rgbToHSL(rgb) {\n      // strip the leading # if it's there\n      rgb = rgb.replace(/^\\s*#|\\s*$/g, '');\n\n      // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`\n      if(rgb.length == 3){\n          rgb = rgb.replace(/(.)/g, '$1$1');\n      }\n\n      var r = parseInt(rgb.substr(0, 2), 16) / 255,\n          g = parseInt(rgb.substr(2, 2), 16) / 255,\n          b = parseInt(rgb.substr(4, 2), 16) / 255,\n          cMax = Math.max(r, g, b),\n          cMin = Math.min(r, g, b),\n          delta = cMax - cMin,\n          l = (cMax + cMin) / 2,\n          h = 0,\n          s = 0;\n\n      if (delta == 0) {\n          h = 0;\n      }\n      else if (cMax == r) {\n          h = 60 * (((g - b) / delta) % 6);\n      }\n      else if (cMax == g) {\n          h = 60 * (((b - r) / delta) + 2);\n      }\n      else {\n          h = 60 * (((r - g) / delta) + 4);\n      }\n\n      if (delta == 0) {\n          s = 0;\n      }\n      else {\n          s = (delta/(1-Math.abs(2*l - 1)))\n      }\n\n      return {\n          h: h,\n          s: s,\n          l: l\n      }\n  }\n\n  // expects an object and returns a string\n  function hslToRGB(hsl) {\n      var h = hsl.h,\n          s = hsl.s,\n          l = hsl.l,\n          c = (1 - Math.abs(2*l - 1)) * s,\n          x = c * ( 1 - Math.abs((h / 60 ) % 2 - 1 )),\n          m = l - c/ 2,\n          r, g, b;\n\n      if (h < 60) {\n          r = c;\n          g = x;\n          b = 0;\n      }\n      else if (h < 120) {\n          r = x;\n          g = c;\n          b = 0;\n      }\n      else if (h < 180) {\n          r = 0;\n          g = c;\n          b = x;\n      }\n      else if (h < 240) {\n          r = 0;\n          g = x;\n          b = c;\n      }\n      else if (h < 300) {\n          r = x;\n          g = 0;\n          b = c;\n      }\n      else {\n          r = c;\n          g = 0;\n          b = x;\n      }\n\n      r = normalize_rgb_value(r, m);\n      g = normalize_rgb_value(g, m);\n      b = normalize_rgb_value(b, m);\n\n      return rgbToHex(r,g,b);\n  }\n\n  function normalize_rgb_value(color, m) {\n      color = Math.floor((color + m) * 255);\n      if (color < 0) {\n          color = 0;\n      }\n      return color;\n  }\n\n  function rgbToHex(r, g, b) {\n      return \"#\" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);\n  }\n  \n  return changeHue(rgb, degree);\n}"
+        },
+        {
+          "name": "handleKeyDown",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    var key = e.which, ENTER = 13, ESCAPE = 27;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    app.setState(function() {\n      if(key === ENTER) {\n        app.todo.setData(\n          'currentColor',\n          comp.changeHue(app.todo.getData('currentColor'), 15)\n        );\n        app.todo.create({\n          \"label\": app.todo.getData('currentTodo'),\n          \"done\": false,\n          \"color\": app.todo.getData('currentColor')\n        });\n      }\n      app.todo.setData('currentTodo', '');\n    });\n  }\n};\n"
+        }
+      ],
       "dynamicAttributes": [
-        {"name": "value", "value": "getValue"},
-        {"name": "onChange", "value": "handleChange"},
-        {"name": "onKeyDown", "value": "handleKeyDown"}
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "onKeyDown",
+          "value": "handleKeyDown"
+        }
       ],
       "next": "8",
       "previous": "9",
@@ -153,15 +256,38 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        {"name": "class", "value": "float-left"}
+        {
+          "name": "class",
+          "value": "float-left"
+        }
       ],
-      "css": {
-        "margin": "0 auto",
-        "color": "#fff",
-        "text-transform": "uppercase",
-        "padding": "0 0 10px 0",
-        "display": "inline-block"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin",
+              "value": "0 auto"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "padding",
+              "value": "0 0 10px 0"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "9",
@@ -178,10 +304,25 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": {
-        "margin": "0 auto",
-        "width": "75%"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin",
+              "value": "50px auto 0 auto"
+            },
+            {
+              "name": "width",
+              "value": "75%"
+            },
+            {
+              "name": "position",
+              "value": "relative"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -198,10 +339,21 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": {
-        "overflow": "auto",
-        "height": "calc(100vh - 250px)"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 250px)"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -218,19 +370,45 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        {"name": "href", "value": "#"}
+        {
+          "name": "href",
+          "value": "#"
+        }
       ],
-      "css": {
-        "color": "#fff",
-        "display": "inline-block",
-        "float": "right",
-        "margin-top": "15px"
-      },
-      "js": {
-        "handleClearCompleted": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      var ts = app.todo.getAll();\n      var dels = [];\n      for(var i=0; i<ts.length; i++) {\n        var t = ts[i];\n        if(t.done === true) dels.push(t.id);\n      }\n      \n      for(var i=0; i<dels.length; i++) {\n        app.todo.remove(dels[i]);\n      }\n    });\n  }\n};\n"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "float",
+              "value": "right"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClearCompleted",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      var ts = app.todo.getAll();\n      var dels = [];\n      for(var i=0; i<ts.length; i++) {\n        var t = ts[i];\n        if(t.done === true) dels.push(t.id);\n      }\n      \n      for(var i=0; i<dels.length; i++) {\n        app.todo.remove(dels[i]);\n      }\n    });\n  }\n};\n"
+        }
+      ],
       "dynamicAttributes": [
-        {"name": "onClick", "value": "handleClearCompleted"}
+        {
+          "name": "onClick",
+          "value": "handleClearCompleted"
+        }
       ],
       "next": "4",
       "previous": "6",
@@ -246,20 +424,49 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        {"name": "href", "value": "#"}
+        {
+          "name": "href",
+          "value": "#"
+        }
       ],
-      "css": {
-        "float": "right",
-        "color": "#fff",
-        "display": "inline-block",
-        "font-size": "12px",
-        "margin-top": "15px"
-      },
-      "js": {
-        "handleDelete": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  \n  return function(e) {\n    e.stopPropagation();\n    app.setState(function() {\n    \tapp.todo.remove(t.id);\n    });\n  }\n};\n"
-      },
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "float",
+              "value": "right"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "font-size",
+              "value": "12px"
+            },
+            {
+              "name": "margin-top",
+              "value": "15px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleDelete",
+          "body": "function(scope, attributes) {\n  var t = scope.repeatTodos[scope.repeatTodos_index];\n  \n  return function(e) {\n    e.stopPropagation();\n    app.setState(function() {\n    \tapp.todo.remove(t.id);\n    });\n  }\n};\n"
+        }
+      ],
       "dynamicAttributes": [
-        {"name": "onClick", "value": "handleDelete"}
+        {
+          "name": "onClick",
+          "value": "handleDelete"
+        }
       ],
       "next": null,
       "previous": null,
