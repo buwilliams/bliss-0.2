@@ -3,7 +3,6 @@ var BlissTree = {
     getInitialState: function() {
       var state = {
         focused: false,
-        selected: this.props.data.rootId,
         drag_from: null,
         drag_to: null,
         collapsed: {},
@@ -20,11 +19,9 @@ var BlissTree = {
     },
 
     componentWillReceiveProps: function(nextProps) {
-      return;
-      
+      if(this.props.data === nextProps.data) return;
+
       var state = {
-        focused: false,
-        selected: this.props.data.rootId,
         drag_from: null,
         drag_to: null,
         collapsed: {},
@@ -42,9 +39,6 @@ var BlissTree = {
 
     componentDidMount: function() {
       document.addEventListener("keydown", this.handleKey);
-      if(typeof this.props.onSelect !== "undefined") {
-        this.props.onSelect(this.state.selected);
-      }
     },
 
     componentWillUnmount: function() {
@@ -69,7 +63,6 @@ var BlissTree = {
 
     handleSelect: function(id, shouldUpdateCollapse, e) {
       var copyState = Object.assign({}, this.state);
-      copyState.selected = id;
 
       if(shouldUpdateCollapse) {
         if(this.isExpanded(id) && this.isSelected(id)) {
@@ -79,19 +72,13 @@ var BlissTree = {
         }
       }
 
-      if(typeof this.props.onSelect !== "undefined") {
-        this.props.onSelect(id);
-      }
+      this.props.onSelect(id);
 
       this.setState(copyState);
     },
 
     setSelected: function(id) {
-      this.setState({selected: id}, function() {
-        if(typeof this.props.onSelect !== "undefined") {
-          this.props.onSelect(id);
-        }
-      });
+      this.props.onSelect(id);
     },
 
     getLast: function(component) {
@@ -125,7 +112,7 @@ var BlissTree = {
     },
 
     moveSelectionUp: function() {
-      var component = this.get(this.state.selected);
+      var component = this.get(this.props.selected);
       if(this.hasPrev(component.id) &&
           (this.isCollapsed(component.previous) || !this.hasChild(component.previous))) {
         this.setSelected(component.previous);
@@ -143,8 +130,8 @@ var BlissTree = {
     },
 
     moveSelectionDown: function() {
-      var component = this.get(this.state.selected);
-      if(component.child !== null && this.state.collapsed[this.state.selected] !== true) {
+      var component = this.get(this.props.selected);
+      if(component.child !== null && this.state.collapsed[this.props.selected] !== true) {
         this.setSelected(component.child);
       } else if(component.next !== null) {
         this.setSelected(component.next);
@@ -163,34 +150,33 @@ var BlissTree = {
     },
 
     isSelected: function(id) {
-      return (this.state.selected === id);
+      return (this.props.selected === id);
     },
 
     collaspeSelection: function() {
       var copyState = Object.assign({}, this.state);
-      var component = this.get(this.state.selected);
+      var component = this.get(this.props.selected);
+      var newSelected = this.props.selected;
       if(component.child === null && component.parent !== null) {
         copyState.collapsed[component.parent] = true;
-        copyState.selected = component.parent;
-      } else if(this.state.collapsed[this.state.selected] === true && component.parent !== null) {
+        newSelected = component.parent;
+      } else if(this.state.collapsed[this.props.selected] === true && component.parent !== null) {
         copyState.collapsed[component.parent] = true;
-        copyState.selected = component.parent;
+        newSelected = component.parent;
       } else {
-        copyState.collapsed[this.state.selected] = true;
+        copyState.collapsed[this.props.selected] = true;
       }
       this.setState(copyState, function() {
-        this.setSelected(copyState.selected);
+        this.setSelected(newSelected);
       });
     },
 
     expandSelection: function() {
       var copyState = Object.assign({}, this.state);
-      if(copyState.collapsed[this.state.selected] === true) {
-        delete copyState.collapsed[this.state.selected];
+      if(copyState.collapsed[this.props.selected] === true) {
+        delete copyState.collapsed[this.props.selected];
       }
-      this.setState(copyState, function() {
-        this.setSelected(copyState.selected);
-      });
+      this.setState(copyState);
     },
 
     handleKey: function(e) {
@@ -275,10 +261,10 @@ var BlissTree = {
       var that = this;
 
       if(typeof this.props.onCreate !== "undefined") {
-        this.props.onCreate.call(this.props._this, this.state.selected);
+        this.props.onCreate.call(this.props._this, this.props.selected);
 
         var copyState = Object.assign({}, this.state);
-        var component = this.get(this.state.selected);
+        var component = this.get(this.props.selected);
         if(component.child !== null) {
           copyState.collapsed[component.id] = false;
         }
@@ -295,16 +281,16 @@ var BlissTree = {
       var that = this;
 
       if(typeof this.props.onClone !== "undefined") {
-        this.props.onClone.call(this.props._this, this.state.selected);
+        this.props.onClone.call(this.props._this, this.props.selected);
       }
     },
 
     handleDeleteClick: function(e) {
       e.preventDefault();
       if(typeof this.props.onDelete !== "undefined") {
-        var selectedId = this.state.selected;
-        var newSelectedId = this.get(this.state.selected).previous;
-        if(newSelectedId === null) newSelectedId = this.get(this.state.selected).parent;
+        var selectedId = this.props.selected;
+        var newSelectedId = this.get(this.props.selected).previous;
+        if(newSelectedId === null) newSelectedId = this.get(this.props.selected).parent;
         if(newSelectedId === null) newSelectedId = this.props.data.rootId;
         this.handleSelect(newSelectedId, false);
         this.props.onDelete.call(this.props._this, selectedId);
@@ -325,7 +311,7 @@ var BlissTree = {
       };
 
       var out = [];
-      if(this.state.selected === id) {
+      if(this.props.selected === id) {
         out.push(
           <div key={`node_${id}`}
                className={getClass(id, "node draggable")}
