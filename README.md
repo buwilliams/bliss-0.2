@@ -1,13 +1,22 @@
-# Bliss Core
+# BlissUI
 
-Painless Front-end Design & Development
+Visually create stateful UIs for the web.
+
+Features:
+
+- Visual designer (WYSIWYG)
+- Global CSS variables
+- Global JS editor
+- Draggable elements
+- Properties editor
+- Generates react code, css, and javascript
+- Create components library
 
 ## In-progress work
 
 - goal: build node.js api for todo app
 - goal: new project, export component, use component, export build
 - goal: hello world app just for integrations
-
 - file explorer: selecting file or folder
 - file explorer: put inside bliss
 - feature: global css editor
