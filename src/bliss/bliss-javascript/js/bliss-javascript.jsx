@@ -11,18 +11,15 @@ var BlissJavascript = {
     },
 
     componentWillReceiveProps: function(newProps) {
-      if(typeof newProps.component !== "undefined" &&
-         newProps.component !== null &&
-         typeof this.props.component !== "undefined" &&
-         this.props.component !== null) {
-        if(newProps.component.id !== this.props.component.id) {
-          this.setState({selected: null, CodeMirror: React.createFactory(CodeMirrorEditor)});
-        } else {
-          return;
-        }
-      } else {
-        this.setState({selected: null, CodeMirror: React.createFactory(CodeMirrorEditor)});
-      }
+      // If we are getting a brand new component
+      // then let's reset the state
+      if(newProps.component === this.props.component) return;
+      var state = {
+        newCount: 1,
+        selected: null,
+        CodeMirror: React.createFactory(CodeMirrorEditor)
+      };
+      this.setState(state);
     },
 
     findIndex: function(array, name) {
