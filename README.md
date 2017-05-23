@@ -2,62 +2,34 @@
 
 Painless Front-end Design & Development
 
-## Goals this week
+## In-progress work
 
 - goal: build node.js api for todo app
 - goal: new project, export component, use component, export build
 - goal: hello world app just for integrations
 
-## Todo this week
+- file explorer: selecting file or folder
+- file explorer: put inside bliss
+- feature: global css editor
+- feature: image support
+- feature: edit css selectors and properties (missing selectors)
+- todo.json is not converted to new json format yet, sigh...
+
+## Recently completed work
 
 - bug: flattenChildren(...): Encountered two children with the same key, `1:$1`. Child keys must be unique; when two children share a key, only the first child will be used.
 - bug: switching projects when global_js selected, bliss-tree
 
-- feature: app state manager
-- feature: api manager
-- feature: creating and including components (refactor existing code)
-- feature: export project (concat and minify)
-- feature: global css editor
-- feature: image support
-- feature: edit css selectors and properties (missing selectors)
+## Roadmap
 
+- bug: on selected drag in between room is too small, like 1px
+- bug: bliss-tree, deep nav selection doesn't expand fully
 - feature: delete project
 - feature: http mocks
 - feature: up and down to change pixel values for property
-
-- bug: remove console.log statement from switching resolutions
-- bug: bliss-properties, new project > update css is broken after two adds
-- bug: bliss-tree, deep nav selection doesn't expand fully
-- bug: on selected drag in between room is too small, like 1px
-- bug: todo.json is not converted to new json format yet, sigh...
-
-## Done this week
-
-- feature: list projects pane
-- bug: refresh iframe (it gets stuck)
-- improvement: rename component to element in the UI
-
-- bug: on bliss page load, dependencies are missing
-- bug: new project doesn't work (load new project json, prompt for name, load deps)
-- bug: add new CSS, duplicate react keys (unknown cause at the moment)
-- improvement: reworking navigation layout for bliss (modals)
-- ui: settings pane/modal ???
-- ui: make components and properties toggle work as expected
-- ui: list projects in projects drop-down
-- move app state manager to library (consider using different state manager and don't force new apps to have it right away)
-- bug: delete always collapsed
-- bug: delete always went to parent
-- bug: clone component is shallow and causes bugs
-- improvement: collapse tree on load
-- bug: render problems with deeply nested tree structure
-- bug: tree menu fixed position
-- bug: tree scroll in right place
-- bug: scroll bliss-tree horizontally
-- bug: selecting unselected nodes perform expand/collapse, should only expand, not collapse
-- bug: remove color picker from properties (move to experiments project json)
-
-## Roadmap
-
+- feature: api manager
+- feature: creating and including components (refactor existing code)
+- feature: export project (concat and minify)
 - idea: resolution could show an image of the device
 - feature: import component
 - feature: typeahead for css properties (my hands are getting tired)
@@ -73,8 +45,6 @@ Painless Front-end Design & Development
 - bug: tree, expand will expand all children
 - bug: bliss-tree, drag onto node doesn't highlight full row
 - improvement: electron, move workspace to documents
-- feature: theme layout
-- feature: theme colors (dark gray-blue, gray-white text)
 - feature: import HTML
 - Open project (open components from a project)
 - New UI Theme
@@ -90,15 +60,7 @@ Painless Front-end Design & Development
 - Compile to Angular
 - Feature: Upgrade Project (uses the new project json)
 
-## UI/UX Design
-
-- Purpose: discover new UIs by experimentation, rapid prototyping
-- Purpose: see your ideas come to life instantly
-- Purpose: produce functioning apps
-- Purpose: accessible to designers and creators
-- How would it feel? Clean and trustworthy. Very accessible features.
-
-## Recently completed todos
+## Completed todos
 
 - use bootstrap to make basic layout for app
 - 3 column layout in bootstrap (preview, tree, properties)
@@ -145,3 +107,34 @@ Painless Front-end Design & Development
 - put json files in `components` dir
 - move `export` dir to `compiled` dir
 - npm management (read json, write package.json, install deps)
+- feature: list projects pane
+- bug: refresh iframe (it gets stuck)
+- improvement: rename component to element in the UI
+- bug: on bliss page load, dependencies are missing
+- bug: new project doesn't work (load new project json, prompt for name, load deps)
+- bug: add new CSS, duplicate react keys (unknown cause at the moment)
+- improvement: reworking navigation layout for bliss (modals)
+- ui: settings pane/modal ???
+- ui: make components and properties toggle work as expected
+- ui: list projects in projects drop-down
+- move app state manager to library (consider using different state manager and don't force new apps to have it right away)
+- bug: delete always collapsed
+- bug: delete always went to parent
+- bug: clone component is shallow and causes bugs
+- improvement: collapse tree on load
+- bug: render problems with deeply nested tree structure
+- bug: tree menu fixed position
+- bug: tree scroll in right place
+- bug: scroll bliss-tree horizontally
+- bug: selecting unselected nodes perform expand/collapse, should only expand, not collapse
+- bug: remove color picker from properties (move to experiments project json)
+- bug: remove console.log statement from switching resolutions
+- feature: app state manager
+- bug: bliss-properties, new project > update css is broken after two adds
+- feature: theme layout
+- feature: theme colors (dark gray-blue, gray-white text)
+- Purpose: discover new UIs by experimentation, rapid prototyping
+- Purpose: see your ideas come to life instantly
+- Purpose: produce functioning apps
+- Purpose: accessible to designers and creators
+- How would it feel? Clean and trustworthy. Very accessible features.
