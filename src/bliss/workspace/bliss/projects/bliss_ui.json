@@ -130,7 +130,7 @@
     },
     {
       "name": "log",
-      "body": "function() {\n  if(typeof app.buildProject !== 'undefined') {\n if(app.buildProject.build === 'bliss') {\n    var args = Array.prototype.slice.call(arguments);\n    console.log.apply(this, args);\n  }\n}\n}"
+      "body": "function() {\n  return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
     }
   ],
   "cssVars": [
