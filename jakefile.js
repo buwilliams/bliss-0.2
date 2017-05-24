@@ -165,6 +165,10 @@ task('electron', function() {
 desc('Package bliss into installer');
 task('dist', function() {
   jake.rmRf('dist');
+
+  var t = jake.Task['util:copy-files'];
+  t.execute.apply(t, ['*',`assets`, 'build']);
+
   var cmd = 'npm run dist';
   jake.exec(cmd, {printStdout: true}, function () {
     complete();
