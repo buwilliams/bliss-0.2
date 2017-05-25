@@ -114,6 +114,17 @@ describe('css', function() {
       var expected = "#myComponent";
       expect(css.getSelector(component, selector)).toEqual(expected);
     });
+
+    it('should return dynamic id with additional data', function() {
+      var component = {
+        "id": "5",
+        "name": "my component",
+        "attributes": []
+      };
+      var selector = ".foo $id:hover";
+      var expected = ".foo #myComponent_5:hover";
+      expect(css.getSelector(component, selector)).toEqual(expected);
+    });
   });
 
   it('merge selector and rules', function() {

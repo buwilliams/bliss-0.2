@@ -60,17 +60,24 @@ module.exports = {
     });
   },
 
-  getSelector: function(component, selector) {
-    if(selector === '$id' && component !== null) {
-      if(data.hasKey(component.attributes, 'name', 'id')) {
-        var id = data.findObj(component.attributes, 'name', 'id').value;
-        return `#${id}`;
-      } else {
-        var id = str.getRefId(component.name, component.id);
-        return `#${id}`;
-      }
+  getSelectorId: function(component) {
+    var id = '';
+
+    if(data.hasKey(component.attributes, 'name', 'id')) {
+      id = data.findObj(component.attributes, 'name', 'id').value;
     } else {
+      id = str.getRefId(component.name, component.id);
+    }
+
+    return `#${id}`;
+  },
+
+  getSelector: function(component, selector) {
+    if(component === null) {
       return selector;
+    } else {
+      var id = this.getSelectorId(component);
+      return selector.replace(/\$id/g, id);
     }
   },
 
