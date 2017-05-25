@@ -34,8 +34,7 @@ var BlissProperties = {
     },
 
     handleChange: function(newComponent) {
-      var that = this;
-      that.props.onChange(newComponent);
+      this.props.onChange(newComponent);
     },
 
     handleGeneralChange: function(key, value) {
@@ -105,6 +104,10 @@ var BlissProperties = {
       return render();
     },
 
+    renderCss: function() {
+
+    },
+
     renderGeneral: function() {
       return (
         <div>
@@ -152,74 +155,10 @@ var BlissProperties = {
       );
     },
 
-    renderCss: function(title) {
-      var that = this;
-
-      var css = that.props.component.css;
-      var selector = '$id';
-      if(css.length === 0) {
-        css.push({
-          "selector": selector,
-          "properties": []
-        });
-      } else {
-        css[0].selector = selector;
-      }
-
-      var ref = that.props.component.css[0].properties; // grab the first selector
-
-      var handleChange = function(originalKey, newKey, value) {
-        if(originalKey === ref.length) {
-          ref.push({
-            "name": newKey,
-            "value": value
-          });
-        } else if(newKey === "") {
-          ref.splice(originalKey, 1);
-        } else {
-          ref[originalKey].name = newKey;
-          ref[originalKey].value = value;
-        }
-
-        that.handleChange(that.props.component);
-      };
-
-      var render = function() {
-        var out = [];
-
-        ref.forEach(function(property, index) {
-          var reactKey = that.getReactKey('css', index);
-          out.push(
-            <BlissProperty.component
-              key={reactKey}
-              type="key-value"
-              changeFn={handleChange}
-              originalKey={index}
-              propertyKey={property.name}
-              propertyValue={property.value} />
-          );
-        });
-
-        var reactKey = that.getReactKey('css', ref.length);
-        out.push(
-          <BlissProperty.component
-            key={reactKey}
-            type="key-value"
-            changeFn={handleChange}
-            originalKey={ref.length}
-            propertyKey=""
-            propertyValue="" />
-        );
-
-        return (
-          <div>
-            <div className="title">{title}</div>
-            {out}
-          </div>
-        );
-      };
-
-      return render();
+    renderCss: function() {
+      return (<BlissPropertiesCss.component
+                component={this.props.component}
+                onChange={this.handleChange} />);
     },
 
     render: function() {
@@ -227,7 +166,7 @@ var BlissProperties = {
         <div>
           {this.renderGeneral()}
           {this.renderObject("attributes", "Attributes")}
-          {this.renderCss("CSS")}
+          {this.renderCss()}
           {this.renderObject("dynamicAttributes", "Dynamic Attributes")}
         </div>
       );

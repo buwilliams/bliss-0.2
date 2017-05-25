@@ -31,6 +31,8 @@ input, select, textarea, button {
 }
 
 input.small.green {
+  float:left;
+  width: 100%;
   background-color: #ecffec;
   color: #165a16;
 }

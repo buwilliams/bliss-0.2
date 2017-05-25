@@ -24,7 +24,12 @@
     }
   ],
   "state": {},
-  "cssVars": [],
+  "cssVars": [
+    {
+      "name": "myNewColor",
+      "value": "#55a68b"
+    }
+  ],
   "css": [
     {
       "selector": "body",
@@ -201,7 +206,7 @@
             },
             {
               "name": "background-color",
-              "value": "#3ba97b"
+              "value": "$myNewColor"
             },
             {
               "name": "width",
@@ -342,16 +347,7 @@
       "css": [
         {
           "selector": "$id",
-          "properties": [
-            {
-              "name": "overflow",
-              "value": "auto"
-            },
-            {
-              "name": "height",
-              "value": "calc(100vh - 250px)"
-            }
-          ]
+          "properties": []
         }
       ],
       "js": [],
