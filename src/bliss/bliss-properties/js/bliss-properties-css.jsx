@@ -5,48 +5,44 @@ var BlissPropertiesCss = {
 
     getReactKey: function(prefix, key) {
       var tmpKey = prefix + '_' + key;
+      return tmpKey;
+      /*
       if(typeof this._internalKeys[tmpKey] === "undefined") {
         this._internalKeys[tmpKey] = this._keyIndex++;
         return this._internalKeys[tmpKey];
       } else {
         return this._internalKeys[tmpKey];
       }
+      */
     },
 
     handleChange: function(newComponent) {
       this.props.onChange(newComponent);
     },
 
-    renderSelector: function(selector, index) {
+    renderProperties: function(properties, index) {
       var that = this;
-      var ref = selector.properties;
 
       var handleChange = function(originalKey, newKey, value) {
-        if(originalKey === ref.length) {
-          ref.push({
+        if(originalKey === properties.length) {
+          properties.push({
             "name": newKey,
             "value": value
           });
         } else if(newKey === "") {
-          ref.splice(originalKey, 1);
+          properties.splice(originalKey, 1);
         } else {
-          ref[originalKey].name = newKey;
-          ref[originalKey].value = value;
+          properties[originalKey].name = newKey;
+          properties[originalKey].value = value;
         }
 
-        that.handleChange(that.props.component);
-      };
-
-      var handleSelectorChange = function(e) {
-        var newSelector = e.target.value;
-        selector.selector = newSelector;
         that.handleChange(that.props.component);
       };
 
       var render = function() {
         var out = [];
 
-        ref.forEach(function(property, index) {
+        properties.forEach(function(property, index) {
           var reactKey = that.getReactKey('css', index);
           out.push(
             <BlissProperty.component
@@ -59,32 +55,66 @@ var BlissPropertiesCss = {
           );
         });
 
-        var reactKey = that.getReactKey('css', ref.length);
+        var reactKey = that.getReactKey('css', properties.length);
         out.push(
           <BlissProperty.component
             key={reactKey}
             type="key-value"
             changeFn={handleChange}
-            originalKey={ref.length}
+            originalKey={properties.length}
             propertyKey=""
             propertyValue="" />
         );
 
-        return (
-          <div key={that.getReactKey('css_selector', index)}>
-            <div className="clearfix">
-              <input className="small green"
-                key={that.getReactKey('css_selector_index', index)}
-                onChange={handleSelectorChange}
-                value={selector.selector || ''}
-                placeholder="new css selector" />
-            </div>
-            {out}
-          </div>
-        );
+        return out;
       };
 
       return render();
+    },
+
+    renderSelector: function(selector, index) {
+      var that = this;
+
+      var handleSelectorChange = function(e) {
+        var l = that.props.component.css.length;
+        var newSelector = e.target.value;
+
+        if(newSelector === '' && index !== l) {
+          // delete the selector
+          that.props.component.css.splice(index, 1);
+        } else if (index === l) {
+          // add the selector
+          selector.selector = newSelector;
+          that.props.component.css.push(selector);
+        } else {
+          // update the selector
+          selector.selector = newSelector;
+        }
+
+        that.handleChange(that.props.component);
+      };
+
+      var renderProps = function() {
+        if(index === that.props.component.css.length) {
+          return null;
+        } else {
+          return that.renderProperties(selector.properties);
+        }
+      };
+
+      return (
+        <div data-keyvalue={that.getReactKey('css_selector', index)}
+          key={that.getReactKey('css_selector', index)}>
+          <div className="clearfix">
+            <input className="selector"
+              key={that.getReactKey('css_selector_index', index)}
+              onChange={handleSelectorChange}
+              value={selector.selector || ''}
+              placeholder="new css selector" />
+          </div>
+          {renderProps()}
+        </div>
+      );
     },
 
     render: function() {
@@ -93,10 +123,7 @@ var BlissPropertiesCss = {
       var css = this.props.component.css;
 
       if(css.length === 0) {
-        css.push({
-          "selector": '$id',
-          "properties": []
-        });
+        css.push({ "selector": '$id', "properties": [] });
       }
 
       css.forEach(function(selector, index) {
@@ -104,26 +131,8 @@ var BlissPropertiesCss = {
       });
 
       // render new selector
-      var handleSelectorChange = function(e) {
-        var newSelector = e.target.value;
-
-        css.push({
-          "selector": newSelector,
-          "properties": []
-        });
-
-        that.handleChange(that.props.component);
-      };
-
-      out.push(
-        <div className="clearfix" key={this.getReactKey('css_selector', css.length)}>
-          <input className="small green"
-            key={this.getReactKey('css_selector_index', css.length)}
-            onChange={handleSelectorChange}
-            value=""
-            placeholder="new css selector" />
-        </div>
-      );
+      var newSelector = { "selector": "", "properties": [] };
+      out.push(that.renderSelector(newSelector, css.length));
 
       // render existing selector
       return (
