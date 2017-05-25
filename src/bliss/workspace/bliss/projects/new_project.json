@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 2,
+  "nextId": 3,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -29,7 +29,21 @@
     }
   ],
   "cssVars": [],
-  "css": [],
+  "css": [
+    {
+      "selector": "body",
+      "properties": [
+        {
+          "name": "margin",
+          "value": "0"
+        },
+        {
+          "name": "padding",
+          "value": "0"
+        }
+      ]
+    }
+  ],
   "load": [
     "init"
   ],
@@ -38,12 +52,42 @@
       "id": "1",
       "name": "New Project",
       "element": "div",
-      "text": "Hello, world!",
+      "text": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "2",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "new_2",
+      "element": "div",
+      "text": "hello, world",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
       "attributes": [],
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#333"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "5px 10px"
+            }
+          ]
         }
       ],
       "js": [],
@@ -51,7 +95,7 @@
       "next": null,
       "previous": null,
       "child": null,
-      "parent": null
+      "parent": "1"
     }
   }
 }

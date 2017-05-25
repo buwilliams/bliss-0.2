@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 223,
+  "nextId": 225,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -2057,7 +2057,7 @@
     },
     "140": {
       "id": "140",
-      "name": "global css header",
+      "name": "global css vars header",
       "element": "h3",
       "text": "Global CSS Vars",
       "textFn": null,
@@ -2096,6 +2096,10 @@
             {
               "name": "border-radius",
               "value": "3px"
+            },
+            {
+              "name": "margin-top",
+              "value": "10px"
             }
           ]
         }
@@ -2103,7 +2107,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "141",
-      "previous": null,
+      "previous": "224",
       "child": null,
       "parent": "180"
     },
@@ -3241,7 +3245,7 @@
       ],
       "next": null,
       "previous": "179",
-      "child": "140",
+      "child": "223",
       "parent": "4"
     },
     "181": {
@@ -4141,6 +4145,93 @@
       "previous": null,
       "child": null,
       "parent": "208"
+    },
+    "223": {
+      "id": "223",
+      "name": "global css header",
+      "element": "h3",
+      "text": "Global CSS",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "224",
+      "previous": null,
+      "child": null,
+      "parent": "180"
+    },
+    "224": {
+      "id": "224",
+      "name": "global css",
+      "element": "BlissPropertiesCss.component",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "setComponent",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newBuildProject) {\n    app.js.update(function() {\n      app.buildProject = newBuildProject;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "setOnChange"
+        },
+        {
+          "name": "component",
+          "value": "setComponent"
+        }
+      ],
+      "next": "140",
+      "previous": "223",
+      "child": null,
+      "parent": "180"
     }
   }
 }

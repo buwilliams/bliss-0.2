@@ -6,14 +6,6 @@ var BlissPropertiesCss = {
     getReactKey: function(prefix, key) {
       var tmpKey = prefix + '_' + key;
       return tmpKey;
-      /*
-      if(typeof this._internalKeys[tmpKey] === "undefined") {
-        this._internalKeys[tmpKey] = this._keyIndex++;
-        return this._internalKeys[tmpKey];
-      } else {
-        return this._internalKeys[tmpKey];
-      }
-      */
     },
 
     handleChange: function(newComponent) {
@@ -121,10 +113,6 @@ var BlissPropertiesCss = {
       var that = this;
       var out = [];
       var css = this.props.component.css;
-
-      if(css.length === 0) {
-        css.push({ "selector": '$id', "properties": [] });
-      }
 
       css.forEach(function(selector, index) {
         out.push(that.renderSelector(selector, index));

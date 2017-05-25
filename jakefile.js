@@ -121,7 +121,7 @@ task('build', ['build-all'], function(){
   setTimeout(function() {
     t = jake.Task['util:copy-files'];
     t.execute.apply(t, ['*',`build/bliss/components`, 'build/workspace/components']);
-  }, 2000);
+  }, 3000);
 });
 
 desc('Execute all tests.');
