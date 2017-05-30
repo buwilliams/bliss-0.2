@@ -16,7 +16,7 @@ module.exports = {
     builtStr += this.buildHelpers(projectJson);
     var fullpath = path.join(outputPath, filename);
     var reactComponent = reactTree.buildReactClass(projectJson);
-    builtStr = this.buildWrapper(projectJson, builtStr, reactComponent);
+    builtStr = this.buildWrapper(projectJson, builtStr, reactComponent, writeAsComponent);
     builtStr = beautify(builtStr, { indent_size: 2 });
     fs.writeFileSync(fullpath, builtStr);
 
