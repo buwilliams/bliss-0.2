@@ -198,11 +198,14 @@ module.exports = {
     var out = "";
     out += `React.createClass({\n`;
     out += `getInitialState: function() {\n`;
-    out += `return { app: createApp() };\n`;
+    out += `var that = this;\n`;
+    out += `return { app: createApp(that) };\n`;
     out += `},\n`;
     out += `componentDidMount: function() {\n`;
     out += `this.state.app.props = this.props;\n`;
     out += `this.setState({ app: this.state.app });\n`;
+    out += `},\n`;
+    out += `componentWillUnmount: function() {\n`;
     out += `},\n`;
     out += `componentWillReceiveProps: function(newProps) {\n`;
     out += `this.state.app.props = newProps;\n`;

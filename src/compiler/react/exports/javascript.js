@@ -7,7 +7,8 @@ const reactTree = require('../core/react-tree.js');
 const tree = require('../core/tree.js');
 
 module.exports = {
-  write: function(outputPath, projectJson, startId) {
+  write: function(outputPath, projectJson, startId, writeAsComponent) {
+    if(typeof writeAsComponent === 'undefined') writeAsComponent = false;
     // write bliss javascript
     var filename = `${projectJson.build}.js`;
     var builtStr = this.buildAppJs(projectJson, startId);
@@ -32,11 +33,14 @@ module.exports = {
     fs.writeFileSync(fullpath, projectJsonStr);
   },
 
-  buildWrapper: function(projectJson, jsStr, reactStr) {
+  buildWrapper: function(projectJson, jsStr, reactStr, renderAsComponent) {
     var name = str.getCamel(projectJson.name);
     var out = "";
     out += `var ${name} = (function() {\n`;
-    out += `var createApp = function() {`;
+    out += `var createApp = function(component) {`;
+    if(renderAsComponent) {
+      out += `if(typeof component === 'undefined') return {};\n`;
+    }
     out += "var app = { js: {}, methods: {}, props: {}, state: {} };\n";
     out += jsStr + "\n";
     out += `return app;\n`;
@@ -56,7 +60,13 @@ module.exports = {
 
     // app.render
     out += `app.render = function() {\n`;
-    out += `  ReactDOM.render(app.rootComponent(), document.getElementById('app'));\n`;
+    out += `var isComponent = (typeof component === 'undefined') ? false : true;\n`;
+    out += `if(isComponent) {\n`;
+    out += `if(component.state === null) return;\n`;
+    out += `component.forceUpdate();\n`;
+    out += `} else {\n`;
+    out += `ReactDOM.render(app.rootComponent(), document.getElementById('app'));\n`;
+    out += `}\n`;
     out += `}\n`;
 
     // app.setState(fn, callback)

@@ -35,7 +35,7 @@ module.exports = {
     var startId = this.getComponentId(projectJson, componentId);
 
     html.write(outputPath, projectJson, startId);
-    js.write(path.join(outputPath, 'js'), projectJson, startId);
+    js.write(path.join(outputPath, 'js'), projectJson, startId, true);
     css.write(path.join(outputPath, 'css'), projectJson, startId);
   },
 
