@@ -14,7 +14,8 @@ module.exports = {
     builtStr += this.buildReact(projectJson, startId);
     builtStr += this.buildHelpers(projectJson);
     var fullpath = path.join(outputPath, filename);
-    builtStr = this.buildWrapper(projectJson, builtStr);
+    var reactComponent = reactTree.buildReactClass(projectJson);
+    builtStr = this.buildWrapper(projectJson, builtStr, reactComponent);
     builtStr = beautify(builtStr, { indent_size: 2 });
     fs.writeFileSync(fullpath, builtStr);
 
@@ -31,14 +32,19 @@ module.exports = {
     fs.writeFileSync(fullpath, projectJsonStr);
   },
 
-  buildWrapper: function(projectJson, jsStr) {
+  buildWrapper: function(projectJson, jsStr, reactStr) {
     var name = str.getCamel(projectJson.name);
     var out = "";
     out += `var ${name} = (function() {\n`;
+    out += `var createApp = function() {`;
     out += "var app = { js: {}, methods: {}, props: {}, state: {} };\n";
     out += jsStr + "\n";
-    out += "return app;"
-    out += "})();";
+    out += `return app;\n`;
+    out += `};\n`;
+    out += `var instance = createApp();\n`;
+    out += `instance.component = ${reactStr}\n`;
+    out += `return instance;\n`;
+    out += `})();\n`;
     return out;
   },
 

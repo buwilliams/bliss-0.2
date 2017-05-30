@@ -196,16 +196,21 @@ module.exports = {
 
   buildReactClass: function() {
     var out = "";
-    out += `app.reactClass = React.createClass({\n`;
-    out += `  componentDidMount: function() {\n`;
-    out += `    app.props = this.props;\n`;
-    out += `  },\n`;
-    out += `  componentWillReceiveProps:function(newProps) {\n`;
-    out += `    app.props = newProps;\n`;
-    out += `  },\n`;
-    out += `  render: function() {\n`;
-    out += `    return app.rootComponent(this.props);\n`;
-    out += `  }\n`;
+    out += `React.createClass({\n`;
+    out += `getInitialState: function() {\n`;
+    out += `return { app: createApp() };\n`;
+    out += `},\n`;
+    out += `componentDidMount: function() {\n`;
+    out += `this.state.app.props = this.props;\n`;
+    out += `this.setState({ app: this.state.app });\n`;
+    out += `},\n`;
+    out += `componentWillReceiveProps: function(newProps) {\n`;
+    out += `this.state.app.props = newProps;\n`;
+    out += `this.setState({ app: this.state.app });\n`;
+    out += `},\n`;
+    out += `render: function() {\n`;
+    out += `return this.state.app.rootComponent(this.state.app.props);\n`;
+    out += `}\n`;
     out += `});\n`;
     return out;
   },
@@ -217,7 +222,6 @@ module.exports = {
     out += this.buildGetKey();
     out += this.buildMergeAttributesFn();
     out += this.buildComponents(projectJson.components, startId, designMode);
-    out += this.buildReactClass(projectJson);
     return out;
   }
 };
