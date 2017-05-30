@@ -29,7 +29,7 @@
     },
     {
       "name": "move",
-      "body": "function() {\n  app.setState(function() {\n    var w = window.innerWidth;\n\t\tvar h = window.innerHeight;\n    var top = app.js.rando(0, h);\n    var left = app.js.rando(0, w);\n    app.state.top = top;\n    app.state.left = left;\n    //console.log('top', app.state.top, 'left', app.state.left);\n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    var w = window.innerWidth;\n\t\tvar h = window.innerHeight;\n    var top = app.js.rando(0, h);\n    var left = app.js.rando(0, w);\n    app.state.top = top;\n    app.state.left = left;\n  });\n}"
     },
     {
       "name": "rando",
@@ -37,7 +37,7 @@
     },
     {
       "name": "loop",
-      "body": "function(scope, attributes) {\n  setInterval(function() {\n    app.js.move();\n  }, 1000);\n}"
+      "body": "function(scope, attributes) {\n  var interval = app.js.rando(200, 500);\n  setInterval(function() {\n    app.js.move();\n  }, interval);\n}"
     }
   ],
   "cssVars": [],
@@ -91,6 +91,10 @@
             {
               "name": "left",
               "value": "0"
+            },
+            {
+              "name": "border-radius",
+              "value": "30px"
             }
           ]
         }

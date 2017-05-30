@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 5,
+  "nextId": 8,
   "rootId": "1",
   "externalCss": [
     "components/ghost/css/ghost.css"
@@ -28,7 +28,11 @@
   "js": [
     {
       "name": "init",
-      "body": "function() { app.render(); }"
+      "body": "function() {\n  app.setState(function() {\n    app.state.numberOfGhosts = 500;\n    app.state.ghosts = app.js.makeGhosts(500);\n  });\n}"
+    },
+    {
+      "name": "makeGhosts",
+      "body": "function(numberOfGhosts) {\n  var colors = ['blue', 'red', 'green', 'yellow',\n                'orange', 'purple', 'gray', 'pink',\n                'brown', 'white'];\n  \n  var newArrayOfColors = [];\n  for(var i=0; i<numberOfGhosts; i++) {\n\t\tnewArrayOfColors.push(colors[i % 10]);\n  }\n\n\treturn newArrayOfColors;\n}"
     }
   ],
   "cssVars": [],
@@ -98,7 +102,7 @@
     },
     "2": {
       "id": "2",
-      "name": "Ghost",
+      "name": "Ghosts",
       "element": "ghost.component",
       "text": "",
       "textFn": null,
@@ -113,7 +117,7 @@
         },
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  return ['blue', 'red', 'green', 'yellow',\n          'orange', 'purple', 'gray', 'pink',\n          'brown'];\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.ghosts;\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -122,10 +126,166 @@
           "value": "getBackgroundColor"
         }
       ],
-      "next": null,
+      "next": "5",
       "previous": null,
       "child": null,
       "parent": "1"
+    },
+    "5": {
+      "id": "5",
+      "name": "number of ghosts container",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "fixed"
+            },
+            {
+              "name": "background-color",
+              "value": "#ececec"
+            },
+            {
+              "name": "margin-left",
+              "value": "calc(50% - 100px)"
+            },
+            {
+              "name": "margin-top",
+              "value": "calc(50% - 200px)"
+            },
+            {
+              "name": "padding",
+              "value": "25px 50px"
+            },
+            {
+              "name": "border-radius",
+              "value": "10px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #000"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "2",
+      "child": "7",
+      "parent": "1"
+    },
+    "6": {
+      "id": "6",
+      "name": "number of ghosts",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "number of ghosts"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "15px 30px"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "border-radius",
+              "value": "5px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "font-size",
+              "value": "16px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "outline",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.numberOfGhosts;\n}"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var numberOfGhosts = parseInt(e.target.value);\n    app.setState(function() {\n      app.state.numberOfGhosts = numberOfGhosts;\n      app.state.ghosts = app.js.makeGhosts(numberOfGhosts);\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": null,
+      "previous": "7",
+      "child": null,
+      "parent": "5"
+    },
+    "7": {
+      "id": "7",
+      "name": "header",
+      "element": "h3",
+      "text": "Number of Ghosts",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "6",
+      "previous": null,
+      "child": null,
+      "parent": "5"
     }
   }
 }
