@@ -3,6 +3,9 @@
 echo 'Stopping express web server...'
 forever stopall
 
+echo 'Copying env file...'
+cp -f ./scripts/prod.env ./.env
+
 echo 'Updating node deps...'
 yarn install
 
