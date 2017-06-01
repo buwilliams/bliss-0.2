@@ -51,6 +51,7 @@ echo 'Installing build-essential and git...'
 ssh -t git@$IP <<EOF
   sudo apt-get udpate
   sudo apt-get install -y build-essential git
+  sudo ufw allow80/tcp
 EOF
 
 echo 'Installing nodejs...'
