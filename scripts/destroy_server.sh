@@ -23,7 +23,7 @@ IP=$3
 
 echo 'Removing Git user...'
 ssh $USER@$IP <<EOF
-  forever stopall
+  cd /home/git/work && forever stopall
   rm /etc/sudoers.d/git
   rm -rf /home/git
   deluser git
