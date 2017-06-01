@@ -59,12 +59,13 @@ ssh -t git@$IP <<EOF
   sudo apt-get install -y nodejs
 EOF
 
-echo 'Installing yarn...'
+echo 'Installing yarn and jake...'
 ssh -t git@$IP <<EOF
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   sudo apt-get update
   sudo apt-get install yarn
+  sudo yarn global add jake
 EOF
 
 # setup git server
@@ -75,11 +76,10 @@ ssh -t git@$IP <<EOF
   git init --bare
 EOF
 
+echo 'Copying post-receive hook for git...'
+scp ./scripts/post-receive git@$IP:bliss-0.2.git/hooks
+ssh -t git@$IP "sudo chmod +x bliss-0.2/hooks/post-receive"
+
 echo 'Adding local git origin...'
 git remote add $NAME git@$IP:bliss-0.2.git
 git push $NAME master
-
-ssh -t git@$IP <<EOF
-  cd bliss-0.2.git
-  yarn install
-EOF

@@ -2,7 +2,7 @@
   "name": "BlissUI",
   "version": "0.2.0",
   "description": "UI design for creatives",
-  "main": "./src/compiler/react/electron.js",
+  "main": "./src/compiler/react/server.js",
   "scripts": {
     "build": "jake",
     "test": "jake test",
@@ -42,6 +42,7 @@
     "font-awesome": "^4.7.0",
     "fs-utils": "^0.7.0",
     "glob": "^7.1.1",
+    "jake": "^8.0.15",
     "jquery": "^3.2.1",
     "js-beautify": "^1.6.11",
     "lodash": "^4.17.4",
