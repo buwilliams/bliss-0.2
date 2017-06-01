@@ -10,4 +10,4 @@ echo 'Building Bliss...'
 node_module/.bin/jake build
 
 echo 'Starting express web server...'
-forever start -l forever.log -o bliss-out.log -e bliss-err.log node_modules/.bin/jake server
+forever start -l logs/forever.log -o logs/bliss-out.log -e logs/bliss-err.log node_modules/.bin/jake server
