@@ -49,7 +49,7 @@ module.exports = {
 
   installPackageJson: function(workspace) {
     fixPath();
-    var code = execSync(`npm install`, {"cwd": workspace});
+    var code = execSync(`yarn install`, {"cwd": workspace});
   },
 
   update: function(workspace, projectJson, additionalDeps) {
