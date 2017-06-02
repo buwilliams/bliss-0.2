@@ -73,6 +73,13 @@ module.exports = function(options) {
     res.send({success: true, entries: list});
   });
 
+  // Website Routes
+  app.get('/', function(req, res) { res.redirect('/website/bliss_ui_website.html'); });
+  app.get('/website', function(req, res) { res.redirect('/website/bliss_ui_website.html'); });
+  app.use('/website', express.static(path.join(options.workspace, 'dist', 'bliss_ui_website', 'app')));
+  app.use('/website/node_modules', express.static(path.join(options.workspace, 'dist', 'bliss_ui_website', 'node_modules')));
+
+  // Application Routes
   app.use('/designer', express.static(options.workspace));
   app.use('/designer/bliss-tree', express.static(path.join(options.app, 'bliss-tree')));
   app.use('/designer/bliss-properties', express.static(path.join(options.app, 'bliss-properties')));
