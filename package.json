@@ -52,7 +52,8 @@
     "react": "15.4.2",
     "react-code-mirror": "^3.1.0",
     "react-dom": "15.4.2",
-    "serve-index": "^1.8.0"
+    "serve-index": "^1.8.0",
+    "sync-exec": "^0.6.2"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",

@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const exec = require('sync-exec');
 const compiler = require('./src/compiler/react/react.js');
 
 namespace('util', function() {
@@ -8,7 +9,7 @@ namespace('util', function() {
     jake.mkdirP(path);
   });
 
-  task('compile-jsx', {async: true}, function(inputPath, outputPath) {
+  task('compile-jsx', function(inputPath, outputPath) {
     var list = new jake.FileList();
     list.include(`${inputPath}/**/*.jsx`);
 
@@ -19,11 +20,15 @@ namespace('util', function() {
       return `./node_modules/.bin/babel ./${file} -o ./${outDir}/${pathData.name}.js`;
     });
 
-    jake.exec(cmds, {async: true, interactive: false}, function () {
-      complete();
+    cmds.forEach(function(cmd) {
+      exec(cmd);
     });
 
-    complete();
+    //jake.exec(cmds, {async: true, interactive: false}, function () {
+      //complete();
+    //});
+
+    //complete();
   });
 
   task('copy-files', function(ext, inputPath, outputPath) {
@@ -118,10 +123,8 @@ task('build-all', function(){
 
 desc('Build');
 task('build', ['build-all'], function(){
-  setTimeout(function() {
-    t = jake.Task['util:copy-files'];
-    t.execute.apply(t, ['*',`build/bliss/components`, 'build/workspace/components']);
-  }, 3000);
+  t = jake.Task['util:copy-files'];
+  t.execute.apply(t, ['*',`build/bliss/components`, 'build/workspace/components']);
 });
 
 desc('Execute all tests.');
