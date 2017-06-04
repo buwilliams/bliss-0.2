@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const execSync = require('child_process').execSync;
 const _ = require('lodash');
-const fixPath = require('fix-path');
 
 module.exports = {
   removePackageJson: function(workspace) {
@@ -48,7 +47,6 @@ module.exports = {
   },
 
   installPackageJson: function(workspace) {
-    fixPath();
     var code = execSync(`yarn install`, {"cwd": workspace});
   },
 

@@ -1,7 +1,7 @@
 const path = require('path');
 const mkdirp = require('mkdirp');
 const fsutils = require('fs-utils');
-const npm = require('../core/npm.js');
+const deps = require('../core/dependencies.js');
 const str = require('../core/str.js');
 const html = require('./exports/html.js');
 const css = require('./exports/css.js');
@@ -60,7 +60,7 @@ module.exports = {
     css.write(path.join(sourcePath, 'css'), projectJson, startId);
 
     // write package.json
-    npm.update(outputPath, projectJson, {
+    deps.update(outputPath, projectJson, {
       "express": "^4.15.2"
     });
 

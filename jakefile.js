@@ -23,12 +23,6 @@ namespace('util', function() {
     cmds.forEach(function(cmd) {
       exec(cmd);
     });
-
-    //jake.exec(cmds, {async: true, interactive: false}, function () {
-      //complete();
-    //});
-
-    //complete();
   });
 
   task('copy-files', function(ext, inputPath, outputPath) {
@@ -127,6 +121,15 @@ task('build', ['build-all'], function(){
   t.execute.apply(t, ['*',`build/bliss/components`, 'build/workspace/components']);
 });
 
+desc('Update Bliss');
+task('update-bliss', function() {
+  var t = jake.Task['util:copy-files'];
+  t.execute.apply(t, ['json','build/workspace/projects', 'src/bliss/workspace/bliss/projects']);
+
+  var t = jake.Task['build'];
+  t.execute.apply(t);
+});
+
 desc('Execute all tests.');
 task('test', function() {
   var cmd = 'jasmine JASMINE_CONFIG_PATH=jasmine.json';
@@ -157,34 +160,5 @@ task('server', function() {
   server(options);
 });
 
-desc('Run bliss inside electron');
-task('electron', function() {
-  var cmd = 'node_modules/.bin/electron ./src/compiler/react/electron.js';
-  jake.exec(cmd, {printStdout: true}, function () {
-    complete();
-  });
-});
-
-desc('Package bliss into installer');
-task('dist', function() {
-  jake.rmRf('dist');
-
-  var t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['*',`assets`, 'build']);
-
-  var cmd = 'npm run dist';
-  jake.exec(cmd, {printStdout: true}, function () {
-    complete();
-  });
-});
-
-desc('Update Bliss');
-task('update-bliss', function() {
-  var t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['json','build/workspace/projects', 'src/bliss/workspace/bliss/projects']);
-
-  var t = jake.Task['build'];
-  t.execute.apply(t);
-});
 
 task('default', ['build-bliss']);

@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
-const npm = require('../core/npm.js');
+const deps = require('../core/dependencies.js');
 const file = require('../core/file.js');
 const low = require('lowdb');
 const app = express();
@@ -49,7 +49,7 @@ module.exports = function(options) {
   app.get('/load', function (req, res) {
     var name = req.query.name;
     var json = file.readProject(options.workspace, name);
-    npm.update(options.workspace, json);
+    deps.update(options.workspace, json);
     res.send({success: true, project: json});
     console.log(`Loaded '${json.name}'`);
   });

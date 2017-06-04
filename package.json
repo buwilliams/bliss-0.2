@@ -5,21 +5,7 @@
   "main": "./src/compiler/react/server.js",
   "scripts": {
     "build": "jake",
-    "test": "jake test",
-    "electron": "jake electron",
-    "pack": "build --dir",
-    "dist": "build"
-  },
-  "build": {
-    "appId": "com.bliss.frontend",
-    "files": [
-      "build",
-      "node_modules",
-      "src/compiler/react"
-    ],
-    "mac": {
-      "category": "com.bliss.frontend"
-    }
+    "test": "jake test"
   },
   "repository": {
     "type": "git",
@@ -36,9 +22,7 @@
     "bootstrap": "^4.0.0-alpha.6",
     "codemirror": "^5.24.2",
     "dotenv": "^4.0.0",
-    "electron-log": "^2.0.0",
     "express": "^4.15.2",
-    "fix-path": "^2.1.0",
     "font-awesome": "^4.7.0",
     "fs-utils": "^0.7.0",
     "glob": "^7.1.1",
@@ -46,7 +30,6 @@
     "jquery": "^3.2.1",
     "js-beautify": "^1.6.11",
     "lodash": "^4.17.4",
-    "lowdb": "^0.16.0",
     "mkdirp": "^0.5.1",
     "pretty": "^1.0.0",
     "react": "15.4.2",
@@ -59,9 +42,6 @@
     "babel-cli": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.23.0",
     "babel-preset-env": "^1.2.1",
-    "electron": "~1.6.2",
-    "electron-builder": "^17.1.2",
-    "electron-packager": "^8.6.0",
     "jasmine": "^2.5.3"
   },
   "keywords": []
