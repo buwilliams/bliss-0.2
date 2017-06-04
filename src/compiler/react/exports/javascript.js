@@ -1,10 +1,10 @@
 const beautify = require('js-beautify').js_beautify;
 const path = require('path');
 const fs = require('fs');
-const js = require('../core/js.js');
-const str = require('../core/str.js');
-const reactTree = require('../core/react-tree.js');
-const tree = require('../core/tree.js');
+const js = require('../../core/js.js');
+const str = require('../../core/str.js');
+const reactTree = require('../react-tree.js');
+const tree = require('../../core/tree.js');
 
 module.exports = {
   write: function(outputPath, projectJson, startId, writeAsComponent) {

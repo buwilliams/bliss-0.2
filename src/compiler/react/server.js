@@ -2,8 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
-const npm = require('./core/npm.js');
-const file = require('./core/file.js');
+const npm = require('../core/npm.js');
+const file = require('../core/file.js');
 const low = require('lowdb');
 const app = express();
 

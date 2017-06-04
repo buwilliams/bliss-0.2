@@ -1,5 +1,5 @@
 var pretty = require('pretty');
-var html = require('../core/html.js');
+var html = require('../../core/html.js');
 var path = require('path');
 var fs = require('fs');
 var mkdirp = require('mkdirp');

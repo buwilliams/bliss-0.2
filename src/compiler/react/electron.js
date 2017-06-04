@@ -7,7 +7,7 @@ const path = require('path');
 const url = require('url');
 const low = require('lowdb');
 const server = require('./server.js');
-const file = require('./core/file.js');
+const file = require('../core/file.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

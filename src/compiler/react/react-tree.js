@@ -1,6 +1,6 @@
-const js = require('./js.js');
-const htmlElements = require('./html-elements.js');
-const str = require('./str.js');
+const js = require('../core/js.js');
+const htmlElements = require('../core/html-elements.js');
+const str = require('../core/str.js');
 
 module.exports = {
   buildGetKey: function() {

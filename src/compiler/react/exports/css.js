@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const tree = require('../core/tree.js');
-const css = require('../core/css.js');
+const tree = require('../../core/tree.js');
+const css = require('../../core/css.js');
 
 module.exports = {
   write: function(outputPath, projectJson, startId) {
