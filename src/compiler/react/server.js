@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const deps = require('../core/dependencies.js');
 const file = require('../core/file.js');
-const low = require('lowdb');
 const app = express();
 
 module.exports = function(options) {
