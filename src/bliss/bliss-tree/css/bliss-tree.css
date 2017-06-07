@@ -104,6 +104,7 @@ body {
   right: -10px;
   height: 8px;
   padding: 0px;
+  z-index: 1000;
 }
 
 .node-drag-over {
@@ -134,6 +135,10 @@ body {
   padding: 5px 10px;
   cursor: pointer;
   width: 100%;
+}
+
+.node-drag-over .selected {
+  background-color: #b6d2e6;
 }
 
 .hide {
