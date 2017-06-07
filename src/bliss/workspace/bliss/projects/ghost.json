@@ -37,7 +37,11 @@
     },
     {
       "name": "loop",
-      "body": "function(scope, attributes) {\n  var interval = app.js.rando(200, 500);\n  setInterval(function() {\n    app.js.move();\n  }, interval);\n}"
+      "body": "function(scope, attributes) {\n  var interval = app.js.rando(200, 500);\n  app.state.timer = setInterval(function() {\n    app.js.move();\n  }, interval);\n}"
+    },
+    {
+      "name": "destroy_component",
+      "body": "function() {\n  clearInterval(app.state.timer);\n};\n"
     }
   ],
   "cssVars": [],

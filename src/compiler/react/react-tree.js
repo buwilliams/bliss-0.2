@@ -206,6 +206,7 @@ module.exports = {
     out += `this.setState({ app: this.state.app });\n`;
     out += `},\n`;
     out += `componentWillUnmount: function() {\n`;
+    out += `if(this.state.app.js.destroy_component !== 'undefined') this.state.app.js.destroy_component();\n`;
     out += `},\n`;
     out += `componentWillReceiveProps: function(newProps) {\n`;
     out += `this.state.app.props = newProps;\n`;

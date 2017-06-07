@@ -238,7 +238,7 @@
         },
         {
           "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    var numberOfGhosts = parseInt(e.target.value);\n    app.setState(function() {\n      app.state.numberOfGhosts = numberOfGhosts;\n      app.state.ghosts = app.js.makeGhosts(numberOfGhosts);\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var numberOfGhosts = parseInt(e.target.value) || 0;\n    app.setState(function() {\n      app.state.numberOfGhosts = numberOfGhosts;\n      app.state.ghosts = app.js.makeGhosts(numberOfGhosts);\n    });\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
