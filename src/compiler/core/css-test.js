@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const css = require('./css.js');
-const project = require('./project.js');
+const project = require('./project-json.js');
 
 describe('css', function() {
   describe('isVariable', function() {

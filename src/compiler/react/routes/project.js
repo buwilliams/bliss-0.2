@@ -1,15 +1,21 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
+const ws = require('../../core/workspace.js');
+const env = require('../env.js');
+const session = require('../session.js');
+const project = require('../../core/project.js');
+const deps = require('../../core/dependencies.js');
 
 router.get('/list', function (req, res) {
-  var json = file.listProjects(options.workspace);
+  var json = project.listProjects(options.workspace);
   res.send({success: true, projects: json});
   console.log(`Listed projects`);
 });
 
 router.get('/load', function (req, res) {
   var name = req.query.name;
-  var json = file.readProject(options.workspace, name);
+  var json = project.readProject(options.workspace, name);
   deps.update(options.workspace, json);
   res.send({success: true, project: json});
   console.log(`Loaded '${json.name}'`);
@@ -17,7 +23,7 @@ router.get('/load', function (req, res) {
 
 router.post('/save', function (req, res) {
   var project = req.body;
-  file.writeProject(options.workspace, project);
+  project.writeProject(options.workspace, project);
   res.send({success: true});
   console.log(`Saved '${project.name}'`);
 });

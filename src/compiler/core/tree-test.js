@@ -1,5 +1,5 @@
 var tree = require('./tree.js');
-var project = require('./project.js');
+var project = require('./project-json.js');
 
 describe('tree', function() {
   describe('hasChild', function() {

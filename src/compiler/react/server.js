@@ -1,12 +1,6 @@
-const path = require('path');
-const fs = require('fs');
-const deps = require('../core/dependencies.js');
-const file = require('../core/file.js');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-
 const env = require('./env.js');
 const bliss = require('./routes/bliss.js');
 const compiler = require('./routes/compiler.js');
