@@ -8,12 +8,12 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const env = require('./env.js');
-const bliss = require('./server/bliss.js');
-const compiler = require('./server/compiler.js');
-const project = require('./server/project.js');
-const user = require('./server/user.js');
-const website = require('./server/website.js');
-const workspace = require('./server/workspace.js');
+const bliss = require('./routes/bliss.js');
+const compiler = require('./routes/compiler.js');
+const project = require('./routes/project.js');
+const user = require('./routes/user.js');
+const website = require('./routes/website.js');
+const workspace = require('./routes/workspace.js');
 
 app.use(bodyParser.json());
 
