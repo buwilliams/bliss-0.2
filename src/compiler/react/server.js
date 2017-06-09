@@ -1,6 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
+const bodyParser = require('body-parser');
 const env = require('./env.js');
 const bliss = require('./routes/bliss.js');
 const compiler = require('./routes/compiler.js');

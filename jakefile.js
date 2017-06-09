@@ -146,19 +146,7 @@ task('clean', function(){
 
 desc('Start bliss web server');
 task('server', function() {
-  require('dotenv').config();
-
-  var options = {
-    "port": process.env.BLISS_PORT,
-    "workspace": process.env.BLISS_WORKSPACE,
-    "app": process.env.BLISS_APP,
-    "node_modules": process.env.BLISS_NODE_MODULES,
-    "npm_path": process.env.NPM_PATH
-  };
-
-  var server = require('./src/compiler/react/server.js');
-  server(options);
+  require('./src/compiler/react/server.js');
 });
-
 
 task('default', ['build-bliss']);
