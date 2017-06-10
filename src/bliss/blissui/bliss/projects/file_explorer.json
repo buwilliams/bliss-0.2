@@ -39,7 +39,7 @@
     },
     {
       "name": "getFiles",
-      "body": "function(path) {\n  var files = app._state.get('files');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/explore',\n    data: {path: path},\n    success: function(data) {\n      app.setState(function() {\n        files.removeAll();\n        data.entries.forEach(function(entry) {\n          files.create(entry);\n        });\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(path) {\n  var files = app._state.get('files');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/project/explore',\n    data: {path: path},\n    success: function(data) {\n      app.setState(function() {\n        files.removeAll();\n        data.entries.forEach(function(entry) {\n          files.create(entry);\n        });\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [],

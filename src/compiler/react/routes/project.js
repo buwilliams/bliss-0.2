@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const router = express.Router();
 const ws = require('../../core/workspace.js');
@@ -22,10 +23,10 @@ router.get('/load', function (req, res) {
 });
 
 router.post('/save', function (req, res) {
-  var project = req.body;
-  project.writeProject(ws.workspace(env, session), project);
+  var projectJson = req.body;
+  project.writeProject(ws.workspace(env, session), projectJson);
   res.send({success: true});
-  console.log(`Saved '${project.name}'`);
+  console.log(`Saved '${projectJson.name}'`);
 });
 
 router.get('/explore', function(req, res) {
