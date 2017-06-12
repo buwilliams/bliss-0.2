@@ -1386,7 +1386,7 @@
         },
         {
           "name": "createProjectDist",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Finished export of project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3520,7 +3520,7 @@
         },
         {
           "name": "exportProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Exporting component ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Exported component ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
