@@ -11,5 +11,14 @@ module.exports = {
       env.workspace,
       session.user.username,
       session.user.workspace);
+  },
+
+  dist: function(env, session) {
+    return path.join(
+      env.workspace,
+      'hosted',
+      session.user.username,
+      session.user.workspace);
+
   }
 }

@@ -29,7 +29,7 @@ router.post('/export', function (req, res) {
 router.post('/dist', function (req, res) {
   var projectJson = req.body;
   var compiler = getCompiler(projectJson);
-  compiler.dist(ws.workspace(env, session), projectJson, null);
+  compiler.dist(ws.dist(env, session), projectJson, null);
   res.send({success: true});
   console.log(`Created dist '${projectJson.name}'`);
 });
