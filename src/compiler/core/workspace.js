@@ -13,12 +13,17 @@ module.exports = {
       session.user.workspace);
   },
 
+  hosted: function(env) {
+    return path.join(
+      env.workspace,
+      'hosted');
+  },
+
   dist: function(env, session) {
     return path.join(
       env.workspace,
       'hosted',
       session.user.username,
       session.user.workspace);
-
   }
 }

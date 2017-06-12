@@ -53,11 +53,15 @@ module.exports = {
     mkdirp.sync(path.join(sourcePath, 'js'));
     mkdirp.sync(path.join(sourcePath, 'css'));
 
+    // TODO: loop CSS
+    // TODO: loop JS
+
     var startId = this.getComponentId(projectJson, componentId);
 
     html.write(sourcePath, projectJson, startId);
     js.write(path.join(sourcePath, 'js'), projectJson, startId);
     css.write(path.join(sourcePath, 'css'), projectJson, startId);
+
 
     // write package.json
     deps.update(outputPath, projectJson, {
