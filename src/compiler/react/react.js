@@ -42,8 +42,8 @@ module.exports = {
   dist: function(workspace, projectJson, componentId) {
     // similar to export
     var projectName = str.getSnake(projectJson.name);
-    var outputPath = path.join(workspace, 'dist', projectName);
-    var sourcePath = path.join(outputPath, 'app');
+    var outputPath = workspace;
+    var sourcePath = workspace;
 
     // resets all the file names
     projectJson.build = projectName;
