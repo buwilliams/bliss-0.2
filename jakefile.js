@@ -128,7 +128,7 @@ task('build', function(){
 desc('Updates Bliss after you change it in the UI (you need to build bliss first)');
 task('update-bliss', function() {
   var t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['*',`${config.bliss_build}`, `${config.bliss_src}`]);
+  t.execute.apply(t, ['json',`${config.bliss_build}`, `${config.bliss_src}`]);
 
   var t = jake.Task['build'];
   t.execute.apply(t);

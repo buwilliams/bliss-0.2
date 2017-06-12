@@ -1340,17 +1340,13 @@
     },
     "104": {
       "id": "104",
-      "name": "export project",
+      "name": "deploy project",
       "element": "a",
       "text": "",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
-        {
-          "name": "id",
-          "value": "exportButton"
-        },
         {
           "name": "href",
           "value": "#"
@@ -3005,7 +3001,7 @@
       "attributes": [
         {
           "name": "class",
-          "value": "fa fa-download"
+          "value": "fa fa-paper-plane"
         }
       ],
       "css": [
@@ -3025,7 +3021,7 @@
       "id": "168",
       "name": "label",
       "element": "span",
-      "text": "Export project",
+      "text": "Deploy project",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -3569,7 +3565,7 @@
       "id": "192",
       "name": "label",
       "element": "span",
-      "text": "Export component",
+      "text": "Build component",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
