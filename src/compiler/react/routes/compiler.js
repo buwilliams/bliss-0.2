@@ -31,7 +31,7 @@ router.post('/dist', function (req, res) {
   var compiler = getCompiler(projectJson);
   compiler.dist(ws.dist(env, session), projectJson, null);
   res.send({success: true});
-  console.log(`Created dist '${projectJson.name}'`);
+  console.log(`Deployed '${projectJson.name}'`);
 });
 
 module.exports = router

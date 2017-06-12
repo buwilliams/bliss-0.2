@@ -11,7 +11,7 @@ const deps = require('../../core/dependencies.js');
 router.get('/list', function (req, res) {
   var json = project.listProjects(ws.workspace(env, session));
   res.send({success: true, projects: json});
-  console.log(`Listed projects`);
+  console.log(`Listed projects for '${session.user.username}/${session.user.workspace}'`);
 });
 
 router.get('/load', function (req, res) {
