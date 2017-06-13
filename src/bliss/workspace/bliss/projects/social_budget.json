@@ -1,0 +1,869 @@
+{
+  "name": "Social Budget",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "nextId": 29,
+  "rootId": "1",
+  "externalCss": [
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css",
+    "https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i",
+    "node_modules/font-awesome/css/font-awesome.css"
+  ],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js",
+    "https://www.gstatic.com/firebasejs/4.1.1/firebase.js",
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"
+  ],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    },
+    {
+      "name": "font-awesome",
+      "version": "4.7.0"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() {\n  app.setState(function() {\n    app.state.signedIn = false;\n    app.state.ui = null;\n    app.state.user = null;\n    app.state.currentPage = 'dashboard';\n  });\n  \n  // Initialize Firebase\n  // TODO: Replace with your project's customized code snippet\n  var config = {\n    apiKey: \"AIzaSyCrI98bKkMT3FFgbB5WaRWJoXpzFAu3cfA\",\n    authDomain: \"personal-budget-6f3af.firebaseapp.com\",\n    databaseURL: \"https://personal-budget-6f3af.firebaseio.com\",\n    storageBucket: \"personal-budget-6f3af.appspot.com\"\n  };\n  firebase.initializeApp(config);\n  \n  //app.js.auth();\n  app.js.authStatus();\n}"
+    },
+    {
+      "name": "auth",
+      "body": "function(scope, attributes) {\n  var uiConfig = {\n    callbacks: {\n      signInSuccess: function(currentUser, credential, redirectUrl) {\n        //app.setState(function() {\n          //app.state.signedIn = true;\n        \t//app.state.user = user;\n        //});\n        return false;\n      },\n      uiShown: function() {\n        // The widget is rendered.\n        // Hide the loader.\n        //console.log('show element');\n      }\n    },\n    signInSuccessUrl: window.location.href,\n    signInOptions: [\n      // Leave the lines as is for the providers you want to offer your users.\n      //firebase.auth.GoogleAuthProvider.PROVIDER_ID,\n      firebase.auth.FacebookAuthProvider.PROVIDER_ID\n      //firebase.auth.PhoneAuthProvider.PROVIDER_ID\n    ],\n    // Terms of service url.\n    tosUrl: window.location.href\n  };\n\n  // Initialize the FirebaseUI Widget using Firebase.\n  var ui = new firebaseui.auth.AuthUI(firebase.auth());\n  // The start method will wait until the DOM is loaded.\n  ui.start('#firebaseui-auth-container', uiConfig);\n  \n  app.setState(function() {\n    app.state.ui = ui;\n  });\n}"
+    },
+    {
+      "name": "authStatus",
+      "body": "function() {\n  firebase.auth().onAuthStateChanged(function(user) {\n    //console.log('auth status changed');\n    if(user) {\n      //console.log('authStatus user', user);\n      app.setState(function() {\n        app.state.signedIn = true;\n        app.state.user = user;\n        //firebase.auth().signIn();\n      });\n    } else {\n      //console.log('user not logged in');\n      app.setState(function() {\n        app.state.user = null;\n        app.state.signedIn = false;\n        //console.log(app.state.ui);\n        //app.state.ui.reset();\n        app.setState(function() {\n  \t      //firebase.auth().signIn();\n          app.js.auth();\n        });\n      });\n    }\n  });\n}"
+    }
+  ],
+  "cssVars": [
+    {
+      "name": "medium",
+      "value": "#78d682"
+    },
+    {
+      "name": "light",
+      "value": "#f0fff1"
+    },
+    {
+      "name": "medContent",
+      "value": "#dbdbdb"
+    },
+    {
+      "name": "dark",
+      "value": "#3f5e45"
+    },
+    {
+      "name": "links",
+      "value": "#2d4931"
+    }
+  ],
+  "css": [
+    {
+      "selector": "body",
+      "properties": [
+        {
+          "name": "margin",
+          "value": "0"
+        },
+        {
+          "name": "padding",
+          "value": "0"
+        },
+        {
+          "name": "font-family",
+          "value": "'Roboto', sans-serif"
+        },
+        {
+          "name": "font-size",
+          "value": "12pt"
+        },
+        {
+          "name": "color",
+          "value": "#333"
+        },
+        {
+          "name": "background-color",
+          "value": "$light"
+        }
+      ]
+    },
+    {
+      "selector": "a",
+      "properties": [
+        {
+          "name": "color",
+          "value": "$links"
+        },
+        {
+          "name": "text-decoration",
+          "value": "none"
+        }
+      ]
+    },
+    {
+      "selector": "*",
+      "properties": [
+        {
+          "name": "box-sizing",
+          "value": "border-box"
+        }
+      ]
+    },
+    {
+      "selector": "a.subnav.active",
+      "properties": [
+        {
+          "name": "background-color",
+          "value": "$light"
+        }
+      ]
+    },
+    {
+      "selector": "a.subnav",
+      "properties": [
+        {
+          "name": "padding",
+          "value": "3px 10px"
+        },
+        {
+          "name": "font-size",
+          "value": "10pt"
+        },
+        {
+          "name": "border-radius",
+          "value": "15px"
+        },
+        {
+          "name": "margin",
+          "value": "0 5px"
+        }
+      ]
+    },
+    {
+      "selector": "a.subnav:hover",
+      "properties": [
+        {
+          "name": "background-color",
+          "value": "$light"
+        }
+      ]
+    }
+  ],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "Social Budget",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "9",
+      "parent": null
+    },
+    "3": {
+      "id": "3",
+      "name": "Sign-in",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "firebaseui-auth-container"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "relative"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "7"
+    },
+    "4": {
+      "id": "4",
+      "name": "Sign-in success",
+      "element": "div",
+      "text": "Signed-in!",
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "23"
+    },
+    "5": {
+      "id": "5",
+      "name": "Pages",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return app.state.signedIn;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "24",
+      "previous": "7",
+      "child": "26",
+      "parent": "1"
+    },
+    "6": {
+      "id": "6",
+      "name": "Sign-out",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "right",
+              "value": "15px"
+            },
+            {
+              "name": "top",
+              "value": "23px"
+            },
+            {
+              "name": "z-index",
+              "value": "100"
+            },
+            {
+              "name": "color",
+              "value": "$light"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut();\n  }\n};\n"
+        },
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return app.state.signedIn;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "10",
+      "child": "19",
+      "parent": "9"
+    },
+    "7": {
+      "id": "7",
+      "name": "Sign-in",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "margin",
+              "value": "20px auto 0 auto"
+            },
+            {
+              "name": "border-width",
+              "value": "1px"
+            },
+            {
+              "name": "border-style",
+              "value": "solid"
+            },
+            {
+              "name": "border-color",
+              "value": "$dark"
+            },
+            {
+              "name": "clear",
+              "value": "both"
+            },
+            {
+              "name": "background-color",
+              "value": "white"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return !app.state.signedIn;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "5",
+      "previous": "9",
+      "child": "3",
+      "parent": "1"
+    },
+    "9": {
+      "id": "9",
+      "name": "Header",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$dark"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "7",
+      "previous": null,
+      "child": "10",
+      "parent": "1"
+    },
+    "10": {
+      "id": "10",
+      "name": "Brand",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "padding",
+              "value": "15px"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "color",
+              "value": "$light"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "6",
+      "previous": null,
+      "child": "21",
+      "parent": "9"
+    },
+    "12": {
+      "id": "12",
+      "name": "menu",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$medium"
+            },
+            {
+              "name": "padding",
+              "value": "8px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "23",
+      "previous": null,
+      "child": "16",
+      "parent": "25"
+    },
+    "13": {
+      "id": "13",
+      "name": "Jan 17",
+      "element": "a",
+      "text": "Jan 17",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "subnav active"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "14",
+      "child": null,
+      "parent": "12"
+    },
+    "14": {
+      "id": "14",
+      "name": "Feb 17",
+      "element": "a",
+      "text": "Feb 17",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "subnav"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "13",
+      "previous": "16",
+      "child": null,
+      "parent": "12"
+    },
+    "16": {
+      "id": "16",
+      "name": "New",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "subnav"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "14",
+      "previous": null,
+      "child": "17",
+      "parent": "12"
+    },
+    "17": {
+      "id": "17",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-plus-circle"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "18",
+      "previous": null,
+      "child": null,
+      "parent": "16"
+    },
+    "18": {
+      "id": "18",
+      "name": "label",
+      "element": "span",
+      "text": " New",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "17",
+      "child": null,
+      "parent": "16"
+    },
+    "19": {
+      "id": "19",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-sign-out"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "20",
+      "previous": null,
+      "child": null,
+      "parent": "6"
+    },
+    "20": {
+      "id": "20",
+      "name": "label",
+      "element": "span",
+      "text": " Sign-out",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "19",
+      "child": null,
+      "parent": "6"
+    },
+    "21": {
+      "id": "21",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-money"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "22",
+      "previous": null,
+      "child": null,
+      "parent": "10"
+    },
+    "22": {
+      "id": "22",
+      "name": "label",
+      "element": "span",
+      "text": " Social Budget",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "28",
+      "previous": "21",
+      "child": null,
+      "parent": "10"
+    },
+    "23": {
+      "id": "23",
+      "name": "content",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "white"
+            },
+            {
+              "name": "margin",
+              "value": "20px auto 0 auto"
+            },
+            {
+              "name": "width",
+              "value": "95%"
+            },
+            {
+              "name": "border-color",
+              "value": "$dark"
+            },
+            {
+              "name": "border-width",
+              "value": "1px"
+            },
+            {
+              "name": "border-style",
+              "value": "solid"
+            },
+            {
+              "name": "padding",
+              "value": "10px 5px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "12",
+      "child": "4",
+      "parent": "25"
+    },
+    "24": {
+      "id": "24",
+      "name": "Footer",
+      "element": "div",
+      "text": "Powered by Bliss UI",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin-top",
+              "value": "20px"
+            },
+            {
+              "name": "font-size",
+              "value": "8pt"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "5",
+      "child": null,
+      "parent": "1"
+    },
+    "25": {
+      "id": "25",
+      "name": "Budget",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return app.state.currentPage === 'budget';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "26",
+      "child": "12",
+      "parent": "5"
+    },
+    "26": {
+      "id": "26",
+      "name": "Dashboard",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return app.state.currentPage === 'dashboard';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "25",
+      "previous": null,
+      "child": "27",
+      "parent": "5"
+    },
+    "27": {
+      "id": "27",
+      "name": "temp copy",
+      "element": "div",
+      "text": "Dashboard",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "26"
+    },
+    "28": {
+      "id": "28",
+      "name": "Brand subtitle",
+      "element": "div",
+      "text": "Managing money together",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$light"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "8pt"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "22",
+      "child": null,
+      "parent": "10"
+    }
+  }
+}
