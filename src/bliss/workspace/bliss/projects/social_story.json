@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 46,
+  "nextId": 53,
   "rootId": "1",
   "externalCss": [
     "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css",
@@ -35,7 +35,7 @@
   "js": [
     {
       "name": "app_init",
-      "body": "function() {\n  // Initialize Firebase\n  // TODO: Replace with your project's customized code snippet\n  var config = {\n    apiKey: \"AIzaSyCrI98bKkMT3FFgbB5WaRWJoXpzFAu3cfA\",\n    authDomain: \"personal-budget-6f3af.firebaseapp.com\",\n    databaseURL: \"https://personal-budget-6f3af.firebaseio.com\",\n    storageBucket: \"personal-budget-6f3af.appspot.com\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  app.setState(function() {\n    app.state.signedIn = false;\n    app.state.ui = null;\n    app.state.user = null;\n    app.state.currentPage = 'home';\n    app.state.database = firebase.database();\n    app.state.auth = firebase.auth();\n    app.state.storage = firebase.storage();\n    app.state.story = {\n      latestStory: {},\n      latestLines: {},\n      latestLikes: {},\n      latestAuthors: {},\n      you: {},\n      story: {},\n      lines: {}\n    };\n  });\n  \n  app.setState(function() {\n  \tapp.js.auth_changed();\n  });\n}"
+      "body": "function() {\n  // Initialize Firebase\n  // TODO: Replace with your project's customized code snippet\n  var config = {\n    apiKey: \"AIzaSyCrI98bKkMT3FFgbB5WaRWJoXpzFAu3cfA\",\n    authDomain: \"personal-budget-6f3af.firebaseapp.com\",\n    databaseURL: \"https://personal-budget-6f3af.firebaseio.com\",\n    storageBucket: \"personal-budget-6f3af.appspot.com\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  app.setState(function() {\n    app.state.signedIn = false;\n    app.state.ui = null;\n    app.state.user = null;\n    app.state.currentPage = 'home';\n    app.state.database = firebase.database();\n    app.state.auth = firebase.auth();\n    app.state.storage = firebase.storage();\n    app.state.currentStory = null;\n    app.state.currentLine = \"\";\n  });\n  \n  app.setState(function() {\n  \tapp.js.auth_changed();\n  });\n  \n  window.app = app;\n}"
     },
     {
       "name": "auth_init",
@@ -43,19 +43,35 @@
     },
     {
       "name": "auth_changed",
-      "body": "function() {\n  app.state.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      //console.log('authStatus user', user);\n      app.setState(function() {\n        app.state.signedIn = true;\n        app.state.user = user;\n      });\n    } else {\n      //console.log('user not logged in');\n      app.setState(function() {\n        app.state.user = null;\n        app.state.signedIn = false;\n      });\n      \n      app.setState(function() {\n        app.js.auth_init();\n      });\n    }\n  });\n}"
+      "body": "function() {\n  app.state.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      //console.log('authStatus user', user);\n      app.setState(function() {\n        app.state.signedIn = true;\n        app.state.user = user;\n        app.js.story_home();\n      });\n    } else {\n      //console.log('user not logged in');\n      app.setState(function() {\n        app.state.user = null;\n        app.state.signedIn = false;\n      });\n      \n      app.setState(function() {\n        app.js.auth_init();\n      });\n    }\n  });\n}"
     },
     {
-      "name": "story_create",
-      "body": "function(userId) {\n  var db = app.state.database;\n  var newBudget = db.ref().child('budgets').push();\n  \n  var months = ['Jan','Feb','Mar','Apr','May','Jun',\n                'Jul','Aug','Sept','Oct','Nov','Dec'];\n  \n  var d = new Date();\n\tvar year = d.getFullYear();\n  var month = months[d.getMonth()];\n  \n  newBudget.set({\"name\": month + ' ' + year});\n  \n  var expenses = newBudget.child('expenses');\n  var income = newBudget.child('income');\n  \n  expenses.push().set({\n    \"category\": \"Bills\",\n    \"name\": \"Rent\",\n    \"estimated\": \"875\",\n    \"actual\": \"975\",\n    \"remaining\": \"0\",\n    \"status\": \"paid\"\n  });\n  \n  expenses.push().set({\n    \"category\": \"Living Expenses\",\n    \"name\": \"Cash\",\n    \"estimated\": \"200\",\n    \"actual\": \"250\",\n    \"remaining\": \"50\",\n    \"status\": \"pending\"\n  });\n  \n  income.push().set({\n    \"name\": \"Balance\",\n    \"estimated\": \"0\",\n    \"actual\": \"50\",\n    \"remaining\": \"750\",\n    \"status\": \"pending\"\n  });\n  \n  income.push().set({\n    \"name\": \"Paycheck\",\n    \"estimated\": \"3000\",\n    \"actual\": \"3050\",\n    \"remaining\": \"0\",\n    \"status\": \"paid\"\n  });\n  \n  var userId = app.state.user.uid;\n  //console.log('user id', userId);\n  //console.log('budget key', newBudget.key);\n  db.ref().child('shares').child(userId).child(newBudget.key).set(true);\n}"
+      "name": "story_start",
+      "body": "function(storyId) {\n  var db = app.state.database;\n  \n  // create new story\n  var newStory = db.ref().child('stories').push();\n  newStory.set({\"title\": \"New story\"});\n  newStory.child('authors').child(app.state.user.uid).set(true);\n  \n  // create author\n  var newAuthor = db.ref().child('authors')\n                          .child(app.state.user.uid)\n                          .child(newStory.key)\n                          .set(true);\n  \n  // create first line\n  var newLine = db.ref().child('lines')\n  .child(newStory.key)\n  .push()\n  .set({\n    \"text\": 'Once upon a time there was a ...',\n    \"user\": app.state.user.uid\n  });\n  \n  app.js.firebase_subscribe('lines/'+newStory.key);\n  \n  app.setState(function() {\n    app.state.currentPage = 'write';\n    app.state.currentStory = newStory.key;\n  });\n}"
     },
     {
-      "name": "story_recent_list",
-      "body": "function(userId) {\n  var db = app.state.database;\n  var stories = db.ref().child('stories');\n  \n  var userId = app.state.user.uid;\n  var sharesRef = db.ref().child('shares/' + userId);\n  \n  var sharesChanged = function(snapshot) {\n    app.setState(function() {\n      if(snapshot.val() !== null) {\n    \t\tapp.state.sharedBudgets = snapshot.val();\n      }\n    });\n    \n    app.setState(function() {\n      Object.keys(app.state.sharedBudgets).forEach(function(budgetId) {\n        var budgetRef = db.ref().child('budgets/' + budgetId);\n        \n        var valueChange = function(snapshot) {\n          app.setState(function() {\n            app.state.budgets[budgetId] = snapshot.val();\n            console.log('budget added', snapshot.val());\n          });\n        };\n        \n        budgetRef.on('value', valueChange);\n        budgetRef.on('child_removed', function() {\n          budgetRef.off('value', valueChange);\n        });\n      });\n    });\n  };\n  \n  sharesRef.on('value', sharesChanged);\n  sharesRef.on('child_removed', function(oldChildSnapshot) {\n    sharesRef.off('value', sharesChanged);\n  \tconsole.log('child removed', oldChildSnapshot.key, oldChildSnapshot.val());\n    if(typeof app.state.budgets[oldChildSnapshot.key] !== 'undefined') {\n    \tapp.setState(function() {\n        delete app.state.sharedBudgets[oldChildSnapshot.key];\n        delete app.state.budgets[oldChildSnapshot.key];\n      });\n    }\n\t});\n}"
+      "name": "story_home",
+      "body": "function() {\n  // listen for stories, update state\n  app.js.firebase_subscribe('stories');\n  \n  app.js.firebase_subscribe_limit_last(100, 'stories');\n  app.js.firebase_subscribe_limit_last(100, 'authors/'+app.state.user.uid);\n}"
     },
     {
-      "name": "story_your_stories",
-      "body": "function(scope, attributes) {\n  return null;\n}"
+      "name": "firebase_subscribe",
+      "body": "function(firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_');\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath);\n  ref.on('value', valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "firebase_subscribe_limit_last",
+      "body": "function(limit, firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_') + '_last_' + limit;\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath).limitToLast(limit);\n  ref.on('value', valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "firebase_subscribe_limit_first",
+      "body": "function(limit, firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_') + '_first_' + limit;\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath).limitToFirst(limit);\n  ref.on('value', valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "firebase_get",
+      "body": "function(firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_') + '_get';\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath).limitToFirst(1);\n  ref.once('value').then(valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "story_excerpt",
+      "body": "function(storyId) {\n  return null;\n}"
     }
   ],
   "cssVars": [
@@ -605,7 +621,7 @@
     },
     "26": {
       "id": "26",
-      "name": "Homepage",
+      "name": "Home",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -873,6 +889,14 @@
             {
               "name": "margin-top",
               "value": "20px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "font-size",
+              "value": "16pt"
             }
           ]
         }
@@ -886,7 +910,7 @@
       "dynamicAttributes": [],
       "next": null,
       "previous": "26",
-      "child": "42",
+      "child": "50",
       "parent": "5"
     },
     "39": {
@@ -986,7 +1010,7 @@
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.currentPage = 'write';\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.story_start();\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -1000,30 +1024,13 @@
       "child": null,
       "parent": "39"
     },
-    "42": {
-      "id": "42",
-      "name": "temp",
-      "element": "div",
-      "text": "Write a new story",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "38"
-    },
     "43": {
       "id": "43",
       "name": "No latest story",
       "element": "div",
       "text": "(no latest story)",
       "textFn": null,
-      "ifFn": null,
+      "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
       "css": [
@@ -1037,9 +1044,14 @@
           ]
         }
       ],
-      "js": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'stories');\n  return state === null;\n}"
+        }
+      ],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "49",
       "previous": "33",
       "child": null,
       "parent": "31"
@@ -1050,7 +1062,7 @@
       "element": "div",
       "text": "(no stories yet)",
       "textFn": null,
-      "ifFn": null,
+      "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
       "css": [
@@ -1064,12 +1076,309 @@
           ]
         }
       ],
-      "js": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'authors/'+app.state.user.uid);\n  return state === null;\n}"
+        }
+      ],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "48",
       "previous": "34",
       "child": null,
       "parent": "32"
+    },
+    "46": {
+      "id": "46",
+      "name": "new line",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "write next line here (max 120 characters)"
+        },
+        {
+          "name": "maxLength",
+          "value": "120"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "margin-top",
+              "value": "10px"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "font-size",
+              "value": "16pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.currentLine = e.target.value;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.currentLine;\n}"
+        },
+        {
+          "name": "handleKeyDown",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    var key = e.which, ENTER = 13, ESCAPE = 27;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    app.setState(function() {\n      if(key === ENTER && app.state.currentLine !== '') {\n        comp.addLine();\n      } else if(key === ESCAPE) {\n        app.state.currentLine = '';\n      }\n    });\n  }\n};\n"
+        },
+        {
+          "name": "addLine",
+          "body": "function() {\n  var db = app.state.database;\n  \n  // add new line\n  var newLine = db.ref().child('lines/'+app.state.currentStory).push();\n  newLine.set({\"text\": app.state.currentLine, \"user\": app.state.user.uid});\n  \n  // add to authors\n  var newAuthor = db.ref().child('authors/'+app.state.user.uid);\n  newAuthor.child(app.state.currentStory).set(true);\n  \n  // add to story authors\n  var newStoryAuthor = db.ref().child('stories/'+app.state.currentStory+'/authors');\n  newStoryAuthor.child(app.state.user.uid).set(true);\n  \n  app.setState(function() {\n    app.state.currentLine = '';\n  });\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "onKeyDown",
+          "value": "handleKeyDown"
+        }
+      ],
+      "next": null,
+      "previous": "47",
+      "child": null,
+      "parent": "38"
+    },
+    "47": {
+      "id": "47",
+      "name": "lines",
+      "element": "div",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe('lines/'+app.state.currentStory);\n  var keys = Object.keys(state);\n  return keys;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe('lines/'+app.state.currentStory);\n  var key = scope.repeater[scope.repeater_index];\n  //console.log('lines state', state);\n  return state[key].text;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "46",
+      "previous": "50",
+      "child": null,
+      "parent": "38"
+    },
+    "48": {
+      "id": "48",
+      "name": "Story list",
+      "element": "div",
+      "text": "",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'authors/'+app.state.user.uid);\n  return (state === null) ? [] : Object.keys(state);\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "45",
+      "child": "51",
+      "parent": "32"
+    },
+    "49": {
+      "id": "49",
+      "name": "Story list",
+      "element": "div",
+      "text": "",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'stories');\n  return (state === null) ? [] : Object.keys(state);\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "43",
+      "child": "52",
+      "parent": "31"
+    },
+    "50": {
+      "id": "50",
+      "name": "title",
+      "element": "div",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-decoration",
+              "value": "underline"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "30px"
+            },
+            {
+              "name": "margin-top",
+              "value": "30px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe('stories/'+app.state.currentStory);\n  return state.title;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "47",
+      "previous": null,
+      "child": null,
+      "parent": "38"
+    },
+    "51": {
+      "id": "51",
+      "name": "Story link",
+      "element": "a",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  return function(e) {\n    app.setState(function() {\n      app.state.currentStory = key;\n      app.state.currentPage = 'write';\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  var state = app.js.firebase_subscribe('stories');\n  return state[key].title;\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "48"
+    },
+    "52": {
+      "id": "52",
+      "name": "Story link",
+      "element": "a",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  return function(e) {\n    app.setState(function() {\n      app.state.currentStory = key;\n      app.state.currentPage = 'write';\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  var state = app.js.firebase_subscribe('stories');\n  return state[key].title;\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "49"
     }
   }
 }
