@@ -78,6 +78,11 @@ module.exports = function(options) {
   app.use('/website', express.static(path.join(options.workspace, 'dist', 'bliss_ui_website', 'app')));
   app.use('/website/node_modules', express.static(path.join(options.workspace, 'dist', 'bliss_ui_website', 'node_modules')));
 
+  // Social Story
+  app.get('/story', function(req, res) { res.redirect('/story/social_story.html'); });
+  app.use('/story', express.static(path.join(options.workspace, 'dist', 'social_story', 'app')));
+  app.use('/story/node_modules', express.static(path.join(options.workspace, 'dist', 'social_story', 'node_modules')));
+
   // Application Routes
   app.use('/designer', express.static(options.workspace));
   app.use('/designer/bliss-tree', express.static(path.join(options.app, 'bliss-tree')));
