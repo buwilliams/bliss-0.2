@@ -104,7 +104,7 @@ body {
   right: -10px;
   height: 8px;
   padding: 0px;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .node-drag-over {
