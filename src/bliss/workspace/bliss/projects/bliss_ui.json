@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 225,
+  "nextId": 228,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -127,7 +127,7 @@
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JS'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    app.js.getProjects();\n  });\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JS'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'npm_packages', label: 'NPM Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    app.js.getProjects();\n  });\n}"
     },
     {
       "name": "log",
@@ -1855,10 +1855,10 @@
           "value": "setOnChange"
         }
       ],
-      "next": "138",
+      "next": null,
       "previous": "136",
       "child": null,
-      "parent": "97"
+      "parent": "226"
     },
     "136": {
       "id": "136",
@@ -1912,9 +1912,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "135",
-      "previous": "143",
+      "previous": "139",
       "child": null,
-      "parent": "97"
+      "parent": "226"
     },
     "137": {
       "id": "137",
@@ -1938,7 +1938,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "155",
+      "next": null,
       "previous": "109",
       "child": "108",
       "parent": "179"
@@ -1995,9 +1995,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "139",
-      "previous": "135",
+      "previous": "156",
       "child": null,
-      "parent": "97"
+      "parent": "226"
     },
     "139": {
       "id": "139",
@@ -2050,10 +2050,10 @@
           "value": "setOnChange"
         }
       ],
-      "next": null,
+      "next": "136",
       "previous": "138",
       "child": null,
-      "parent": "97"
+      "parent": "226"
     },
     "140": {
       "id": "140",
@@ -2096,10 +2096,6 @@
             {
               "name": "border-radius",
               "value": "3px"
-            },
-            {
-              "name": "margin-top",
-              "value": "10px"
             }
           ]
         }
@@ -2107,9 +2103,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "141",
-      "previous": "224",
+      "previous": null,
       "child": null,
-      "parent": "180"
+      "parent": "225"
     },
     "141": {
       "id": "141",
@@ -2181,7 +2177,7 @@
       "next": null,
       "previous": "140",
       "child": null,
-      "parent": "180"
+      "parent": "225"
     },
     "142": {
       "id": "142",
@@ -2218,10 +2214,6 @@
               "value": "#fff"
             },
             {
-              "name": "margin-top",
-              "value": "15px"
-            },
-            {
               "name": "padding",
               "value": "10px"
             },
@@ -2235,9 +2227,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "143",
-      "previous": "199",
+      "previous": null,
       "child": null,
-      "parent": "97"
+      "parent": "227"
     },
     "143": {
       "id": "143",
@@ -2306,10 +2298,10 @@
           "value": "setItemValue"
         }
       ],
-      "next": "136",
+      "next": null,
       "previous": "142",
       "child": null,
-      "parent": "97"
+      "parent": "227"
     },
     "147": {
       "id": "147",
@@ -2646,7 +2638,7 @@
       "id": "155",
       "name": "load header",
       "element": "h3",
-      "text": "Page Load",
+      "text": "Page Load Functions",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2677,10 +2669,6 @@
               "value": "#fff"
             },
             {
-              "name": "margin-top",
-              "value": "15px"
-            },
-            {
               "name": "padding",
               "value": "10px"
             },
@@ -2694,9 +2682,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "156",
-      "previous": "137",
+      "previous": null,
       "child": null,
-      "parent": "179"
+      "parent": "226"
     },
     "156": {
       "id": "156",
@@ -2749,10 +2737,10 @@
           "value": "setOnChange"
         }
       ],
-      "next": null,
+      "next": "138",
       "previous": "155",
       "child": null,
-      "parent": "179"
+      "parent": "226"
     },
     "157": {
       "id": "157",
@@ -3243,7 +3231,7 @@
           "value": "getStyle"
         }
       ],
-      "next": null,
+      "next": "225",
       "previous": "179",
       "child": "223",
       "parent": "4"
@@ -3852,7 +3840,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "142",
+      "next": null,
       "previous": "98",
       "child": "103",
       "parent": "97"
@@ -4228,10 +4216,145 @@
           "value": "setComponent"
         }
       ],
-      "next": "140",
+      "next": null,
       "previous": "223",
       "child": null,
       "parent": "180"
+    },
+    "225": {
+      "id": "225",
+      "name": "CSS Vars Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'css_vars') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "226",
+      "previous": "180",
+      "child": "140",
+      "parent": "4"
+    },
+    "226": {
+      "id": "226",
+      "name": "Page Load Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'page_load') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "227",
+      "previous": "225",
+      "child": "155",
+      "parent": "4"
+    },
+    "227": {
+      "id": "227",
+      "name": "NPM Packages Editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'npm_packages') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": null,
+      "previous": "226",
+      "child": "142",
+      "parent": "4"
     }
   }
 }

@@ -81,7 +81,7 @@
     },
     {
       "name": "light",
-      "value": "#d5c194"
+      "value": "#eeeeee"
     },
     {
       "name": "medContent",
@@ -89,7 +89,7 @@
     },
     {
       "name": "dark",
-      "value": "#60201b"
+      "value": "#616161"
     },
     {
       "name": "links",
@@ -97,7 +97,7 @@
     },
     {
       "name": "lightFontColor",
-      "value": "#cabd8b"
+      "value": "#eeeeee"
     },
     {
       "name": "darkFontColor",
