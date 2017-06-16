@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const deps = require('../core/dependencies.js');
 const file = require('../core/file.js');
 const app = express();
+const sentencer = require('sentencer');
 
 module.exports = function(options) {
   var getCompiler = function(projectJson) {
@@ -80,6 +81,7 @@ module.exports = function(options) {
 
   // Social Story
   app.get('/story', function(req, res) { res.redirect('/story/social_story.html'); });
+  app.get('/story/sentence', function(req, res) { res.send({"sentence": sentencer.make(req.query.format)}); });
   app.use('/story', express.static(path.join(options.workspace, 'dist', 'social_story', 'app')));
   app.use('/story/node_modules', express.static(path.join(options.workspace, 'dist', 'social_story', 'node_modules')));
 

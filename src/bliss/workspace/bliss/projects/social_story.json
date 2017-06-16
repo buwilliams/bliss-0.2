@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 53,
+  "nextId": 63,
   "rootId": "1",
   "externalCss": [
     "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css",
@@ -15,7 +15,8 @@
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js",
     "https://www.gstatic.com/firebasejs/4.1.1/firebase.js",
-    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js",
+    "node_modules/jquery/dist/jquery.min.js"
   ],
   "state": {},
   "packages": [
@@ -30,6 +31,10 @@
     {
       "name": "font-awesome",
       "version": "4.7.0"
+    },
+    {
+      "name": "jquery",
+      "version": "3.2.1"
     }
   ],
   "js": [
@@ -47,7 +52,7 @@
     },
     {
       "name": "story_start",
-      "body": "function(storyId) {\n  var db = app.state.database;\n  \n  // create new story\n  var newStory = db.ref().child('stories').push();\n  newStory.set({\"title\": \"New story\"});\n  newStory.child('authors').child(app.state.user.uid).set(true);\n  \n  // create author\n  var newAuthor = db.ref().child('authors')\n                          .child(app.state.user.uid)\n                          .child(newStory.key)\n                          .set(true);\n  \n  // create first line\n  var newLine = db.ref().child('lines')\n  .child(newStory.key)\n  .push()\n  .set({\n    \"text\": 'Once upon a time there was a ...',\n    \"user\": app.state.user.uid\n  });\n  \n  app.js.firebase_subscribe('lines/'+newStory.key);\n  \n  app.setState(function() {\n    app.state.currentPage = 'write';\n    app.state.currentStory = newStory.key;\n  });\n}"
+      "body": "function(storyId) {\n  var createStory = function(title, first_line) {\n    var db = app.state.database;\n\n    // create new story\n    var newStory = db.ref().child('stories').push();\n    newStory.set({\"title\": title});\n    newStory.child('authors').child(app.state.user.uid).set(true);\n\n    // create author\n    var newAuthor = db.ref().child('authors')\n                            .child(app.state.user.uid)\n                            .child(newStory.key)\n                            .set(true);\n\n    // create first line\n    var newLine = db.ref().child('lines')\n    .child(newStory.key)\n    .push()\n    .set({\n      \"text\": first_line,\n      \"user\": app.state.user.uid\n    });\n\n    app.js.firebase_subscribe('lines/'+newStory.key);\n\n    app.setState(function() {\n      app.state.currentPage = 'write';\n      app.state.currentStory = newStory.key;\n    });\n  };\n  \n  $.get('/story/sentence', {\"format\": \"A story about {{ an_adjective }} {{ noun }} and {{ an_adjective }} {{ noun }}.\"}, function(data) {\n    createStory(data.sentence, \"Once upon a time there was a ...\");\n  });\n}"
     },
     {
       "name": "story_home",
@@ -84,12 +89,8 @@
       "value": "#eeeeee"
     },
     {
-      "name": "medContent",
-      "value": "#dbdbdb"
-    },
-    {
       "name": "dark",
-      "value": "#616161"
+      "value": "#454545"
     },
     {
       "name": "links",
@@ -101,7 +102,7 @@
     },
     {
       "name": "darkFontColor",
-      "value": "#421a14"
+      "value": "#333"
     }
   ],
   "css": [
@@ -130,7 +131,7 @@
         },
         {
           "name": "background-color",
-          "value": "#f3ede1"
+          "value": "$light"
         }
       ]
     },
@@ -338,7 +339,7 @@
             },
             {
               "name": "top",
-              "value": "23px"
+              "value": "40px"
             },
             {
               "name": "z-index",
@@ -347,6 +348,10 @@
             {
               "name": "color",
               "value": "$lightFontColor"
+            },
+            {
+              "name": "font-size",
+              "value": "12pt"
             }
           ]
         }
@@ -452,6 +457,10 @@
             {
               "name": "background-color",
               "value": "$dark"
+            },
+            {
+              "name": "font-size",
+              "value": "30pt"
             }
           ]
         }
@@ -678,7 +687,7 @@
             },
             {
               "name": "font-size",
-              "value": "8pt"
+              "value": "14pt"
             },
             {
               "name": "text-align",
@@ -696,7 +705,7 @@
     },
     "31": {
       "id": "31",
-      "name": "Latest story",
+      "name": "Latest stories",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -727,7 +736,7 @@
     },
     "32": {
       "id": "32",
-      "name": "Your stories",
+      "name": "About",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -756,7 +765,7 @@
       "id": "33",
       "name": "Header",
       "element": "div",
-      "text": "Latest story",
+      "text": "Latest stories",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -795,7 +804,7 @@
       "id": "34",
       "name": "Header",
       "element": "div",
-      "text": "Your Stories",
+      "text": "About",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -829,7 +838,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "45",
+      "next": "53",
       "previous": null,
       "child": null,
       "parent": "32"
@@ -1056,38 +1065,6 @@
       "child": null,
       "parent": "31"
     },
-    "45": {
-      "id": "45",
-      "name": "No stories yet",
-      "element": "div",
-      "text": "(no stories yet)",
-      "textFn": null,
-      "ifFn": "shouldShow",
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'authors/'+app.state.user.uid);\n  return state === null;\n}"
-        }
-      ],
-      "dynamicAttributes": [],
-      "next": "48",
-      "previous": "34",
-      "child": null,
-      "parent": "32"
-    },
     "46": {
       "id": "46",
       "name": "new line",
@@ -1200,38 +1177,6 @@
       "child": null,
       "parent": "38"
     },
-    "48": {
-      "id": "48",
-      "name": "Story list",
-      "element": "div",
-      "text": "",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": "repeater",
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "repeater",
-          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'authors/'+app.state.user.uid);\n  return (state === null) ? [] : Object.keys(state);\n};\n"
-        }
-      ],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "45",
-      "child": "51",
-      "parent": "32"
-    },
     "49": {
       "id": "49",
       "name": "Story list",
@@ -1308,42 +1253,6 @@
       "child": null,
       "parent": "38"
     },
-    "51": {
-      "id": "51",
-      "name": "Story link",
-      "element": "a",
-      "text": "",
-      "textFn": "getText",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#"
-        }
-      ],
-      "css": [],
-      "js": [
-        {
-          "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  return function(e) {\n    app.setState(function() {\n      app.state.currentStory = key;\n      app.state.currentPage = 'write';\n    });\n  }\n};\n"
-        },
-        {
-          "name": "getText",
-          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  var state = app.js.firebase_subscribe('stories');\n  return state[key].title;\n};"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "handleClick"
-        }
-      ],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "48"
-    },
     "52": {
       "id": "52",
       "name": "Story link",
@@ -1379,6 +1288,195 @@
       "previous": null,
       "child": null,
       "parent": "49"
+    },
+    "53": {
+      "id": "53",
+      "name": "About Text",
+      "element": "div",
+      "text": "Social Story is a fun way to get creative with your friends. You'll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It's also a great way to escape writes block!",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "54",
+      "previous": "34",
+      "child": null,
+      "parent": "32"
+    },
+    "54": {
+      "id": "54",
+      "name": "Instructions",
+      "element": "div",
+      "text": "Instructions",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "margin-top",
+              "value": "30px"
+            },
+            {
+              "name": "border-bottom",
+              "value": "solid 2px"
+            },
+            {
+              "name": "border-bottom-color",
+              "value": "$darkFontColor"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "55",
+      "previous": "53",
+      "child": null,
+      "parent": "32"
+    },
+    "55": {
+      "id": "55",
+      "name": "ordered list",
+      "element": "ol",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding-left",
+              "value": "20px"
+            },
+            {
+              "name": "margin-top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "54",
+      "child": "56",
+      "parent": "32"
+    },
+    "56": {
+      "id": "56",
+      "name": "list item",
+      "element": "li",
+      "text": "Create a new story",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "62",
+      "previous": null,
+      "child": null,
+      "parent": "55"
+    },
+    "58": {
+      "id": "58",
+      "name": "list item",
+      "element": "li",
+      "text": "Ask your friends to join in the fun",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "59",
+      "previous": "62",
+      "child": null,
+      "parent": "55"
+    },
+    "59": {
+      "id": "59",
+      "name": "list item",
+      "element": "li",
+      "text": "Take turns adding a new line to the story",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "60",
+      "previous": "58",
+      "child": null,
+      "parent": "55"
+    },
+    "60": {
+      "id": "60",
+      "name": "list item",
+      "element": "li",
+      "text": "Be sure to leave your lines open-ended (ie. The frog had no pants but he did have...)",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "61",
+      "previous": "59",
+      "child": null,
+      "parent": "55"
+    },
+    "61": {
+      "id": "61",
+      "name": "list item",
+      "element": "li",
+      "text": "There's no need to refresh the page. All stories and lines are updated immediately.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "60",
+      "child": null,
+      "parent": "55"
+    },
+    "62": {
+      "id": "62",
+      "name": "list item",
+      "element": "li",
+      "text": "We'll start you off with a story title",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "58",
+      "previous": "56",
+      "child": null,
+      "parent": "55"
     }
   }
 }
