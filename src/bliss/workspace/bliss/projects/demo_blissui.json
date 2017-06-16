@@ -7,6 +7,7 @@
   "nextId": 39,
   "rootId": "1",
   "externalCss": [
+    "https://fonts.googleapis.com/css?family=Roboto",
     "node_modules/bootstrap/dist/css/bootstrap.min.css"
   ],
   "externalJs": [
@@ -94,7 +95,21 @@
       "value": "#4e1f22"
     }
   ],
-  "css": [],
+  "css": [
+    {
+      "selector": "body",
+      "properties": [
+        {
+          "name": "font-size",
+          "value": "14pt"
+        },
+        {
+          "name": "font-family",
+          "value": "'Roboto', sans-serif"
+        }
+      ]
+    }
+  ],
   "load": [
     "init"
   ],
@@ -120,7 +135,7 @@
     },
     "2": {
       "id": "2",
-      "name": "Row 1",
+      "name": "Row 1 - Title",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -142,7 +157,7 @@
     },
     "3": {
       "id": "3",
-      "name": "Column 1",
+      "name": "Column 1 - Speed",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -186,7 +201,7 @@
     },
     "4": {
       "id": "4",
-      "name": "Row 2 - Speed",
+      "name": "Row 2 - Benefits",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -218,7 +233,7 @@
     },
     "5": {
       "id": "5",
-      "name": "Column 3",
+      "name": "Column 3 - Power",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -255,14 +270,14 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "10",
       "previous": "6",
       "child": "27",
       "parent": "4"
     },
     "6": {
       "id": "6",
-      "name": "Column 2",
+      "name": "Column 2 - Simplicity",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -343,7 +358,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "10",
+      "next": null,
       "previous": null,
       "child": "36",
       "parent": "9"
@@ -394,7 +409,7 @@
     },
     "9": {
       "id": "9",
-      "name": "Row 3 - Simplicty",
+      "name": "Row 3 - Play",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -454,9 +469,9 @@
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "7",
+      "previous": "5",
       "child": "35",
-      "parent": "9"
+      "parent": "4"
     },
     "11": {
       "id": "11",
@@ -516,7 +531,7 @@
     },
     "14": {
       "id": "14",
-      "name": "Row 4 - Power",
+      "name": "Row 4 - Play",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -577,7 +592,7 @@
       "dynamicAttributes": [],
       "next": null,
       "previous": "15",
-      "child": "18",
+      "child": "17",
       "parent": "3"
     },
     "17": {
@@ -593,7 +608,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "38",
-      "previous": "18",
+      "previous": null,
       "child": null,
       "parent": "16"
     },
@@ -609,8 +624,8 @@
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "17",
-      "previous": null,
+      "next": null,
+      "previous": "19",
       "child": null,
       "parent": "16"
     },
@@ -626,7 +641,7 @@
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "18",
       "previous": "38",
       "child": null,
       "parent": "16"
@@ -679,7 +694,7 @@
       "id": "22",
       "name": "clean ui",
       "element": "li",
-      "text": "Clean UI",
+      "text": "Clean UI where designers can be involved",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
