@@ -5,10 +5,6 @@ const ws = require('../../core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
 
-router.get('/', function(req, res) {
-  res.redirect('bliss.html');
-});
-
 // Application Routes
 router.use('/designer', express.static(ws.workspace(env, session)));
 
