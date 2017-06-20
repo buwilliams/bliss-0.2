@@ -2,12 +2,15 @@ const path = require('path');
 const fs = require('fs');
 const exec = require('sync-exec');
 const compiler = require('./src/compiler/react/react.js');
+const fse = require('fs-extra');
 
 var config = {
   bliss_src: 'src/bliss/blissui/bliss',
   bliss_project: 'src/bliss/blissui/bliss/projects/bliss_ui.json',
   bliss_build: 'build/blissui/bliss',
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-utils'],
+  bliss_workspace: 'src/bliss/blissui',
+  bliss_workspace_build: 'build/blissui',
   ws_dirs: ['projects', 'components', 'css', 'js', 'assets']
 };
 
@@ -106,10 +109,13 @@ desc('Builds bliss and bliss components');
 task('build', function(){
   var t;
 
-  console.log('>> build');
+  console.log('>> cleaning build');
 
   t = jake.Task['util:clean-dir'];
   t.execute.apply(t, ['build']);
+
+  console.log('>> copying workspaces');
+  fse.copySync(config.bliss_workspace, config.bliss_workspace_build);
 
   t = jake.Task['build-all-components'];
   t.invoke();
