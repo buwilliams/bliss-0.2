@@ -6,3 +6,5 @@ dist
 build
 .env
 logs/
+src/workspaces/**/yarn.lock
+src/workspaces/**/package.json
