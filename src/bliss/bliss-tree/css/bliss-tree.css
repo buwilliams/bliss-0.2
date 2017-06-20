@@ -104,11 +104,7 @@ body {
   right: -10px;
   height: 8px;
   padding: 0px;
-<<<<<<< HEAD
-  z-index: 100;
-=======
   z-index: 10;
->>>>>>> minor bug fix with menu system
 }
 
 .node-drag-over {
