@@ -54,22 +54,11 @@ namespace('util', function() {
 
 desc('Build single component');
 task('build-component', function(name) {
-  var t;
-
   console.log('>> build-component', name);
 
   var buildPath = `${config.bliss_build}/components/${name}`;
-  //jake.mkdirP(buildPath);
 
-  //t = jake.Task['util:clean-dir'];
-  //t.execute.apply(t, [buildPath]);
-
-  //t = jake.Task['util:copy-files'];
-  //t.execute.apply(t, ['html',`src/bliss/${name}`, buildPath]);
-  //t.execute.apply(t, ['css',`src/bliss/${name}`, buildPath]);
-  //t.execute.apply(t, ['js',`src/bliss/${name}`, buildPath]);
-
-  t = jake.Task['util:compile-jsx'];
+  var t = jake.Task['util:compile-jsx'];
   t.execute.apply(t, [`${config.bliss_component_path}/${name}`, buildPath]);
 });
 
