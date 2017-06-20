@@ -25,6 +25,9 @@ app.use('/workspace', workspace);
 app.use('/bliss', bliss);
 app.use('/hosted', hosted);
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
 app.listen(env.port, function () {
   console.log(`Find your Bliss on port ${env.port}!`);
 });
