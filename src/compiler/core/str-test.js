@@ -1,6 +1,5 @@
-
 var js = require('./str.js');
-var project = require('./project.js');
+var project = require('./project-json.js');
 
 describe('str', function() {
   describe('getCamel', function() {

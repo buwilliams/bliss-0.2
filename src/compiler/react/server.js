@@ -1,99 +1,33 @@
-const path = require('path');
-const fs = require('fs');
 const express = require('express');
-const bodyParser = require('body-parser');
-const deps = require('../core/dependencies.js');
-const file = require('../core/file.js');
 const app = express();
-const sentencer = require('sentencer');
+const bodyParser = require('body-parser');
+const env = require('./env.js');
+const ws = require('../core/workspace.js');
+const bliss = require('./routes/bliss.js');
+const compiler = require('./routes/compiler.js');
+const project = require('./routes/project.js');
+const user = require('./routes/user.js');
+const website = require('./routes/website.js');
+const workspace = require('./routes/workspace.js');
+const hosted = require('./routes/hosted.js');
 
-module.exports = function(options) {
-  var getCompiler = function(projectJson) {
-    var compilerPath = path.join(__dirname, "react.js");
-    return require(compilerPath);
-  };
+app.use(bodyParser.json());
 
-  app.use(bodyParser.json());
+app.get('/', function(req, res) {
+  res.redirect('/hosted/blissui/website/');
+});
 
-  app.post('/build', function (req, res) {
-    var projectJson = req.body;
-    var compiler = getCompiler(projectJson);
-    compiler.compile(options.workspace, projectJson, null);
-    res.send({success: true});
-    console.log(`Built '${projectJson.name}'`);
-  });
+app.use('/user', user);
+app.use('/compiler', compiler);
+app.use('/project', project);
+app.use('/website', website);
+app.use('/workspace', workspace);
+app.use('/bliss', bliss);
+app.use('/hosted', hosted);
 
-  app.post('/export', function (req, res) {
-    var projectJson = req.body;
-    var compiler = getCompiler(projectJson);
-    compiler.export(options.workspace, projectJson, null);
-    res.send({success: true});
-    console.log(`Exported component '${projectJson.name}'`);
-  });
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
 
-  app.post('/dist', function (req, res) {
-    var projectJson = req.body;
-    var compiler = getCompiler(projectJson);
-    compiler.dist(options.workspace, projectJson, null);
-    res.send({success: true});
-    console.log(`Created dist '${projectJson.name}'`);
-  });
-
-  app.post('/save', function (req, res) {
-    var project = req.body;
-    file.writeProject(options.workspace, project);
-    res.send({success: true});
-    console.log(`Saved '${project.name}'`);
-  });
-
-  app.get('/load', function (req, res) {
-    var name = req.query.name;
-    var json = file.readProject(options.workspace, name);
-    deps.update(options.workspace, json);
-    res.send({success: true, project: json});
-    console.log(`Loaded '${json.name}'`);
-  });
-
-  app.get('/list', function (req, res) {
-    var json = file.listProjects(options.workspace);
-    res.send({success: true, projects: json});
-    console.log(`Listed projects`);
-  });
-
-  app.get('/explore', function(req, res) {
-    var pathName = req.query.path;
-    var list = fs.readdirSync(path.join(options.workspace, pathName));
-    list = list.map(function(entry) {
-      return {
-        file: fs.statSync(path.join(options.workspace, pathName, entry)).isFile(),
-        path: path.join(pathName),
-        name: entry
-      };
-    });
-    res.send({success: true, entries: list});
-  });
-
-  // Website Routes
-  app.get('/', function(req, res) { res.redirect('/website/bliss_ui_website.html'); });
-  app.get('/website', function(req, res) { res.redirect('/website/bliss_ui_website.html'); });
-  app.use('/website', express.static(path.join(options.workspace, 'dist', 'bliss_ui_website', 'app')));
-  app.use('/website/node_modules', express.static(path.join(options.workspace, 'dist', 'bliss_ui_website', 'node_modules')));
-
-  // Social Story
-  app.get('/story', function(req, res) { res.redirect('/story/social_story.html'); });
-  app.get('/story/sentence', function(req, res) { res.send({"sentence": sentencer.make(req.query.format)}); });
-  app.use('/story', express.static(path.join(options.workspace, 'dist', 'social_story', 'app')));
-  app.use('/story/node_modules', express.static(path.join(options.workspace, 'dist', 'social_story', 'node_modules')));
-
-  // Application Routes
-  app.use('/designer', express.static(options.workspace));
-  app.use('/designer/bliss-tree', express.static(path.join(options.app, 'bliss-tree')));
-  app.use('/designer/bliss-properties', express.static(path.join(options.app, 'bliss-properties')));
-  app.use('/designer/bliss-javascript', express.static(path.join(options.app, 'bliss-javascript')));
-  app.use('/node_modules', express.static(options.node_modules));
-  app.use('/', express.static(options.app));
-
-  app.listen(options.port, function () {
-    console.log(`Find your Bliss on port ${options.port}!`);
-  });
-}
+app.listen(env.port, function () {
+  console.log(`Find your Bliss on port ${env.port}!`);
+});

@@ -1,0 +1,12 @@
+html
+  head
+    title= title
+  body
+    h1 Project list
+    ul
+      - for (var i = 0; i < links.length; i++)
+        li
+          a(href=links[i])= links[i]
+
+    div
+      a(href='/hosted/') View all projects

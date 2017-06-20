@@ -42,8 +42,8 @@ module.exports = {
   dist: function(workspace, projectJson, componentId) {
     // similar to export
     var projectName = str.getSnake(projectJson.name);
-    var outputPath = path.join(workspace, 'dist', projectName);
-    var sourcePath = path.join(outputPath, 'app');
+    var outputPath = workspace;
+    var sourcePath = workspace;
 
     // resets all the file names
     projectJson.build = projectName;
@@ -53,11 +53,15 @@ module.exports = {
     mkdirp.sync(path.join(sourcePath, 'js'));
     mkdirp.sync(path.join(sourcePath, 'css'));
 
+    // TODO: loop CSS
+    // TODO: loop JS
+
     var startId = this.getComponentId(projectJson, componentId);
 
     html.write(sourcePath, projectJson, startId);
     js.write(path.join(sourcePath, 'js'), projectJson, startId);
     css.write(path.join(sourcePath, 'css'), projectJson, startId);
+
 
     // write package.json
     deps.update(outputPath, projectJson, {

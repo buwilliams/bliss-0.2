@@ -1,108 +1,45 @@
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const str = require('./str.js');
+
 module.exports = {
-  "name": "tests",
-  "compiler": "react",
-  "version": "v0.2",
-  "type": "bliss",
-  "build": "designer",
-  "nextId": 4,
-  "rootId": "1",
-  "packages": [
-    {
-      "name": "someDep",
-      "version": ""
-    }
-  ],
-  "externalCss": [],
-  "externalJs": [],
-  "state": {},
-  "js": [
-    {
-      "name": "someFn",
-      "body": "function() { return null; }"
-    },
-    {
-      "name": "sayHello",
-      "body": "function(message) { console.log(message); }"
-    }
-  ],
-  "cssVars": [
-    {
-      "name": "background",
-      "value": "#fff"
-    }
-  ],
-  "css": [
-    {
-      "selector": "body",
-      "properties": [
-        {
-          "name": "font-family",
-          "value": "courier"
-        },
-        {
-          "name": "font-size",
-          "value": "12px"
-        },
-        {
-          "name": "background-color",
-          "value": "$background"
-        }
-      ]
-    },
-    {
-      "selector": "a:hover",
-      "properties": [
-        {
-          "name": "background-color",
-          "value": "#ccc",
-          "variable": null
-        }
-      ]
-    }
-  ],
-  "load": [],
-  "components": {
-    "1": {
-      "id": "1",
-      "name": "Bliss",
-      "element": "div",
-      "text": null,
-      "attributes": [],
-      "dynamicAttributes": [],
-      "css": [],
-      "js": [],
-      "next": null,
-      "previous": null,
-      "child": "2",
-      "parent": null
-    },
-    "2": {
-      "id": "2",
-      "name": "Bliss",
-      "element": "div",
-      "text": null,
-      "attributes": [],
-      "dynamicAttributes": [],
-      "css": [],
-      "js": [],
-      "next": "3",
-      "previous": null,
-      "child": null,
-      "parent": "1"
-    },
-    "3": {
-      "id": "3",
-      "name": "Bliss",
-      "element": "div",
-      "text": null,
-      "attributes": [],
-      "dynamicAttributes": [],
-      "css": [],
-      "js": [],
-      "next": null,
-      "previous": "2",
-      "child": null,
-      "parent": "1"
-    }
+  formatJsonName: function(name) {
+    return str.getSnake(name) + '.json';
+  },
+  readProject: function(workspace, name) {
+    var fullpath = path.join(workspace, 'projects',
+      this.formatJsonName(name));
+    var jsonStr = fs.readFileSync(fullpath);
+    return JSON.parse(jsonStr);
+  },
+  writeProject: function(workspace, json) {
+    var fullpath = path.join(workspace, 'projects',
+      this.formatJsonName(json.name));
+    var jsonStr = JSON.stringify(json, null, 2);
+    fs.writeFileSync(fullpath, jsonStr);
+  },
+  writeComponent: function(workspace, project, filename, content) {
+    var d = path.join(workspace, 'components',
+      project.export);
+    mkdirp.sync(d);
+    var fullpath = path.join(d, filename);
+    fs.writeFileSync(fullpath, content);
+  },
+  writeBuild: function(workspace, filepath, strData) {
+    var fullpath = path.join(workspace, filepath);
+    fs.writeFileSync(fullpath, strData);
+  },
+  createWorkspace: function(workspace) {
+    mkdirp.sync(workspace);
+    mkdirp.sync(path.join(workspace, "components"));
+    mkdirp.sync(path.join(workspace, "projects"));
+  },
+  listProjects: function(workspace) {
+    var out = [];
+    fs.readdirSync(path.join(workspace, 'projects')).forEach(function(file) {
+      out.push(path.parse(file).name);
+    });
+    return out;
   }
 };

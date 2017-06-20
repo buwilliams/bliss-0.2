@@ -1,5 +1,5 @@
 var js = require('./js.js');
-var project = require('./project.js');
+var project = require('./project-json.js');
 
 describe('js', function() {
   describe('aryToObj', function() {
