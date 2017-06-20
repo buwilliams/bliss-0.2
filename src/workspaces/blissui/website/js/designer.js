@@ -47,12 +47,7 @@ var blissUiWebsite = (function() {
             React.createElement('span', app.mergeAttributes('6', scope, {}, {
               "id": "comingSoon_6",
               "key": app.getKey('id', '6')
-            }), "Website coming soon. For now, "),
-            React.createElement('a', app.mergeAttributes('3', scope, {}, {
-              "href": "/bliss.html",
-              "id": "blissLink_3",
-              "key": app.getKey('id', '3')
-            }), "open Bliss UI."))));
+            }), "Private beta is expected to start on August 1st, 2017! I'll be in touch around that time."))));
     };
     app.state = {};
     app.render = function() {

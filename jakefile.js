@@ -90,7 +90,7 @@ task('build', function(){
 
 desc('Updates Bliss after you change it in the UI (you need to build bliss first)');
 task('update-bliss', function() {
-  fse.copySync('build','src/workspaces',{overwrite:true});
+  fse.copySync('build','src/workspaces',{overwrite:true,dereference:true});
 });
 
 task('clean', function(){

@@ -107,28 +107,6 @@ var blissProject = {
       "child": "7",
       "parent": null
     },
-    "3": {
-      "id": "3",
-      "name": "bliss link",
-      "element": "a",
-      "text": "open Bliss UI.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "/bliss.html"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "6",
-      "child": null,
-      "parent": "7"
-    },
     "4": {
       "id": "4",
       "name": "header",
@@ -199,7 +177,7 @@ var blissProject = {
       "id": "6",
       "name": "coming soon",
       "element": "span",
-      "text": "Website coming soon. For now, ",
+      "text": "Private beta is expected to start on August 1st, 2017! I'll be in touch around that time.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -207,7 +185,7 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "3",
+      "next": null,
       "previous": "5",
       "child": null,
       "parent": "7"
