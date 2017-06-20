@@ -2,8 +2,7 @@ const path = require('path');
 
 module.exports = {
   website: function(env) {
-    return path.join(
-      env.workspace, 'blissui', 'website', 'dist', 'bliss_ui_website');
+    return path.join(this.deployed(env), 'blissui', 'website');
   },
 
   workspace: function(env, session) {
@@ -13,16 +12,16 @@ module.exports = {
       session.user.workspace);
   },
 
-  hosted: function(env) {
+  deployed: function(env) {
     return path.join(
       env.workspace,
-      'hosted');
+      '_deployed');
   },
 
-  dist: function(env, session) {
+  deploy: function(env, session) {
     return path.join(
       env.workspace,
-      'hosted',
+      '_deployed',
       session.user.username,
       session.user.workspace);
   }
