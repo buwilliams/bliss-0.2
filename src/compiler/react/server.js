@@ -14,7 +14,7 @@ const hosted = require('./routes/hosted.js');
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
-  res.redirect('/blissui/website/');
+  res.redirect('/hosted/blissui/website/');
 });
 
 app.use('/user', user);
