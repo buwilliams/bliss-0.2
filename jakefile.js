@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const exec = require('sync-exec');
@@ -5,60 +6,36 @@ const compiler = require('./src/compiler/react/react.js');
 const fse = require('fs-extra');
 
 var config = {
-  bliss_src: 'src/bliss/blissui/bliss',
-  bliss_project: 'src/bliss/blissui/bliss/projects/bliss_ui.json',
+  bliss_src: 'src/workspaces/blissui/bliss',
+  bliss_project: 'projects/bliss_ui.json',
   bliss_build: 'build/blissui/bliss',
-  bliss_component_path: 'src/bliss/blissui/bliss/components',
+  bliss_component_path: 'src/workspaces/blissui/bliss/components',
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-utils'],
-  bliss_workspace: 'src/bliss/blissui',
-  bliss_workspace_build: 'build/blissui',
-  ws_dirs: ['projects', 'components', 'css', 'js', 'assets']
+  bliss_workspace: 'src/workspaces/blissui',
+  bliss_workspace_build: 'build/blissui'
 };
 
-namespace('util', function() {
-  task('clean-dir', function(path) {
-    jake.rmRf(path);
-    jake.mkdirP(path);
+task('compile-jsx', function(inputPath, outputPath) {
+  var list = new jake.FileList();
+  list.include(`${inputPath}/**/*.jsx`);
+
+  var cmds = list.toArray().map(function(file) {
+    var pathData = path.parse(file);
+    var outDir = pathData.dir.replace(inputPath, outputPath);
+    jake.mkdirP(outDir);
+    return `./node_modules/.bin/babel ./${file} -o ./${outDir}/${pathData.name}.js`;
   });
 
-  task('compile-jsx', function(inputPath, outputPath) {
-    var list = new jake.FileList();
-    list.include(`${inputPath}/**/*.jsx`);
-
-    var cmds = list.toArray().map(function(file) {
-      var pathData = path.parse(file);
-      var outDir = pathData.dir.replace(inputPath, outputPath);
-      jake.mkdirP(outDir);
-      return `./node_modules/.bin/babel ./${file} -o ./${outDir}/${pathData.name}.js`;
-    });
-
-    cmds.forEach(function(cmd) {
-      exec(cmd);
-    });
-  });
-
-  task('copy-files', function(ext, inputPath, outputPath) {
-    var list = new jake.FileList();
-    var glob = `${inputPath}/**/*.${ext}`;
-    list.include(glob);
-
-    list.toArray().forEach(function(file) {
-      var pathData = path.parse(file);
-      var outDir = pathData.dir.replace(inputPath, outputPath);
-      //console.log(`>> copy-files was: ${pathData.dir}, now: ${outDir}, outputPath: ${outputPath}`);
-      jake.mkdirP(outDir);
-      jake.cpR(file, `${outDir}/${pathData.base}`);
-    });
+  cmds.forEach(function(cmd) {
+    exec(cmd);
   });
 });
 
 desc('Build single component');
 task('build-component', function(name) {
   console.log('>> build-component', name);
-
   var buildPath = `${config.bliss_build}/components/${name}`;
-
-  var t = jake.Task['util:compile-jsx'];
+  var t = jake.Task['compile-jsx'];
   t.execute.apply(t, [`${config.bliss_component_path}/${name}`, buildPath]);
 });
 
@@ -78,31 +55,28 @@ desc('Build bliss json');
 task('build-bliss', function() {
   console.log('>> build-bliss');
   // read bliss.json
-  var projectStr = fs.readFileSync(config.bliss_project);
+  var projectStr = fs.readFileSync(path.join(config.bliss_src, config.bliss_project));
   var projectJson = JSON.parse(projectStr);
   projectJson.build = 'bliss';
 
   // compile bliss.json
   var build_path = config.bliss_build;
-  jake.mkdirP(build_path);
-  jake.mkdirP(path.join(build_path, 'js'));
-  jake.mkdirP(path.join(build_path, 'css'));
+  //jake.mkdirP(build_path);
+  //jake.mkdirP(path.join(build_path, 'js'));
+  //jake.mkdirP(path.join(build_path, 'css'));
   compiler.compile(build_path, projectJson);
 
-  console.log('>> bliss-bliss', config.bliss_src, config.bliss_build);
-  t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['css',`${config.bliss_src}/css`, `${config.bliss_build}/css`]);
-  t.execute.apply(t, ['js',`${config.bliss_src}/js`, `${config.bliss_build}/js`]);
+  fse.moveSync(path.join(build_path, 'bliss.html'), path.join(build_path, 'index.html'), {overwrite:true});
 });
 
 desc('Builds bliss and bliss components');
 task('build', function(){
   var t;
 
-  console.log('>> cleaning build');
-
-  t = jake.Task['util:clean-dir'];
-  t.execute.apply(t, ['build']);
+  if(process.env.BLISS_ENV==='development') {
+    console.log('>> cleaning build');
+    fse.removeSync('build')
+  }
 
   console.log('>> copying workspaces');
   fse.copySync(config.bliss_workspace, config.bliss_workspace_build);
@@ -112,27 +86,15 @@ task('build', function(){
 
   t = jake.Task['build-bliss'];
   t.invoke();
-
-  console.log('>> build copy-files');
-  t = jake.Task['util:copy-files'];
-  config.ws_dirs.forEach(function(d) {
-    jake.mkdirP(`${config.bliss_build}/${d}`);
-    t.execute.apply(t, ['*',`${config.bliss_src}/${d}`, `${config.bliss_build}/${d}`]);
-  });
 });
 
 desc('Updates Bliss after you change it in the UI (you need to build bliss first)');
 task('update-bliss', function() {
-  var t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['json',`${config.bliss_build}/projects`, `${config.bliss_src}/projects`]);
-
-  var t = jake.Task['build'];
-  t.execute.apply(t);
+  fse.copySync('build','src/workspaces',{overwrite:true});
 });
 
 task('clean', function(){
-  var t = jake.Task['util:clean-dir'];
-  t.execute.apply(t, ['build']);
+  fse.removeSync('build');
 });
 
 desc('Start bliss web server');
