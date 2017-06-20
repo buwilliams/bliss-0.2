@@ -8,6 +8,7 @@ var config = {
   bliss_src: 'src/bliss/blissui/bliss',
   bliss_project: 'src/bliss/blissui/bliss/projects/bliss_ui.json',
   bliss_build: 'build/blissui/bliss',
+  bliss_component_path: 'src/bliss/blissui/bliss/components',
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-utils'],
   bliss_workspace: 'src/bliss/blissui',
   bliss_workspace_build: 'build/blissui',
@@ -58,18 +59,18 @@ task('build-component', function(name) {
   console.log('>> build-component', name);
 
   var buildPath = `${config.bliss_build}/components/${name}`;
-  jake.mkdirP(buildPath);
+  //jake.mkdirP(buildPath);
 
-  t = jake.Task['util:clean-dir'];
-  t.execute.apply(t, [buildPath]);
+  //t = jake.Task['util:clean-dir'];
+  //t.execute.apply(t, [buildPath]);
 
-  t = jake.Task['util:copy-files'];
-  t.execute.apply(t, ['html',`src/bliss/${name}`, buildPath]);
-  t.execute.apply(t, ['css',`src/bliss/${name}`, buildPath]);
-  t.execute.apply(t, ['js',`src/bliss/${name}`, buildPath]);
+  //t = jake.Task['util:copy-files'];
+  //t.execute.apply(t, ['html',`src/bliss/${name}`, buildPath]);
+  //t.execute.apply(t, ['css',`src/bliss/${name}`, buildPath]);
+  //t.execute.apply(t, ['js',`src/bliss/${name}`, buildPath]);
 
   t = jake.Task['util:compile-jsx'];
-  t.execute.apply(t, [`src/bliss/${name}`, buildPath]);
+  t.execute.apply(t, [`${config.bliss_component_path}/${name}`, buildPath]);
 });
 
 desc('Build all components');
