@@ -1,8 +1,8 @@
-const env = require('./env.js');
+require('dotenv').config();
 
 module.exports = {
   "user": {
-    "username": "blissui",
-    "workspace": "bliss"
+    "username": process.env.BLISS_USER,
+    "workspace": process.env.BLISS_USER_WS
   }
 }
