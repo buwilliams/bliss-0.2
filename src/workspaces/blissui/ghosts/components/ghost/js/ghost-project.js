@@ -1,9 +1,9 @@
-{
+var blissProject = {
   "name": "Ghost",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
-  "build": "designer",
+  "build": "ghost",
   "nextId": 3,
   "rootId": "1",
   "externalCss": [],
@@ -126,3 +126,4 @@
     }
   }
 }
+if(typeof module !== "undefined") module.exports = blissProject;
