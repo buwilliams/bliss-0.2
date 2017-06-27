@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 237,
+  "nextId": 238,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -110,8 +110,8 @@ var blissProject = {
       "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
-      "name": "createNewProject",
-      "body": "function(shouldConfirm) {\n  app.js.log('app.js.createNewProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function() {\n    app.buildProject = newBlissProject;\n\t\tapp.state.shouldBuild = false;\n  });\n}"
+      "name": "newProject",
+      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.js.cleanState(newBlissProject, false);\n}"
     },
     {
       "name": "saveAndReloadProject",
@@ -334,7 +334,7 @@ var blissProject = {
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      console.log('component changed', newComponent.id, app.buildProject.rootId);\n      if(newComponent.id === app.buildProject.rootId) {\n        app.buildProject.name = newComponent.name;\n      }\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -871,7 +871,7 @@ var blissProject = {
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.createNewProject();\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.newProject();\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -3801,7 +3801,7 @@ var blissProject = {
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    //var iframe = $('#preview');\n    try {\n      //iframe[0].contentWindow.location.reload();\n      $('#preview').attr(\"src\", $('#preview').attr(\"src\"));\n    } catch(e){\n      console.log('Unable to refresh preview iframe', e);\n    }\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    try {\n      $('#preview').attr(\"src\", $('#preview').attr(\"src\"));\n    } catch(e){\n      console.log('Unable to refresh preview iframe', e);\n    }\n    app.js.getProjects();\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [

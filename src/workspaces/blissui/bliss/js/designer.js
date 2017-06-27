@@ -472,13 +472,12 @@ var blissUi = (function() {
     app.methods["201"] = {};
     app.methods["201"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        //var iframe = $('#preview');
         try {
-          //iframe[0].contentWindow.location.reload();
           $('#preview').attr("src", $('#preview').attr("src"));
         } catch (e) {
           console.log('Unable to refresh preview iframe', e);
         }
+        app.js.getProjects();
       }
     };
     app.methods["229"] = {};
@@ -983,6 +982,10 @@ var blissUi = (function() {
         var internal = app._state.get('internal');
         var activeComponent = internal.getData('activeComponent');
         app.js.update(function() {
+          console.log('component changed', newComponent.id, app.buildProject.rootId);
+          if (newComponent.id === app.buildProject.rootId) {
+            app.buildProject.name = newComponent.name;
+          }
           app.buildProject.components[activeComponent] = newComponent;
         });
       }

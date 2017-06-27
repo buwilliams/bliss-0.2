@@ -334,7 +334,7 @@ var blissProject = {
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      console.log('component changed', newComponent.id, app.buildProject.rootId);\n      if(newComponent.id === app.buildProject.rootId) {\n        app.buildProject.name = newComponent.name;\n      }\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3801,7 +3801,7 @@ var blissProject = {
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    //var iframe = $('#preview');\n    try {\n      //iframe[0].contentWindow.location.reload();\n      $('#preview').attr(\"src\", $('#preview').attr(\"src\"));\n    } catch(e){\n      console.log('Unable to refresh preview iframe', e);\n    }\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    try {\n      $('#preview').attr(\"src\", $('#preview').attr(\"src\"));\n    } catch(e){\n      console.log('Unable to refresh preview iframe', e);\n    }\n    app.js.getProjects();\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [

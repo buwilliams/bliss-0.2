@@ -59,7 +59,7 @@
   "components": {
     "1": {
       "id": "1",
-      "name": "Screencast",
+      "name": "Screencast foo",
       "element": "div",
       "text": "",
       "attributes": [],
