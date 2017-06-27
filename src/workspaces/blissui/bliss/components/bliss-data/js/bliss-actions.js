@@ -1,6 +1,6 @@
 "use strict";
 
-var BlissData = {
+var BlissActions = {
   "component": React.createClass({
     getInitialState: function getInitialState() {
       return {};

@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div id="components"></div>
+<div id="app"></div>
 
 <script src="node_modules/tether/dist/js/tether.min.js" charset="utf-8"></script>
 <script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
@@ -23,28 +23,24 @@
 <script src="node_modules/react-dom/dist/react-dom.js" charset="utf-8"></script>
 <script src="node_modules/react-code-mirror/standalone.js" charset="utf-8"></script>
 <script src="js/project-json.js" charset="utf-8"></script>
+<script src="js/bliss-actions.js" charset="utf-8"></script>
+<script src="js/bliss-paths.js" charset="utf-8"></script>
 <script src="js/bliss-data.js" charset="utf-8"></script>
 <script type="text/javascript">
 (function() {
   var app = {
     proj: null,
-    component_id: null,
-    setComponent: function(id) {
-        this.component_id = id;
-        this.render();
-    },
     onChange: function(newComponent) {
-      this.proj.components[this.component_id] = newComponent;
+      // TODO: what does this do?
       this.render();
     },
     render: function() {
-      var component = (this.component_id !== null) ?
-        this.proj.components[this.component_id] : null;
+      console.log('render');
       ReactDOM.render(React.createElement(BlissData.component, {
-        component: component,
+        project: this.proj,
         onChange: this.onChange.bind(this)
       }),
-      document.getElementById('components'));
+      document.getElementById('app'));
     },
     init: function(proj) {
       this.proj = proj;

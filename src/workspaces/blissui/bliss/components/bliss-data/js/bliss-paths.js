@@ -1,6 +1,6 @@
 "use strict";
 
-var BlissData = {
+var BlissPaths = {
   "component": React.createClass({
     getInitialState: function getInitialState() {
       return {};

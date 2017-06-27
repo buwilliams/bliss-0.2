@@ -1,4 +1,4 @@
-var BlissData = {
+var BlissPaths = {
   "component": React.createClass({
     getInitialState: function() {
       return {}

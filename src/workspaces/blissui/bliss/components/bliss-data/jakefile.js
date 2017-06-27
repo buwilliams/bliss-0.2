@@ -18,6 +18,11 @@ task('compile-jsx', function(inputPath, outputPath) {
   });
 });
 
+desc('Start bliss web server');
+task('server', function() {
+  require('./express-mini-server.js');
+});
+
 desc('Build');
 task('build', function() {
   console.log('>> compile-jsx');
