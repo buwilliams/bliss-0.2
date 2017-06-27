@@ -32,7 +32,7 @@
     },
     {
       "name": "makeGhosts",
-      "body": "function(numberOfGhosts) {\n  var colors = ['#E2F6FF',\n                '#D4F2FF',\n                '#C6EEFF',\n                '#B8EAFF',\n                '#A9E6FF',\n                '#9BE2FF',\n                '#8DDEFF',\n                '#7FDAFF',\n                '#71D6FF',\n                '#63D2FF'];\n  \n  var newArrayOfColors = [];\n  for(var i=0; i<numberOfGhosts; i++) {\n\t\tnewArrayOfColors.push(colors[i % 10]);\n  }\n\n\treturn newArrayOfColors;\n}"
+      "body": "function(numberOfGhosts) {\n  var colors = ['blue', 'red', 'green', 'yellow',\n                'orange', 'purple', 'gray', 'pink',\n                'brown', 'white'];\n  \n  var newArrayOfColors = [];\n  for(var i=0; i<numberOfGhosts; i++) {\n\t\tnewArrayOfColors.push(colors[i % 10]);\n  }\n\n\treturn newArrayOfColors;\n}"
     }
   ],
   "cssVars": [],
@@ -150,15 +150,15 @@
             },
             {
               "name": "background-color",
-              "value": "#fafafa"
+              "value": "#ececec"
             },
             {
               "name": "margin-left",
-              "value": "calc(100vw/2 - 150px)"
+              "value": "calc(50% - 100px)"
             },
             {
               "name": "margin-top",
-              "value": "calc(100vh/2 - 200px)"
+              "value": "calc(50% - 200px)"
             },
             {
               "name": "padding",
@@ -170,7 +170,7 @@
             },
             {
               "name": "border",
-              "value": "solid 1px #ccc"
+              "value": "solid 1px #000"
             }
           ]
         }
