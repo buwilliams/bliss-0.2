@@ -3,8 +3,7 @@ var BlissData = {
     getInitialState: function() {
       var state = {
         showPaths: true,
-        selectedPathIndex: -1,
-        selectedActionIndex: -1
+        selectedPathIndex: -1
       };
 
       return state;
@@ -13,35 +12,49 @@ var BlissData = {
     componentWillReceiveProps: function(newProps) {
       this.setState({
         showPaths: true,
-        selectedPathIndex: -1,
-        selectedActionIndex: -1
+        selectedPathIndex: -1
       })
     },
 
     handlePathsEdit: function() {
       console.log('handle paths edit');
+      this.setState({
+        showPaths: true,
+        selectedPathIndex: -1
+      })
     },
 
-    handleActionsEdit: function() {
+    handleActionsEdit: function(index) {
       console.log('handle actions edit');
+      this.setState({
+        showPaths: false,
+        selectedPathIndex: index
+      })
     },
 
-    handleChange: function(newSchema) {
+    handleSchemaChange: function(newSchema) {
+      this.props.onChange(newSchema);
+    },
+
+    handleActionsChange: function(newActions) {
+      var newSchema = _.cloneDeep(this.props.schemas);
+      newSchema[this.state.selectedPathIndex] = newActions;
       this.props.onChange(newSchema);
     },
 
     renderPaths: function() {
       return (<BlissPaths.component
-        onChange={this.handleChange}
+        onChange={this.handleSchemaChange}
         onActionsEdit={this.handleActionsEdit}
-        schema={this.props.schema}
+        schemas={this.props.schemas}
         selectedPathIndex={this.state.selectedPathIndex} />);
     },
 
     renderActions: function() {
       return (<BlissActions.component
-        onChange={this.handleChange}
-        actions={this.props.schema[this.state.selectedPathIndex]} />);
+        onChange={this.handleActionsChange}
+        onPathsEdit={this.handlePathsEdit}
+        schema={this.props.schemas[this.state.selectedPathIndex]} />);
     },
 
     render: function() {

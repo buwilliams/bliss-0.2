@@ -8,7 +8,7 @@ var BlissPaths = {
 
     componentWillReceiveProps: function componentWillReceiveProps(newProps) {},
 
-    handleActionsEdit: function handleActionsEdit(e) {
+    handleActions: function handleActions(e) {
       e.preventDefault();
       var index = parseInt(e.target.getAttribute('data-index'));
       this.props.onActionsEdit(index);
@@ -18,19 +18,19 @@ var BlissPaths = {
       e.preventDefault();
       var path = e.target.value;
       var index = parseInt(e.target.getAttribute('data-index'));
-      var len = this.props.schema.length;
-      var newSchema = _.cloneDeep(this.props.schema);
+      var len = this.props.schemas.length;
+      var newSchemas = _.cloneDeep(this.props.schemas);
 
       if (index === len) {
-        newSchema.push({
+        newSchemas.push({
           "path": path,
           "actions": []
         });
       } else {
-        newSchema[index].path = path;
+        newSchemas[index].path = path;
       }
 
-      this.props.onChange(newSchema);
+      this.props.onChange(newSchemas);
     },
 
     handleDelete: function handleDelete(e) {
@@ -39,17 +39,17 @@ var BlissPaths = {
         return;
       }
       var index = parseInt(e.target.getAttribute('data-index'));
-      var newSchema = _.cloneDeep(this.props.schema);
-      newSchema.splice(index, 1);
+      var newSchemas = _.cloneDeep(this.props.schemas);
+      newSchemas.splice(index, 1);
 
-      this.props.onChange(newSchema);
+      this.props.onChange(newSchemas);
     },
 
     renderPaths: function renderPaths() {
       var out = [];
 
-      for (var i = 0; i < this.props.schema.length; i++) {
-        var item = this.props.schema[i];
+      for (var i = 0; i < this.props.schemas.length; i++) {
+        var item = this.props.schemas[i];
         var key = "schema_" + i;
         out.push(React.createElement(
           'div',
@@ -86,12 +86,12 @@ var BlissPaths = {
     },
 
     renderEmptyPath: function renderEmptyPath() {
-      var key = "schema_" + this.props.schema.length;
+      var key = "schema_" + this.props.schemas.length;
       return React.createElement(
         'div',
         { key: key, className: 'js-path clearfix' },
         React.createElement('input', { className: 'form-control',
-          'data-index': this.props.schema.length,
+          'data-index': this.props.schemas.length,
           placeholder: 'Enter new path...',
           value: '',
           onChange: this.handlePathChange })

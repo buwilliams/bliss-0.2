@@ -38,14 +38,13 @@
 (function() {
   var app = {
     proj: null,
-    onChange: function(newSchema) {
-      this.proj.schema = newSchema;
+    onChange: function(newSchemas) {
+      this.proj.schemas = newSchemas;
       this.render();
     },
     render: function() {
-      //console.log('render');
       ReactDOM.render(React.createElement(BlissData.component, {
-        schema: this.proj.schema,
+        schemas: this.proj.schemas,
         onChange: this.onChange.bind(this)
       }),
       document.getElementById('app'));

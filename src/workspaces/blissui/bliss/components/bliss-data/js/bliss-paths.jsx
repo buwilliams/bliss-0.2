@@ -7,7 +7,7 @@ var BlissPaths = {
     componentWillReceiveProps: function(newProps) {
     },
 
-    handleActionsEdit: function(e) {
+    handleActions: function(e) {
       e.preventDefault();
       var index = parseInt(e.target.getAttribute('data-index'));
       this.props.onActionsEdit(index);
@@ -17,36 +17,36 @@ var BlissPaths = {
       e.preventDefault();
       var path = e.target.value;
       var index = parseInt(e.target.getAttribute('data-index'));
-      var len = this.props.schema.length;
-      var newSchema = _.cloneDeep(this.props.schema);
+      var len = this.props.schemas.length;
+      var newSchemas = _.cloneDeep(this.props.schemas);
 
       if(index === len) {
-        newSchema.push({
+        newSchemas.push({
           "path": path,
           "actions": []
         })
       } else {
-        newSchema[index].path = path;
+        newSchemas[index].path = path;
       }
 
-      this.props.onChange(newSchema);
+      this.props.onChange(newSchemas);
     },
 
     handleDelete: function(e) {
       e.preventDefault();
       if(!confirm("Are you sure you want to delete this item?")) { return; }
       var index = parseInt(e.target.getAttribute('data-index'));
-      var newSchema = _.cloneDeep(this.props.schema);
-      newSchema.splice(index, 1);
+      var newSchemas = _.cloneDeep(this.props.schemas);
+      newSchemas.splice(index, 1);
 
-      this.props.onChange(newSchema);
+      this.props.onChange(newSchemas);
     },
 
     renderPaths: function() {
       var out = [];
 
-      for(var i=0; i < this.props.schema.length; i++) {
-        var item = this.props.schema[i];
+      for(var i=0; i < this.props.schemas.length; i++) {
+        var item = this.props.schemas[i];
         var key = "schema_" + i;
         out.push(
           <div key={key} className="js-path clearfix">
@@ -71,11 +71,11 @@ var BlissPaths = {
     },
 
     renderEmptyPath: function() {
-      var key = "schema_" + this.props.schema.length;
+      var key = "schema_" + this.props.schemas.length;
       return (
         <div key={key} className="js-path clearfix">
           <input className="form-control"
-            data-index={this.props.schema.length}
+            data-index={this.props.schemas.length}
             placeholder="Enter new path..."
             value=""
             onChange={this.handlePathChange} />
