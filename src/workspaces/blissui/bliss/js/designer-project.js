@@ -154,8 +154,12 @@ var blissProject = {
       "path": "/foo",
       "actions": [
         {
-          "action": "add_a_foo",
+          "action": "addFoo",
           "body": "function (data, args) {\n  var newData = {}\n  // am I working\n  return newData;\n}"
+        },
+        {
+          "action": "deleteFoo",
+          "body": "function (data, args) {\n  var newData = {}\n  return newData;\n}"
         }
       ]
     }
