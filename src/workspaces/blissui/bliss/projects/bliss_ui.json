@@ -4636,29 +4636,24 @@
     "241": {
       "id": "241",
       "name": "Bliss Data",
-      "element": "div",
+      "element": "BlissData.component",
       "text": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
+      "css": [],
       "js": [
         {
-          "name": "setComponentProp",
-          "body": "function(scope, props) {\n  var internal = app._state.get('internal');\n  var activeComponent = internal.getData('activeComponent');\n  return app.buildProject.components[activeComponent];\n}"
+          "name": "setSchemas",
+          "body": "function(scope, props) {\n  return app.buildProject.schemas || [];\n}"
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      var internal = app._state.get('internal');\n  \t\tvar activeComponent = internal.getData('activeComponent');\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newSchemas) {\n    app.js.update(function() {\n      app.buildProject.schemas = newSchemas;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
         {
-          "name": "component",
-          "value": "setComponentProp"
+          "name": "schemas",
+          "value": "setSchemas"
         },
         {
           "name": "onChange",

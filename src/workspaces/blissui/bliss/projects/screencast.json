@@ -148,5 +148,16 @@
       "child": "2",
       "parent": "1"
     }
-  }
+  },
+  "schemas": [
+    {
+      "path": "/foo",
+      "actions": [
+        {
+          "action": "add_a_foo",
+          "body": "function (data, args) {\n  var newData = {}\n  // am I working\n  return newData;\n}"
+        }
+      ]
+    }
+  ]
 }
