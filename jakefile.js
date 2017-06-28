@@ -10,7 +10,7 @@ var config = {
   bliss_project: 'projects/bliss_ui.json',
   bliss_build: 'build/blissui/bliss',
   bliss_component_path: 'src/workspaces/blissui/bliss/components',
-  bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-utils'],
+  bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-data', 'bliss-utils'],
   bliss_workspace: 'src/workspaces/blissui',
   bliss_workspace_build: 'build/blissui'
 };
