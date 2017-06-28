@@ -351,6 +351,30 @@
 #blissJavascript_79 {
 }
 
+#dataEditor_238 {
+  overflow: auto;
+  height: calc(100vh - 80px);
+  padding: 10px;
+}
+
+#h3Js {
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: #698290;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+#codeContainer_240 {
+  background: #fff;
+  overflow: auto;
+  height: auto;
+}
+
+#blissData_241 {
+}
+
 #generalEditor {
   overflow: auto;
   height: calc(100vh - 80px);

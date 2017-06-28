@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 238,
+  "nextId": 242,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -14,7 +14,8 @@
     "components/bliss-tree/css/bliss-tree.css",
     "components/bliss-properties/css/bliss-properties.css",
     "components/bliss-javascript/css/bliss-javascript.css",
-    "https://cdn.rawgit.com/konpa/devicon/4f6a4b08efdad6bb29f9cc801f5c07e263b39907/devicon.min.css"
+    "https://cdn.rawgit.com/konpa/devicon/4f6a4b08efdad6bb29f9cc801f5c07e263b39907/devicon.min.css",
+    "components/bliss-data/css/bliss-data.css"
   ],
   "externalJs": [
     "node_modules/tether/dist/js/tether.min.js",
@@ -32,7 +33,10 @@
     "components/bliss-properties/js/bliss-properties-generic.js",
     "components/bliss-properties/js/bliss-properties-css.js",
     "components/bliss-javascript/js/bliss-javascript.js",
-    "components/bliss-utils/js/state.js"
+    "components/bliss-utils/js/state.js",
+    "components/bliss-data/js/bliss-actions.js",
+    "components/bliss-data/js/bliss-paths.js",
+    "components/bliss-data/js/bliss-data.js"
   ],
   "state": {
     "timer": null,
@@ -127,7 +131,7 @@
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    app.js.getProjects();\n  });\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    app.js.getProjects();\n  });\n}"
     },
     {
       "name": "log",
@@ -580,7 +584,7 @@
           "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
-      "next": "97",
+      "next": "238",
       "previous": "80",
       "child": "55",
       "parent": "4",
@@ -1160,7 +1164,7 @@
         }
       ],
       "next": "179",
-      "previous": "54",
+      "previous": "238",
       "child": "98",
       "parent": "4"
     },
@@ -4503,6 +4507,168 @@
       "previous": null,
       "child": null,
       "parent": "235"
+    },
+    "238": {
+      "id": "238",
+      "name": "Data Editor",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'data') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "next": "97",
+      "previous": "54",
+      "child": "239",
+      "parent": "4",
+      "ifFn": ""
+    },
+    "239": {
+      "id": "239",
+      "name": "h3Data",
+      "element": "h3",
+      "text": "Data Editor",
+      "attributes": [
+        {
+          "name": "id",
+          "value": "h3Js"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": "240",
+      "previous": null,
+      "child": null,
+      "parent": "238",
+      "textFn": ""
+    },
+    "240": {
+      "id": "240",
+      "name": "code container",
+      "element": "div",
+      "text": "",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background",
+              "value": "#fff"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "auto"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": null,
+      "previous": "239",
+      "child": "241",
+      "parent": "238"
+    },
+    "241": {
+      "id": "241",
+      "name": "Bliss Data",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [
+        {
+          "name": "setComponentProp",
+          "body": "function(scope, props) {\n  var internal = app._state.get('internal');\n  var activeComponent = internal.getData('activeComponent');\n  return app.buildProject.components[activeComponent];\n}"
+        },
+        {
+          "name": "setOnChangeProp",
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      var internal = app._state.get('internal');\n  \t\tvar activeComponent = internal.getData('activeComponent');\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "component",
+          "value": "setComponentProp"
+        },
+        {
+          "name": "onChange",
+          "value": "setOnChangeProp"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "240"
     }
   }
 }

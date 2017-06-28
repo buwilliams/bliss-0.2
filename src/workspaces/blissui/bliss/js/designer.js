@@ -204,6 +204,10 @@ var blissUi = (function() {
           label: 'JavaScript'
         });
         view.create({
+          name: 'data',
+          label: 'Data Editor'
+        });
+        view.create({
           name: 'global_js',
           label: 'Global JS'
         });
@@ -760,6 +764,29 @@ var blissUi = (function() {
       return app.buildProject.components[activeComponent];
     }
     app.methods["79"]['setOnChangeProp'] = function(scope, props) {
+      return function(newComponent) {
+        app.js.update(function() {
+          var internal = app._state.get('internal');
+          var activeComponent = internal.getData('activeComponent');
+          app.buildProject.components[activeComponent] = newComponent;
+        });
+      }
+    }
+    app.methods["238"] = {};
+    app.methods["238"]['getStyle'] = function() {
+      var selected = app._state.get('view').getData('selected');
+      var displayValue = (selected === 'data') ? 'block' : 'none';
+      return {
+        'display': displayValue
+      };
+    }
+    app.methods["241"] = {};
+    app.methods["241"]['setComponentProp'] = function(scope, props) {
+      var internal = app._state.get('internal');
+      var activeComponent = internal.getData('activeComponent');
+      return app.buildProject.components[activeComponent];
+    }
+    app.methods["241"]['setOnChangeProp'] = function(scope, props) {
       return function(newComponent) {
         app.js.update(function() {
           var internal = app._state.get('internal');
@@ -1391,6 +1418,27 @@ var blissUi = (function() {
                     }, {
                       "id": "blissJavascript_79",
                       "key": app.getKey('id', '79')
+                    })))),
+                React.createElement('div', app.mergeAttributes('238', scope, {
+                    "style": "getStyle"
+                  }, {
+                    "id": "dataEditor_238",
+                    "key": app.getKey('id', '238')
+                  }),
+                  React.createElement('h3', app.mergeAttributes('239', scope, {}, {
+                    "id": "h3Js",
+                    "key": app.getKey('id', '239')
+                  }), 'Data Editor'),
+                  React.createElement('div', app.mergeAttributes('240', scope, {}, {
+                      "id": "codeContainer_240",
+                      "key": app.getKey('id', '240')
+                    }),
+                    React.createElement('div', app.mergeAttributes('241', scope, {
+                      "component": "setComponentProp",
+                      "onChange": "setOnChangeProp"
+                    }, {
+                      "id": "blissData_241",
+                      "key": app.getKey('id', '241')
                     })))),
                 React.createElement('div', app.mergeAttributes('97', scope, {
                     "style": "getStyle"
