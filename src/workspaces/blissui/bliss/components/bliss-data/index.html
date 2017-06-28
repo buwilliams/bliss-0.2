@@ -6,16 +6,24 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
   <link href="node_modules/tether/dist/css/tether.min.css" rel="stylesheet">
   <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
   <link rel="stylesheet" href="node_modules/codemirror/theme/solarized.css">
   <link rel="stylesheet" href="css/bliss-data.css">
 </head>
 <body>
 
-<div id="app"></div>
+<div class="container">
+  <div class="row">
+  <div class="col-md-12">
+    <div id="app"></div>
+  </div>
+  </div>
+</div>
 
 <script src="node_modules/tether/dist/js/tether.min.js" charset="utf-8"></script>
 <script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
+<script src="node_modules/lodash/lodash.min.js" charset="utf-8"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
 <script src="node_modules/codemirror/lib/codemirror.js" charset="utf-8"></script>
 <script src="node_modules/codemirror/mode/javascript/javascript.js" charset="utf-8"></script>
@@ -30,14 +38,14 @@
 (function() {
   var app = {
     proj: null,
-    onChange: function(newComponent) {
-      // TODO: what does this do?
+    onChange: function(newSchema) {
+      this.proj.schema = newSchema;
       this.render();
     },
     render: function() {
-      console.log('render');
+      //console.log('render');
       ReactDOM.render(React.createElement(BlissData.component, {
-        project: this.proj,
+        schema: this.proj.schema,
         onChange: this.onChange.bind(this)
       }),
       document.getElementById('app'));
@@ -47,7 +55,7 @@
       this.render();
     }
   };
-  app.init(projectJson.project);
+  app.init(projectJson);
   window.app = app;
 })();
 </script>

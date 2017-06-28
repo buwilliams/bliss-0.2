@@ -75,3 +75,28 @@ a.js-left-menu-item {
 .CodeMirror {
   font-size: 1.2em;
 }
+
+.js-paths {
+  padding: 5px 0;
+  background-color: #f7f7f7;
+}
+
+.js-path {
+  padding: 5px 10px;
+}
+
+.js-path input {
+  width: 80%;
+  float: left;
+}
+
+.js-path-options {
+  width: 20%;
+  float: left;
+  text-align: center;
+}
+
+.js-path-options a {
+  display: inline-block;
+  margin: 5px 10px;
+}

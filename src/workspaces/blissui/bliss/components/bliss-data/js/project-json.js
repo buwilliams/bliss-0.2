@@ -11,6 +11,60 @@ var projectJson = {
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js"
   ],
+  "schema": [
+    {
+      "path": "/todos",
+      "actions": [
+        {
+          "action": "add_todo",
+          "body": "function() {}"
+        },
+        {
+          "action": "remote_todo",
+          "body": "function() {}"
+        },
+        {
+          "action": "edit_todo",
+          "body": "function() {}"
+        }
+      ]
+    },
+    {
+      "path": "/users",
+      "actions": [
+        {
+          "action": "add_user",
+          "body": "function() {}"
+        },
+        {
+          "action": "remote_user",
+          "body": "function() {}"
+        },
+        {
+          "action": "delete_user",
+          "body": "function() {}"
+        }
+      ]
+    },
+    {
+      "path": "/messages",
+      "actions": [
+        {
+          "action": "send_message",
+          "body": "function() {}"
+        },
+        {
+          "action": "upvote",
+          "body": "function() {}"
+        },
+        {
+          "action": "downvote",
+          "body": "function() {}"
+        }
+      ]
+    }
+  ],
+  "data": {},
   "state": {},
   "packages": [
     {
