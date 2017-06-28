@@ -24,6 +24,34 @@ var BlissActions = {
       this.setState({ index: index });
     },
 
+    handleAdd: function handleAdd(e) {
+      e.preventDefault();
+      var schema = this.props.schema;
+      var newValue = {
+        "action": "new_action",
+        "body": "function (data, args) {\n  var newData = {}\n  return newData;\n}"
+      };
+      schema.actions.push(newValue);
+      this.props.onChange(schema);
+    },
+
+    handleDelete: function handleDelete(e) {
+      e.preventDefault();
+      if (this.state.index === -1) return;
+
+      var that = this;
+      var newIndex = this.state.index === 0 ? 0 : this.state.index - 1;
+      if (this.props.schema.actions.length === 1) newIndex = -1;
+
+      var schema = this.props.schema;
+
+      schema.actions.splice(this.state.index, 1);
+
+      this.setState({ index: newIndex }, function () {
+        this.props.onChange(schema);
+      });
+    },
+
     renderActions: function renderActions() {
       var out = [];
       var actions = this.props.schema.actions;
@@ -51,9 +79,15 @@ var BlissActions = {
     },
 
     renderActionName: function renderActionName() {
+      var that = this;
       if (this.state.index === -1) return;
 
-      var onChange = function onChange() {};
+      var onChange = function onChange(e) {
+        var schema = that.props.schema;
+        var newValue = e.target.value;
+        schema.actions[that.state.index].action = newValue;
+        that.props.onChange(schema);
+      };
 
       return React.createElement(
         "div",
@@ -67,10 +101,16 @@ var BlissActions = {
 
     renderEditor: function renderEditor() {
       if (this.state.index === -1) return;
+      var that = this;
 
       var fn = this.props.schema.actions[this.state.index];
 
-      var handleChange = function handleChange() {};
+      var handleChange = function handleChange(e) {
+        var schema = that.props.schema;
+        var newValue = e.target.value;
+        schema.actions[that.state.index].body = newValue;
+        that.props.onChange(schema);
+      };
 
       return this.state.CodeMirror({
         textAreaClassName: ['form-control'],
@@ -94,7 +134,7 @@ var BlissActions = {
           { className: "js-menu clearfix" },
           React.createElement(
             "div",
-            { className: "float-left" },
+            { className: "text-center" },
             "Editing schema ",
             React.createElement(
               "strong",
@@ -106,21 +146,25 @@ var BlissActions = {
             "a",
             { href: "#",
               onClick: this.props.onPathsEdit,
-              className: "float-right" },
+              className: "float-left" },
             React.createElement("i", { className: "fa fa-arrow-left" }),
             " Back"
           ),
           React.createElement(
             "a",
-            { href: "#", className: "float-right" },
-            React.createElement("i", { className: "fa fa-trash" }),
-            " Delete"
+            { href: "#",
+              className: "float-left",
+              onClick: this.handleAdd },
+            React.createElement("i", { className: "fa fa-plus" }),
+            " Action"
           ),
           React.createElement(
             "a",
-            { href: "#", className: "float-right" },
-            React.createElement("i", { className: "fa fa-plus" }),
-            " Path"
+            { href: "#",
+              className: "float-right",
+              onClick: this.handleDelete },
+            React.createElement("i", { className: "fa fa-trash" }),
+            " Delete"
           )
         ),
         React.createElement(

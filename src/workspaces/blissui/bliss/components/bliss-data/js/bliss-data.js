@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var BlissData = {
   "component": React.createClass({
@@ -12,14 +12,13 @@ var BlissData = {
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-      this.setState({
-        showPaths: true,
-        selectedPathIndex: -1
-      });
+      //this.setState({
+      //showPaths: true,
+      //selectedPathIndex: -1
+      //})
     },
 
     handlePathsEdit: function handlePathsEdit() {
-      console.log('handle paths edit');
       this.setState({
         showPaths: true,
         selectedPathIndex: -1
@@ -27,21 +26,20 @@ var BlissData = {
     },
 
     handleActionsEdit: function handleActionsEdit(index) {
-      console.log('handle actions edit');
       this.setState({
         showPaths: false,
         selectedPathIndex: index
       });
     },
 
-    handleSchemaChange: function handleSchemaChange(newSchema) {
-      this.props.onChange(newSchema);
+    handleSchemaChange: function handleSchemaChange(newSchemas) {
+      this.props.onChange(newSchemas);
     },
 
-    handleActionsChange: function handleActionsChange(newActions) {
-      var newSchema = _.cloneDeep(this.props.schemas);
-      newSchema[this.state.selectedPathIndex] = newActions;
-      this.props.onChange(newSchema);
+    handleActionsChange: function handleActionsChange(newSchema) {
+      var newSchemas = _.cloneDeep(this.props.schemas);
+      newSchemas[this.state.selectedPathIndex] = newSchema;
+      this.props.onChange(newSchemas);
     },
 
     renderPaths: function renderPaths() {

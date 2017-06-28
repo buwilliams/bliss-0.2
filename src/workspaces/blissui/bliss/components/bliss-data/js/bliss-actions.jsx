@@ -22,6 +22,34 @@ var BlissActions = {
       this.setState({index:index})
     },
 
+    handleAdd: function(e) {
+      e.preventDefault();
+      var schema = this.props.schema;
+      var newValue = {
+        "action": "new_action",
+        "body": "function (data, args) {\n  var newData = {}\n  return newData;\n}"
+      };
+      schema.actions.push(newValue);
+      this.props.onChange(schema);
+    },
+
+    handleDelete: function(e) {
+      e.preventDefault();
+      if(this.state.index === -1) return;
+
+      var that = this;
+      var newIndex = (this.state.index === 0) ? 0 : this.state.index - 1;
+      if(this.props.schema.actions.length === 1) newIndex = -1;
+
+      var schema = this.props.schema;
+
+      schema.actions.splice(this.state.index, 1);
+
+      this.setState({index:newIndex}, function() {
+        this.props.onChange(schema);
+      })
+    },
+
     renderActions: function() {
       var out = [];
       var actions = this.props.schema.actions;
@@ -46,9 +74,15 @@ var BlissActions = {
     },
 
     renderActionName: function() {
+      var that = this;
       if(this.state.index === -1) return;
 
-      var onChange = function() {};
+      var onChange = function(e) {
+        var schema = that.props.schema;
+        var newValue = e.target.value;
+        schema.actions[that.state.index].action = newValue;
+        that.props.onChange(schema);
+      };
 
       return (
         <div className="js-right-menu">
@@ -62,10 +96,16 @@ var BlissActions = {
 
     renderEditor: function() {
       if(this.state.index === -1) return;
+      var that = this;
 
       var fn = this.props.schema.actions[this.state.index];
 
-      var handleChange = function(){}
+      var handleChange = function(e){
+        var schema = that.props.schema;
+        var newValue = e.target.value;
+        schema.actions[that.state.index].body = newValue;
+        that.props.onChange(schema);
+      }
 
       return this.state.CodeMirror({
         textAreaClassName: ['form-control'],
@@ -84,12 +124,16 @@ var BlissActions = {
       return (
         <div className="js-editor">
           <div className="js-menu clearfix">
-            <div className="float-left">Editing schema <strong>{this.props.schema.path}</strong></div>
+            <div className="text-center">Editing schema <strong>{this.props.schema.path}</strong></div>
             <a href="#"
               onClick={this.props.onPathsEdit}
-              className="float-right"><i className="fa fa-arrow-left"></i> Back</a>
-            <a href="#" className="float-right"><i className="fa fa-trash"></i> Delete</a>
-            <a href="#" className="float-right"><i className="fa fa-plus"></i> Path</a>
+              className="float-left"><i className="fa fa-arrow-left"></i> Back</a>
+            <a href="#"
+              className="float-left"
+              onClick={this.handleAdd}><i className="fa fa-plus"></i> Action</a>
+            <a href="#"
+              className="float-right"
+              onClick={this.handleDelete}><i className="fa fa-trash"></i> Delete</a>
           </div>
           <div className="js-left">
             {this.renderActions()}
