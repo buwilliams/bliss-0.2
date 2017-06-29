@@ -1,6 +1,12 @@
 var _ = require('lodash');
 
 module.exports = {
+  escape: function(unsafe) {
+    return unsafe
+         .replace(/\\/g, '\\\\')
+         .replace(/'/g, '\\\'')
+  },
+
   aryToObj: function(ary, key, value) {
     var out = {};
     ary.forEach(function(item) {
@@ -19,7 +25,7 @@ module.exports = {
 
   getFn: function(fnDef, namespace) {
     namespace = this.getNamespace(namespace);
-    return `${namespace}.${fnDef.name} = ${fnDef.body}`;
+    return `${namespace}['${fnDef.name}'] = ${fnDef.body}`;
   },
 
   getFns: function(fnsDef, namespace) {

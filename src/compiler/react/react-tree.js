@@ -1,6 +1,6 @@
-const js = require('../core/js.js');
-const htmlElements = require('../core/html-elements.js');
-const str = require('../core/str.js');
+const js = require('../core/js.js')
+const htmlElements = require('../core/html-elements.js')
+const str = require('../core/str.js')
 
 module.exports = {
   buildGetKey: function() {
@@ -103,7 +103,8 @@ module.exports = {
       var fn = `app.methods['${component.id}']['${component.textFn}']`;
       out += `, ${fn}(scope)`;
     } else if(typeof component.text === "string" && component.text !== "") {
-      out += `, "${component.text}"`;
+      var escapedText = js.escape(component.text);
+      out += `, '${escapedText}'`;
     }
 
     if(component.child !== null) {
