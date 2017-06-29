@@ -12,6 +12,7 @@ module.exports = {
     // write bliss javascript
     var filename = `${projectJson.build}.js`;
     var builtStr = this.buildAppJs(projectJson, startId);
+    builtStr += this.buildSchemas(projectJson);
     builtStr += this.buildReact(projectJson, startId);
     builtStr += this.buildHelpers(projectJson);
     var fullpath = path.join(outputPath, filename);
@@ -56,7 +57,7 @@ module.exports = {
     var out = "";
 
     // app.state
-    out += `app.state = ` + JSON.stringify(projectJson.state, null, 2) + ';';
+    //out += `app.state = ` + JSON.stringify(projectJson.state, null, 2) + ';';
 
     // app.render
     out += `app.render = function() {\n`;
@@ -194,5 +195,63 @@ module.exports = {
     var out = "var newBlissProject = " + JSON.stringify(newProjectJson, null, 2);
     out += `\nif(typeof module !== "undefined") module.exports = newBlissProject;\n`;
     return out;
+  },
+
+  buildSchemas: function(projectJson) {
+    var schemas = projectJson.schemas || [];
+    if (schemas.length === 0) return ""
+
+    var out = `app.getPath = function(objRef, path) {\n`;
+    out += `var ref = objRef;\n`;
+    out += `var parts = path.split('/')\n`;
+    out += `for (var i = 0; i < parts.length; i++) {\n`;
+    out += `var part = parts[i];\n`;
+    out += `if(part === '') continue;\n`
+    out += `ref = ref[part] || (ref[part] = {})\n`;
+    out += `}\n`;
+    out += `return ref;\n`;
+    out += `}\n`;
+    out += `app.assignPath = function(objRef, path, data) {\n`;
+    out += `var ref = objRef;\n`;
+    out += `var parts = path.split('/')\n`;
+    out += `data || (data = {})\n`;
+    //out += `console.log('assign state', app.state)\n`
+    out += `for (var i = 0; i < parts.length; i++) {\n`;
+    out += `var part = parts[i];\n`;
+    out += `if(part === '') continue;\n`
+    out += `if(i === parts.length - 1) {\n`;
+    out += `ref = (ref[part] = data)\n`;
+    //out += `console.log('assigning last ref', data)\n`
+    out += `} else {\n`;
+    out += `ref = ref[part] || (ref[part] = {})\n`;
+    //out += `console.log('assigning ref', ref)\n`
+    out += `}\n`;
+    out += `}\n`;
+    out += `return ref;\n`;
+    out += `}\n`;
+    out += `app.dispatch = function(options) {\n`;
+    out += `var ref = app.state;\n`;
+    out += `app.setState(function() {\n`;
+    out += `var data = app.getPath(ref, options.path);\n`;
+    out += `var fn = app.schema[options.path][options.action];\n`;
+    out += `var newData = fn(data, options);\n`;
+    out += `app.assignPath(ref, options.path, newData);\n`;
+    out += `})\n`;
+    out += `}\n`;
+
+    out += "app.schema = {};\n"
+    schemas.forEach(function(schema) {
+      out += `app.schema['${schema.path}'] = {};\n`
+      schema.actions.forEach(function(action) {
+        out += `app.schema['${schema.path}']['${action.action}'] = ${action.body}\n`
+      })
+      out += `if(app.schema['${schema.path}']['init']) {\n`;
+      out += `app.assignPath(app.state, '${schema.path}', app.schema['${schema.path}']['init']());\n`;
+      out += `} else {\n`;
+      out += `app.assignPath(app.state, '${schema.path}');\n`;
+      out += `}\n`;
+    })
+
+    return out
   }
 }
