@@ -1,18 +1,13 @@
 body {
-  margin: 0;
-  padding: 0;
+  font-size: 14pt;
 }
 
-#hey_3 {
-  background-color: #71d59e;
-  color: white;
-  padding: 10px;
+input {
+  font-size: 14pt;
 }
 
-#message_2 {
-  background-color: #959bd5;
+#newTodo_2 {
   padding: 10px;
-  color: white;
-  margin-top: 10px;
+  outline: none;
 }
 
