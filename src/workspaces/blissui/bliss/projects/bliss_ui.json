@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 242,
+  "nextId": 250,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -15,7 +15,8 @@
     "components/bliss-properties/css/bliss-properties.css",
     "components/bliss-javascript/css/bliss-javascript.css",
     "https://cdn.rawgit.com/konpa/devicon/4f6a4b08efdad6bb29f9cc801f5c07e263b39907/devicon.min.css",
-    "components/bliss-data/css/bliss-data.css"
+    "components/bliss-data/css/bliss-data.css",
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css"
   ],
   "externalJs": [
     "node_modules/tether/dist/js/tether.min.js",
@@ -36,7 +37,9 @@
     "components/bliss-utils/js/state.js",
     "components/bliss-data/js/bliss-actions.js",
     "components/bliss-data/js/bliss-paths.js",
-    "components/bliss-data/js/bliss-data.js"
+    "components/bliss-data/js/bliss-data.js",
+    "https://www.gstatic.com/firebasejs/4.1.3/firebase.js",
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"
   ],
   "state": {
     "timer": null,
@@ -75,7 +78,7 @@
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  app._state = state();\n  app.js.cleanState(newBlissProject, false);\n}"
+      "body": "function() {\n  //console.log('path', app.getPath(app.state, '/firebase'));\n  app.dispatch({ path: '/firebase', action: 'setup' });\n  app._state = state();\n  app.js.cleanState(newBlissProject, false)\n}"
     },
     {
       "name": "build",
@@ -136,6 +139,10 @@
     {
       "name": "log",
       "body": "function() {\n  return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
+    },
+    {
+      "name": "firebase_auth_ui",
+      "body": "function() {\n  var ui = app.state.firebase.auth_ui;\n  \n  var config = {\n    callbacks: {\n      signInSuccess: function(currentUser, credential, redirectUrl) {\n        return false;\n      },\n      uiShown: function() {}\n    },\n    signInSuccessUrl: window.location.href,\n    signInOptions: [\n      // Leave the lines as is for the providers you want to offer your users.\n      //firebase.auth.GoogleAuthProvider.PROVIDER_ID,\n      //firebase.auth.FacebookAuthProvider.PROVIDER_ID,\n      //firebase.auth.TwitterAuthProvider.PROVIDER_ID,\n      //firebase.auth.GithubAuthProvider.PROVIDER_ID,\n      firebase.auth.EmailAuthProvider.PROVIDER_ID,\n      //firebase.auth.PhoneAuthProvider.PROVIDER_ID\n    ],\n    // Terms of service url.\n    tosUrl: window.location.href\n  };\n  \n  /*\n  if(ui === null) {\n    // Initialize the FirebaseUI Widget using Firebase.\n    ui = new firebaseui.auth.AuthUI(firebase.auth());\n    app.setState(function() {\n      app.state.ui = ui;\n    });\n  } else {\n    ui = app.state.ui;\n    ui.reset();\n  }\n  */\n  \n  ui.reset();\n  \n  // The start method will wait until the DOM is loaded.\n  ui.start('#firebaseui-auth-container', config);\n}"
     }
   ],
   "cssVars": [
@@ -190,7 +197,7 @@
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "111",
+      "child": "242",
       "parent": null
     },
     "2": {
@@ -1089,7 +1096,7 @@
       "next": null,
       "previous": "96",
       "child": null,
-      "parent": "1"
+      "parent": "243"
     },
     "96": {
       "id": "96",
@@ -1116,7 +1123,7 @@
       "next": "95",
       "previous": "111",
       "child": "2",
-      "parent": "1"
+      "parent": "243"
     },
     "97": {
       "id": "97",
@@ -1399,7 +1406,7 @@
           "value": "handleClick"
         }
       ],
-      "next": null,
+      "next": "246",
       "previous": "190",
       "child": "167",
       "parent": "107"
@@ -1708,7 +1715,7 @@
       "next": "96",
       "previous": null,
       "child": "181",
-      "parent": "1"
+      "parent": "243"
     },
     "135": {
       "id": "135",
@@ -4664,6 +4671,230 @@
       "previous": null,
       "child": null,
       "parent": "240"
+    },
+    "242": {
+      "id": "242",
+      "name": "Sign in",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return (app.state.firebase.user) ? false : true;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "243",
+      "previous": null,
+      "child": "244",
+      "parent": "1"
+    },
+    "243": {
+      "id": "243",
+      "name": "Secured",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return (app.state.firebase.user) ? true : false;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "242",
+      "child": "111",
+      "parent": "1"
+    },
+    "244": {
+      "id": "244",
+      "name": "firebase auth container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "firebaseui-auth-container"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "242"
+    },
+    "246": {
+      "id": "246",
+      "name": "divider 3",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "247",
+      "previous": "104",
+      "child": null,
+      "parent": "107"
+    },
+    "247": {
+      "id": "247",
+      "name": "sign out",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut();\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "246",
+      "child": "248",
+      "parent": "107"
+    },
+    "248": {
+      "id": "248",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-sign-out"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "249",
+      "previous": null,
+      "child": null,
+      "parent": "247"
+    },
+    "249": {
+      "id": "249",
+      "name": "label",
+      "element": "span",
+      "text": "Sign out",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "248",
+      "child": null,
+      "parent": "247"
     }
-  }
+  },
+  "schemas": [
+    {
+      "path": "/firebase",
+      "actions": [
+        {
+          "action": "setup",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var config = {\n    apiKey: \"AIzaSyBD09I5AfFlcQx5lpoY3XBjT150hw7tS0Y\",\n    authDomain: \"blissui-f09be.firebaseapp.com\",\n    databaseURL: \"https://blissui-f09be.firebaseio.com\",\n    projectId: \"blissui-f09be\",\n    storageBucket: \"blissui-f09be.appspot.com\",\n    messagingSenderId: \"843731683135\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  newData.user = null\n  newData.auth_ui = new firebaseui.auth.AuthUI(firebase.auth())\n  newData.auth = firebase.auth()\n  newData.database = firebase.database()\n  newData.storage = firebase.storage()\n  \n  newData.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      app.dispatch({\n        path: '/firebase',\n        action: 'set_user',\n        user: user\n      });\n    } else {\n      // Clear user state\n      app.dispatch({\n        path: '/firebase',\n        action: 'set_user',\n        user: null\n      });\n      \n      // Start UI flow\n      app.setState(function() {\n      \tapp.js.firebase_auth_ui();\n      });\n    }\n  });\n  \n  return newData;\n}"
+        },
+        {
+          "action": "set_user",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user = args.user;\n  return newData;\n}"
+        },
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
+        }
+      ]
+    }
+  ]
 }

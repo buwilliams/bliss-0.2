@@ -6,7 +6,7 @@ var socialStory = (function() {
       props: {},
       state: {}
     };
-    app.js.app_init = function() {
+    app.js['app_init'] = function() {
       // Initialize Firebase
       // TODO: Replace with your project's customized code snippet
       var config = {
@@ -36,7 +36,7 @@ var socialStory = (function() {
 
       window.app = app;
     }
-    app.js.auth_init = function(scope, attributes) {
+    app.js['auth_init'] = function(scope, attributes) {
       var uiConfig = {
         callbacks: {
           signInSuccess: function(currentUser, credential, redirectUrl) {
@@ -78,7 +78,7 @@ var socialStory = (function() {
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
     }
-    app.js.auth_changed = function() {
+    app.js['auth_changed'] = function() {
       app.state.auth.onAuthStateChanged(function(user) {
         if (user) {
           //console.log('authStatus user', user);
@@ -100,7 +100,7 @@ var socialStory = (function() {
         }
       });
     }
-    app.js.story_start = function(storyId) {
+    app.js['story_start'] = function(storyId) {
       var createStory = function(title, first_line) {
         var db = app.state.database;
 
@@ -140,14 +140,14 @@ var socialStory = (function() {
         createStory(data.sentence, "Once upon a time there was a ...");
       });
     }
-    app.js.story_home = function() {
+    app.js['story_home'] = function() {
       // listen for stories, update state
       app.js.firebase_subscribe('stories');
 
       app.js.firebase_subscribe_limit_last(100, 'stories');
       app.js.firebase_subscribe_limit_last(100, 'authors/' + app.state.user.uid);
     }
-    app.js.firebase_subscribe = function(firebasePath, returnRef) {
+    app.js['firebase_subscribe'] = function(firebasePath, returnRef) {
       if (typeof returnRef === 'undefined') returnRef = false;
 
       var db = app.state.database;
@@ -178,7 +178,7 @@ var socialStory = (function() {
 
       return (returnRef) ? app.state[refPath] : app.state[statePath];
     }
-    app.js.firebase_subscribe_limit_last = function(limit, firebasePath, returnRef) {
+    app.js['firebase_subscribe_limit_last'] = function(limit, firebasePath, returnRef) {
       if (typeof returnRef === 'undefined') returnRef = false;
 
       var db = app.state.database;
@@ -209,7 +209,7 @@ var socialStory = (function() {
 
       return (returnRef) ? app.state[refPath] : app.state[statePath];
     }
-    app.js.firebase_subscribe_limit_first = function(limit, firebasePath, returnRef) {
+    app.js['firebase_subscribe_limit_first'] = function(limit, firebasePath, returnRef) {
       if (typeof returnRef === 'undefined') returnRef = false;
 
       var db = app.state.database;
@@ -240,7 +240,7 @@ var socialStory = (function() {
 
       return (returnRef) ? app.state[refPath] : app.state[statePath];
     }
-    app.js.firebase_get = function(firebasePath, returnRef) {
+    app.js['firebase_get'] = function(firebasePath, returnRef) {
       if (typeof returnRef === 'undefined') returnRef = false;
 
       var db = app.state.database;
@@ -271,29 +271,29 @@ var socialStory = (function() {
 
       return (returnRef) ? app.state[refPath] : app.state[statePath];
     }
-    app.js.story_excerpt = function(storyId) {
+    app.js['story_excerpt'] = function(storyId) {
       return null;
     }
     app.methods["6"] = {};
-    app.methods["6"].handleClick = function(scope, attributes) {
+    app.methods["6"]['handleClick'] = function(scope, attributes) {
       return function(e) {
         firebase.auth().signOut();
       }
     };
 
-    app.methods["6"].shouldShow = function(scope, attributes) {
+    app.methods["6"]['shouldShow'] = function(scope, attributes) {
       return app.state.signedIn;
     }
     app.methods["7"] = {};
-    app.methods["7"].shouldShow = function(scope, attributes) {
+    app.methods["7"]['shouldShow'] = function(scope, attributes) {
       return !app.state.signedIn;
     }
     app.methods["5"] = {};
-    app.methods["5"].shouldShow = function(scope, attributes) {
+    app.methods["5"]['shouldShow'] = function(scope, attributes) {
       return app.state.signedIn;
     }
     app.methods["40"] = {};
-    app.methods["40"].handleClick = function(scope, attributes) {
+    app.methods["40"]['handleClick'] = function(scope, attributes) {
       return function(e) {
         app.setState(function() {
           app.state.currentPage = 'home';
@@ -301,27 +301,27 @@ var socialStory = (function() {
       }
     };
     app.methods["41"] = {};
-    app.methods["41"].handleClick = function(scope, attributes) {
+    app.methods["41"]['handleClick'] = function(scope, attributes) {
       return function(e) {
         app.js.story_start();
       }
     };
     app.methods["26"] = {};
-    app.methods["26"].shouldShow = function() {
+    app.methods["26"]['shouldShow'] = function() {
       return app.state.currentPage === 'home';
     }
     app.methods["43"] = {};
-    app.methods["43"].shouldShow = function(scope, attributes) {
+    app.methods["43"]['shouldShow'] = function(scope, attributes) {
       var state = app.js.firebase_subscribe_limit_last(100, 'stories');
       return state === null;
     }
     app.methods["49"] = {};
-    app.methods["49"].repeater = function(scope, attributes) {
+    app.methods["49"]['repeater'] = function(scope, attributes) {
       var state = app.js.firebase_subscribe_limit_last(100, 'stories');
       return (state === null) ? [] : Object.keys(state);
     };
     app.methods["52"] = {};
-    app.methods["52"].handleClick = function(scope, attributes) {
+    app.methods["52"]['handleClick'] = function(scope, attributes) {
       var key = scope.repeater[scope.repeater_index];
       return function(e) {
         app.setState(function() {
@@ -331,35 +331,35 @@ var socialStory = (function() {
       }
     };
 
-    app.methods["52"].getText = function(scope, attributes) {
+    app.methods["52"]['getText'] = function(scope, attributes) {
       var key = scope.repeater[scope.repeater_index];
       var state = app.js.firebase_subscribe('stories');
       return state[key].title;
     };
     app.methods["38"] = {};
-    app.methods["38"].shouldShow = function() {
+    app.methods["38"]['shouldShow'] = function() {
       return app.state.currentPage === 'write';
     }
     app.methods["50"] = {};
-    app.methods["50"].getText = function(scope, attributes) {
+    app.methods["50"]['getText'] = function(scope, attributes) {
       var state = app.js.firebase_subscribe('stories/' + app.state.currentStory);
       return state.title;
     };
     app.methods["47"] = {};
-    app.methods["47"].repeater = function(scope, attributes) {
+    app.methods["47"]['repeater'] = function(scope, attributes) {
       var state = app.js.firebase_subscribe('lines/' + app.state.currentStory);
       var keys = Object.keys(state);
       return keys;
     };
 
-    app.methods["47"].getText = function(scope, attributes) {
+    app.methods["47"]['getText'] = function(scope, attributes) {
       var state = app.js.firebase_subscribe('lines/' + app.state.currentStory);
       var key = scope.repeater[scope.repeater_index];
       //console.log('lines state', state);
       return state[key].text;
     };
     app.methods["46"] = {};
-    app.methods["46"].handleChange = function(scope, attributes) {
+    app.methods["46"]['handleChange'] = function(scope, attributes) {
       return function(e) {
         app.setState(function() {
           app.state.currentLine = e.target.value;
@@ -367,10 +367,10 @@ var socialStory = (function() {
       }
     };
 
-    app.methods["46"].getValue = function(scope, attributes) {
+    app.methods["46"]['getValue'] = function(scope, attributes) {
       return app.state.currentLine;
     }
-    app.methods["46"].handleKeyDown = function(scope, attributes) {
+    app.methods["46"]['handleKeyDown'] = function(scope, attributes) {
       var comp = this;
       return function(e) {
         var key = e.which,
@@ -388,7 +388,7 @@ var socialStory = (function() {
       }
     };
 
-    app.methods["46"].addLine = function() {
+    app.methods["46"]['addLine'] = function() {
       var db = app.state.database;
 
       // add new line
@@ -449,11 +449,11 @@ var socialStory = (function() {
               React.createElement('span', app.mergeAttributes('22', scope, {}, {
                 "id": "label_22",
                 "key": app.getKey('id', '22')
-              }), " Social Story"),
+              }), ' Social Story'),
               React.createElement('div', app.mergeAttributes('28', scope, {}, {
                 "id": "brandSubtitle_28",
                 "key": app.getKey('id', '28')
-              }), "Imaginations running amuk")),
+              }), 'Imaginations running amuk')),
             (function(scope) {
               var out = [];
               scope['shouldShow'] = app.methods['6']['shouldShow'](scope);
@@ -473,7 +473,7 @@ var socialStory = (function() {
                   React.createElement('span', app.mergeAttributes('20', scope, {}, {
                     "id": "label_20",
                     "key": app.getKey('id', '20')
-                  }), " Sign-out")));
+                  }), ' Sign-out')));
               }
               return out;
             })(scope)),
@@ -510,14 +510,14 @@ var socialStory = (function() {
                     "href": "#",
                     "id": "home_40",
                     "key": app.getKey('id', '40')
-                  }), "Home"),
+                  }), 'Home'),
                   React.createElement('a', app.mergeAttributes('41', scope, {
                     "onClick": "handleClick"
                   }, {
                     "href": "#",
                     "id": "startANewStory_41",
                     "key": app.getKey('id', '41')
-                  }), "Start a new story")),
+                  }), 'Start a new story')),
                 (function(scope) {
                   var out = [];
                   scope['shouldShow'] = app.methods['26']['shouldShow'](scope);
@@ -533,7 +533,7 @@ var socialStory = (function() {
                         React.createElement('div', app.mergeAttributes('33', scope, {}, {
                           "id": "header_33",
                           "key": app.getKey('id', '33')
-                        }), "Latest stories"),
+                        }), 'Latest stories'),
                         (function(scope) {
                           var out = [];
                           scope['shouldShow'] = app.methods['43']['shouldShow'](scope);
@@ -541,7 +541,7 @@ var socialStory = (function() {
                             out.push(React.createElement('div', app.mergeAttributes('43', scope, {}, {
                               "id": "noLatestStory_43",
                               "key": app.getKey('id', '43')
-                            }), "(no latest story)"));
+                            }), '(no latest story)'));
                           }
                           return out;
                         })(scope),
@@ -571,15 +571,15 @@ var socialStory = (function() {
                         React.createElement('div', app.mergeAttributes('34', scope, {}, {
                           "id": "header_34",
                           "key": app.getKey('id', '34')
-                        }), "About"),
+                        }), 'About'),
                         React.createElement('div', app.mergeAttributes('53', scope, {}, {
                           "id": "aboutText_53",
                           "key": app.getKey('id', '53')
-                        }), "Social Story is a fun way to get creative with your friends. You'll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It's also a great way to escape writes block!"),
+                        }), 'Social Story is a fun way to get creative with your friends. You\'ll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It\'s also a great way to escape writes block!'),
                         React.createElement('div', app.mergeAttributes('54', scope, {}, {
                           "id": "instructions_54",
                           "key": app.getKey('id', '54')
-                        }), "Instructions"),
+                        }), 'Instructions'),
                         React.createElement('ol', app.mergeAttributes('55', scope, {}, {
                             "id": "orderedList_55",
                             "key": app.getKey('id', '55')
@@ -587,27 +587,27 @@ var socialStory = (function() {
                           React.createElement('li', app.mergeAttributes('56', scope, {}, {
                             "id": "listItem_56",
                             "key": app.getKey('id', '56')
-                          }), "Create a new story"),
+                          }), 'Create a new story'),
                           React.createElement('li', app.mergeAttributes('62', scope, {}, {
                             "id": "listItem_62",
                             "key": app.getKey('id', '62')
-                          }), "We'll start you off with a story title"),
+                          }), 'We\'ll start you off with a story title'),
                           React.createElement('li', app.mergeAttributes('58', scope, {}, {
                             "id": "listItem_58",
                             "key": app.getKey('id', '58')
-                          }), "Ask your friends to join in the fun"),
+                          }), 'Ask your friends to join in the fun'),
                           React.createElement('li', app.mergeAttributes('59', scope, {}, {
                             "id": "listItem_59",
                             "key": app.getKey('id', '59')
-                          }), "Take turns adding a new line to the story"),
+                          }), 'Take turns adding a new line to the story'),
                           React.createElement('li', app.mergeAttributes('60', scope, {}, {
                             "id": "listItem_60",
                             "key": app.getKey('id', '60')
-                          }), "Be sure to leave your lines open-ended (ie. The frog had no pants but he did have...)"),
+                          }), 'Be sure to leave your lines open-ended (ie. The frog had no pants but he did have...)'),
                           React.createElement('li', app.mergeAttributes('61', scope, {}, {
                             "id": "listItem_61",
                             "key": app.getKey('id', '61')
-                          }), "There's no need to refresh the page. All stories and lines are updated immediately.")))));
+                          }), 'There\'s no need to refresh the page. All stories and lines are updated immediately.')))));
                   }
                   return out;
                 })(scope),
@@ -658,14 +658,13 @@ var socialStory = (function() {
             React.createElement('span', app.mergeAttributes('35', scope, {}, {
               "id": "text_35",
               "key": app.getKey('id', '35')
-            }), "powered by "),
+            }), 'powered by '),
             React.createElement('a', app.mergeAttributes('36', scope, {}, {
               "href": "http://blissui.com",
               "id": "link_36",
               "key": app.getKey('id', '36')
-            }), "bliss ui"))));
+            }), 'bliss ui'))));
     };
-    app.state = {};
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
       if (isComponent) {

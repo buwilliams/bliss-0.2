@@ -1005,7 +1005,6 @@ var blissUi = (function() {
         var internal = app._state.get('internal');
         var activeComponent = internal.getData('activeComponent');
         app.js.update(function() {
-          console.log('component changed', newComponent.id, app.buildProject.rootId);
           if (newComponent.id === app.buildProject.rootId) {
             app.buildProject.name = newComponent.name;
           }
@@ -1654,10 +1653,6 @@ var blissUi = (function() {
             "id": "statusBar",
             "key": app.getKey('id', '95')
           }), app.methods['95']['showStatus'](scope))));
-    };
-    app.state = {
-      "timer": null,
-      "shouldSave": false
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

@@ -6,7 +6,7 @@ var blissUiWebsite = (function() {
       props: {},
       state: {}
     };
-    app.js.init = function() {
+    app.js['init'] = function() {
       app.render();
     }
     app.getKey = function() {
@@ -39,7 +39,7 @@ var blissUiWebsite = (function() {
             React.createElement('h1', app.mergeAttributes('4', scope, {}, {
               "id": "header_4",
               "key": app.getKey('id', '4')
-            }), "Bliss UI"),
+            }), 'Bliss UI'),
             React.createElement('hr', app.mergeAttributes('5', scope, {}, {
               "id": "seperator_5",
               "key": app.getKey('id', '5')
@@ -47,9 +47,8 @@ var blissUiWebsite = (function() {
             React.createElement('span', app.mergeAttributes('6', scope, {}, {
               "id": "comingSoon_6",
               "key": app.getKey('id', '6')
-            }), "Private beta is expected to start on August 1st, 2017! I'll be in touch around that time."))));
+            }), 'Private beta is expected to start on August 1st, 2017! I\'ll be in touch around that time.'))));
     };
-    app.state = {};
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
       if (isComponent) {

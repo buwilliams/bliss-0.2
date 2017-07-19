@@ -338,7 +338,7 @@ var blissProject = {
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      console.log('component changed', newComponent.id, app.buildProject.rootId);\n      if(newComponent.id === app.buildProject.rootId) {\n        app.buildProject.name = newComponent.name;\n      }\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      if(newComponent.id === app.buildProject.rootId) {\n        app.buildProject.name = newComponent.name;\n      }\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [

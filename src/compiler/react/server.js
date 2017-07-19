@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -10,6 +11,16 @@ const user = require('./routes/user.js');
 const website = require('./routes/website.js');
 const workspace = require('./routes/workspace.js');
 const hosted = require('./routes/hosted.js');
+
+/* start: Firebase Service Account */
+const admin = require("firebase-admin");
+const fbJson = path.join(__dirname, '..', '..', '..', 'blissui-firebase.json')
+const serviceAccount = require(fbJson);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://blissui-f09be.firebaseio.com'
+});
+/* end: Firebase Service Account */
 
 app.use(bodyParser.json());
 
