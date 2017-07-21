@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const authorization = require('./server_authorization.js')
 const env = require('./env.js');
 const ws = require('../core/workspace.js');
 const bliss = require('./routes/bliss.js');
@@ -12,17 +13,15 @@ const website = require('./routes/website.js');
 const workspace = require('./routes/workspace.js');
 const hosted = require('./routes/hosted.js');
 
-/* start: Firebase Service Account */
-const admin = require("firebase-admin");
-const fbJson = path.join(__dirname, '..', '..', '..', 'blissui-firebase.json')
-const serviceAccount = require(fbJson);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://blissui-f09be.firebaseio.com'
-});
-/* end: Firebase Service Account */
-
 app.use(bodyParser.json());
+
+var secure =
+app.use(authorization({ protected_urls: ['/user',
+                                         '/compiler',
+                                         '/project',
+                                         '/bliss/designer',
+                                         '/website',
+                                         '/workspace']}));
 
 app.get('/', function(req, res) {
   res.redirect('/hosted/blissui/website/');

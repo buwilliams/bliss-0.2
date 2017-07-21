@@ -14,7 +14,7 @@ var getCompiler = function(projectJson) {
 router.post('/build', function (req, res) {
   var projectJson = req.body;
   var compiler = getCompiler(projectJson);
-  compiler.compile(ws.workspace(env, session), projectJson, null);
+  compiler.compile(ws.workspace(env, req.session), projectJson, null);
   res.send({success: true});
   console.log(`Built '${projectJson.name}'`);
 });
@@ -22,7 +22,7 @@ router.post('/build', function (req, res) {
 router.post('/export', function (req, res) {
   var projectJson = req.body;
   var compiler = getCompiler(projectJson);
-  compiler.export(ws.workspace(env, session), projectJson, null);
+  compiler.export(ws.workspace(env, req.session), projectJson, null);
   res.send({success: true});
   console.log(`Exported component '${projectJson.name}'`);
 });
@@ -31,7 +31,7 @@ router.post('/dist', function (req, res) {
   var projectJson = req.body;
   //var compiler = getCompiler(projectJson);
   //compiler.dist(ws.dist(env, session), projectJson, null);
-  deploy.write(projectJson, ws.workspace(env, session), ws.deploy(env, session));
+  deploy.write(projectJson, ws.workspace(env, req.session), ws.deploy(env, req.session));
   res.send({success: true});
   console.log(`Deployed '${projectJson.name}'`);
 });

@@ -112,6 +112,23 @@
   margin-left: 10px;
 }
 
+#divider_246 {
+}
+
+#signOut_247 {
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 10pt;
+}
+
+#icon_248 {
+}
+
+#label_249 {
+  display: inline-block;
+  margin-left: 10px;
+}
+
 #saveButton {
   cursor: pointer;
   color: #e0ebf0;

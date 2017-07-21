@@ -7,7 +7,11 @@ var blissUi = (function() {
       state: {}
     };
     app.js['init'] = function() {
-      //console.log('path', app.getPath(app.state, '/firebase'));
+      $.ajaxSetup({
+        headers: {
+          'X-User-Token': app.state.firebase.user_token
+        }
+      });
       app.dispatch({
         path: '/firebase',
         action: 'setup'
@@ -336,7 +340,7 @@ var blissUi = (function() {
         });
 
         var projects = app._state.create('projects');
-        app.js.getProjects();
+        //app.js.getProjects();
       });
     }
     app.js['log'] = function() {
@@ -1140,12 +1144,26 @@ var blissUi = (function() {
             action: 'set_user',
             user: user
           });
+
+          user.getIdToken(true).then(function(idToken) {
+            app.dispatch({
+              path: '/firebase',
+              action: 'set_token',
+              user_token: idToken
+            });
+          });
         } else {
           // Clear user state
           app.dispatch({
             path: '/firebase',
             action: 'set_user',
             user: null
+          });
+
+          app.dispatch({
+            path: '/firebase',
+            action: 'set_token',
+            user_token: null
           });
 
           // Start UI flow
@@ -1165,12 +1183,24 @@ var blissUi = (function() {
     app.schema['/firebase']['init'] = function(data, args) {
       var newData = {
         user: null,
+        user_token: null,
         auth_ui: null,
         auth: null,
         database: null,
         storage: null
       }
 
+      return newData;
+    }
+    app.schema['/firebase']['set_token'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.user_token = args.user_token;
+      $.ajaxSetup({
+        headers: {
+          'X-User-Token': newData.user_token
+        }
+      });
+      if (newData.user_token !== null) app.js.getProjects();
       return newData;
     }
     if (app.schema['/firebase']['init']) {

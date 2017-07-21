@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 242,
+  "nextId": 250,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -15,7 +15,8 @@ var blissProject = {
     "components/bliss-properties/css/bliss-properties.css",
     "components/bliss-javascript/css/bliss-javascript.css",
     "https://cdn.rawgit.com/konpa/devicon/4f6a4b08efdad6bb29f9cc801f5c07e263b39907/devicon.min.css",
-    "components/bliss-data/css/bliss-data.css"
+    "components/bliss-data/css/bliss-data.css",
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css"
   ],
   "externalJs": [
     "node_modules/tether/dist/js/tether.min.js",
@@ -36,7 +37,9 @@ var blissProject = {
     "components/bliss-utils/js/state.js",
     "components/bliss-data/js/bliss-actions.js",
     "components/bliss-data/js/bliss-paths.js",
-    "components/bliss-data/js/bliss-data.js"
+    "components/bliss-data/js/bliss-data.js",
+    "https://www.gstatic.com/firebasejs/4.1.3/firebase.js",
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"
   ],
   "state": {
     "timer": null,
@@ -75,7 +78,7 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  app._state = state();\n  app.js.cleanState(newBlissProject, false);\n}"
+      "body": "function() {\n  $.ajaxSetup({ headers: { 'X-User-Token': app.state.firebase.user_token } });\n  app.dispatch({ path: '/firebase', action: 'setup' });\n  app._state = state();\n  app.js.cleanState(newBlissProject, false)\n}"
     },
     {
       "name": "build",
@@ -131,11 +134,15 @@ var blissProject = {
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    app.js.getProjects();\n  });\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    //app.js.getProjects();\n  });\n}"
     },
     {
       "name": "log",
       "body": "function() {\n  return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
+    },
+    {
+      "name": "firebase_auth_ui",
+      "body": "function() {\n  var ui = app.state.firebase.auth_ui;\n  \n  var config = {\n    callbacks: {\n      signInSuccess: function(currentUser, credential, redirectUrl) {\n        return false;\n      },\n      uiShown: function() {}\n    },\n    signInSuccessUrl: window.location.href,\n    signInOptions: [\n      // Leave the lines as is for the providers you want to offer your users.\n      //firebase.auth.GoogleAuthProvider.PROVIDER_ID,\n      //firebase.auth.FacebookAuthProvider.PROVIDER_ID,\n      //firebase.auth.TwitterAuthProvider.PROVIDER_ID,\n      //firebase.auth.GithubAuthProvider.PROVIDER_ID,\n      firebase.auth.EmailAuthProvider.PROVIDER_ID,\n      //firebase.auth.PhoneAuthProvider.PROVIDER_ID\n    ],\n    // Terms of service url.\n    tosUrl: window.location.href\n  };\n  \n  /*\n  if(ui === null) {\n    // Initialize the FirebaseUI Widget using Firebase.\n    ui = new firebaseui.auth.AuthUI(firebase.auth());\n    app.setState(function() {\n      app.state.ui = ui;\n    });\n  } else {\n    ui = app.state.ui;\n    ui.reset();\n  }\n  */\n  \n  ui.reset();\n  \n  // The start method will wait until the DOM is loaded.\n  ui.start('#firebaseui-auth-container', config);\n}"
     }
   ],
   "cssVars": [
@@ -190,7 +197,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "111",
+      "child": "242",
       "parent": null
     },
     "2": {
@@ -1089,7 +1096,7 @@ var blissProject = {
       "next": null,
       "previous": "96",
       "child": null,
-      "parent": "1"
+      "parent": "243"
     },
     "96": {
       "id": "96",
@@ -1116,7 +1123,7 @@ var blissProject = {
       "next": "95",
       "previous": "111",
       "child": "2",
-      "parent": "1"
+      "parent": "243"
     },
     "97": {
       "id": "97",
@@ -1399,7 +1406,7 @@ var blissProject = {
           "value": "handleClick"
         }
       ],
-      "next": null,
+      "next": "246",
       "previous": "190",
       "child": "167",
       "parent": "107"
@@ -1708,7 +1715,7 @@ var blissProject = {
       "next": "96",
       "previous": null,
       "child": "181",
-      "parent": "1"
+      "parent": "243"
     },
     "135": {
       "id": "135",
@@ -4664,7 +4671,235 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "240"
+    },
+    "242": {
+      "id": "242",
+      "name": "Sign in",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return (app.state.firebase.user) ? false : true;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "243",
+      "previous": null,
+      "child": "244",
+      "parent": "1"
+    },
+    "243": {
+      "id": "243",
+      "name": "Secured",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return (app.state.firebase.user) ? true : false;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "242",
+      "child": "111",
+      "parent": "1"
+    },
+    "244": {
+      "id": "244",
+      "name": "firebase auth container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "firebaseui-auth-container"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "242"
+    },
+    "246": {
+      "id": "246",
+      "name": "divider 3",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-divider"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "247",
+      "previous": "104",
+      "child": null,
+      "parent": "107"
+    },
+    "247": {
+      "id": "247",
+      "name": "sign out",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut();\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "246",
+      "child": "248",
+      "parent": "107"
+    },
+    "248": {
+      "id": "248",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-sign-out"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "249",
+      "previous": null,
+      "child": null,
+      "parent": "247"
+    },
+    "249": {
+      "id": "249",
+      "name": "label",
+      "element": "span",
+      "text": "Sign out",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "248",
+      "child": null,
+      "parent": "247"
     }
-  }
+  },
+  "schemas": [
+    {
+      "path": "/firebase",
+      "actions": [
+        {
+          "action": "setup",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var config = {\n    apiKey: \"AIzaSyBD09I5AfFlcQx5lpoY3XBjT150hw7tS0Y\",\n    authDomain: \"blissui-f09be.firebaseapp.com\",\n    databaseURL: \"https://blissui-f09be.firebaseio.com\",\n    projectId: \"blissui-f09be\",\n    storageBucket: \"blissui-f09be.appspot.com\",\n    messagingSenderId: \"843731683135\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  newData.user = null\n  newData.auth_ui = new firebaseui.auth.AuthUI(firebase.auth())\n  newData.auth = firebase.auth()\n  newData.database = firebase.database()\n  newData.storage = firebase.storage()\n  \n  newData.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      app.dispatch({\n        path: '/firebase',\n        action: 'set_user',\n        user: user\n      });\n      \n      user.getIdToken(true).then(function(idToken) {\n        app.dispatch({\n          path: '/firebase',\n          action: 'set_token',\n          user_token: idToken\n        });\n      });\n    } else {\n      // Clear user state\n      app.dispatch({\n        path: '/firebase',\n        action: 'set_user',\n        user: null\n      });\n      \n      app.dispatch({\n        path: '/firebase',\n        action: 'set_token',\n        user_token: null\n      });\n      \n      // Start UI flow\n      app.setState(function() {\n      \tapp.js.firebase_auth_ui();\n      });\n    }\n  });\n  \n  return newData;\n}"
+        },
+        {
+          "action": "set_user",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user = args.user;\n  return newData;\n}"
+        },
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
+        },
+        {
+          "action": "set_token",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user_token = args.user_token;\n  $.ajaxSetup({ headers: { 'X-User-Token': newData.user_token } });\n  if(newData.user_token !== null) app.js.getProjects();\n  return newData;\n}"
+        }
+      ]
+    }
+  ]
 }
 if(typeof module !== "undefined") module.exports = blissProject;
