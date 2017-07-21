@@ -1,4 +1,6 @@
-const path = require('path');
+const path = require('path')
+const fs = require('fs')
+const project = require('./project.js')
 
 module.exports = {
   website: function(env) {
@@ -6,10 +8,13 @@ module.exports = {
   },
 
   workspace: function(env, session) {
-    return path.join(
-      env.workspace,
+    var wsPath = path.join(env.workspace,
       session.user.username,
       session.user.workspace);
+
+    if(!fs.existsSync(wsPath)) project.createWorkspace(wsPath);
+
+    return wsPath
   },
 
   deployed: function(env) {

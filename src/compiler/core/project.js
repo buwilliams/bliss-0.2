@@ -32,8 +32,10 @@ module.exports = {
   },
   createWorkspace: function(workspace) {
     mkdirp.sync(workspace);
-    mkdirp.sync(path.join(workspace, "components"));
-    mkdirp.sync(path.join(workspace, "projects"));
+    var dirs = ['components', 'projects', 'assets', 'css', 'js']
+    dirs.forEach(function(dir) {
+      mkdirp.sync(path.join(workspace, dir));
+    });
   },
   listProjects: function(workspace) {
     var out = [];
