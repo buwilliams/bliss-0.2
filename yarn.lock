@@ -1938,7 +1938,7 @@ ms@^0.7.1:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
 
-nan@^2.3.0:
+nan@^2.3.0, nan@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
@@ -2514,6 +2514,12 @@ setimmediate@^1.0.5:
 setprototypeof@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.0.3.tgz#66567e37043eeb4f04d91bd658c0cbefb55b8e04"
+
+shorter@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/shorter/-/shorter-0.2.1.tgz#dd5898419b553e423f136087c0ee6aeea76df861"
+  dependencies:
+    nan "^2.6.2"
 
 sigmund@^1.0.1:
   version "1.0.1"

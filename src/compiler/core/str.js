@@ -1,4 +1,5 @@
-var _ = require('lodash');
+const _ = require('lodash')
+const shorter = require('shorter')
 
 module.exports = {
   getCamel: function(str) {
@@ -21,5 +22,15 @@ module.exports = {
 
   getRefId: function(name, id) {
     return this.getCamel(name) + `_${id}`;
+  },
+
+  encode: function(string) {
+    const encoded = shorter.compress(string)
+    return encoded.toString('hex')
+  },
+
+  decode: function(string) {
+    const decoded = shorter.decompress(Buffer.from(string, 'hex'))
+    return decoded.toString()
   }
 };

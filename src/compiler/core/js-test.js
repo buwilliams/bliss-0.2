@@ -33,7 +33,7 @@ describe('js', function() {
         "name": "someFn",
         "body": "function(){}"
       };
-      var expected = "app.js.someFn = function(){}";
+      var expected = "app.js['someFn'] = function(){}";
       expect(js.getFn(input)).toEqual(expected);
     });
 
