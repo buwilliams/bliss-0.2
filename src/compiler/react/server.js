@@ -19,7 +19,6 @@ var secure =
 app.use(authorization({ protected_urls: ['/user',
                                          '/compiler',
                                          '/project',
-                                         '/bliss/designer',
                                          '/website',
                                          '/workspace']}));
 

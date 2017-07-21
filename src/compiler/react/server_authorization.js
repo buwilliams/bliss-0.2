@@ -13,12 +13,6 @@ admin.initializeApp({
 
 module.exports = function(options) {
   return function(req, res, next) {
-    var secure = ['/user',
-                  '/compiler',
-                  '/project',
-                  '/website',
-                  '/workspace']
-
     var matches = _.reduce(options.protected_urls, function(result, item) {
       if(result) return result;
       if(req.url.startsWith(item)) return true;
