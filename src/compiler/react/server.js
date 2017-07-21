@@ -23,7 +23,7 @@ app.use(authorization({ protected_urls: ['/user',
                                          '/workspace']}));
 
 app.get('/', function(req, res) {
-  res.redirect('/hosted/blissui/website/');
+  res.redirect(`/hosted/${env.bliss_user}/website/`);
 });
 
 app.use('/user', user);

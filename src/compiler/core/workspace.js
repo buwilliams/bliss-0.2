@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   website: function(env) {
-    return path.join(this.deployed(env), 'blissui', 'website');
+    return path.join(this.deployed(env), env.bliss_user, 'website');
   },
 
   workspace: function(env, session) {
