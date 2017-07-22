@@ -15,12 +15,11 @@ const hosted = require('./routes/hosted.js');
 
 app.use(bodyParser.json());
 
-var secure =
-app.use(authorization({ protected_urls: ['/user',
-                                         '/compiler',
-                                         '/project',
-                                         '/website',
-                                         '/workspace']}));
+var secure = app.use(authorization({ protected_urls: ['/user',
+                                                      '/compiler',
+                                                      '/project',
+                                                      '/website',
+                                                      '/workspace']}));
 
 app.get('/', function(req, res) {
   res.redirect(`/hosted/${env.bliss_user}/website/`);
