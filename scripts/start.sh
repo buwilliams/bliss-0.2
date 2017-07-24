@@ -6,6 +6,11 @@ sudo forever stopall
 echo 'Copying env file...'
 cp -f ./scripts/prod.env ./.env
 
+echo 'Creating tls and symlinks for https...'
+mkdir tls
+ln -s /etc/letsencrypt/live/blissui.com/fullchain.pem ./tls/cert.pem
+ln -s /etc/letsencrypt/live/blissui.com/privkey.pem ./tls/key.pem
+
 echo 'Updating node deps...'
 yarn install
 

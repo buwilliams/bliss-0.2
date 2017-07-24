@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
+  "bliss_env": process.env.BLISS_ENV,
   "port": process.env.BLISS_PORT,
   "workspace": process.env.BLISS_WORKSPACE,
   "app": process.env.BLISS_APP,
