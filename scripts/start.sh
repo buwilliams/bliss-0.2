@@ -8,11 +8,11 @@ cp -f ./scripts/prod.env ./.env
 
 echo 'Creating tls and symlinks for https...'
 mkdir tls
-ln -s /etc/letsencrypt/live/blissui.com/fullchain.pem ./tls/cert.pem
-ln -s /etc/letsencrypt/live/blissui.com/privkey.pem ./tls/key.pem
+ln -sfT /etc/letsencrypt/live/blissui.com/fullchain.pem ./tls/cert.pem
+ln -sfT /etc/letsencrypt/live/blissui.com/privkey.pem ./tls/key.pem
 
 echo 'Creating symlink for firebase...'
-ln -s ~/.ssh/blissui-firebase.json ./blissui-firebase.json
+ln -sfT ~/.ssh/blissui-firebase.json ./blissui-firebase.json
 
 echo 'Updating node deps...'
 yarn install
