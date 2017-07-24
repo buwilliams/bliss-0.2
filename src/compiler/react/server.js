@@ -50,7 +50,7 @@ if(env.bliss_env === "development") {
   });
 } else if(env.bliss_env === "production") {
   // Redirect http traffic to https
-  var http = express.createServer();
+  var http = express();
   http.get('*', function(req,res) {
     res.redirect('https://blissui.com'+req.url)
   });
