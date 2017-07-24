@@ -47,7 +47,33 @@ var blissUiWebsite = (function() {
             React.createElement('span', app.mergeAttributes('6', scope, {}, {
               "id": "comingSoon_6",
               "key": app.getKey('id', '6')
-            }), 'Private beta is expected to start on August 1st, 2017! I\'ll be in touch around that time.'))));
+            }), 'Private beta is only a few weeks away, around mid-August. I\'m finishing up private workspaces. Once that\'s complete, I\'ll be in touch. Thanks for your patience folks! - Buddy'),
+            React.createElement('h3', app.mergeAttributes('9', scope, {}, {
+              "id": "todoAppHeader_9",
+              "key": app.getKey('id', '9')
+            }), 'How to build a TODO app with Bliss:'),
+            React.createElement('iframe', app.mergeAttributes('8', scope, {}, {
+              "width": "560",
+              "height": "315",
+              "frameborder": "0",
+              "allowfullscreen": "true",
+              "src": "https://www.youtube.com/embed/Ka9OJSGVpvo",
+              "id": "youtubeVideo_8",
+              "key": app.getKey('id', '8')
+            })),
+            React.createElement('h3', app.mergeAttributes('10', scope, {}, {
+              "id": "blissOverview_10",
+              "key": app.getKey('id', '10')
+            }), 'What is Bliss? Here\'s an introduction:'),
+            React.createElement('iframe', app.mergeAttributes('11', scope, {}, {
+              "width": "560",
+              "height": "315",
+              "frameborder": "0",
+              "allowfullscreen": "true",
+              "src": "https://www.youtube.com/embed/YRtg_aVpdqA",
+              "id": "youtubeVideo_11",
+              "key": app.getKey('id', '11')
+            })))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

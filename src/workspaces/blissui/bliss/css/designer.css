@@ -1,0 +1,13 @@
+body {
+  font-size: 14pt;
+}
+
+input {
+  font-size: 14pt;
+}
+
+#newTodo_2 {
+  padding: 10px;
+  outline: none;
+}
+

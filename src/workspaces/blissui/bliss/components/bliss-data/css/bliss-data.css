@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('/node_modules/font-awesome/fonts/fontawesome-webfont.eot?v=4.7.0')
+    format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+input, select, textarea, button {
+  font-family: 'Roboto', sans-serif;
+}
+
+.js-editor {
+
+}
+
+.js-menu {
+  padding: 10px;
+  background-color: #eee;
+  border-bottom: solid 3px #ccc;
+}
+
+.js-menu a {
+  display: inline-block;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.js-left {
+  float: left;
+  width: 25%;
+  background-color: #eee;
+  font-size: 12px;
+}
+
+.js-right {
+  float: left;
+  width: 75%;
+}
+
+.js-left-menu {}
+
+.js-right-menu {
+  padding: 10px;
+  background-color: #f7f7f7;
+}
+
+.js-right-menu input {
+  padding: 5px 10px;
+  display: block;
+  width: 100%;
+  outline: none;
+}
+
+a.js-left-menu-item {
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.js-selected {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+.CodeMirror {
+  font-size: 1.2em;
+}
+
+.js-paths {
+  padding: 5px 0;
+  background-color: #f7f7f7;
+}
+
+.js-path {
+  padding: 5px 10px;
+}
+
+.js-path input {
+  width: 70%;
+  float: left;
+}
+
+.js-path-options {
+  width: 30%;
+  float: left;
+  text-align: center;
+}
+
+.js-path-options a {
+  display: inline-block;
+  margin: 5px 10px;
+}

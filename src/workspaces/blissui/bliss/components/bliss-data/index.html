@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bliss Data</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+  <link href="node_modules/tether/dist/css/tether.min.css" rel="stylesheet">
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+  <link rel="stylesheet" href="node_modules/codemirror/theme/solarized.css">
+  <link rel="stylesheet" href="css/bliss-data.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+  <div class="col-md-12">
+    <div id="app"></div>
+  </div>
+  </div>
+</div>
+
+<script src="node_modules/tether/dist/js/tether.min.js" charset="utf-8"></script>
+<script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
+<script src="node_modules/lodash/lodash.min.js" charset="utf-8"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+<script src="node_modules/codemirror/lib/codemirror.js" charset="utf-8"></script>
+<script src="node_modules/codemirror/mode/javascript/javascript.js" charset="utf-8"></script>
+<script src="node_modules/react/dist/react.js" charset="utf-8"></script>
+<script src="node_modules/react-dom/dist/react-dom.js" charset="utf-8"></script>
+<script src="node_modules/react-code-mirror/standalone.js" charset="utf-8"></script>
+<script src="js/project-json.js" charset="utf-8"></script>
+<script src="js/bliss-actions.js" charset="utf-8"></script>
+<script src="js/bliss-paths.js" charset="utf-8"></script>
+<script src="js/bliss-data.js" charset="utf-8"></script>
+<script type="text/javascript">
+(function() {
+  var app = {
+    proj: null,
+    onChange: function(newSchemas) {
+      this.proj.schemas = newSchemas;
+      this.render();
+    },
+    render: function() {
+      ReactDOM.render(React.createElement(BlissData.component, {
+        schemas: this.proj.schemas,
+        onChange: this.onChange.bind(this)
+      }),
+      document.getElementById('app'));
+    },
+    init: function(proj) {
+      this.proj = proj;
+      this.render();
+    }
+  };
+  app.init(projectJson);
+  window.app = app;
+})();
+</script>
+</body>
+</html>
