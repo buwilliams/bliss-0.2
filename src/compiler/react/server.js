@@ -1,5 +1,4 @@
 const path = require('path')
-const http = require('http')
 const https = require('https')
 const fs = require('fs')
 const express = require('express')
@@ -50,12 +49,19 @@ if(env.bliss_env === "development") {
     console.log(`Find your Bliss on port ${env.port}!`);
   });
 } else if(env.bliss_env === "production") {
+  // Redirect http traffic to https
+  var http = express.createServer();
+  http.get('*', function(req,res) {
+    res.redirect('https://blissui.com'+req.url)
+  });
+  http.listen(80);
+
   const options = {
     key: fs.readFileSync(path.join(__dirname, '../../../tls/key.pem')),
     cert: fs.readFileSync(path.join(__dirname, '../../../tls/cert.pem'))
   };
-  http.createServer(app).listen(80);
-  https.createServer(options, app).listen(443);
+
+  https.createServer(options, app).listen(env.port);
 } else {
   console.log('Unable to start web server because BLISS_ENV not set.');
 }
