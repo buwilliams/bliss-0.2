@@ -51,8 +51,8 @@ if(env.bliss_env === "development") {
   });
 } else if(env.bliss_env === "production") {
   const options = {
-    key: fs.readFileSync('../../../tls/key.pem'),
-    cert: fs.readFileSync('../../../tls/cert.pem')
+    key: fs.readFileSync(path.join(__dirname, '../../../tls/key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, '../../../tls/cert.pem'))
   };
   http.createServer(app).listen(80);
   https.createServer(options, app).listen(443);
