@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const exec = require('sync-exec');
-const compiler = require('./src/compiler/react/react.js');
+const compiler = require('./src/compilers/react/react.js');
 const fse = require('fs-extra');
 
 var config = {
