@@ -1,14 +1,27 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
-const ws = require('../../core/workspace.js');
+const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
-const deploy = require('../exports/deploy.js');
 
 var getCompiler = function(projectJson) {
-  var compilerPath = path.join(__dirname, "..", "react.js");
+  var compilerPath = path.join(__dirname,
+                               "..",
+                               "..",
+                               projectJson.compiler,
+                               `${projectJson.compiler}.js`);
   return require(compilerPath);
+};
+
+var getDeployer = function(projectJson) {
+  var deployerPath = path.join(__dirname,
+                               "..",
+                               "..",
+                               projectJson.compiler,
+                               "exports",
+                               'deploy.js');
+  return require(deployerPath);
 };
 
 router.post('/build', function (req, res) {
@@ -29,9 +42,8 @@ router.post('/export', function (req, res) {
 
 router.post('/dist', function (req, res) {
   var projectJson = req.body;
-  //var compiler = getCompiler(projectJson);
-  //compiler.dist(ws.dist(env, session), projectJson, null);
-  deploy.write(projectJson, ws.workspace(env, req.session), ws.deploy(env, req.session));
+  var deployer = getDeployer(projectJson);
+  deployer.write(projectJson, ws.workspace(env, req.session), ws.deploy(env, req.session));
   res.send({success: true});
   console.log(`Deployed '${projectJson.name}'`);
 });

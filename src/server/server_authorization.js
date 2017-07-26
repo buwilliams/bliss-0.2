@@ -1,9 +1,9 @@
 const path = require('path')
 const _ = require('lodash')
 const admin = require("firebase-admin");
-const fbJson = path.join(__dirname, '..', '..', '..', 'blissui-firebase.json')
+const fbJson = path.join(__dirname, '..', '..', 'blissui-firebase.json')
 const serviceAccount = require(fbJson)
-const str = require('../core/str.js')
+const str = require('../compilers/core/str.js')
 const staticSession = require('./session.js');
 
 admin.initializeApp({

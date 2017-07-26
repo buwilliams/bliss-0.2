@@ -2,11 +2,11 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
-const ws = require('../../core/workspace.js');
+const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
-const project = require('../../core/project.js');
-const deps = require('../../core/dependencies.js');
+const project = require('../../compilers/core/project.js');
+const deps = require('../../compilers/core/dependencies.js');
 
 router.get('/list', function (req, res) {
   var json = project.listProjects(ws.workspace(env, req.session));
