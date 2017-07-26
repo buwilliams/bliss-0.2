@@ -99,7 +99,7 @@ task('clean', function(){
 
 desc('Start bliss web server');
 task('server', function() {
-  require('./src/compiler/react/server.js');
+  require('./src/server/server.js');
 });
 
 desc('Execute all tests.');

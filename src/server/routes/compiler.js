@@ -9,6 +9,7 @@ var getCompiler = function(projectJson) {
   var compilerPath = path.join(__dirname,
                                "..",
                                "..",
+                               "compilers",
                                projectJson.compiler,
                                `${projectJson.compiler}.js`);
   return require(compilerPath);
@@ -18,6 +19,7 @@ var getDeployer = function(projectJson) {
   var deployerPath = path.join(__dirname,
                                "..",
                                "..",
+                               "compilers",
                                projectJson.compiler,
                                "exports",
                                'deploy.js');
