@@ -48,5 +48,9 @@ module.exports = {
     if(secretToken !== hash) return false;
 
     return true;
+  },
+
+  getTokenParts: function(token) {
+    return token.split('_').slice(0, -2);
   }
 }

@@ -173,7 +173,11 @@ var blissUi = (function() {
       var currentSrc = iframe.attr('src');
       if (_.isUndefined(currentSrc)) return;
 
-      var url = location.origin + '/bliss/designer/designer.html';
+      var url = location.origin +
+        '/bliss/designer/' +
+        app.state.firebase.designer_token + '/' +
+        'designer.html';
+
       iframe.attr('src', url);
     }
     app.js['refresh'] = function() {
@@ -393,6 +397,27 @@ var blissUi = (function() {
 
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', config);
+    }
+    app.js['get_session'] = function() {
+      $.ajax({
+        type: 'GET',
+        url: '/session',
+        success: function(data) {
+          console.log('session', data);
+          app.dispatch({
+            'path': '/firebase',
+            'action': 'set_designer_token',
+            'designer_token': data.token
+          });
+
+          app.setState(function() {
+            console.log('loading projects');
+            app.js.getProjects();
+          });
+        },
+        contentType: "application/json",
+        dataType: 'json'
+      });
     }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
@@ -1184,6 +1209,7 @@ var blissUi = (function() {
       var newData = {
         user: null,
         user_token: null,
+        designer_token: null,
         auth_ui: null,
         auth: null,
         database: null,
@@ -1195,12 +1221,21 @@ var blissUi = (function() {
     app.schema['/firebase']['set_token'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.user_token = args.user_token;
+
+      // TODO: move this code into DataEvents system once created
       $.ajaxSetup({
         headers: {
           'X-User-Token': newData.user_token
         }
       });
-      if (newData.user_token !== null) app.js.getProjects();
+      console.log('getting session');
+      app.js.get_session();
+
+      return newData;
+    }
+    app.schema['/firebase']['set_designer_token'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.designer_token = args.designer_token;
       return newData;
     }
     if (app.schema['/firebase']['init']) {

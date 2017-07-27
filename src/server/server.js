@@ -39,7 +39,7 @@ app.use('/hosted', hosted);
 
 app.get('/session', function(req, res) {
   var token = tokens.createToken([req.session.user.username], env.secret_key);
-  req.send({ 'token': token });
+  res.send({ 'token': token });
 });
 
 app.set('views', __dirname + '/views');
