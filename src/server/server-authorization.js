@@ -23,6 +23,11 @@ module.exports = function(options) {
       //console.log('[secured] ', req.url)
       var user_token = req.get('X-User-Token');
       //console.log('[secured] ', user_token, req.url);
+      if(!user_token) {
+        console.log('[secured]', 'No token supplied in request');
+        res.status(401).send('No token supplied in request');
+        return
+      }
 
       admin.auth().verifyIdToken(user_token)
       .then(function(decodedToken) {
@@ -36,22 +41,26 @@ module.exports = function(options) {
           // update the request with info
           req.session = {
             user: {
-              username: str.encode(userRecord.email),
+              username: str.token(userRecord.email),
               workspace: staticSession.user.workspace
             }
           };
+
+          //console.log('username', req.session.user.username);
 
           //console.log('bliss session', req.blissSession)
 
           next(); // user verified
         })
         .catch(function(error) {
-          console.log('[secured] ', 'Error fetching user data:', error, req.url);
-          res.send(401, 'error retrieving user data');
+          console.log('[secured]', 'Error fetching user data:', error, req.url);
+          res.status(401).send('error retrieving user data');
+          return
         });
       }).catch(function(error) {
-        console.log('[secured] ', 'Invalid Token:', error, req.url);
-        res.send(401, 'invalid user token');
+        console.log('[secured]', 'Invalid Token:', error, req.url);
+        res.status(401).send('invalid user token');
+        return
       });
     } else {
       //console.log('[public] ', req.url)

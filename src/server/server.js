@@ -4,7 +4,7 @@ const fs = require('fs')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const authorization = require('./server_authorization.js')
+const authorization = require('./server-authorization.js')
 const env = require('./env.js')
 const ws = require('../compilers/core/workspace.js')
 const bliss = require('./routes/bliss.js')
@@ -14,6 +14,7 @@ const user = require('./routes/user.js')
 const website = require('./routes/website.js')
 const workspace = require('./routes/workspace.js')
 const hosted = require('./routes/hosted.js')
+const tokens = require('./core/tokens.js')
 
 app.use(bodyParser.json())
 
@@ -21,7 +22,8 @@ var secure = app.use(authorization({ protected_urls: ['/user',
                                                       '/compiler',
                                                       '/project',
                                                       '/website',
-                                                      '/workspace']}));
+                                                      '/workspace',
+                                                      '/session']}));
 
 app.get('/', function(req, res) {
   res.redirect(`/hosted/${env.bliss_user}/website/`);
@@ -34,6 +36,11 @@ app.use('/website', website);
 app.use('/workspace', workspace);
 app.use('/bliss', bliss);
 app.use('/hosted', hosted);
+
+app.get('/session', function(req, res) {
+  var token = tokens.createToken([req.session.user.username], env.secret_key);
+  req.send({ 'token': token });
+});
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');

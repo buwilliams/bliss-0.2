@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+const designerMiddleware = require('../designer-middleware.js')
 const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
@@ -16,7 +17,8 @@ const session = require('../session.js');
 //       Option 2, create a temporary key that only
 //       lasts for a 48-hour period
 // TODO: route.get('/designer/:directory_code/:token/*')
-router.use('/designer', express.static(ws.workspace(env, session)));
+//router.use('/designer', express.static(ws.workspace(env, session)));
+router.use('/designer', designerMiddleware);
 
 router.use('/designer/bliss-tree',
   express.static(path.join(env.app, 'bliss-tree')));

@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const shorter = require('shorter')
+const metrohash64 = require('metrohash').metrohash64;
 
 module.exports = {
   getCamel: function(str) {
@@ -22,6 +23,10 @@ module.exports = {
 
   getRefId: function(name, id) {
     return this.getCamel(name) + `_${id}`;
+  },
+
+  token: function(input) {
+    return metrohash64(input);
   },
 
   encode: function(string) {
