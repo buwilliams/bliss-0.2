@@ -1,0 +1,250 @@
+{
+  "name": "File explorer",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "nextId": 7,
+  "rootId": "1",
+  "externalCss": [],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js",
+    "node_modules/jquery/dist/jquery.min.js",
+    "components/bliss-utils/js/state.js"
+  ],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    },
+    {
+      "name": "jquery",
+      "version": "^3.2.1"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() {\n  app._state = state();\n  \n  app.setState(function() {\n    app.js.resetState();\n  });\n  \n  app.setState(function() {\n  \tapp.js.getFiles('/');\n  });\n}"
+    },
+    {
+      "name": "resetState",
+      "body": "function() {\n  app._state.reset();\n  app._state.create('files');\n  app._state.get('files').setData('selected', null);\n}"
+    },
+    {
+      "name": "getFiles",
+      "body": "function(path) {\n  var files = app._state.get('files');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/explore',\n    data: {path: path},\n    success: function(data) {\n      app.setState(function() {\n        files.removeAll();\n        data.entries.forEach(function(entry) {\n          files.create(entry);\n        });\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    }
+  ],
+  "cssVars": [],
+  "css": [],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "File Explorer",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "4",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "file",
+      "element": "div",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px 10px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "background-color",
+              "value": "#f3f3f3"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "14px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var files = app._state.get('files');\n  return files.getAll();\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};\n"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var selected = scope.repeater[scope.repeater_index];\n  return function(e) {\n    var files = app._state.get('files');\n    app.setState(function() {\n      files.setData('selected', selected);\n    });\n    \n    if(selected.file === false) {\n      var displayPath = (selected.path === '/') ? \n          (selected.path + selected.name) : \n      \t\t(selected.path + '/' + selected.name);\n    \tapp.js.getFiles(displayPath);\n    }\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "6",
+      "child": null,
+      "parent": "4"
+    },
+    "4": {
+      "id": "4",
+      "name": "file container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border",
+              "value": "solid 5px #ccc"
+            },
+            {
+              "name": "padding",
+              "value": "5px 5px 0px 5px"
+            },
+            {
+              "name": "border-radius",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "5",
+      "parent": "1"
+    },
+    "5": {
+      "id": "5",
+      "name": "selected file",
+      "element": "div",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px 10px"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "background-color",
+              "value": "#a9cef3"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "16px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var files = app._state.get('files');\n  var selected = files.getData('selected');\n  if(selected === null) {\n    return \"(none selected)\";\n  } else {\n    return (selected.path === '/') ? \n      (selected.path + selected.name) : (selected.path + '/' + selected.name);\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "6",
+      "previous": null,
+      "child": null,
+      "parent": "4"
+    },
+    "6": {
+      "id": "6",
+      "name": "separator",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "height",
+              "value": "5px"
+            },
+            {
+              "name": "background-color",
+              "value": "#ccc"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "2",
+      "previous": "5",
+      "child": null,
+      "parent": "4"
+    }
+  }
+}

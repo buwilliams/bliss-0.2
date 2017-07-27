@@ -62,7 +62,7 @@
           "properties": [
             {
               "name": "border",
-              "value": "solid 1px #000"
+              "value": "solid 1px transparent"
             },
             {
               "name": "background-color",
@@ -82,7 +82,7 @@
             },
             {
               "name": "color",
-              "value": "#000"
+              "value": "white"
             },
             {
               "name": "position",
@@ -99,6 +99,10 @@
             {
               "name": "border-radius",
               "value": "30px"
+            },
+            {
+              "name": "opacity",
+              "value": "0.8"
             }
           ]
         }

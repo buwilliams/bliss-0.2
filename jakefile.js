@@ -2,17 +2,17 @@ require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
 const exec = require('sync-exec');
-const compiler = require('./src/compiler/react/react.js');
+const compiler = require('./src/compilers/react/react.js');
 const fse = require('fs-extra');
 
 var config = {
-  bliss_src: 'src/workspaces/blissui/bliss',
+  bliss_src: `src/workspaces/${process.env.BLISS_USER}/bliss`,
   bliss_project: 'projects/bliss_ui.json',
-  bliss_build: 'build/blissui/bliss',
-  bliss_component_path: 'src/workspaces/blissui/bliss/components',
+  bliss_build: `build/${process.env.BLISS_USER}/bliss`,
+  bliss_component_path: `src/workspaces/${process.env.BLISS_USER}/bliss/components`,
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-data', 'bliss-utils'],
-  bliss_workspace: 'src/workspaces/blissui',
-  bliss_workspace_build: 'build/blissui'
+  bliss_workspace: `src/workspaces/${process.env.BLISS_USER}`,
+  bliss_workspace_build: `build/${process.env.BLISS_USER}`
 };
 
 task('compile-jsx', function(inputPath, outputPath) {
@@ -99,7 +99,7 @@ task('clean', function(){
 
 desc('Start bliss web server');
 task('server', function() {
-  require('./src/compiler/react/server.js');
+  require('./src/server/server.js');
 });
 
 desc('Execute all tests.');

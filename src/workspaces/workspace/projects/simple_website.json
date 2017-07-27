@@ -1,0 +1,716 @@
+{
+  "name": "Simple Website",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "nextId": 23,
+  "rootId": "1",
+  "externalCss": [
+    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+  ],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js"
+  ],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    },
+    {
+      "name": "bootstrap",
+      "version": "3.3.7"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() {\n  app.setState(function() {\n    app.state.currentPage = 'one';\n  });\n  \n  window.app = app;\n  \n}"
+    },
+    {
+      "name": "nav",
+      "body": "function(page) {\n  app.setState(function() {\n    app.state.currentPage = page;\n  });\n}"
+    }
+  ],
+  "cssVars": [
+    {
+      "name": "standardSpace",
+      "value": "45px"
+    },
+    {
+      "name": "headerLinkColor",
+      "value": "white"
+    }
+  ],
+  "css": [
+    {
+      "selector": "a",
+      "properties": [
+        {
+          "name": "color",
+          "value": "blue"
+        },
+        {
+          "name": "text-decoration",
+          "value": "none"
+        }
+      ]
+    },
+    {
+      "selector": "body",
+      "properties": [
+        {
+          "name": "margin",
+          "value": "0"
+        },
+        {
+          "name": "color",
+          "value": "#333"
+        }
+      ]
+    }
+  ],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "Simple Website",
+      "element": "div",
+      "text": "",
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "18",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "Navigation",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "nav"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "bottom",
+              "value": "0"
+            },
+            {
+              "name": "background-color",
+              "value": "rgba(0, 0, 0, 0.5)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        },
+        {
+          "selector": ".nav a",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$headerLinkColor"
+            },
+            {
+              "name": "padding",
+              "value": "5px 10px"
+            }
+          ]
+        },
+        {
+          "selector": ".nav a:hover, .nav a:active",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$headerLinkColor"
+            },
+            {
+              "name": "color",
+              "value": "black"
+            },
+            {
+              "name": "text-decoration",
+              "value": "none"
+            },
+            {
+              "name": "border-radius",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "6",
+      "parent": "18"
+    },
+    "3": {
+      "id": "3",
+      "name": "Page One",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": "show",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "show",
+          "body": "function() {\n  return app.state.currentPage === 'one';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "4",
+      "previous": null,
+      "child": "19",
+      "parent": "15"
+    },
+    "4": {
+      "id": "4",
+      "name": "Page Two",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": "show",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "show",
+          "body": "function() {\n  return app.state.currentPage === 'two';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "5",
+      "previous": "3",
+      "child": "21",
+      "parent": "15"
+    },
+    "5": {
+      "id": "5",
+      "name": "Page Three",
+      "element": "div",
+      "text": "Page Three",
+      "textFn": null,
+      "ifFn": "show",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "show",
+          "body": "function() {\n  return app.state.currentPage === 'three';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "16",
+      "previous": "4",
+      "child": null,
+      "parent": "15"
+    },
+    "6": {
+      "id": "6",
+      "name": "Page One Link",
+      "element": "a",
+      "text": "Home",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "nav-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-right",
+              "value": "$standardSpace"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.nav('one');\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "10",
+      "previous": null,
+      "child": null,
+      "parent": "2"
+    },
+    "9": {
+      "id": "9",
+      "name": "Page Three Link",
+      "element": "a",
+      "text": "Story",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-right",
+              "value": "$standardSpace"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.nav('three');\n  }\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "17",
+      "previous": "10",
+      "child": null,
+      "parent": "2"
+    },
+    "10": {
+      "id": "10",
+      "name": "Page Two Link",
+      "element": "a",
+      "text": "Products",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "nav-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-right",
+              "value": "$standardSpace"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.nav('two');\n  }\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "9",
+      "previous": "6",
+      "child": null,
+      "parent": "2"
+    },
+    "12": {
+      "id": "12",
+      "name": "Footer",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "fixed"
+            },
+            {
+              "name": "bottom",
+              "value": "0"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "background-color",
+              "value": "#1f272f"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "15",
+      "child": "13",
+      "parent": "1"
+    },
+    "13": {
+      "id": "13",
+      "name": "footer copy",
+      "element": "div",
+      "text": "Copyright 2017",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "color",
+              "value": "white"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "12"
+    },
+    "15": {
+      "id": "15",
+      "name": "Content",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "20px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "12",
+      "previous": "18",
+      "child": "3",
+      "parent": "1"
+    },
+    "16": {
+      "id": "16",
+      "name": "Page Four",
+      "element": "div",
+      "text": "Page Four",
+      "textFn": null,
+      "ifFn": "show",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "show",
+          "body": "function() {\n  return app.state.currentPage === 'four';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "5",
+      "child": null,
+      "parent": "15"
+    },
+    "17": {
+      "id": "17",
+      "name": "Page Four Link",
+      "element": "a",
+      "text": "Contact",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-right",
+              "value": "$standardSpace"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.nav('four');\n  }\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "9",
+      "child": null,
+      "parent": "2"
+    },
+    "18": {
+      "id": "18",
+      "name": "Header Image",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-image",
+              "value": "url(https://www.freewebheaders.com/wordpress/wp-content/gallery/forests-fields/green-forest-and-clouds-website-header.jpg)"
+            },
+            {
+              "name": "background-size",
+              "value": "cover"
+            },
+            {
+              "name": "background-repeat",
+              "value": "no-repeat"
+            },
+            {
+              "name": "background-position",
+              "value": "50% 0"
+            },
+            {
+              "name": "height",
+              "value": "300px"
+            },
+            {
+              "name": "position",
+              "value": "relative"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "15",
+      "previous": null,
+      "child": "2",
+      "parent": "1"
+    },
+    "19": {
+      "id": "19",
+      "name": "page one header",
+      "element": "h1",
+      "text": "Welcome to my new site!",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border-bottom",
+              "value": "solid 3px #333"
+            },
+            {
+              "name": "color",
+              "value": "#333"
+            },
+            {
+              "name": "padding-bottom",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "20",
+      "previous": null,
+      "child": null,
+      "parent": "3"
+    },
+    "20": {
+      "id": "20",
+      "name": "page one content",
+      "element": "div",
+      "text": "Hello, world!",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "19",
+      "child": null,
+      "parent": "3"
+    },
+    "21": {
+      "id": "21",
+      "name": "page one header_copy",
+      "element": "h1",
+      "text": "Products",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border-bottom",
+              "value": "solid 3px #333"
+            },
+            {
+              "name": "color",
+              "value": "#333"
+            },
+            {
+              "name": "padding-bottom",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "22",
+      "previous": null,
+      "child": null,
+      "parent": "4"
+    },
+    "22": {
+      "id": "22",
+      "name": "page one content_copy",
+      "element": "div",
+      "text": "List of products here.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "21",
+      "child": null,
+      "parent": "4"
+    }
+  }
+}

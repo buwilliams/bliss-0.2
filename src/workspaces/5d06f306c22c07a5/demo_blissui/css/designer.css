@@ -1,0 +1,63 @@
+body {
+  font-size: 14pt;
+  font-family: 'Roboto', sans-serif;
+}
+
+#rowBenefits_4 {
+  margin-top: 15px;
+}
+
+#columnSpeed_3 {
+  background-color: #C4D6B0;
+  padding: 30px 15px;
+  font-weight: bold;
+  color: #494e44;
+}
+
+#header_15 {
+  text-decoration: underline;
+}
+
+#columnSimplicity_6 {
+  background-color: #477998;
+  padding: 30px 15px;
+  font-weight: bold;
+  color: #eef9ff;
+}
+
+#header_20 {
+  text-decoration: underline;
+}
+
+#columnPower_5 {
+  background-color: #291F1E;
+  padding: 30px 15px;
+  color: #ffe0db;
+  font-weight: bold;
+}
+
+#header_27 {
+  text-decoration: underline;
+}
+
+#column_10 {
+  background-color: #DABFFF;
+  padding: 30px 15px;
+  color: #534b5e;
+  font-weight: bold;
+}
+
+#column_7 {
+  background-color: #F64740;
+  padding: 30px 15px;
+  color: #6a2923;
+  font-weight: bold;
+}
+
+#column_8 {
+  background-color: #A3333D;
+  padding: 30px 15px;
+  color: #4e1f22;
+  font-weight: bold;
+}
+

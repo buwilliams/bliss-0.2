@@ -1,0 +1,179 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12pt;
+  color: #333;
+  background-color: #eeeeee;
+}
+
+a {
+  color: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a.subnav.active {
+  background-color: #454545;
+  color: #eeeeee;
+}
+
+a.subnav {
+  padding: 3px 10px;
+  font-size: 10pt;
+  border-radius: 15px;
+  margin: 0 5px;
+  color: #333;
+}
+
+a.subnav:hover {
+  background-color: #454545;
+  color: #eeeeee;
+}
+
+#header_9 {
+  background-color: #454545;
+  font-size: 30pt;
+}
+
+#brand_10 {
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
+  color: #eeeeee;
+}
+
+#brandSubtitle_28 {
+  color: #eeeeee;
+  text-transform: uppercase;
+  font-size: 14pt;
+  text-align: center;
+}
+
+#signOut_6 {
+  position: absolute;
+  right: 15px;
+  top: 40px;
+  z-index: 100;
+  color: #eeeeee;
+  font-size: 12pt;
+}
+
+#signInContainer_7 {
+  position: relative;
+  width: 50%;
+  margin: 20px auto 0 auto;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #454545;
+  clear: both;
+  background-color: #eeeeee;
+  border-radius: 3px;
+}
+
+#firebaseui-auth-container {
+  position: relative;
+}
+
+#pages_5 {
+  width: 90%;
+  position: relative;
+  margin: 0 auto;
+  background-color: #eeeeee;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 10px 15px 60px 15px;
+}
+
+#menu_39 {
+  text-align: center;
+}
+
+#home_40 {
+  margin-left: 10px;
+}
+
+#startANewStory_41 {
+  margin-left: 10px;
+}
+
+#home_26 {
+  display: flex;
+  margin-top: 20px;
+}
+
+#latestStories_31 {
+  width: 65%;
+  margin-right: 12px;
+}
+
+#header_33 {
+  border-bottom-color: #333;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  font-weight: bold;
+}
+
+#noLatestStory_43 {
+  margin-top: 10px;
+}
+
+#storyList_49 {
+  margin-top: 10px;
+}
+
+#about_32 {
+  width: 35%;
+}
+
+#header_34 {
+  border-bottom-color: #333;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#instructions_54 {
+  font-weight: bold;
+  margin-top: 30px;
+  border-bottom: solid 2px;
+  border-bottom-color: #333;
+}
+
+#orderedList_55 {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+#writeAStory_38 {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16pt;
+}
+
+#title_50 {
+  text-decoration: underline;
+  font-weight: bold;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+#newLine_46 {
+  border: none;
+  width: 50%;
+  padding: 10px;
+  margin-top: 10px;
+  outline: none;
+  font-size: 16pt;
+}
+
+#footer_24 {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 8pt;
+  text-transform: uppercase;
+}
+

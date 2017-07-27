@@ -6,7 +6,7 @@ var demoBlissui = (function() {
       props: {},
       state: {}
     };
-    app.js.init = function() {
+    app.js['init'] = function() {
       app.render();
     }
     app.getKey = function() {
@@ -46,11 +46,11 @@ var demoBlissui = (function() {
               React.createElement('h1', app.mergeAttributes('12', scope, {}, {
                   "id": "header_12",
                   "key": app.getKey('id', '12')
-                }), "BlissUI",
+                }), 'BlissUI',
                 React.createElement('small', app.mergeAttributes('13', scope, {}, {
                   "id": "subtitle_13",
                   "key": app.getKey('id', '13')
-                }), " Build UIs in the cloud.")))),
+                }), ' Build UIs in the cloud.')))),
           React.createElement('div', app.mergeAttributes('4', scope, {}, {
               "className": "row",
               "id": "rowBenefits_4",
@@ -64,7 +64,7 @@ var demoBlissui = (function() {
               React.createElement('div', app.mergeAttributes('15', scope, {}, {
                 "id": "header_15",
                 "key": app.getKey('id', '15')
-              }), "Speed"),
+              }), 'Speed'),
               React.createElement('ol', app.mergeAttributes('16', scope, {}, {
                   "id": "list_16",
                   "key": app.getKey('id', '16')
@@ -72,19 +72,19 @@ var demoBlissui = (function() {
                 React.createElement('li', app.mergeAttributes('17', scope, {}, {
                   "id": "devEnv_17",
                   "key": app.getKey('id', '17')
-                }), "No development environment setup"),
+                }), 'No development environment setup'),
                 React.createElement('li', app.mergeAttributes('38', scope, {}, {
                   "id": "reUsableComponents_38",
                   "key": app.getKey('id', '38')
-                }), "Make your own re-usable components"),
+                }), 'Make your own re-usable components'),
                 React.createElement('li', app.mergeAttributes('19', scope, {}, {
                   "id": "marketplace_19",
                   "key": app.getKey('id', '19')
-                }), "Marketplace for reusable components and themes"),
+                }), 'Marketplace for reusable components and themes'),
                 React.createElement('li', app.mergeAttributes('18', scope, {}, {
                   "id": "uiFramework_18",
                   "key": app.getKey('id', '18')
-                }), "Small learning curve"))),
+                }), 'Small learning curve'))),
             React.createElement('div', app.mergeAttributes('6', scope, {}, {
                 "className": "col-md-3",
                 "id": "columnSimplicity_6",
@@ -93,7 +93,7 @@ var demoBlissui = (function() {
               React.createElement('div', app.mergeAttributes('20', scope, {}, {
                 "id": "header_20",
                 "key": app.getKey('id', '20')
-              }), "Simplicity"),
+              }), 'Simplicity'),
               React.createElement('ol', app.mergeAttributes('21', scope, {}, {
                   "id": "list_21",
                   "key": app.getKey('id', '21')
@@ -101,23 +101,23 @@ var demoBlissui = (function() {
                 React.createElement('li', app.mergeAttributes('22', scope, {}, {
                   "id": "cleanUi_22",
                   "key": app.getKey('id', '22')
-                }), "Clean UI where designers can be involved"),
+                }), 'Clean UI where designers can be involved'),
                 React.createElement('li', app.mergeAttributes('23', scope, {}, {
                   "id": "properties_23",
                   "key": app.getKey('id', '23')
-                }), "Elements have properties"),
+                }), 'Elements have properties'),
                 React.createElement('li', app.mergeAttributes('24', scope, {}, {
                   "id": "javascript_24",
                   "key": app.getKey('id', '24')
-                }), "Elements also have JavaScript"),
+                }), 'Elements also have JavaScript'),
                 React.createElement('li', app.mergeAttributes('25', scope, {}, {
                   "id": "simpleDataManagement_25",
                   "key": app.getKey('id', '25')
-                }), "Easy data management"),
+                }), 'Easy data management'),
                 React.createElement('li', app.mergeAttributes('26', scope, {}, {
                   "id": "allYouNeedIsABrowser_26",
                   "key": app.getKey('id', '26')
-                }), "All you need is a browser"))),
+                }), 'All you need is a browser'))),
             React.createElement('div', app.mergeAttributes('5', scope, {}, {
                 "className": "col-md-3",
                 "id": "columnPower_5",
@@ -126,7 +126,7 @@ var demoBlissui = (function() {
               React.createElement('div', app.mergeAttributes('27', scope, {}, {
                 "id": "header_27",
                 "key": app.getKey('id', '27')
-              }), "Power"),
+              }), 'Power'),
               React.createElement('ol', app.mergeAttributes('28', scope, {}, {
                   "id": "list_28",
                   "key": app.getKey('id', '28')
@@ -134,27 +134,27 @@ var demoBlissui = (function() {
                 React.createElement('li', app.mergeAttributes('30', scope, {}, {
                   "id": "realStateful_30",
                   "key": app.getKey('id', '30')
-                }), "Real stateful UIs"),
+                }), 'Real stateful UIs'),
                 React.createElement('li', app.mergeAttributes('29', scope, {}, {
                   "id": "moveElements_29",
                   "key": app.getKey('id', '29')
-                }), "Move elements anytime"),
+                }), 'Move elements anytime'),
                 React.createElement('li', app.mergeAttributes('31', scope, {}, {
                   "id": "supportsNodeModules_31",
                   "key": app.getKey('id', '31')
-                }), "Supports node modules (open source)"),
+                }), 'Supports node modules (open source)'),
                 React.createElement('li', app.mergeAttributes('32', scope, {}, {
                   "id": "cssVariables_32",
                   "key": app.getKey('id', '32')
-                }), "CSS variables"),
+                }), 'CSS variables'),
                 React.createElement('li', app.mergeAttributes('34', scope, {}, {
                   "id": "mobileReady_34",
                   "key": app.getKey('id', '34')
-                }), "Mobile ready"),
+                }), 'Mobile ready'),
                 React.createElement('li', app.mergeAttributes('33', scope, {}, {
                   "id": "bootstrapped_33",
                   "key": app.getKey('id', '33')
-                }), "Bootstrapped architecture"))),
+                }), 'Bootstrapped architecture'))),
             React.createElement('div', app.mergeAttributes('10', scope, {}, {
                 "className": "col-md-3",
                 "id": "column_10",
@@ -163,7 +163,7 @@ var demoBlissui = (function() {
               React.createElement('div', app.mergeAttributes('35', scope, {}, {
                 "id": "text_35",
                 "key": app.getKey('id', '35')
-              }), "Column 5"))),
+              }), 'Column 5'))),
           React.createElement('div', app.mergeAttributes('9', scope, {}, {
               "className": "row",
               "id": "rowPlay_9",
@@ -177,7 +177,7 @@ var demoBlissui = (function() {
               React.createElement('div', app.mergeAttributes('36', scope, {}, {
                 "id": "text_36",
                 "key": app.getKey('id', '36')
-              }), "Column 4"))),
+              }), 'Column 4'))),
           React.createElement('div', app.mergeAttributes('14', scope, {}, {
               "className": "row",
               "id": "rowPlay_14",
@@ -191,9 +191,8 @@ var demoBlissui = (function() {
               React.createElement('div', app.mergeAttributes('37', scope, {}, {
                 "id": "text_37",
                 "key": app.getKey('id', '37')
-              }), "Column 6")))));
+              }), 'Column 6')))));
     };
-    app.state = {};
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
       if (isComponent) {

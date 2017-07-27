@@ -1,6 +1,6 @@
 # Bliss UI
 
-A platform to build beautiful user interfaces.
+A platform to create UIs in the cloud.
 
 Features:
 
@@ -12,4 +12,4 @@ Getting Started:
 
 - Run `$ jake build`
 - Run `$ jake server`
-- Open `http://localhost:3000/bliss.html`
+- Open `http://localhost:3000/bliss/`

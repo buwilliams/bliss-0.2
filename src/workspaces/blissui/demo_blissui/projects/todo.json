@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 5,
+  "nextId": 10,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -57,19 +57,36 @@
       "id": "1",
       "name": "Todo",
       "element": "div",
-      "text": null,
+      "text": "",
       "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "2",
+      "child": "5",
       "parent": null
     },
-    "2": {
-      "id": "2",
-      "name": "new todo",
+    "5": {
+      "id": "5",
+      "name": "header",
+      "element": "h1",
+      "text": "Todos",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "6",
+      "previous": null,
+      "child": null,
+      "parent": "1"
+    },
+    "6": {
+      "id": "6",
+      "name": "add todo input",
       "element": "input",
       "text": null,
       "textFn": null,
@@ -78,7 +95,7 @@
       "attributes": [
         {
           "name": "placeholder",
-          "value": "Enter a new todo"
+          "value": "Enter your new todo"
         }
       ],
       "css": [
@@ -86,31 +103,35 @@
           "selector": "$id",
           "properties": [
             {
-              "name": "padding",
-              "value": "10px"
-            },
-            {
               "name": "outline",
               "value": "none"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
             }
           ]
         }
       ],
       "js": [
         {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  // /todos -> app.state.todos\n  return app.state.todos.currentTodo;\n}"
+        },
+        {
           "name": "handleChange",
           "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/todos',\n      action: 'current_todo',\n      text: e.target.value\n    })\n  }\n};\n"
         },
         {
           "name": "handleKeyDown",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    var ENTER = 13;\n    if(e.keyCode === ENTER) {\n      // add a todo\n      app.dispatch({\n        path: '/todos',\n        action: 'add_todo',\n        text: app.state.todos.currentTodo\n      });\n      \n      // clear the current todo\n      app.dispatch({\n        path: '/todos',\n        action: 'current_todo',\n        text: ''\n      });\n    }\n  }\n};\n"
-        },
-        {
-          "name": "getValue",
-          "body": "function(scope, attributes) {\n  return app.state.todos.currentTodo;\n}"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var ENTER = 13;\n    if(e.keyCode === ENTER) {\n      // add a todo\n      app.dispatch({\n        path: '/todos',\n        action: 'add_todo',\n        text: app.state.todos.currentTodo\n      });\n      \n      // clear the currentTodo\n      app.dispatch({\n        path: '/todos',\n        action: 'current_todo',\n        text: ''\n      });\n    }\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
         {
           "name": "onChange",
           "value": "handleChange"
@@ -118,62 +139,100 @@
         {
           "name": "onKeyDown",
           "value": "handleKeyDown"
-        },
-        {
-          "name": "value",
-          "value": "getValue"
         }
       ],
-      "next": "4",
-      "previous": null,
+      "next": "8",
+      "previous": "5",
       "child": null,
       "parent": "1"
     },
-    "3": {
-      "id": "3",
-      "name": "todo list",
-      "element": "div",
-      "text": null,
-      "textFn": "getText",
-      "ifFn": null,
-      "repeatFn": "repeater",
-      "attributes": [],
-      "css": [],
-      "js": [
-        {
-          "name": "repeater",
-          "body": "function(scope, attributes) {\n  return app.state.todos.items;\n};\n"
-        },
-        {
-          "name": "getText",
-          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].text;\n}"
-        }
-      ],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "4",
-      "child": null,
-      "parent": "1"
-    },
-    "4": {
-      "id": "4",
-      "name": "show current todo",
-      "element": "div",
-      "text": "",
-      "textFn": "getText",
+    "8": {
+      "id": "8",
+      "name": "list header",
+      "element": "h3",
+      "text": "Todo items",
+      "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
       "css": [],
-      "js": [
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "9",
+      "previous": "6",
+      "child": null,
+      "parent": "1"
+    },
+    "9": {
+      "id": "9",
+      "name": "todo item",
+      "element": "div",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [
         {
-          "name": "getText",
-          "body": "function(scope, attributes) {\n  return \"Current todo: \" + app.state.todos.currentTodo;\n};\n"
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            },
+            {
+              "name": "margin-top",
+              "value": "3px"
+            },
+            {
+              "name": "background-color",
+              "value": "#f6f3ff"
+            },
+            {
+              "name": "margin-right",
+              "value": "10px"
+            }
+          ]
         }
       ],
-      "dynamicAttributes": [],
-      "next": "3",
-      "previous": "2",
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  return app.state.todos.todoList;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].text;\n}"
+        },
+        {
+          "name": "getStyle",
+          "body": "function(scope, attributes) {\n  var complete = scope.repeater[scope.repeater_index].completed;\n  \n  var styles = {\n    textDecoration: 'none'\n  };\n  \n  if(complete) {\n    styles.textDecoration = 'line-through';\n  }\n  \n  return styles;\n}"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var index = scope.repeater_index;\n  return function(e) {\n    app.dispatch({\n      path: '/todos',\n      action: 'toggle_completed',\n      index: index\n    })\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        },
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "8",
       "child": null,
       "parent": "1"
     }
@@ -184,15 +243,19 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, options) {\n  var newData = {\n    currentTodo: '',\n    items: []\n  };\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    currentTodo: '',\n    todoList: []\n  }\n  return newData;\n}"
         },
         {
           "action": "current_todo",
-          "body": "function (data, options) {\n  var newData = Object.assign({}, data);\n  newData.currentTodo = options.text;\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.currentTodo = args.text;\n  return newData;\n}"
         },
         {
           "action": "add_todo",
-          "body": "function (data, options) {\n  var newData = Object.assign({}, data);\n  \n  var newTodo = {\n    text: options.text,\n    completed: false\n  };\n  \n  data.items.push(newTodo);\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var newTodo = {\n    text: args.text,\n    completed: false\n  };\n  \n  newData.todoList.push(newTodo);\n  \n  return newData;\n}"
+        },
+        {
+          "action": "toggle_completed",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.todoList[args.index].completed = !newData.todoList[args.index].completed;\n  return newData;\n}"
         }
       ]
     }

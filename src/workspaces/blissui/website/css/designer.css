@@ -30,9 +30,38 @@ a {
   padding: 0;
 }
 
+#subheader_20 {
+  color: gray;
+  margin-left: 10px;
+  font-size: 14pt;
+}
+
 #seperator_5 {
   border-top: solid 2px;
   margin: 0 0 25px 0;
   border-top-color: #7b95a1;
+}
+
+#videoContainer_25 {
+  float: right;
+  margin-left: 30px;
+}
+
+#youtubeVideo_24 {
+  border: none;
+  position: relative;
+  width: 560px;
+  height: 315px;
+  display: block;
+}
+
+#featuresHeader_8 {
+  text-decoration: underline;
+  margin-top: 30px;
+}
+
+#plannedFeaturesHeader_16 {
+  text-decoration: underline;
+  margin-top: 30px;
 }
 

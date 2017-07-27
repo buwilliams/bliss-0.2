@@ -6,6 +6,14 @@ sudo forever stopall
 echo 'Copying env file...'
 cp -f ./scripts/prod.env ./.env
 
+echo 'Creating tls and symlinks for https...'
+mkdir -p tls
+ln -sfT /etc/letsencrypt/live/blissui.com/fullchain.pem ./tls/cert.pem
+ln -sfT /etc/letsencrypt/live/blissui.com/privkey.pem ./tls/key.pem
+
+echo 'Creating symlink for firebase...'
+ln -sfT ~/.ssh/blissui-firebase.json ./blissui-firebase.json
+
 echo 'Updating node deps...'
 yarn install
 
