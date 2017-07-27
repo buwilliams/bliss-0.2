@@ -173,7 +173,11 @@ var blissUi = (function() {
       var currentSrc = iframe.attr('src');
       if (_.isUndefined(currentSrc)) return;
 
-      var url = location.origin + '/bliss/designer/designer.html';
+      var url = location.origin +
+        '/bliss/designer/' +
+        app.state.firebase.designer_token + '/' +
+        'designer.html';
+
       iframe.attr('src', url);
     }
     app.js['refresh'] = function() {
