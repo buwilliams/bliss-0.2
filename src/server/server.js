@@ -64,8 +64,8 @@ if(env.bliss_env === "development") {
   http.listen(80);
 
   const options = {
-    key: fs.readFileSync(path.join(__dirname, '../../../tls/key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '../../../tls/cert.pem'))
+    key: fs.readFileSync(path.join(__dirname, '../../tls/key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, '../../tls/cert.pem'))
   };
 
   https.createServer(options, app).listen(env.port);
