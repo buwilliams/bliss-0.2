@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 250,
+  "nextId": 251,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -146,7 +146,7 @@ var blissProject = {
     },
     {
       "name": "get_session",
-      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      console.log('session', data);\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'set_designer_token',\n        'designer_token': data.token\n      });\n\n      app.setState(function() {\n        console.log('loading projects');\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      console.log('session', data);\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'set_session',\n        'designer_token': data.token,\n        'email': data.email\n      });\n\n      app.setState(function() {\n        console.log('loading projects');\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [
@@ -4764,7 +4764,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "247",
+      "next": "250",
       "previous": "104",
       "child": null,
       "parent": "107"
@@ -4819,7 +4819,7 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": "246",
+      "previous": "250",
       "child": "248",
       "parent": "107"
     },
@@ -4880,6 +4880,47 @@ var blissProject = {
       "previous": "248",
       "child": null,
       "parent": "247"
+    },
+    "250": {
+      "id": "250",
+      "name": "email label",
+      "element": "h6",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return app.state.firebase.email;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "247",
+      "previous": "246",
+      "child": null,
+      "parent": "107"
     }
   },
   "schemas": [
@@ -4896,15 +4937,15 @@ var blissProject = {
         },
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    email: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
         },
         {
           "action": "set_token",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user_token = args.user_token;\n\n  // TODO: move this code into DataEvents system once created\n  $.ajaxSetup({ headers: { 'X-User-Token': newData.user_token } });\n  console.log('getting session');\n  app.js.get_session();\n  \n  return newData;\n}"
         },
         {
-          "action": "set_designer_token",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  return newData;\n}"
+          "action": "set_session",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  return newData;\n}"
         }
       ]
     }

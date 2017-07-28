@@ -41,6 +41,7 @@ module.exports = function(options) {
           // update the request with info
           req.session = {
             user: {
+              email: userRecord.email,
               username: str.token(userRecord.email),
               workspace: staticSession.user.workspace
             }

@@ -406,8 +406,9 @@ var blissUi = (function() {
           console.log('session', data);
           app.dispatch({
             'path': '/firebase',
-            'action': 'set_designer_token',
-            'designer_token': data.token
+            'action': 'set_session',
+            'designer_token': data.token,
+            'email': data.email
           });
 
           app.setState(function() {
@@ -511,6 +512,10 @@ var blissUi = (function() {
         contentType: "application/json",
         dataType: 'json'
       });
+    }
+    app.methods["250"] = {};
+    app.methods["250"]['getText'] = function(scope, attributes) {
+      return app.state.firebase.email;
     }
     app.methods["247"] = {};
     app.methods["247"]['handleClick'] = function(scope, attributes) {
@@ -1210,6 +1215,7 @@ var blissUi = (function() {
         user: null,
         user_token: null,
         designer_token: null,
+        email: null,
         auth_ui: null,
         auth: null,
         database: null,
@@ -1233,9 +1239,10 @@ var blissUi = (function() {
 
       return newData;
     }
-    app.schema['/firebase']['set_designer_token'] = function(data, args) {
+    app.schema['/firebase']['set_session'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.designer_token = args.designer_token;
+      newData.email = args.email;
       return newData;
     }
     if (app.schema['/firebase']['init']) {
@@ -1421,6 +1428,11 @@ var blissUi = (function() {
                           "id": "divider_246",
                           "key": app.getKey('id', '246')
                         })),
+                        React.createElement('h6', app.mergeAttributes('250', scope, {}, {
+                          "className": "dropdown-header",
+                          "id": "emailLabel_250",
+                          "key": app.getKey('id', '250')
+                        }), app.methods['250']['getText'](scope)),
                         React.createElement('a', app.mergeAttributes('247', scope, {
                             "onClick": "handleClick"
                           }, {
