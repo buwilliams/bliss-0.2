@@ -1,9 +1,0 @@
-{
-  "spec_dir": "src",
-  "spec_files": [
-    "**/*-test.js"
-  ],
-  "helpers": [],
-  "stopSpecOnExpectationFailure": false,
-  "random": false
-}

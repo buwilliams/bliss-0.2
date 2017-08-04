@@ -1,29 +1,30 @@
-var js = require('./js.js');
-var project = require('./project-json.js');
+const expect = require('chai').expect;
+const js = require('./js.js');
+const project = require('./project-json.js');
 
 describe('js', function() {
   describe('aryToObj', function() {
     it('performs single conversion', function() {
       expect(js.aryToObj([{"name":"buddy", "value": "williams"}], "name", "value"))
-        .toEqual({"buddy":"williams"});
+        .to.have.property('buddy', 'williams');
     });
   });
 
   describe('namespace', function() {
     it('supports null', function() {
-      expect(js.getNamespace(null)).toEqual("app.js");
+      expect(js.getNamespace(null)).to.equal("app.js");
     });
 
     it('supports null', function() {
-      expect(js.getNamespace(undefined)).toEqual("app.js");
+      expect(js.getNamespace(undefined)).to.equal("app.js");
     });
 
     it('supports empty string', function() {
-      expect(js.getNamespace('')).toEqual("app.js");
+      expect(js.getNamespace('')).to.equal("app.js");
     });
 
     it('supports component names', function() {
-      expect(js.getNamespace('foobar')).toEqual('app.methods["foobar"]');
+      expect(js.getNamespace('foobar')).to.equal('app.methods["foobar"]');
     })
   });
 
@@ -34,19 +35,19 @@ describe('js', function() {
         "body": "function(){}"
       };
       var expected = "app.js['someFn'] = function(){}";
-      expect(js.getFn(input)).toEqual(expected);
+      expect(js.getFn(input)).to.equal(expected);
     });
 
     it('should return collection of function strings', function() {
       var input = project.js;
       var expected = 2;
-      expect(js.getFns(input).length).toEqual(expected);
+      expect(js.getFns(input).length).to.equal(expected);
     });
 
     it('should return string', function() {
       var input = project.js;
       var expected = 2;
-      expect(js.getFnsString(input).split("\n").length).toEqual(expected);
+      expect(js.getFnsString(input).split("\n").length).to.equal(expected);
     });
   });
 });
