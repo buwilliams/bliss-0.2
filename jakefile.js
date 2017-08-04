@@ -104,7 +104,7 @@ task('server', function() {
 
 desc('Execute all tests.');
 task('test', function() {
-  var cmd = 'jasmine JASMINE_CONFIG_PATH=jasmine.json';
+  var cmd = `./node_modules/.bin/mocha "src/**/*-test.js"`
   jake.exec(cmd, {printStdout: true}, function () {
     console.log('All tests passed.');
   });

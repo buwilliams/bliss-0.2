@@ -1,7 +1,10 @@
+const expect = require('chai').expect;
 const queue = require('./queue.js');
 
 describe('queue', function() {
-  it('should display single log statement', function() {
+  // setState is a queue (not a stack) data structure
+  it('should process the enture fn body of setState ' +
+     'before processing the next fn body of setState', function() {
     var got = [];
     var expected = [1, 2, 3, 4, 5];
     queue.setState(function() {
@@ -12,10 +15,10 @@ describe('queue', function() {
       });
       got.push(1);
     });
-    expect(got).toEqual(expected);
+    expect(got).to.eql(expected);
   });
 
-  it('should display single log statement', function() {
+  it('example of a stack data structure', function() {
     var got = [];
     var expected = [3, 2, 1];
     queue.stack(function() {
@@ -27,6 +30,6 @@ describe('queue', function() {
       });
       got.push(1);
     });
-    expect(got).toEqual(expected);
+    expect(got).to.eql(expected);
   });
 })
