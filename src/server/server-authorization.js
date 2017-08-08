@@ -20,9 +20,7 @@ module.exports = function(options) {
     }, false);
 
     if(matches) {
-      //console.log('[secured] ', req.url)
       var user_token = req.get('X-User-Token');
-      //console.log('[secured] ', user_token, req.url);
       if(!user_token) {
         console.log('[secured]', 'No token supplied in request');
         res.status(401).send('No token supplied in request');
@@ -35,23 +33,15 @@ module.exports = function(options) {
         console.log('[secured]', 'uid:', uid, 'url:', req.url);
         admin.auth().getUser(uid)
         .then(function(userRecord) {
-          // See the UserRecord reference doc for the contents of userRecord.
           userRecord = userRecord.toJSON()
-
-          // update the request with info
           req.session = {
             user: {
               email: userRecord.email,
               username: str.token(userRecord.email),
               workspace: staticSession.user.workspace
             }
-          };
-
-          //console.log('username', req.session.user.username);
-
-          //console.log('bliss session', req.blissSession)
-
-          next(); // user verified
+          }
+          next()
         })
         .catch(function(error) {
           console.log('[secured]', 'Error fetching user data:', error, req.url);
@@ -64,8 +54,7 @@ module.exports = function(options) {
         return
       });
     } else {
-      //console.log('[public] ', req.url)
-      next();
+      next()
     }
   }
 }

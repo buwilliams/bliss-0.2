@@ -5,6 +5,10 @@ const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
 
+router.get('/list', function(req, res) {
+  res.send({"success": true})
+})
+
 // create workspace
 //  create workspace folder under the user
 //  create dirs
