@@ -54,7 +54,7 @@ app.use('/.well-known',
   {dotfiles:'allow'}));
 
 // Environment specific servers
-if(env.bliss_env === "development") {
+if(env.bliss_env === "development" || env.bliss_env === "test") {
   app.listen(env.port, function () {
     console.log(`Find your Bliss on port ${env.port}!`);
   });

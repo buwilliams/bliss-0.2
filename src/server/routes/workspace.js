@@ -6,7 +6,10 @@ const env = require('../env.js');
 const session = require('../session.js');
 
 router.get('/list', function(req, res) {
-  res.send({"success": true})
+  var workspaces = ws.list(env, req.session)
+  res.send({
+    "workspaces": workspaces
+  })
 })
 
 // create workspace

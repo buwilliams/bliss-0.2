@@ -29,5 +29,31 @@ module.exports = {
       '_deployed',
       session.user.username,
       session.user.workspace);
+  },
+
+  list: function(env, session) {
+    var dir = path.join(env.workspace,
+                        session.user.username);
+    var files = fs.readdirSync(dir);
+    var filelist = [];
+    files.forEach(function(f) {
+      var stats = fs.statSync(path.join(dir, f));
+      if(stats.isDirectory()) filelist.push(f);
+    })
+    return filelist;
+  },
+
+  listProjects: function(env, session, workspace) {
+    var dir = path.join(env.workspace,
+                        session.user.username,
+                        workspace,
+                        "projects");
+    var files = fs.readdirSync(dir);
+    var filelist = [];
+    files.forEach(function(f) {
+      var stats = fs.statSync(path.join(dir, f));
+      if(stats.isFile()) filelist.push(f);
+    })
+    return filelist;
   }
 }

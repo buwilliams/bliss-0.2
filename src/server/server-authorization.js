@@ -1,4 +1,5 @@
 const path = require('path')
+const env = require('./env.js')
 const _ = require('lodash')
 const admin = require("firebase-admin");
 const fbJson = path.join(__dirname, '..', '..', 'blissui-firebase.json')
@@ -13,6 +14,19 @@ admin.initializeApp({
 
 module.exports = function(options) {
   return function(req, res, next) {
+
+    // Bypass authentication & authorization for unit tests
+    if(env.bliss_env === "test") {
+      req.session = {
+        user: {
+          email: 'bliss@blissui.com',
+          username: str.token('bliss@blissui.com'),
+          workspace: 'bliss'
+        }
+      }
+      next()
+    }
+
     var matches = _.reduce(options.protected_urls, function(result, item) {
       if(result) return result;
       if(req.url.startsWith(item)) return true;

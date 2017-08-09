@@ -104,7 +104,7 @@ task('server', function() {
 
 desc('Execute all tests.');
 task('test', function() {
-  var cmd = `./node_modules/.bin/mocha "src/**/*-test.js"`
+  var cmd = `BLISS_ENV=test ./node_modules/.bin/mocha "src/**/*-test.js"`
   jake.exec(cmd, {printStdout: true}, function () {
     console.log('All tests passed.');
   });
