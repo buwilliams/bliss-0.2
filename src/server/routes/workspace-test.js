@@ -95,15 +95,6 @@ describe('workspace', function() {
       });
     });
 
-    it('should require workspace newName', function (done) {
-      request.post('http://localhost:3000/workspace/rename',
-                  {"json":true},
-                  function (err, res, body) {
-        expect(res.statusCode).to.equal(400);
-        done();
-      });
-    });
-
     it('should rename workspace', function (done) {
       ws.newWs(env, session, 'internal_test_ws');
 
