@@ -86,8 +86,8 @@ module.exports = {
                            workspaceName);
 
     var newWsPath = path.join(env.workspace,
-                           session.user.username,
-                           workspaceName);
+                              session.user.username,
+                              newWorkspaceName);
 
     if(fs.existsSync(wsPath)) fs.moveSync(wsPath, newWsPath);
   }

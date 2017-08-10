@@ -117,10 +117,11 @@ describe('workspace', function() {
       }, function (err, res, body) {
         expect(res.statusCode).to.equal(200);
         expect(res.body.name).to.equal('internal_test_ws_renamed');
+        ws.deleteWs(env, session, 'internal_test_ws_renamed');
+        expect(ws.list(env, session).length).to.equal(1);
         done();
       });
 
-      ws.deleteWs(env, session, 'internal_test_ws_renamed');
     });
   });
 });
