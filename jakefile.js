@@ -12,7 +12,9 @@ var config = {
   bliss_component_path: `src/workspaces/${process.env.BLISS_USER}/bliss/components`,
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-data', 'bliss-utils'],
   bliss_workspace: `src/workspaces/${process.env.BLISS_USER}`,
-  bliss_workspace_build: `build/${process.env.BLISS_USER}`
+  bliss_workspace_build: `build/${process.env.BLISS_USER}`,
+  bliss_workspace_test: `src/workspaces/${process.env.BLISS_TEST_USER}`,
+  bliss_workspace_test_build: `build/${process.env.BLISS_TEST_USER}`
 };
 
 task('compile-jsx', function(inputPath, outputPath) {
@@ -80,6 +82,7 @@ task('build', function(){
 
   console.log('>> copying workspaces');
   fse.copySync(config.bliss_workspace, config.bliss_workspace_build);
+  fse.copySync(config.bliss_workspace_test, config.bliss_workspace_test_build);
 
   t = jake.Task['build-all-components'];
   t.invoke();

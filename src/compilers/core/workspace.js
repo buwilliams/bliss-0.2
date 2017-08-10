@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const project = require('./project.js')
 
 module.exports = {
@@ -38,7 +38,12 @@ module.exports = {
     var filelist = [];
     files.forEach(function(f) {
       var stats = fs.statSync(path.join(dir, f));
-      if(stats.isDirectory()) filelist.push(f);
+      if(stats.isDirectory()) {
+        filelist.push({
+          "name": f,
+          "projects": []
+        });
+      }
     })
     return filelist;
   },
@@ -52,8 +57,26 @@ module.exports = {
     var filelist = [];
     files.forEach(function(f) {
       var stats = fs.statSync(path.join(dir, f));
-      if(stats.isFile()) filelist.push(f);
+      if(stats.isFile()) {
+        filelist.push({ "name": f });
+      }
     })
     return filelist;
+  },
+
+  newWs: function(env, session, workspace) {
+    var wsPath = path.join(env.workspace,
+                           session.user.username,
+                           workspace);
+
+    if(!fs.existsSync(wsPath)) project.createWorkspace(wsPath);
+  },
+
+  deleteWs: function(env, session, workspace) {
+    var wsPath = path.join(env.workspace,
+                           session.user.username,
+                           workspace);
+
+    if(fs.existsSync(wsPath)) fs.removeSync(wsPath);
   }
 }

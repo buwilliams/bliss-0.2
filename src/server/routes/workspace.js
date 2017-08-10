@@ -7,22 +7,29 @@ const session = require('../session.js');
 
 router.get('/list', function(req, res) {
   var workspaces = ws.list(env, req.session)
+  workspaces.forEach(function(w) {
+    w.projects = w.projects.concat(ws.listProjects(env, req.session, w.name));
+  });
+
   res.send({
     "workspaces": workspaces
   })
 })
 
-// create workspace
-//  create workspace folder under the user
-//  create dirs
-//  create workspace.json
-//    set root project
-//    empty sharing list
+router.post('/', function(req, res) {
+  if (!req.body.name) {
+    res.status(400).send('name param required');
+    return;
+  }
 
-// delete workspace
-//  delete all subdirectories
+  ws.newWs(env, req.session, req.body.name)
+  res.send({ "success": true })
+})
 
-// list workspaces
-//  return list of workspaces
+router.delete('/:workspaceName', function(req, res) {
+  console.log('workspace name', req.params.workspaceName)
+  ws.deleteWs(env, req.session, req.params.workspaceName)
+  res.send({ "success": true })
+})
 
 module.exports = router

@@ -19,9 +19,9 @@ module.exports = function(options) {
     if(env.bliss_env === "test") {
       req.session = {
         user: {
-          email: 'bliss@blissui.com',
-          username: str.token('bliss@blissui.com'),
-          workspace: 'bliss'
+          email: 'test@blissui.com',
+          username: str.token('test@blissui.com'),
+          workspace: 'test'
         }
       }
       next()
