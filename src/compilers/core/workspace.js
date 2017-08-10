@@ -78,5 +78,17 @@ module.exports = {
                            workspace);
 
     if(fs.existsSync(wsPath)) fs.removeSync(wsPath);
+  },
+
+  renameWs: function(env, session, workspaceName, newWorkspaceName) {
+    var wsPath = path.join(env.workspace,
+                           session.user.username,
+                           workspaceName);
+
+    var newWsPath = path.join(env.workspace,
+                           session.user.username,
+                           workspaceName);
+
+    if(fs.existsSync(wsPath)) fs.moveSync(wsPath, newWsPath);
   }
 }

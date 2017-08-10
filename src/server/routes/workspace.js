@@ -32,4 +32,14 @@ router.delete('/:workspaceName', function(req, res) {
   res.send({ "success": true })
 })
 
+router.post('/rename', function(req, res) {
+  if (!req.body.name || !req.body.newName) {
+    res.status(400).send('name or newName param missing');
+    return;
+  }
+
+  ws.renameWs(env, req.session, req.body.name, req.body.newName)
+  res.send({ 'name': req.body.newName })
+})
+
 module.exports = router
