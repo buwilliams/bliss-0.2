@@ -90,5 +90,16 @@ module.exports = {
                               newWorkspaceName);
 
     if(fs.existsSync(wsPath)) fs.moveSync(wsPath, newWsPath);
+  },
+
+  copyWs: function(fromUser, fromWs, toUser, toWs) {
+    // verify user and ws exist
+    // verify to user exists
+    // if to workspace does not exist, create it
+    // and copy the files without worry
+    // list all the files to copy recursively
+    // if it does exist, verify no file overwrites
+    // if no file overwrites then copy the files
+    // do not copy node_modules (overwise it will be slow)
   }
 }
