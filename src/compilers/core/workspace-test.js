@@ -31,5 +31,34 @@ describe('workspace', function() {
   });
 
   describe('copyWs', function() {
+    it('should throw error when fromUser does not exist', function() {
+      expect(function() {
+        ws.copyWs(env,
+                  'bogusFromUser',
+                  'bogusFromWs',
+                  'bogusToUser',
+                  'bogusFromUser')
+      }).to.throw('fromUser does not exist')
+    })
+
+    it('should throw error when fromWs does not exist', function() {
+      expect(function() {
+        ws.copyWs(env,
+                  env.bliss_test_user,
+                  'bogusFromWs',
+                  'bogusToUser',
+                  'bogusFromUser')
+      }).to.throw('fromWs does not exist')
+    })
+
+    it('should throw error when toUser does not exist', function() {
+      expect(function() {
+        ws.copyWs(env,
+                  env.bliss_test_user,
+                  env.bliss_test_user_ws,
+                  'bogusToUser',
+                  'bogusFromUser')
+      }).to.throw('toUser does not exist')
+    })
   });
 });

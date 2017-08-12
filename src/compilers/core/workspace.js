@@ -92,11 +92,24 @@ module.exports = {
     if(fs.existsSync(wsPath)) fs.moveSync(wsPath, newWsPath);
   },
 
-  copyWs: function(fromUser, fromWs, toUser, toWs) {
+  copyWs: function(env, fromUser, fromWs, toUser, toWs) {
+
     // verify user and ws exist
     // verify to user exists
+    var fromUserDir = path.join(env.workspace, fromUser);
+    if(!fs.existsSync(fromUserDir)) throw('fromUser does not exist')
+
+    var fromWsDir = path.join(fromUserDir, fromWs);
+    if(!fs.existsSync(fromWsDir)) throw('fromWs does not exist')
+
+    var toUserDir = path.join(env.workspace, toUser);
+    if(!fs.existsSync(toUserDir)) throw('toUser does not exist')
+
+    var toWsDir = path.join(toUserDir, toWs);
+
     // if to workspace does not exist, create it
     // and copy the files without worry
+    
     // list all the files to copy recursively
     // if it does exist, verify no file overwrites
     // if no file overwrites then copy the files
