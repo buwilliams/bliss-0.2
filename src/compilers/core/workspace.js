@@ -109,7 +109,13 @@ module.exports = {
 
     // if to workspace does not exist, create it
     // and copy the files without worry
-    
+    fs.copySync(fromWsDir, toWsDir, {
+      'overwrite':false,
+      filter: function(src, dest) {
+        return (src.indexOf('node_modules') === -1)
+      }
+    })
+
     // list all the files to copy recursively
     // if it does exist, verify no file overwrites
     // if no file overwrites then copy the files

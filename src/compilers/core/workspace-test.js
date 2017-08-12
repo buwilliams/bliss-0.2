@@ -37,7 +37,7 @@ describe('workspace', function() {
                   'bogusFromUser',
                   'bogusFromWs',
                   'bogusToUser',
-                  'bogusFromUser')
+                  'bogusToWs')
       }).to.throw('fromUser does not exist')
     })
 
@@ -47,7 +47,7 @@ describe('workspace', function() {
                   env.bliss_test_user,
                   'bogusFromWs',
                   'bogusToUser',
-                  'bogusFromUser')
+                  'bogusToWs')
       }).to.throw('fromWs does not exist')
     })
 
@@ -57,8 +57,20 @@ describe('workspace', function() {
                   env.bliss_test_user,
                   env.bliss_test_user_ws,
                   'bogusToUser',
-                  'bogusFromUser')
+                  'bogusToWs')
       }).to.throw('toUser does not exist')
+    })
+
+    it('should copy a workspace if one does not exist', function() {
+      expect(ws.list(env, session).length).to.equal(1)
+      ws.copyWs(env,
+                env.bliss_test_user,
+                env.bliss_test_user_ws,
+                env.bliss_test_user,
+                `${env.bliss_test_user_ws}_copy`)
+      expect(ws.list(env, session).length).to.equal(2)
+      ws.deleteWs(env, session, `${env.bliss_test_user_ws}_copy`)
+      expect(ws.list(env, session).length).to.equal(1)
     })
   });
 });
