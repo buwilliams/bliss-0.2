@@ -24,7 +24,7 @@ describe('project', function() {
       var config = {
         'url': 'http://localhost:3000/project/list',
         'json': true,
-        'body': {
+        'qs': {
           'workspace': 'bliss_test'
         }
       }
