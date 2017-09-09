@@ -5,7 +5,6 @@ const admin = require("firebase-admin");
 const fbJson = path.join(__dirname, '..', '..', 'blissui-firebase.json')
 const serviceAccount = require(fbJson)
 const str = require('../compilers/core/str.js')
-const staticSession = require('./session.js');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -20,8 +19,7 @@ module.exports = function(options) {
       req.session = {
         user: {
           email: 'test@blissui.com',
-          username: str.token('test@blissui.com'),
-          workspace: 'bliss_test'
+          username: str.token('test@blissui.com')
         }
       }
       next()
@@ -51,8 +49,7 @@ module.exports = function(options) {
           req.session = {
             user: {
               email: userRecord.email,
-              username: str.token(userRecord.email),
-              workspace: staticSession.user.workspace
+              username: str.token(userRecord.email)
             }
           }
           next()

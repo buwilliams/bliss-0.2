@@ -143,7 +143,7 @@ describe('workspace', function() {
     })
 
     it('should return 200', function(done) {
-      var params = {
+      var config = {
         'url': 'http://localhost:3000/workspace/copy',
         'json': true,
         'body': {
@@ -151,9 +151,9 @@ describe('workspace', function() {
           'toWs': `${env.bliss_test_user_ws}_copy`
         }
       }
-      request.post(params, function (err, res, body) {
+      request.post(config, function (err, res, body) {
         expect(res.statusCode).to.equal(200);
-        ws.deleteWs(env, session, params.body.toWs);
+        ws.deleteWs(env, session, config.body.toWs);
         done();
       });
     })

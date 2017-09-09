@@ -7,10 +7,10 @@ module.exports = {
     return path.join(this.deployed(env), env.bliss_user, 'website');
   },
 
-  workspace: function(env, session) {
+  workspace: function(env, session, wsName) {
     var wsPath = path.join(env.workspace,
       session.user.username,
-      session.user.workspace);
+      wsName);
 
     if(!fs.existsSync(wsPath)) project.createWorkspace(wsPath);
 

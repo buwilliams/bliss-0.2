@@ -9,7 +9,13 @@ const project = require('../../compilers/core/project.js');
 const deps = require('../../compilers/core/dependencies.js');
 
 router.get('/list', function (req, res) {
-  var json = project.listProjects(ws.workspace(env, req.session));
+  if (!req.body.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
+  var json = project.listProjects(
+    ws.workspace(env, req.session, req.body.workspace));
   res.send({success: true, projects: json});
   console.log(`Listed projects for '${session.user.username}/${session.user.workspace}'`);
 });
