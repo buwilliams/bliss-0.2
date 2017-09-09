@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 251,
+  "nextId": 253,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -21,6 +21,7 @@ var blissProject = {
   "externalJs": [
     "node_modules/tether/dist/js/tether.min.js",
     "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/popper.js/dist/umd/popper.min.js",
     "node_modules/bootstrap/dist/js/bootstrap.min.js",
     "node_modules/codemirror/lib/codemirror.js",
     "node_modules/codemirror/mode/javascript/javascript.js",
@@ -46,6 +47,18 @@ var blissProject = {
     "shouldSave": false
   },
   "packages": [
+    {
+      "name": "jquery",
+      "version": "3.2.1"
+    },
+    {
+      "name": "tether",
+      "version": "1.4.0"
+    },
+    {
+      "name": "popper.js",
+      "version": "1.12.5"
+    },
     {
       "name": "bootstrap",
       "version": "^4.0.0-alpha.6"
@@ -82,7 +95,7 @@ var blissProject = {
     },
     {
       "name": "build",
-      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=bliss',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -94,7 +107,7 @@ var blissProject = {
     },
     {
       "name": "server",
-      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path + '?workspace=bliss',\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "getProjects",
@@ -102,7 +115,7 @@ var blissProject = {
     },
     {
       "name": "loadProject",
-      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    app.js.cleanState(data.project, true);\n    app.js.build();\n  }, {name: projectName});\n}"
+      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    app.js.cleanState(data.project, true);\n    app.js.build();\n    app.js.getProjects();\n  }, {name: projectName});\n}"
     },
     {
       "name": "setStatus",
@@ -114,7 +127,7 @@ var blissProject = {
     },
     {
       "name": "saveProject",
-      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=bliss',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "newProject",
@@ -126,7 +139,7 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/bliss/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
@@ -972,7 +985,7 @@ var blissProject = {
       "js": [
         {
           "name": "saveProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         },
         {
           "name": "handleClick",
@@ -1401,7 +1414,7 @@ var blissProject = {
         },
         {
           "name": "createProjectDist",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3535,7 +3548,7 @@ var blissProject = {
         },
         {
           "name": "exportProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4693,7 +4706,7 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "243",
+      "next": "251",
       "previous": null,
       "child": "244",
       "parent": "1"
@@ -4711,12 +4724,12 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  return (app.state.firebase.user) ? true : false;\n}"
+          "body": "function() {\n  return false; //(app.state.firebase.user) ? true : false;\n}"
         }
       ],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "242",
+      "previous": "251",
       "child": "111",
       "parent": "1"
     },
@@ -4921,6 +4934,54 @@ var blissProject = {
       "previous": "246",
       "child": null,
       "parent": "107"
+    },
+    "251": {
+      "id": "251",
+      "name": "Workspaces",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return (app.state.firebase.user) ? true : false;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "243",
+      "previous": "242",
+      "child": "252",
+      "parent": "1"
+    },
+    "252": {
+      "id": "252",
+      "name": "List of workspaces",
+      "element": "div",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "workspaceList",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "workspaceList",
+          "body": "function(scope, attributes) {\n  return app.state.workspaces.list;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.workspaceList[scope.workspaceList_index];\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "251"
     }
   },
   "schemas": [
@@ -4946,6 +5007,49 @@ var blissProject = {
         {
           "action": "set_session",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/workspaces",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    list: ['hi', 'there', 'man']\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "add_workspace",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/projects",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    list: []\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "add",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list.push(args.item);\n  return newData;\n}"
+        },
+        {
+          "action": "add_all",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = args.projects\n  return newData;\n}"
+        },
+        {
+          "action": "clear",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = []\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/bliss",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n  }\n  return newData;\n}"
         }
       ]
     }

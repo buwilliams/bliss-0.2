@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 250,
+  "nextId": 251,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -21,6 +21,7 @@ var blissProject = {
   "externalJs": [
     "node_modules/tether/dist/js/tether.min.js",
     "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/popper.js/dist/umd/popper.min.js",
     "node_modules/bootstrap/dist/js/bootstrap.min.js",
     "node_modules/codemirror/lib/codemirror.js",
     "node_modules/codemirror/mode/javascript/javascript.js",
@@ -46,6 +47,18 @@ var blissProject = {
     "shouldSave": false
   },
   "packages": [
+    {
+      "name": "jquery",
+      "version": "3.2.1"
+    },
+    {
+      "name": "tether",
+      "version": "1.4.0"
+    },
+    {
+      "name": "popper.js",
+      "version": "1.12.5"
+    },
     {
       "name": "bootstrap",
       "version": "^4.0.0-alpha.6"
@@ -82,7 +95,7 @@ var blissProject = {
     },
     {
       "name": "build",
-      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=bliss',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -94,7 +107,7 @@ var blissProject = {
     },
     {
       "name": "server",
-      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path + '?workspace=bliss',\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "getProjects",
@@ -102,7 +115,7 @@ var blissProject = {
     },
     {
       "name": "loadProject",
-      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    app.js.cleanState(data.project, true);\n    app.js.build();\n  }, {name: projectName});\n}"
+      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    app.js.cleanState(data.project, true);\n    app.js.build();\n    app.js.getProjects();\n  }, {name: projectName});\n}"
     },
     {
       "name": "setStatus",
@@ -114,7 +127,7 @@ var blissProject = {
     },
     {
       "name": "saveProject",
-      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=bliss',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "newProject",
@@ -126,7 +139,7 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/bliss/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
@@ -146,7 +159,7 @@ var blissProject = {
     },
     {
       "name": "get_session",
-      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      console.log('session', data);\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'set_designer_token',\n        'designer_token': data.token\n      });\n\n      app.setState(function() {\n        console.log('loading projects');\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      console.log('session', data);\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'set_session',\n        'designer_token': data.token,\n        'email': data.email\n      });\n\n      app.setState(function() {\n        console.log('loading projects');\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [
@@ -972,7 +985,7 @@ var blissProject = {
       "js": [
         {
           "name": "saveProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         },
         {
           "name": "handleClick",
@@ -1401,7 +1414,7 @@ var blissProject = {
         },
         {
           "name": "createProjectDist",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3535,7 +3548,7 @@ var blissProject = {
         },
         {
           "name": "exportProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4764,7 +4777,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "247",
+      "next": "250",
       "previous": "104",
       "child": null,
       "parent": "107"
@@ -4819,7 +4832,7 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": "246",
+      "previous": "250",
       "child": "248",
       "parent": "107"
     },
@@ -4880,6 +4893,47 @@ var blissProject = {
       "previous": "248",
       "child": null,
       "parent": "247"
+    },
+    "250": {
+      "id": "250",
+      "name": "email label",
+      "element": "h6",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return app.state.firebase.email;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "247",
+      "previous": "246",
+      "child": null,
+      "parent": "107"
     }
   },
   "schemas": [
@@ -4896,15 +4950,15 @@ var blissProject = {
         },
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    email: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
         },
         {
           "action": "set_token",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user_token = args.user_token;\n\n  // TODO: move this code into DataEvents system once created\n  $.ajaxSetup({ headers: { 'X-User-Token': newData.user_token } });\n  console.log('getting session');\n  app.js.get_session();\n  \n  return newData;\n}"
         },
         {
-          "action": "set_designer_token",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  return newData;\n}"
+          "action": "set_session",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  return newData;\n}"
         }
       ]
     }

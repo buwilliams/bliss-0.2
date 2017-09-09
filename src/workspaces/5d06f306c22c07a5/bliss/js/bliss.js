@@ -29,7 +29,7 @@ var blissUi = (function() {
 
       $.ajax({
         type: 'POST',
-        url: '/compiler/build',
+        url: '/compiler/build?workspace=bliss',
         data: data,
         success: function(data) {
           app.js.refreshIframe();
@@ -74,7 +74,7 @@ var blissUi = (function() {
 
       $.ajax({
         type: requestType,
-        url: '/project/' + path,
+        url: '/project/' + path + '?workspace=bliss',
         data: data,
         success: function(data) {
           success(data);
@@ -114,6 +114,7 @@ var blissUi = (function() {
         });
         app.js.cleanState(data.project, true);
         app.js.build();
+        app.js.getProjects();
       }, {
         name: projectName
       });
@@ -139,7 +140,7 @@ var blissUi = (function() {
 
       $.ajax({
         type: 'POST',
-        url: '/project/save',
+        url: '/project/save?workspace=bliss',
         data: data,
         success: function(data) {
           app.js.setStatus('Saved project ' + proj.name + '.');
@@ -175,7 +176,7 @@ var blissUi = (function() {
 
       var url = location.origin +
         '/bliss/designer/' +
-        app.state.firebase.designer_token + '/' +
+        app.state.firebase.designer_token + '/bliss/' +
         'designer.html';
 
       iframe.attr('src', url);
@@ -406,8 +407,9 @@ var blissUi = (function() {
           console.log('session', data);
           app.dispatch({
             'path': '/firebase',
-            'action': 'set_designer_token',
-            'designer_token': data.token
+            'action': 'set_session',
+            'designer_token': data.token,
+            'email': data.email
           });
 
           app.setState(function() {
@@ -474,7 +476,7 @@ var blissUi = (function() {
 
       $.ajax({
         type: 'POST',
-        url: '/compiler/export',
+        url: '/compiler/export?workspace=bliss',
         data: data,
         success: function(data) {
           comp.setStatus('Built ' + proj.name + '.');
@@ -503,7 +505,7 @@ var blissUi = (function() {
 
       $.ajax({
         type: 'POST',
-        url: '/compiler/dist',
+        url: '/compiler/dist?workspace=bliss',
         data: data,
         success: function(data) {
           comp.setStatus('Deployed ' + proj.name + '.');
@@ -511,6 +513,10 @@ var blissUi = (function() {
         contentType: "application/json",
         dataType: 'json'
       });
+    }
+    app.methods["250"] = {};
+    app.methods["250"]['getText'] = function(scope, attributes) {
+      return app.state.firebase.email;
     }
     app.methods["247"] = {};
     app.methods["247"]['handleClick'] = function(scope, attributes) {
@@ -527,7 +533,7 @@ var blissUi = (function() {
 
       $.ajax({
         type: 'POST',
-        url: '/project/save',
+        url: '/project/save?workspace=bliss',
         data: data,
         success: function(data) {
           comp.setStatus('Saved project ' + proj.name + '.');
@@ -1210,6 +1216,7 @@ var blissUi = (function() {
         user: null,
         user_token: null,
         designer_token: null,
+        email: null,
         auth_ui: null,
         auth: null,
         database: null,
@@ -1233,9 +1240,10 @@ var blissUi = (function() {
 
       return newData;
     }
-    app.schema['/firebase']['set_designer_token'] = function(data, args) {
+    app.schema['/firebase']['set_session'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.designer_token = args.designer_token;
+      newData.email = args.email;
       return newData;
     }
     if (app.schema['/firebase']['init']) {
@@ -1421,6 +1429,11 @@ var blissUi = (function() {
                           "id": "divider_246",
                           "key": app.getKey('id', '246')
                         })),
+                        React.createElement('h6', app.mergeAttributes('250', scope, {}, {
+                          "className": "dropdown-header",
+                          "id": "emailLabel_250",
+                          "key": app.getKey('id', '250')
+                        }), app.methods['250']['getText'](scope)),
                         React.createElement('a', app.mergeAttributes('247', scope, {
                             "onClick": "handleClick"
                           }, {
