@@ -427,7 +427,7 @@ var blissUi = (function() {
     }
     app.methods["251"] = {};
     app.methods["251"]['shouldShow'] = function() {
-      return (app.state.firebase.user) ? true : false;
+      return false; // return (app.state.firebase.user) ? true : false;
     }
     app.methods["252"] = {};
     app.methods["252"]['workspaceList'] = function(scope, attributes) {
@@ -439,7 +439,7 @@ var blissUi = (function() {
     };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
-      return false; //(app.state.firebase.user) ? true : false;
+      return (app.state.firebase.user) ? true : false;
     }
     app.methods["85"] = {};
     app.methods["85"]['handleClick'] = function(scope, attributes) {
@@ -1265,10 +1265,9 @@ var blissUi = (function() {
     }
     app.schema['/workspaces'] = {};
     app.schema['/workspaces']['init'] = function(data, args) {
-      var newData = {
-        list: ['hi', 'there', 'man']
+      return {
+        list: []
       }
-      return newData;
     }
     app.schema['/workspaces']['add_workspace'] = function(data, args) {
       var newData = Object.assign({}, data)
@@ -1282,23 +1281,22 @@ var blissUi = (function() {
     }
     app.schema['/projects'] = {};
     app.schema['/projects']['init'] = function(data, args) {
-      var newData = {
+      return {
         list: []
       }
-      return newData;
     }
     app.schema['/projects']['add'] = function(data, args) {
-      var newData = Object.assign({}, data);
-      newData.list.push(args.item);
-      return newData;
+      var newData = Object.assign({}, data)
+      newData.list.push(args.item)
+      return newData
     }
     app.schema['/projects']['add_all'] = function(data, args) {
-      var newData = Object.assign({}, data);
+      var newData = Object.assign({}, data)
       newData.list = args.projects
       return newData;
     }
     app.schema['/projects']['clear'] = function(data, args) {
-      var newData = Object.assign({}, data);
+      var newData = Object.assign({}, data)
       newData.list = []
       return newData;
     }
@@ -1307,25 +1305,185 @@ var blissUi = (function() {
     } else {
       app.assignPath(app.state, '/projects');
     }
-    app.schema['/bliss'] = {};
-    app.schema['/bliss']['init'] = function(data, args) {
-      var newData = {
-        app.buildProject = buildProject;
-
-        // Set State
-        app.state.shouldSave = false;
-        app.state.shouldBuild = shouldBuildProject;
-
-        // Set internal state
-        var internal = app._state.create('internal');
-        internal.setData('activeComponent', app.buildProject.rootId);
+    app.schema['/settings'] = {};
+    app.schema['/settings']['init'] = function(data, args) {
+      return {
+        buildProject: null,
+        activeComponent: null,
+        shouldSave: false,
+        shouldBuild: false,
+        currentColor: '#ffffff'
       }
+    }
+    app.schema['/settings']['set'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      if (newData.hasOwnProperty(args.key)) newData[args.key] = args.value;
       return newData;
     }
-    if (app.schema['/bliss']['init']) {
-      app.assignPath(app.state, '/bliss', app.schema['/bliss']['init']());
+    if (app.schema['/settings']['init']) {
+      app.assignPath(app.state, '/settings', app.schema['/settings']['init']());
     } else {
-      app.assignPath(app.state, '/bliss');
+      app.assignPath(app.state, '/settings');
+    }
+    app.schema['/views'] = {};
+    app.schema['/views']['init'] = function(data, args) {
+      return {
+        selected: 'designer',
+        list: [{
+            name: 'designer',
+            label: 'Designer'
+          },
+          {
+            name: 'js',
+            label: 'JavaScript'
+          },
+          {
+            name: 'data',
+            label: 'Data Editor'
+          },
+          {
+            name: 'global_js',
+            label: 'Global JS'
+          },
+          {
+            name: 'global_css',
+            label: 'Global CSS'
+          },
+          {
+            name: 'css_vars',
+            label: 'CSS Variables'
+          },
+          {
+            name: 'page_load',
+            label: 'Page Load'
+          },
+          {
+            name: 'node_packages',
+            label: 'Node Packages'
+          },
+          {
+            name: 'settings',
+            label: 'Settings'
+          }
+        ]
+      }
+    }
+    if (app.schema['/views']['init']) {
+      app.assignPath(app.state, '/views', app.schema['/views']['init']());
+    } else {
+      app.assignPath(app.state, '/views');
+    }
+    app.schema['/resolution'] = {};
+    app.schema['/resolution']['init'] = function(data, args) {
+      return {
+        selected: 'full',
+        list: [{
+            value: 'full',
+            label: 'Viewport',
+            width: '100%',
+            height: 'calc(100% - 32px)',
+            previewWidth: '100%',
+            previewHeight: 'calc(100vh - 100px)'
+          },
+          {
+            value: 'galaxys5',
+            label: 'Galaxy S5',
+            width: '360px',
+            height: '640px',
+            previewWidth: 'calc(360px + 20px)',
+            previewHeight: 'calc(640px + 52px)'
+          },
+          {
+            value: 'nexus5x',
+            label: 'Nexus 5X',
+            width: '412px',
+            height: '732px',
+            previewWidth: 'calc(412px + 20px)',
+            previewHeight: 'calc(732px + 52px)'
+          },
+          {
+            value: 'nexus6p',
+            label: 'Nexus 6P',
+            width: '412px',
+            height: '732px',
+            previewWidth: 'calc(412px + 20px)',
+            previewHeight: 'calc(732px + 52px)'
+          },
+          {
+            value: 'iphone5',
+            label: 'iPhone 5',
+            width: '320px',
+            height: '568px',
+            previewWidth: 'calc(320px + 20px)',
+            previewHeight: 'calc(568px + 52px)'
+          },
+          {
+            value: 'iphone6',
+            label: 'iPhone 6',
+            width: '375px',
+            height: '667px',
+            previewWidth: 'calc(375px + 20px)',
+            previewHeight: 'calc(667px + 52px)'
+          },
+          {
+            value: 'iphone6plus',
+            label: 'iPhone 6 Plus',
+            width: '414px',
+            height: '736px',
+            previewWidth: 'calc(414px + 20px)',
+            previewHeight: 'calc(736px + 52px)'
+          },
+          {
+            value: 'ipad',
+            label: 'iPad',
+            width: '768px',
+            height: '1024px',
+            previewWidth: 'calc(768px + 20px)',
+            previewHeight: 'calc(1024px + 52px)'
+          },
+          {
+            value: 'ipadpro',
+            label: 'iPad Pro',
+            width: '1024px',
+            height: '1366px',
+            previewWidth: 'calc(1024px + 20px)',
+            previewHeight: 'calc(1366px + 52px)'
+          }
+        ]
+      }
+    }
+    if (app.schema['/resolution']['init']) {
+      app.assignPath(app.state, '/resolution', app.schema['/resolution']['init']());
+    } else {
+      app.assignPath(app.state, '/resolution');
+    }
+    app.schema['/displays'] = {};
+    app.schema['/displays']['init'] = function(data, args) {
+      return {
+        list: [{
+            name: 'components',
+            width: '20%',
+            active: true
+          },
+          {
+            name: 'designer',
+            width: '60%',
+            active: true,
+            width2: '80%',
+            width3: '100%'
+          },
+          {
+            name: 'properties',
+            width: '20%',
+            active: true
+          }
+        ]
+      }
+    }
+    if (app.schema['/displays']['init']) {
+      app.assignPath(app.state, '/displays', app.schema['/displays']['init']());
+    } else {
+      app.assignPath(app.state, '/displays');
     }
     app.getKey = function() {
       var out = [];

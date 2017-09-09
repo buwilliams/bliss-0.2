@@ -425,6 +425,18 @@ var blissUi = (function() {
     app.methods["242"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? false : true;
     }
+    app.methods["251"] = {};
+    app.methods["251"]['shouldShow'] = function() {
+      return false; // return (app.state.firebase.user) ? true : false;
+    }
+    app.methods["252"] = {};
+    app.methods["252"]['workspaceList'] = function(scope, attributes) {
+      return app.state.workspaces.list;
+    };
+
+    app.methods["252"]['getText'] = function(scope, attributes) {
+      return scope.workspaceList[scope.workspaceList_index];
+    };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? true : false;
@@ -1251,6 +1263,50 @@ var blissUi = (function() {
     } else {
       app.assignPath(app.state, '/firebase');
     }
+    app.schema['/workspaces'] = {};
+    app.schema['/workspaces']['init'] = function(data, args) {
+      var newData = {
+        list: ['hi', 'there', 'man']
+      }
+      return newData;
+    }
+    app.schema['/workspaces']['add_workspace'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.list.push(args.item)
+      return newData;
+    }
+    if (app.schema['/workspaces']['init']) {
+      app.assignPath(app.state, '/workspaces', app.schema['/workspaces']['init']());
+    } else {
+      app.assignPath(app.state, '/workspaces');
+    }
+    app.schema['/projects'] = {};
+    app.schema['/projects']['init'] = function(data, args) {
+      var newData = {
+        list: []
+      }
+      return newData;
+    }
+    app.schema['/projects']['add'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.list.push(args.item);
+      return newData;
+    }
+    app.schema['/projects']['add_all'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.list = args.projects
+      return newData;
+    }
+    app.schema['/projects']['clear'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.list = []
+      return newData;
+    }
+    if (app.schema['/projects']['init']) {
+      app.assignPath(app.state, '/projects', app.schema['/projects']['init']());
+    } else {
+      app.assignPath(app.state, '/projects');
+    }
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -1286,6 +1342,29 @@ var blissUi = (function() {
                   "id": "firebaseui-auth-container",
                   "key": app.getKey('id', '244')
                 }))));
+            }
+            return out;
+          })(scope),
+          (function(scope) {
+            var out = [];
+            scope['shouldShow'] = app.methods['251']['shouldShow'](scope);
+            if (app.methods['251']['shouldShow'](scope) === true) {
+              out.push(React.createElement('div', app.mergeAttributes('251', scope, {}, {
+                  "id": "workspaces_251",
+                  "key": app.getKey('id', '251')
+                }),
+                (function(scope) {
+                  var out = [];
+                  var list = scope['workspaceList'] = app.methods['252']['workspaceList'](scope);
+                  for (var i = 0; i < list.length; i++) {
+                    scope['workspaceList_index'] = i;
+                    out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
+                      "id": "listOfWorkspaces_252",
+                      "key": app.getKey('id', '252', i)
+                    }), app.methods['252']['getText'](scope)));
+                  }
+                  return out;
+                })(scope)));
             }
             return out;
           })(scope),

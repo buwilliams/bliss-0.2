@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 251,
+  "nextId": 253,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -4706,7 +4706,7 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "243",
+      "next": "251",
       "previous": null,
       "child": "244",
       "parent": "1"
@@ -4729,7 +4729,7 @@ var blissProject = {
       ],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "242",
+      "previous": "251",
       "child": "111",
       "parent": "1"
     },
@@ -4934,6 +4934,54 @@ var blissProject = {
       "previous": "246",
       "child": null,
       "parent": "107"
+    },
+    "251": {
+      "id": "251",
+      "name": "Workspaces",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return false; // return (app.state.firebase.user) ? true : false;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "243",
+      "previous": "242",
+      "child": "252",
+      "parent": "1"
+    },
+    "252": {
+      "id": "252",
+      "name": "List of workspaces",
+      "element": "div",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "workspaceList",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "workspaceList",
+          "body": "function(scope, attributes) {\n  return app.state.workspaces.list;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.workspaceList[scope.workspaceList_index];\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "251"
     }
   },
   "schemas": [
@@ -4959,6 +5007,40 @@ var blissProject = {
         {
           "action": "set_session",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/workspaces",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    list: ['hi', 'there', 'man']\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "add_workspace",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/projects",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    list: []\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "add",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list.push(args.item);\n  return newData;\n}"
+        },
+        {
+          "action": "add_all",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = args.projects\n  return newData;\n}"
+        },
+        {
+          "action": "clear",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = []\n  return newData;\n}"
         }
       ]
     }
