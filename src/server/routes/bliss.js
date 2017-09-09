@@ -18,7 +18,7 @@ const session = require('../session.js');
 //       lasts for a 48-hour period
 // TODO: route.get('/designer/:directory_code/:token/*')
 //router.use('/designer', express.static(ws.workspace(env, session)));
-router.use('/designer/:token/*', designerMiddleware);
+router.use('/designer/:token/:workspace/*', designerMiddleware);
 
 router.use('/designer/bliss-tree',
   express.static(path.join(env.app, 'bliss-tree')));

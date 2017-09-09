@@ -7,10 +7,10 @@ module.exports = {
     return path.join(this.deployed(env), env.bliss_user, 'website');
   },
 
-  workspace: function(env, session, wsName) {
+  workspace: function(env, session, workspaceName) {
     var wsPath = path.join(env.workspace,
       session.user.username,
-      wsName);
+      workspaceName);
 
     if(!fs.existsSync(wsPath)) project.createWorkspace(wsPath);
 
@@ -23,12 +23,12 @@ module.exports = {
       '_deployed');
   },
 
-  deploy: function(env, session) {
+  deploy: function(env, session, workspaceName) {
     return path.join(
       env.workspace,
       '_deployed',
       session.user.username,
-      session.user.workspace);
+      workspaceName);
   },
 
   list: function(env, session) {
