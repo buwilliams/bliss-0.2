@@ -43,7 +43,8 @@ module.exports = {
 
   writePackageJson: function(workspace, projectJson, additionalDeps) {
     var packageJson = this.createPackageJson(projectJson, additionalDeps);
-    fs.writeFileSync(path.join(workspace, "package.json"), JSON.stringify(packageJson, null, 2));
+    fs.writeFileSync(path.join(workspace, "package.json"),
+      JSON.stringify(packageJson, null, 2));
   },
 
   installPackageJson: function(workspace) {

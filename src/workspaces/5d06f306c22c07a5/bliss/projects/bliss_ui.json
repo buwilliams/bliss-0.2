@@ -47,6 +47,18 @@
   },
   "packages": [
     {
+      "name": "jquery",
+      "version": "3.2.1"
+    },
+    {
+      "name": "tether",
+      "version": "1.4.0"
+    },
+    {
+      "name": "popper.js",
+      "version": "1.12.5"
+    },
+    {
       "name": "bootstrap",
       "version": "^4.0.0-alpha.6"
     },
