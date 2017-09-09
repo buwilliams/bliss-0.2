@@ -106,10 +106,11 @@ task('server', function() {
 });
 
 desc('Execute all tests.');
-task('test', function(overrideParams) {
+task('test', function(optionalFilePattern) {
   var cmd = `BLISS_ENV=test ./node_modules/.bin/mocha "src/**/*-test.js"`
-  if(overrideParams) {
-    cmd = `BLISS_ENV=test ./node_modules/.bin/mocha "${overrideParams}"`;
+  if(optionalFilePattern) {
+    cmd = `BLISS_ENV=test ./node_modules/.bin/mocha ` +
+          `"${optionalFilePattern}" --no-timeouts`;
   }
   jake.exec(cmd, {printStdout: true}, function () {
     console.log('All tests passed.');

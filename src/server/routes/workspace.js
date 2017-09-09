@@ -27,7 +27,6 @@ router.post('/', function(req, res) {
 })
 
 router.delete('/:workspaceName', function(req, res) {
-  console.log('workspace name', req.params.workspaceName)
   ws.deleteWs(env, req.session, req.params.workspaceName)
   res.send({ "success": true })
 })
@@ -39,6 +38,26 @@ router.post('/rename', function(req, res) {
   }
 
   ws.renameWs(env, req.session, req.body.name, req.body.newName)
+  res.send({ 'name': req.body.newName })
+})
+
+router.post('/copy', function(req, res) {
+  if (!req.body.fromWs || !req.body.toWs) {
+    res.status(400).send('fromWs or toWs param missing');
+    return;
+  }
+
+  try {
+    ws.copyWs(env,
+              req.session.user.username,
+              req.body.fromWs,
+              req.session.user.username,
+              req.body.toWs);
+  } catch(e) {
+    res.status(500).send(`toWs or fromWs path(s) not found. Error: ${e}`);
+    return;
+  }
+
   res.send({ 'name': req.body.newName })
 })
 

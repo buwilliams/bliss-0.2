@@ -1,9 +1,9 @@
 const expect = require('chai').expect
 const request = require('request')
 const server = require('../server.js')
-const ws = require('../../compilers/core/workspace.js');
-const env = require('../env.js');
-const session = require('../session.js');
+const ws = require('../../compilers/core/workspace.js')
+const env = require('../env.js')
+const session = require('../session.js')
 
 describe('workspace', function() {
   describe('list', function() {
@@ -115,4 +115,47 @@ describe('workspace', function() {
 
     });
   });
+
+  describe('copy', function() {
+    it('should return 400 if invalid toWs and fromWs params are missing', function(done) {
+      request.post({
+        'url': 'http://localhost:3000/workspace/copy',
+        'json': true,
+        'body': {}
+      }, function (err, res, body) {
+        expect(res.statusCode).to.equal(400);
+        done();
+      });
+    })
+
+    it('should return 500 if toWs or fromWs path does not exist', function(done) {
+      request.post({
+        'url': 'http://localhost:3000/workspace/copy',
+        'json': true,
+        'body': {
+          'fromWs': 'internal_test_ws',
+          'toWs': 'internal_test_ws_copy'
+        }
+      }, function (err, res, body) {
+        expect(res.statusCode).to.equal(500);
+        done();
+      });
+    })
+
+    it('should return 200', function(done) {
+      var params = {
+        'url': 'http://localhost:3000/workspace/copy',
+        'json': true,
+        'body': {
+          'fromWs': env.bliss_test_user_ws,
+          'toWs': `${env.bliss_test_user_ws}_copy`
+        }
+      }
+      request.post(params, function (err, res, body) {
+        expect(res.statusCode).to.equal(200);
+        ws.deleteWs(env, session, params.body.toWs);
+        done();
+      });
+    })
+  })
 });

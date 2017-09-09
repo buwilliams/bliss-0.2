@@ -21,7 +21,7 @@ module.exports = function(options) {
         user: {
           email: 'test@blissui.com',
           username: str.token('test@blissui.com'),
-          workspace: 'test'
+          workspace: 'bliss_test'
         }
       }
       next()

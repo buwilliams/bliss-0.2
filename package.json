@@ -54,7 +54,8 @@
     "babel-plugin-transform-react-jsx": "^6.23.0",
     "babel-preset-env": "^1.2.1",
     "chai": "^4.1.0",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "pryjs": "^1.0.3"
   },
   "keywords": []
 }
