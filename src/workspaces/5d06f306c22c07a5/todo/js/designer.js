@@ -6,7 +6,7 @@ var todo = (function() {
       props: {},
       state: {}
     };
-    app.js.init = function() {
+    app.js['init'] = function() {
       // setup app state
       var state = app.js.createState('todo');
       state.setData('currentColor', '#5f38a9');
@@ -23,7 +23,7 @@ var todo = (function() {
       // render application
       app.render();
     }
-    app.js.createState = function(rawName) {
+    app.js['createState'] = function(rawName) {
       var name = rawName.replace(/[^\w]/gi, '');
 
       var hasValue = function(item) {
@@ -125,12 +125,12 @@ var todo = (function() {
 
       return managed;
     }
-    app.js.getState = function(rawName) {
+    app.js['getState'] = function(rawName) {
       var name = rawName.replace(/[^\w]/gi, '');
       return app.state._managed[name];
     }
     app.methods["9"] = {};
-    app.methods["9"].handleClearCompleted = function(scope, attributes) {
+    app.methods["9"]['handleClearCompleted'] = function(scope, attributes) {
       return function(e) {
         app.setState(function() {
           var ts = app.todo.getAll();
@@ -147,7 +147,7 @@ var todo = (function() {
       }
     };
     app.methods["4"] = {};
-    app.methods["4"].handleChange = function(scope, attributes) {
+    app.methods["4"]['handleChange'] = function(scope, attributes) {
       return function(e) {
         app.setState(function() {
           app.todo.setData('currentTodo', e.target.value);
@@ -155,10 +155,10 @@ var todo = (function() {
       }
     };
 
-    app.methods["4"].getValue = function(scope, attributes) {
+    app.methods["4"]['getValue'] = function(scope, attributes) {
       return app.todo.getData('currentTodo');
     }
-    app.methods["4"].changeHue = function(rgb, degree) {
+    app.methods["4"]['changeHue'] = function(rgb, degree) {
       function changeHue(rgb, degree) {
         var hsl = rgbToHSL(rgb);
         hsl.h += degree;
@@ -270,7 +270,7 @@ var todo = (function() {
 
       return changeHue(rgb, degree);
     }
-    app.methods["4"].handleKeyDown = function(scope, attributes) {
+    app.methods["4"]['handleKeyDown'] = function(scope, attributes) {
       var comp = this;
       return function(e) {
         var key = e.which,
@@ -295,16 +295,16 @@ var todo = (function() {
       }
     };
     app.methods["3"] = {};
-    app.methods["3"].repeatTodos = function(scope, attributes) {
+    app.methods["3"]['repeatTodos'] = function(scope, attributes) {
       return app.todo.getAll();
     };
 
-    app.methods["3"].showTodo = function(scope, attributes) {
+    app.methods["3"]['showTodo'] = function(scope, attributes) {
       var t = scope.repeatTodos[scope.repeatTodos_index];
       return t.label;
     };
 
-    app.methods["3"].getStyles = function(scope, attributes) {
+    app.methods["3"]['getStyles'] = function(scope, attributes) {
       var t = scope.repeatTodos[scope.repeatTodos_index];
       var styles = {
         'backgroundColor': t.color
@@ -317,7 +317,7 @@ var todo = (function() {
 
       return styles;
     }
-    app.methods["3"].handleClick = function(scope, attributes) {
+    app.methods["3"]['handleClick'] = function(scope, attributes) {
       var t = scope.repeatTodos[scope.repeatTodos_index];
 
       return function(e) {
@@ -329,12 +329,12 @@ var todo = (function() {
       }
     };
 
-    app.methods["3"].getKey = function(scope, attributes) {
+    app.methods["3"]['getKey'] = function(scope, attributes) {
       var t = scope.repeatTodos[scope.repeatTodos_index];
       return t.id;
     }
     app.methods["10"] = {};
-    app.methods["10"].handleDelete = function(scope, attributes) {
+    app.methods["10"]['handleDelete'] = function(scope, attributes) {
       var t = scope.repeatTodos[scope.repeatTodos_index];
 
       return function(e) {
@@ -375,14 +375,14 @@ var todo = (function() {
               "className": "float-left",
               "id": "label_6",
               "key": app.getKey('id', '6')
-            }), "Todos"),
+            }), 'Todos'),
             React.createElement('a', app.mergeAttributes('9', scope, {
               "onClick": "handleClearCompleted"
             }, {
               "href": "#",
               "id": "clearCompleted_9",
               "key": app.getKey('id', '9')
-            }), "Clear Completed"),
+            }), 'Clear Completed'),
             React.createElement('input', app.mergeAttributes('4', scope, {
               "value": "getValue",
               "onChange": "handleChange",
@@ -414,12 +414,11 @@ var todo = (function() {
                       "href": "#",
                       "id": "deletebutton_10",
                       "key": app.getKey('id', '10')
-                    }), "Delete")));
+                    }), 'Delete')));
                 }
                 return out;
               })(scope)))));
     };
-    app.state = {};
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
       if (isComponent) {

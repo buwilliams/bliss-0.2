@@ -430,9 +430,11 @@ var blissUiV = (function() {
       var data = JSON.stringify(proj);
       comp.setStatus('Building ' + proj.name + '...');
 
+      var workspace = app.state.settings.workspace
+
       $.ajax({
         type: 'POST',
-        url: '/compiler/export?workspace=bliss',
+        url: '/compiler/export?workspace=' + workspace,
         data: data,
         success: function(data) {
           comp.setStatus('Built ' + proj.name + '.');
@@ -459,9 +461,11 @@ var blissUiV = (function() {
       var data = JSON.stringify(proj);
       comp.setStatus('Deploying ' + proj.name + '...');
 
+      var workspace = app.state.settings.workspace
+
       $.ajax({
         type: 'POST',
-        url: '/compiler/dist?workspace=bliss',
+        url: '/compiler/dist?workspace=' + workspace,
         data: data,
         success: function(data) {
           comp.setStatus('Deployed ' + proj.name + '.');
@@ -477,7 +481,12 @@ var blissUiV = (function() {
     app.methods["260"] = {};
     app.methods["260"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        firebase.auth().signOut();
+        app.dispatch({
+          path: '/workspaces',
+          action: 'set',
+          key: 'active',
+          value: true
+        })
       }
     };
     app.methods["247"] = {};

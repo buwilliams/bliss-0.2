@@ -332,6 +332,14 @@ var blissUi = (function() {
         dataType: 'json'
       });
     }
+    app.js['afterAuth'] = function(scope, attributes) {
+      app.js.log('after auth invoked')
+
+      app.dispatch({
+        path: '/workspaces',
+        action: 'fetch'
+      })
+    }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? false : true;
@@ -341,12 +349,35 @@ var blissUi = (function() {
       return (app.state.workspaces.active === true)
     }
     app.methods["252"] = {};
-    app.methods["252"]['workspaceList'] = function(scope, attributes) {
+    app.methods["252"]['repeater'] = function(scope, attributes) {
       return app.state.workspaces.list;
     };
 
     app.methods["252"]['getText'] = function(scope, attributes) {
-      return scope.workspaceList[scope.workspaceList_index];
+      var item = scope.repeater[scope.repeater_index]
+      return item.name
+    };
+
+    app.methods["252"]['handleClick'] = function(scope, attributes) {
+      var item = scope.repeater[scope.repeater_index]
+
+      return function(e) {
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'workspace',
+          value: item.name
+        })
+
+        app.dispatch({
+          path: '/workspaces',
+          action: 'set',
+          key: 'active',
+          value: false
+        })
+
+        app.js.getProjects()
+      }
     };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
@@ -443,6 +474,17 @@ var blissUi = (function() {
     app.methods["250"]['getText'] = function(scope, attributes) {
       return app.state.firebase.email;
     }
+    app.methods["260"] = {};
+    app.methods["260"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        app.dispatch({
+          path: '/workspaces',
+          action: 'set',
+          key: 'active',
+          value: true
+        })
+      }
+    };
     app.methods["247"] = {};
     app.methods["247"]['handleClick'] = function(scope, attributes) {
       return function(e) {
@@ -1158,8 +1200,11 @@ var blissUi = (function() {
               path: '/firebase',
               action: 'setToken',
               user_token: idToken
-            });
-          });
+            })
+
+            app.js.afterAuth()
+
+          })
         } else {
           // Clear user state
           app.dispatch({
@@ -1230,14 +1275,43 @@ var blissUi = (function() {
     app.schema['/workspaces'] = {};
     app.schema['/workspaces']['init'] = function(data, args) {
       var newData = {
-        active: false,
+        active: true,
         list: []
       }
       return newData
     }
-    app.schema['/workspaces']['add_workspace'] = function(data, args) {
+    app.schema['/workspaces']['add'] = function(data, args) {
       var newData = Object.assign({}, data)
       newData.list.push(args.item)
+      return newData;
+    }
+    app.schema['/workspaces']['fetch'] = function(data, args) {
+      $.ajax({
+        type: 'GET',
+        url: '/workspace/list',
+        data: data,
+        success: function(data) {
+          app.dispatch({
+            path: '/workspaces',
+            action: 'addAll',
+            list: data.workspaces
+          })
+        },
+        contentType: "application/json",
+        dataType: 'json'
+      });
+
+      return data;
+    }
+    app.schema['/workspaces']['addAll'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.list = args.list
+      return newData;
+    }
+    app.schema['/workspaces']['set'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      if (newData.hasOwnProperty(args.key))
+        newData[args.key] = args.value;
       return newData;
     }
     if (app.schema['/workspaces']['init']) {
@@ -1545,20 +1619,19 @@ var blissUi = (function() {
                 }),
                 (function(scope) {
                   var out = [];
-                  var list = scope['workspaceList'] = app.methods['252']['workspaceList'](scope);
+                  var list = scope['repeater'] = app.methods['252']['repeater'](scope);
                   for (var i = 0; i < list.length; i++) {
-                    scope['workspaceList_index'] = i;
-                    out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
+                    scope['repeater_index'] = i;
+                    out.push(React.createElement('div', app.mergeAttributes('252', scope, {
+                      "onClick": "handleClick"
+                    }, {
+                      "className": "workspaces",
                       "id": "listOfWorkspaces_252",
                       "key": app.getKey('id', '252', i)
                     }), app.methods['252']['getText'](scope)));
                   }
                   return out;
-                })(scope),
-                React.createElement('div', app.mergeAttributes('256', scope, {}, {
-                  "id": "new_256",
-                  "key": app.getKey('id', '256')
-                }), 'hey there')));
+                })(scope)));
             }
             return out;
           })(scope),
@@ -1707,6 +1780,23 @@ var blissUi = (function() {
                           "id": "emailLabel_250",
                           "key": app.getKey('id', '250')
                         }), app.methods['250']['getText'](scope)),
+                        React.createElement('a', app.mergeAttributes('260', scope, {
+                            "onClick": "handleClick"
+                          }, {
+                            "href": "#",
+                            "className": "dropdown-item",
+                            "id": "switchWorkspace_260",
+                            "key": app.getKey('id', '260')
+                          }),
+                          React.createElement('i', app.mergeAttributes('258', scope, {}, {
+                            "className": "fa fa-hand-o-left",
+                            "id": "icon_258",
+                            "key": app.getKey('id', '258')
+                          })),
+                          React.createElement('span', app.mergeAttributes('259', scope, {}, {
+                            "id": "label_259",
+                            "key": app.getKey('id', '259')
+                          }), 'Switch Workspace')),
                         React.createElement('a', app.mergeAttributes('247', scope, {
                             "onClick": "handleClick"
                           }, {

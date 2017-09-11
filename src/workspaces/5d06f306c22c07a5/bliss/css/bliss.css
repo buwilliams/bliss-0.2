@@ -2,6 +2,19 @@
   min-width: 1400px;
 }
 
+#listOfWorkspaces_252 {
+  padding: 5px;
+  margin: 3px;
+  background-color: #f3fbff;
+  cursor: pointer;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#listOfWorkspaces_252:hover {
+  background-color: #c0eaff;
+}
+
 #mainNav {
   position: absolute;
   top: 0;
@@ -118,6 +131,17 @@
 #emailLabel_250 {
   font-size: 10px;
   text-transform: uppercase;
+}
+
+#switchWorkspace_260 {
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 10pt;
+}
+
+#label_259 {
+  display: inline-block;
+  margin-left: 10px;
 }
 
 #signOut_247 {
