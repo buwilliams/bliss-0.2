@@ -40,6 +40,11 @@ var blissUiV = (function() {
         app.buildProject.build = "designer";
       }
 
+      if (app.buildProject.build === "designer") {
+        //console.log('skipping build')
+        return
+      }
+
       var data = JSON.stringify(app.buildProject)
       var workspace = app.state.settings.workspace
 
