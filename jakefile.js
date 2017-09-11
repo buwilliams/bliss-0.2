@@ -104,7 +104,7 @@ task('migrate', function(version) {
   var json = fse.readJsonSync(dest)
   json.name = "Bliss UI"
   json.build = "bliss"
-  fse.writeJsonSync(dest, json)
+  fse.writeJsonSync(dest, json, { spaces: 2 })
 })
 
 task('clean', function(){
