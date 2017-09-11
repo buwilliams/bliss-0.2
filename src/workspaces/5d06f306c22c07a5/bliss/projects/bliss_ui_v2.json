@@ -1,7 +1,7 @@
 {
-  "name": "Bliss UI",
+  "name": "Bliss UI v2",
   "type": "bliss",
-  "build": "bliss",
+  "build": "designer",
   "compiler": "react",
   "nextId": 261,
   "rootId": "1",

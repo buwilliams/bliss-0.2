@@ -5,17 +5,60 @@ const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
 
-// create workspace
-//  create workspace folder under the user
-//  create dirs
-//  create workspace.json
-//    set root project
-//    empty sharing list
+router.get('/list', function(req, res) {
+  var workspaces = ws.list(env, req.session)
+  workspaces.forEach(function(w) {
+    w.projects = w.projects.concat(ws.listProjects(env, req.session, w.name));
+  });
 
-// delete workspace
-//  delete all subdirectories
+  res.send({
+    "workspaces": workspaces
+  })
+})
 
-// list workspaces
-//  return list of workspaces
+router.post('/', function(req, res) {
+  if (!req.body.name) {
+    res.status(400).send('name param required');
+    return;
+  }
+
+  ws.newWs(env, req.session, req.body.name)
+  res.send({ "success": true })
+})
+
+router.delete('/:workspaceName', function(req, res) {
+  ws.deleteWs(env, req.session, req.params.workspaceName)
+  res.send({ "success": true })
+})
+
+router.post('/rename', function(req, res) {
+  if (!req.body.name || !req.body.newName) {
+    res.status(400).send('name or newName param missing');
+    return;
+  }
+
+  ws.renameWs(env, req.session, req.body.name, req.body.newName)
+  res.send({ 'name': req.body.newName })
+})
+
+router.post('/copy', function(req, res) {
+  if (!req.body.fromWs || !req.body.toWs) {
+    res.status(400).send('fromWs or toWs param missing');
+    return;
+  }
+
+  try {
+    ws.copyWs(env,
+              req.session.user.username,
+              req.body.fromWs,
+              req.session.user.username,
+              req.body.toWs);
+  } catch(e) {
+    res.status(500).send(`toWs or fromWs path(s) not found. Error: ${e}`);
+    return;
+  }
+
+  res.send({ 'name': req.body.newName })
+})
 
 module.exports = router

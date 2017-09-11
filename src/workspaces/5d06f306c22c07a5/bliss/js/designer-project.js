@@ -1,9 +1,9 @@
 var blissProject = {
-  "name": "Bliss UI",
+  "name": "Bliss UI v2",
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 251,
+  "nextId": 261,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -21,6 +21,7 @@ var blissProject = {
   "externalJs": [
     "node_modules/tether/dist/js/tether.min.js",
     "node_modules/jquery/dist/jquery.min.js",
+    "node_modules/popper.js/dist/umd/popper.min.js",
     "node_modules/bootstrap/dist/js/bootstrap.min.js",
     "node_modules/codemirror/lib/codemirror.js",
     "node_modules/codemirror/mode/javascript/javascript.js",
@@ -41,11 +42,20 @@ var blissProject = {
     "https://www.gstatic.com/firebasejs/4.1.3/firebase.js",
     "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js"
   ],
-  "state": {
-    "timer": null,
-    "shouldSave": false
-  },
+  "state": {},
   "packages": [
+    {
+      "name": "jquery",
+      "version": "3.2.1"
+    },
+    {
+      "name": "tether",
+      "version": "1.4.0"
+    },
+    {
+      "name": "popper.js",
+      "version": "1.12.5"
+    },
     {
       "name": "bootstrap",
       "version": "^4.0.0-alpha.6"
@@ -78,31 +88,31 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  $.ajaxSetup({ headers: { 'X-User-Token': app.state.firebase.user_token } });\n  app.dispatch({ path: '/firebase', action: 'setup' });\n  app._state = state();\n  app.js.cleanState(newBlissProject, false)\n}"
+      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n}"
     },
     {
       "name": "build",
-      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  \n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject)\n  var workspace = app.state.settings.workspace\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build?workspace=' + workspace,\n                    jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
-      "body": "function(id) {\n  app.js.log('app.js.selectComponent() invoked.');\n  app.setState(function() {\n    var internal = app._state.get('internal');\n  \tinternal.setData('activeComponent', id);\n  });\n}"
+      "body": "function(id) {\n  app.js.log('app.js.selectComponent() invoked.');\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: id\n  })\n}"
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  app.setState(function() {\n    app.state.shouldSave = true;\n    clearTimeout(app.state.timer);\n    try { fn(); } catch(e) { console.error('app.js.update', e); }\n    app.state.timer = setTimeout(function() {\n    \tif(app.state.shouldBuild === true) {\n        app.js.build();\n      } else {\n        app.js.saveAndReloadProject();\n      }\n  \t}, 500);\n  });\n}"
+      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  // execute the update state function\n  // this function should call dispatch internally\n  try {\n    fn()\n  } catch(e) {\n    console.error('app.js.update', e)\n    return\n  }\n  \n  // reset timer so that it doesn't build too often\n  app.dispatch({\n    path: '/settings',\n    action: 'setTimer',\n    fn: function() {\n    \tif(app.state.settings.shouldReloadProject === true)\n        app.js.saveAndReloadProject()\n      else\n        app.js.build()\n  \t}\n  })\n  \n  // set shouldSave so that the icon lights up\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: true\n  })\n}"
     },
     {
       "name": "server",
-      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  \n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path + '?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "getProjects",
-      "body": "function(scope, attributes) {\n  app.js.log('app.js.getProjects() invoked.');\n  var projects = app._state.get('projects');\n  app.js.server('list', function(data) {\n    projects.removeAll();\n    app.setState(function() {\n      data.projects.forEach(function(project) {\n        projects.create({name: project});\n      });\n    });\n  });\n}"
+      "body": "function(scope, attributes) {  \n  app.js.server('list', function(data) {\n    app.dispatch({\n      path: '/projects',\n      action: 'clear'\n    });\n    \n    app.dispatch({\n      path: '/projects',\n      action: 'addAll',\n      projects: _.map(data.projects, function(item) {\n        return { name: item }\n      })\n    });\n  });\n}"
     },
     {
       "name": "loadProject",
-      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    app.js.cleanState(data.project, true);\n    app.js.build();\n  }, {name: projectName});\n}"
+      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    \n    app.buildProject = data.project\n  \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'activeComponent',\n      value: app.buildProject.rootId\n    })\n    \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'shouldReloadProject',\n      value: false\n    })\n    \n    app.js.build();\n    app.js.getProjects();\n  }, {name: projectName});\n}"
     },
     {
       "name": "setStatus",
@@ -114,11 +124,11 @@ var blissProject = {
     },
     {
       "name": "saveProject",
-      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace;\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: false\n  })\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "newProject",
-      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.js.cleanState(newBlissProject, false);\n}"
+      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function(){\n    app.buildProject = newBlissProject;\n\t})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n}"
     },
     {
       "name": "saveAndReloadProject",
@@ -126,27 +136,27 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
       "body": "function() {\n  app.js.log('app.js.refresh() invoked.');\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  app.js.refreshIframe();\n}"
     },
     {
-      "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    //app._state.reset();\n    app._state = state();\n    \n    // Set build project\n    app.js.log('setting build', buildProject);\n    app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    var internal = app._state.create('internal');\n    internal.setData('activeComponent', app.buildProject.rootId);\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var color = app._state.create('color');\n    color.setData('currentColor', '#ffffff');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n\n    var projects = app._state.create('projects');\n    //app.js.getProjects();\n  });\n}"
-    },
-    {
       "name": "log",
       "body": "function() {\n  return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
     },
     {
-      "name": "firebase_auth_ui",
+      "name": "firebaseAuthUI",
       "body": "function() {\n  var ui = app.state.firebase.auth_ui;\n  \n  var config = {\n    callbacks: {\n      signInSuccess: function(currentUser, credential, redirectUrl) {\n        return false;\n      },\n      uiShown: function() {}\n    },\n    signInSuccessUrl: window.location.href,\n    signInOptions: [\n      // Leave the lines as is for the providers you want to offer your users.\n      //firebase.auth.GoogleAuthProvider.PROVIDER_ID,\n      //firebase.auth.FacebookAuthProvider.PROVIDER_ID,\n      //firebase.auth.TwitterAuthProvider.PROVIDER_ID,\n      //firebase.auth.GithubAuthProvider.PROVIDER_ID,\n      firebase.auth.EmailAuthProvider.PROVIDER_ID,\n      //firebase.auth.PhoneAuthProvider.PROVIDER_ID\n    ],\n    // Terms of service url.\n    tosUrl: window.location.href\n  };\n  \n  /*\n  if(ui === null) {\n    // Initialize the FirebaseUI Widget using Firebase.\n    ui = new firebaseui.auth.AuthUI(firebase.auth());\n    app.setState(function() {\n      app.state.ui = ui;\n    });\n  } else {\n    ui = app.state.ui;\n    ui.reset();\n  }\n  */\n  \n  ui.reset();\n  \n  // The start method will wait until the DOM is loaded.\n  ui.start('#firebaseui-auth-container', config);\n}"
     },
     {
-      "name": "get_session",
-      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      console.log('session', data);\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'set_session',\n        'designer_token': data.token,\n        'email': data.email\n      });\n\n      app.setState(function() {\n        console.log('loading projects');\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "name": "getSession",
+      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'setSession',\n        'designer_token': data.token,\n        'email': data.email\n      });\n\n      app.setState(function() {\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "afterAuth",
+      "body": "function(scope, attributes) {\n  app.js.log('after auth invoked')\n\n  app.dispatch({\n    path: '/workspaces',\n    action: 'fetch'\n  })\n}"
     }
   ],
   "cssVars": [
@@ -182,7 +192,7 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "Bliss UI",
+      "name": "Bliss UI v2",
       "element": "div",
       "text": null,
       "attributes": [],
@@ -277,7 +287,7 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var display = app._state.get('display');\n  var show = display.findBy('name', 'components').active;\n  return show;\n}"
+          "body": "function() {\n  var list = app.state.layout.list\n  var layout = _.find(list, function(item) {\n  \treturn (item.name === \"components\")})\n  return layout.active\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -316,7 +326,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var designer = app._state.get('display').findBy('name', 'designer');\n  var properties = app._state.get('display').findBy('name', 'properties');\n  var components = app._state.get('display').findBy('name', 'components');\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var list = app.state.layout.list\n  \n  var designer = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"designer\")})\n  var properties = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"properties\")})\n  var components = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"components\")})\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -345,11 +355,11 @@ var blissProject = {
       "js": [
         {
           "name": "setComponentProp",
-          "body": "function(scope, props) {\n  var internal = app._state.get('internal');\n  return app.buildProject.components[internal.getData('activeComponent')];\n}"
+          "body": "function(scope, props) {\n  return app.buildProject.components[\n    app.state.settings.activeComponent]\n}"
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    var internal = app._state.get('internal');\n  \tvar activeComponent = internal.getData('activeComponent');\n    app.js.update(function() {\n      if(newComponent.id === app.buildProject.rootId) {\n        app.buildProject.name = newComponent.name;\n      }\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      if(newComponent.id === app.buildProject.rootId) {\n        app.buildProject.name = newComponent.name;\n      }\n      app.buildProject.components[\n        app.state.settings.activeComponent] = newComponent;\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -405,11 +415,11 @@ var blissProject = {
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = app._state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.resolution.selected)})\n  \n  styles.width = resolution.width\n  styles.height = resolution.height\n  \n  return styles;\n}"
         },
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  return (app.state.shouldBuild === true);\n}"
+          "body": "function(scope, attributes) {\n  var selected = app.state.views.selected\n  return (selected === 'designer')\n}"
         }
       ],
       "dynamicAttributes": [
@@ -422,7 +432,7 @@ var blissProject = {
       "previous": "204",
       "child": null,
       "parent": "205",
-      "ifFn": "shouldShow"
+      "ifFn": ""
     },
     "18": {
       "id": "18",
@@ -443,11 +453,11 @@ var blissProject = {
         },
         {
           "name": "setOnSelectProp",
-          "body": "function(scope, props) {\n  return function(id) {\n    app.js.selectComponent(id);\n  };\n}"
+          "body": "function(scope, props) {\n  return function(id) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'activeComponent',\n      value: id\n    })\n  };\n}"
         },
         {
           "name": "setOnCreateProp",
-          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(\n      app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnCloneProp",
@@ -459,7 +469,7 @@ var blissProject = {
         },
         {
           "name": "setOnMoveProp",
-          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() { app.buildProject = proj; });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(\n      app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() {\n      app.buildProject = proj;\n    });\n  }\n}"
         },
         {
           "name": "setThis",
@@ -467,7 +477,7 @@ var blissProject = {
         },
         {
           "name": "getSelected",
-          "body": "function(scope, attributes) {\n  var selected = app._state.get('internal').getData('activeComponent');\n  return selected;\n}"
+          "body": "function(scope, attributes) {\n  return app.state.settings.activeComponent\n}"
         }
       ],
       "dynamicAttributes": [
@@ -592,7 +602,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "next": "238",
@@ -647,7 +657,7 @@ var blissProject = {
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var internal = app._state.get('internal');\n  var activeComponent = internal.getData('activeComponent');\n  return (app.buildProject.components[activeComponent].name || '') + \" - JS\";\n};\n"
+          "body": "function(scope, attributes) {\n  var component = app.buildProject.components[\n    app.state.settings.activeComponent]\n  var name = component.name || ''\n  return name + ' - JS'\n};\n"
         }
       ],
       "next": "56",
@@ -747,7 +757,7 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var display = app._state.get('display');\n  var show = display.findBy('name', 'properties').active;\n  return show;\n}"
+          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  return layout.active\n}"
         }
       ],
       "next": null,
@@ -771,11 +781,11 @@ var blissProject = {
       "js": [
         {
           "name": "setComponentProp",
-          "body": "function(scope, props) {\n  var internal = app._state.get('internal');\n  var activeComponent = internal.getData('activeComponent');\n  return app.buildProject.components[activeComponent];\n}"
+          "body": "function(scope, props) {\n  return app.buildProject.components[\n    app.state.settings.activeComponent]\n}"
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      var internal = app._state.get('internal');\n  \t\tvar activeComponent = internal.getData('activeComponent');\n      app.buildProject.components[activeComponent] = newComponent;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'activeComponent',\n        value: newComponent.id\n      })\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [
@@ -828,7 +838,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -971,24 +981,16 @@ var blissProject = {
       ],
       "js": [
         {
-          "name": "saveProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
-        },
-        {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.saveProject();\n  }\n};"
-        },
-        {
-          "name": "setStatus",
-          "body": "function(message) {\n  app.setState(function() {\n    app.state.shouldSave = false;\n  \tapp.state.status = message;\n  });\n}"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.saveProject();\n  }\n};"
         },
         {
           "name": "getClass",
-          "body": "function(scope, attributes) {\n  if(app.state.shouldSave === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
+          "body": "function(scope, attributes) {\n  if(app.state.settings.shouldSave === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuWarn');\n    styles.borderColor = app.js.getCssVar('$menuWarn');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.settings.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuWarn');\n    styles.borderColor = app.js.getCssVar('$menuWarn');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1165,7 +1167,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'settings') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'settings') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1401,7 +1403,7 @@ var blissProject = {
         },
         {
           "name": "createProjectDist",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2295,15 +2297,15 @@ var blissProject = {
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  var show = app._state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'components')\n  })\n  \n  if(layout.active === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    var components = app._state.get('display').findBy('name', 'components');\n    app.setState(function() {\n      app._state.get('display').update(components.id, {active: !components.active});\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    var layout = _.find(app.state.layout.list,\n  \t\tfunction(item) { return (item.name === 'components')})\n\n    app.dispatch({\n      path: '/layout',\n      action: 'setActive',\n      name: layout.name,\n      active: !layout.active\n    })\n  }\n}"
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  var show = app._state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'components')\n  })\n  \n  var styles = {};\n  \n  if(layout.active === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2404,7 +2406,12 @@ var blissProject = {
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [],
+      "attributes": [
+        {
+          "name": "class",
+          "value": "hexColor"
+        }
+      ],
       "css": [
         {
           "selector": "$id",
@@ -2439,11 +2446,11 @@ var blissProject = {
       "js": [
         {
           "name": "getValue",
-          "body": "function(scope, attributes) {\n  var color = app._state.get('color');\n  return color.getData('currentColor');\n}"
+          "body": "function(scope, attributes) {\n  return app.state.settings.currentColor\n}"
         },
         {
           "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    var color = app._state.get('color');\n    app.setState(function() {\n      color.setData('currentColor', e.target.value);\n    });\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'currentColor',\n      value: e.target.value\n    })\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -2456,7 +2463,7 @@ var blissProject = {
           "value": "handleChange"
         }
       ],
-      "next": "154",
+      "next": "253",
       "previous": null,
       "child": null,
       "parent": "152"
@@ -2522,6 +2529,10 @@ var blissProject = {
             {
               "name": "display",
               "value": "inline-block"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
             }
           ]
         }
@@ -2529,11 +2540,11 @@ var blissProject = {
       "js": [
         {
           "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      var color = app._state.get('color');\n      color.setData('currentColor', e.target.value);\n    });\n  };\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n   \t\tkey: 'currentColor',\n      value: e.target.value\n    })\n  };\n};\n"
         },
         {
           "name": "getValue",
-          "body": "function(scope, attributes) {\n  var color = app._state.get('color');\n  return color.getData('currentColor');\n}"
+          "body": "function(scope, attributes) {\n  return app.state.settings.currentColor\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2547,7 +2558,7 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": "153",
+      "previous": "253",
       "child": null,
       "parent": "152"
     },
@@ -2702,15 +2713,15 @@ var blissProject = {
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  var show = app._state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  if(layout.active === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    var properties = app._state.get('display').findBy('name', 'properties');\n    app.setState(function() {\n      app._state.get('display').update(properties.id, {active: !properties.active});\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    var layout = _.find(app.state.layout.list,\n  \t\tfunction(item) { return (item.name === 'properties')})\n\n    app.dispatch({\n      path: '/layout',\n      action: 'setActive',\n      name: layout.name,\n      active: !layout.active\n    })\n  }\n}"
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  var show = app._state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  var styles = {};\n  \n  if(layout.active === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2826,7 +2837,7 @@ var blissProject = {
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  return app._state.get('projects').getAll();\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.projects.list\n};\n"
         },
         {
           "name": "getText",
@@ -3094,7 +3105,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'global_js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'global_js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3139,7 +3150,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'global_css') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'global_css') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3535,7 +3546,7 @@ var blissProject = {
         },
         {
           "name": "exportProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3905,7 +3916,7 @@ var blissProject = {
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var res = app._state.get('res');\n  var currentRes = res.findBy('value', res.getData('selected'));\n  return currentRes.label;\n}"
+          "body": "function(scope, attributes) {\n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.resolution.selected)})\n  return resolution.label\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -3953,7 +3964,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {\n    width: 'auto',\n    height: 'auto'\n  };\n  \n  var res = app._state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.previewWidth;\n  styles.height = selected.previewHeight;\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = { width: 'auto', height: 'auto' }\n  \n  var resolution = _.find(app.state.resolution.list,\n  \tfunction(item) {\n      return (app.state.resolution.selected === item.value)\n  \t})\n  \n  styles.width = resolution.previewWidth\n  styles.height = resolution.previewHeight\n  \n  return styles\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4085,7 +4096,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'css_vars') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'css_vars') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4130,7 +4141,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'page_load') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'page_load') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4175,7 +4186,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'node_packages') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'node_packages') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4269,7 +4280,7 @@ var blissProject = {
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var viewState = app._state.get('view');\n\tvar view = viewState.findBy('name', viewState.getData('selected'));\n  return view.label;\n}"
+          "body": "function(scope, attributes) {\n  var view = _.find(app.state.views.list,\n\t\tfunction(item) {\n    \treturn (app.state.views.selected === item.name)})\n  return view.label\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -4332,7 +4343,7 @@ var blissProject = {
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  var views = app._state.get('view').getAll();\n  return views;\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.views.list;\n};\n"
         },
         {
           "name": "getText",
@@ -4340,7 +4351,7 @@ var blissProject = {
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var view = app._state.get('view');\n  var name = scope.repeater[scope.repeater_index].name;\n  \n  return function(e) {\n    //var value = e.target.value;\n    app.setState(function() {\n      view.setData('selected', name);\n    });\n  }\n};"
+          "body": "function(scope, attributes) {\n  var name = scope.repeater[scope.repeater_index].name;\n  \n  return function(e) {\n    app.dispatch({\n      path: '/views',\n      action: 'setView',\n      name: name\n    })\n  }\n};"
         }
       ],
       "dynamicAttributes": [
@@ -4434,7 +4445,7 @@ var blissProject = {
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var viewState = app._state.get('res');\n\tvar view = viewState.findBy('value', viewState.getData('selected'));\n  return view.label;\n}"
+          "body": "function(scope, attributes) {\n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.resolution.selected)})\n  return resolution.label;\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -4497,7 +4508,7 @@ var blissProject = {
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  var res = app._state.get('res').getAll();\n  return res;\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.resolution.list\n};\n"
         },
         {
           "name": "getText",
@@ -4505,7 +4516,7 @@ var blissProject = {
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var view = app._state.get('res');\n  var name = scope.repeater[scope.repeater_index].value;\n  \n  return function(e) {\n    //var value = e.target.value;\n    app.setState(function() {\n      view.setData('selected', name);\n    });\n  }\n};"
+          "body": "function(scope, attributes) {\n  var value = scope.repeater[scope.repeater_index].value;\n  \n  return function(e) {\n    app.dispatch({\n      path: '/resolution',\n      action: 'setResolution',\n      value: value\n    })\n  }\n};"
         }
       ],
       "dynamicAttributes": [
@@ -4553,7 +4564,7 @@ var blissProject = {
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'data') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'data') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "next": "97",
@@ -4693,7 +4704,7 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "243",
+      "next": "251",
       "previous": null,
       "child": "244",
       "parent": "1"
@@ -4711,12 +4722,12 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  return (app.state.firebase.user) ? true : false;\n}"
+          "body": "function() {\n  return (app.state.firebase.user &&\n         \tapp.state.workspaces.active === false) ? \n    \t\t\t\ttrue : false;\n}"
         }
       ],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "242",
+      "previous": "251",
       "child": "111",
       "parent": "1"
     },
@@ -4783,7 +4794,7 @@ var blissProject = {
           "value": "#"
         },
         {
-          "name": "className",
+          "name": "class",
           "value": "dropdown-item"
         }
       ],
@@ -4819,7 +4830,7 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": "250",
+      "previous": "260",
       "child": "248",
       "parent": "107"
     },
@@ -4917,9 +4928,301 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "247",
+      "next": "260",
       "previous": "246",
       "child": null,
+      "parent": "107"
+    },
+    "251": {
+      "id": "251",
+      "name": "Workspaces",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return (app.state.workspaces.active === true)\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "243",
+      "previous": "242",
+      "child": "252",
+      "parent": "1"
+    },
+    "252": {
+      "id": "252",
+      "name": "List of workspaces",
+      "element": "div",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [
+        {
+          "name": "class",
+          "value": "workspaces"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px"
+            },
+            {
+              "name": "margin",
+              "value": "3px"
+            },
+            {
+              "name": "background-color",
+              "value": "#f3fbff"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "text-align",
+              "value": "left"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        },
+        {
+          "selector": "$id:hover",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#c0eaff"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  return app.state.workspaces.list;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  return item.name\n};\n"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.getProjects()\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "251"
+    },
+    "253": {
+      "id": "253",
+      "name": "input copy link",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "text-decoration",
+              "value": "none"
+            },
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "right",
+              "value": "65px"
+            },
+            {
+              "name": "top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    e.preventDefault()\n    \n    var input = document.querySelector('.hexColor');\n    input.select();\n\n    try {\n      var successful = document.execCommand('copy');\n      //var msg = successful ? 'successful' : 'unsuccessful';\n    } catch (err) {\n      //console.log('Oops, unable to copy');\n    }\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "154",
+      "previous": "153",
+      "child": "254",
+      "parent": "152"
+    },
+    "254": {
+      "id": "254",
+      "name": "clipboard icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-clipboard"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "253"
+    },
+    "258": {
+      "id": "258",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-hand-o-left"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "259",
+      "previous": null,
+      "child": null,
+      "parent": "260"
+    },
+    "259": {
+      "id": "259",
+      "name": "label",
+      "element": "span",
+      "text": "Switch Workspace",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "258",
+      "child": null,
+      "parent": "260"
+    },
+    "260": {
+      "id": "260",
+      "name": "switch workspace",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: true\n    })\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "247",
+      "previous": "250",
+      "child": "258",
       "parent": "107"
     }
   },
@@ -4929,10 +5232,10 @@ var blissProject = {
       "actions": [
         {
           "action": "setup",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var config = {\n    apiKey: \"AIzaSyBD09I5AfFlcQx5lpoY3XBjT150hw7tS0Y\",\n    authDomain: \"blissui-f09be.firebaseapp.com\",\n    databaseURL: \"https://blissui-f09be.firebaseio.com\",\n    projectId: \"blissui-f09be\",\n    storageBucket: \"blissui-f09be.appspot.com\",\n    messagingSenderId: \"843731683135\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  newData.user = null\n  newData.auth_ui = new firebaseui.auth.AuthUI(firebase.auth())\n  newData.auth = firebase.auth()\n  newData.database = firebase.database()\n  newData.storage = firebase.storage()\n  \n  newData.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      app.dispatch({\n        path: '/firebase',\n        action: 'set_user',\n        user: user\n      });\n      \n      user.getIdToken(true).then(function(idToken) {\n        app.dispatch({\n          path: '/firebase',\n          action: 'set_token',\n          user_token: idToken\n        });\n      });\n    } else {\n      // Clear user state\n      app.dispatch({\n        path: '/firebase',\n        action: 'set_user',\n        user: null\n      });\n      \n      app.dispatch({\n        path: '/firebase',\n        action: 'set_token',\n        user_token: null\n      });\n      \n      // Start UI flow\n      app.setState(function() {\n      \tapp.js.firebase_auth_ui();\n      });\n    }\n  });\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var config = {\n    apiKey: \"AIzaSyBD09I5AfFlcQx5lpoY3XBjT150hw7tS0Y\",\n    authDomain: \"blissui-f09be.firebaseapp.com\",\n    databaseURL: \"https://blissui-f09be.firebaseio.com\",\n    projectId: \"blissui-f09be\",\n    storageBucket: \"blissui-f09be.appspot.com\",\n    messagingSenderId: \"843731683135\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  newData.user = null\n  newData.auth_ui = new firebaseui.auth.AuthUI(firebase.auth())\n  newData.auth = firebase.auth()\n  newData.database = firebase.database()\n  newData.storage = firebase.storage()\n  \n  newData.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      app.dispatch({\n        path: '/firebase',\n        action: 'setUser',\n        user: user\n      });\n      \n      user.getIdToken(true).then(function(idToken) {\n        app.dispatch({\n          path: '/firebase',\n          action: 'setToken',\n          user_token: idToken\n        })\n        \n        app.js.afterAuth()\n        \n      })\n    } else {\n      // Clear user state\n      app.dispatch({\n        path: '/firebase',\n        action: 'setUser',\n        user: null\n      });\n      \n      app.dispatch({\n        path: '/firebase',\n        action: 'setToken',\n        user_token: null\n      });\n      \n      // Start UI flow\n      app.setState(function() {\n      \tapp.js.firebaseAuthUI();\n      });\n    }\n  });\n  \n  return newData;\n}"
         },
         {
-          "action": "set_user",
+          "action": "setUser",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user = args.user;\n  return newData;\n}"
         },
         {
@@ -4940,12 +5243,114 @@ var blissProject = {
           "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    email: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
         },
         {
-          "action": "set_token",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user_token = args.user_token;\n\n  // TODO: move this code into DataEvents system once created\n  $.ajaxSetup({ headers: { 'X-User-Token': newData.user_token } });\n  console.log('getting session');\n  app.js.get_session();\n  \n  return newData;\n}"
+          "action": "setToken",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.user_token = args.user_token;\n\n  // TODO: move this code into DataEvents system once created\n  $.ajaxSetup({ headers: { 'X-User-Token': newData.user_token } });\n  app.js.getSession();\n  \n  return newData;\n}"
         },
         {
-          "action": "set_session",
+          "action": "setSession",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/workspaces",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    active: true,\n    list: []\n  }\n  return newData\n}"
+        },
+        {
+          "action": "add",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData;\n}"
+        },
+        {
+          "action": "fetch",
+          "body": "function (data, args) {\n  $.ajax({\n    type: 'GET',\n    url: '/workspace/list',\n    data: data,\n    success: function(data) {\n      app.dispatch({\n        path: '/workspaces',\n        action: 'addAll',\n        list: data.workspaces\n      })\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n  \n  return data;\n}"
+        },
+        {
+          "action": "addAll",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.list\n  return newData;\n}"
+        },
+        {
+          "action": "set",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  if(newData.hasOwnProperty(args.key))\n    newData[args.key] = args.value;\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/projects",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return { list: [] }\n}"
+        },
+        {
+          "action": "add",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData\n}"
+        },
+        {
+          "action": "addAll",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.projects\n  return newData;\n}"
+        },
+        {
+          "action": "clear",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = []\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/settings",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldReloadProject: true,\n    currentColor: '#ffffff',\n    workspace: 'bliss',\n    timer: null\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
+        },
+        {
+          "action": "set",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  if(newData.hasOwnProperty(args.key)) newData[args.key] = args.value;\n  return newData;\n}"
+        },
+        {
+          "action": "setTimer",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  clearTimeout(app.state.settings.timer);\n  newData.timer = setTimeout(args.fn, 500)\n  return newData\n}"
+        }
+      ]
+    },
+    {
+      "path": "/views",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
+        },
+        {
+          "action": "setView",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.selected = args.name\n  return newData\n}"
+        }
+      ]
+    },
+    {
+      "path": "/resolution",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    selected: 'full',\n    list: [\n      {\n        value: 'full',\n        label: 'Viewport',\n        width: '100%',\n        height: 'calc(100% - 32px)',\n        previewWidth: '100%',\n        previewHeight: 'calc(100vh - 100px)'\n      },\n      {\n        value: 'galaxys5',\n        label: 'Galaxy S5',\n        width: '360px',\n        height: '640px',\n        previewWidth: 'calc(360px + 20px)',\n        previewHeight: 'calc(640px + 52px)'\n      },\n      {\n        value: 'nexus5x',\n        label: 'Nexus 5X',\n        width: '412px',\n        height: '732px',\n        previewWidth: 'calc(412px + 20px)',\n        previewHeight: 'calc(732px + 52px)'},\n      {\n        value: 'nexus6p',\n        label: 'Nexus 6P',\n        width: '412px',\n        height: '732px',\n        previewWidth: 'calc(412px + 20px)',\n        previewHeight: 'calc(732px + 52px)'\n      },\n      {\n        value: 'iphone5',\n        label: 'iPhone 5',\n        width: '320px',\n        height: '568px',\n        previewWidth: 'calc(320px + 20px)',\n        previewHeight: 'calc(568px + 52px)'\n      },\n      {\n        value: 'iphone6',\n        label: 'iPhone 6',\n        width: '375px',\n        height: '667px',\n        previewWidth: 'calc(375px + 20px)',\n        previewHeight: 'calc(667px + 52px)'\n      },\n      {\n        value: 'iphone6plus',\n        label: 'iPhone 6 Plus',\n        width: '414px',\n        height: '736px',\n        previewWidth: 'calc(414px + 20px)',\n        previewHeight: 'calc(736px + 52px)'\n      },\n      {\n        value: 'ipad',\n        label: 'iPad',\n        width: '768px',\n        height: '1024px',\n        previewWidth: 'calc(768px + 20px)',\n        previewHeight: 'calc(1024px + 52px)'\n      },\n      {\n        value: 'ipadpro',\n        label: 'iPad Pro',\n        width: '1024px',\n        height: '1366px',\n        previewWidth: 'calc(1024px + 20px)',\n        previewHeight: 'calc(1366px + 52px)'\n      }\n    ]\n  }\n}"
+        },
+        {
+          "action": "setResolution",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.selected = args.value\n  return newData\n}"
+        }
+      ]
+    },
+    {
+      "path": "/layout",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    list: [\n      {\n        name: 'components',\n        width: '20%',\n        active: true\n      },\n      {\n        name: 'designer',\n        width: '60%',\n        width2: '80%',\n        width3: '100%',\n        active: true\n      },\n      {\n        name: 'properties',\n        width: '20%',\n        active: true\n      }\n    ]\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "setActive",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  var layout = _.find(newData.list, function(item) {\n  \treturn (item.name === args.name)\n  })\n  layout.active = args.active\n  return newData\n}"
         }
       ]
     }

@@ -7,13 +7,13 @@ var ghost = (function() {
       props: {},
       state: {}
     };
-    app.js.init = function() {
+    app.js['init'] = function() {
       app.state.top = 0;
       app.state.left = 0;
       app.render();
       app.js.loop();
     }
-    app.js.move = function() {
+    app.js['move'] = function() {
       app.setState(function() {
         var w = window.innerWidth;
         var h = window.innerHeight;
@@ -23,20 +23,20 @@ var ghost = (function() {
         app.state.left = left;
       });
     }
-    app.js.rando = function(min, max) {
+    app.js['rando'] = function(min, max) {
       return Math.floor(Math.random() * max) + min;
     }
-    app.js.loop = function(scope, attributes) {
+    app.js['loop'] = function(scope, attributes) {
       var interval = app.js.rando(200, 500);
       app.state.timer = setInterval(function() {
         app.js.move();
       }, interval);
     }
-    app.js.destroy_component = function() {
+    app.js['destroy_component'] = function() {
       clearInterval(app.state.timer);
     };
     app.methods["1"] = {};
-    app.methods["1"].getStyles = function(scope, attributes) {
+    app.methods["1"]['getStyles'] = function(scope, attributes) {
       var styles = {};
 
       styles.top = app.state.top + 'px';
@@ -69,9 +69,8 @@ var ghost = (function() {
         }, {
           "id": "ghost_1",
           "key": app.getKey('id', '1')
-        }), "Ghost"));
+        }), 'Ghost'));
     };
-    app.state = {};
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
       if (isComponent) {

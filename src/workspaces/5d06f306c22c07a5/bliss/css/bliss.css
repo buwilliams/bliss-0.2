@@ -1,5 +1,18 @@
-#blissUi_1 {
+#blissUiV_1 {
   min-width: 1400px;
+}
+
+#listOfWorkspaces_252 {
+  padding: 5px;
+  margin: 3px;
+  background-color: #f3fbff;
+  cursor: pointer;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#listOfWorkspaces_252:hover {
+  background-color: #c0eaff;
 }
 
 #mainNav {
@@ -113,6 +126,22 @@
 }
 
 #divider_246 {
+}
+
+#emailLabel_250 {
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+#switchWorkspace_260 {
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 10pt;
+}
+
+#label_259 {
+  display: inline-block;
+  margin-left: 10px;
 }
 
 #signOut_247 {
@@ -252,6 +281,15 @@
   padding: 4px 5px;
 }
 
+#inputCopyLink_253 {
+  display: inline-block;
+  color: #e0ebf0;
+  text-decoration: none;
+  position: absolute;
+  right: 65px;
+  top: 10px;
+}
+
 #inputColor_154 {
   border: none;
   -webkit-appearance: none;
@@ -264,6 +302,7 @@
   padding: 0px;
   top: 5px;
   display: inline-block;
+  cursor: pointer;
 }
 
 #colorPickerLabel_186 {

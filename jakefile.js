@@ -12,7 +12,9 @@ var config = {
   bliss_component_path: `src/workspaces/${process.env.BLISS_USER}/bliss/components`,
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-data', 'bliss-utils'],
   bliss_workspace: `src/workspaces/${process.env.BLISS_USER}`,
-  bliss_workspace_build: `build/${process.env.BLISS_USER}`
+  bliss_workspace_build: `build/${process.env.BLISS_USER}`,
+  bliss_workspace_test: `src/workspaces/${process.env.BLISS_TEST_USER}`,
+  bliss_workspace_test_build: `build/${process.env.BLISS_TEST_USER}`
 };
 
 task('compile-jsx', function(inputPath, outputPath) {
@@ -80,6 +82,7 @@ task('build', function(){
 
   console.log('>> copying workspaces');
   fse.copySync(config.bliss_workspace, config.bliss_workspace_build);
+  fse.copySync(config.bliss_workspace_test, config.bliss_workspace_test_build);
 
   t = jake.Task['build-all-components'];
   t.invoke();
@@ -93,6 +96,17 @@ task('update-bliss', function() {
   fse.copySync('build','src/workspaces',{overwrite:true,dereference:true});
 });
 
+desc('Use bliss v2');
+task('migrate', function(version) {
+  var source = `src/workspaces/5d06f306c22c07a5/bliss/projects/bliss_ui_${version}.json`;
+  var dest = `src/workspaces/5d06f306c22c07a5/bliss/projects/bliss_ui.json`;
+  fse.copySync(source, dest, { overwrite: true, dereference: true });
+  var json = fse.readJsonSync(dest)
+  json.name = "Bliss UI"
+  json.build = "bliss"
+  fse.writeJsonSync(dest, json, { spaces: 2 })
+})
+
 task('clean', function(){
   fse.removeSync('build');
 });
@@ -103,8 +117,12 @@ task('server', function() {
 });
 
 desc('Execute all tests.');
-task('test', function() {
-  var cmd = `./node_modules/.bin/mocha "src/**/*-test.js"`
+task('test', function(optionalFilePattern) {
+  var cmd = `BLISS_ENV=test ./node_modules/.bin/mocha "src/**/*-test.js"`
+  if(optionalFilePattern) {
+    cmd = `BLISS_ENV=test ./node_modules/.bin/mocha ` +
+          `"${optionalFilePattern}" --no-timeouts`;
+  }
   jake.exec(cmd, {printStdout: true}, function () {
     console.log('All tests passed.');
   });

@@ -62,7 +62,7 @@ var blissProject = {
           "properties": [
             {
               "name": "border",
-              "value": "solid 1px transparent"
+              "value": "solid 1px #000"
             },
             {
               "name": "background-color",
@@ -82,7 +82,7 @@ var blissProject = {
             },
             {
               "name": "color",
-              "value": "white"
+              "value": "#000"
             },
             {
               "name": "position",
@@ -99,10 +99,6 @@ var blissProject = {
             {
               "name": "border-radius",
               "value": "30px"
-            },
-            {
-              "name": "opacity",
-              "value": "0.8"
             }
           ]
         }

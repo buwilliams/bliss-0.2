@@ -65,12 +65,7 @@ var blissProject = {
       "element": "div",
       "text": "",
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
+      "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,

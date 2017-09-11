@@ -37,11 +37,13 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
+    "popper.js": "^1.12.5",
     "pretty": "^1.0.0",
     "pug": "^2.0.0-rc.2",
     "react": "15.4.2",
     "react-code-mirror": "^3.1.0",
     "react-dom": "15.4.2",
+    "request": "^2.81.0",
     "sentencer": "^0.1.5",
     "serve-index": "^1.8.0",
     "shorter": "^0.2.1",
@@ -53,7 +55,8 @@
     "babel-plugin-transform-react-jsx": "^6.23.0",
     "babel-preset-env": "^1.2.1",
     "chai": "^4.1.0",
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "pryjs": "^1.0.3"
   },
   "keywords": []
 }

@@ -18,12 +18,14 @@ const tokens = require('./core/tokens.js')
 
 app.use(bodyParser.json())
 
-var secure = app.use(authorization({ protected_urls: ['/user',
-                                                      '/compiler',
-                                                      '/project',
-                                                      '/website',
-                                                      '/workspace',
-                                                      '/session']}));
+var secure = app.use(
+  authorization(
+    { protected_urls: ['/user',
+                       '/compiler',
+                       '/project',
+                       '/website',
+                       '/workspace',
+                       '/session']}));
 
 app.get('/', function(req, res) {
   res.redirect(`/hosted/${env.bliss_user}/website/`);
@@ -54,7 +56,7 @@ app.use('/.well-known',
   {dotfiles:'allow'}));
 
 // Environment specific servers
-if(env.bliss_env === "development") {
+if(env.bliss_env === "development" || env.bliss_env === "test") {
   app.listen(env.port, function () {
     console.log(`Find your Bliss on port ${env.port}!`);
   });

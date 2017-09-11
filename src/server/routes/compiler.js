@@ -27,25 +27,48 @@ var getDeployer = function(projectJson) {
 };
 
 router.post('/build', function (req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
   var projectJson = req.body;
   var compiler = getCompiler(projectJson);
-  compiler.compile(ws.workspace(env, req.session), projectJson, null);
+  compiler.compile(
+    ws.workspace(env, req.session, req.query.workspace),
+    projectJson,
+    null);
   res.send({success: true});
   console.log(`Built '${projectJson.name}'`);
 });
 
 router.post('/export', function (req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
   var projectJson = req.body;
   var compiler = getCompiler(projectJson);
-  compiler.export(ws.workspace(env, req.session), projectJson, null);
+  compiler.export(
+    ws.workspace(env, req.session, req.query.workspace),
+    projectJson,
+    null);
   res.send({success: true});
   console.log(`Exported component '${projectJson.name}'`);
 });
 
 router.post('/dist', function (req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
   var projectJson = req.body;
   var deployer = getDeployer(projectJson);
-  deployer.write(projectJson, ws.workspace(env, req.session), ws.deploy(env, req.session));
+  deployer.write(projectJson,
+    ws.workspace(env, req.session, req.query.workspace),
+    ws.deploy(env, req.session, req.query.workspace));
   res.send({success: true});
   console.log(`Deployed '${projectJson.name}'`);
 });

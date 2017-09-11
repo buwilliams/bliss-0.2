@@ -16,12 +16,12 @@ body {
 
 #numberOfGhostsContainer_5 {
   position: fixed;
-  background-color: #fafafa;
-  margin-left: calc(100vw/2 - 150px);
-  margin-top: calc(100vh/2 - 200px);
+  background-color: #ececec;
+  margin-left: calc(50% - 100px);
+  margin-top: calc(50% - 200px);
   padding: 25px 50px;
   border-radius: 10px;
-  border: solid 1px #ccc;
+  border: solid 1px #000;
 }
 
 #header_7 {

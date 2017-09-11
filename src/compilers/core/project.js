@@ -7,18 +7,21 @@ module.exports = {
   formatJsonName: function(name) {
     return str.getSnake(name) + '.json';
   },
+
   readProject: function(workspace, name) {
     var fullpath = path.join(workspace, 'projects',
       this.formatJsonName(name));
     var jsonStr = fs.readFileSync(fullpath);
     return JSON.parse(jsonStr);
   },
+
   writeProject: function(workspace, json) {
     var fullpath = path.join(workspace, 'projects',
       this.formatJsonName(json.name));
     var jsonStr = JSON.stringify(json, null, 2);
     fs.writeFileSync(fullpath, jsonStr);
   },
+
   writeComponent: function(workspace, project, filename, content) {
     var d = path.join(workspace, 'components',
       project.export);
@@ -26,10 +29,12 @@ module.exports = {
     var fullpath = path.join(d, filename);
     fs.writeFileSync(fullpath, content);
   },
+
   writeBuild: function(workspace, filepath, strData) {
     var fullpath = path.join(workspace, filepath);
     fs.writeFileSync(fullpath, strData);
   },
+
   createWorkspace: function(workspace) {
     mkdirp.sync(workspace);
     var dirs = ['components', 'projects', 'assets', 'css', 'js']
@@ -37,6 +42,7 @@ module.exports = {
       mkdirp.sync(path.join(workspace, dir));
     });
   },
+  
   listProjects: function(workspace) {
     var out = [];
     fs.readdirSync(path.join(workspace, 'projects')).forEach(function(file) {
