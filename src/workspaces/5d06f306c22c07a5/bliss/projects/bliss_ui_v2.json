@@ -88,7 +88,7 @@
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject;\n  \n  // Send firebase security token\n  $.ajaxSetup({\n    headers: {\n      'X-User-Token': app.state.firebase.user_token\n    }\n  })\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  app.js.cleanState(newBlissProject, false)\n}"
+      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({\n    headers: {\n      'X-User-Token': app.state.firebase.user_token\n    }\n  })\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  app.js.cleanState(newBlissProject, false)\n}"
     },
     {
       "name": "build",
@@ -144,7 +144,7 @@
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    app._state = state();\n    \n    // Set build project\n    //app.js.log('setting build', buildProject);\n    //app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n  });\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n  });\n}"
     },
     {
       "name": "log",
@@ -602,7 +602,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "next": "238",
@@ -657,7 +657,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var name = app.buildProject.components[\n    app.state.settings.activeComponent] || ''\n  return name + ' - JS'\n};\n"
+          "body": "function(scope, attributes) {\n  var component = app.buildProject.components[\n    app.state.settings.activeComponent]\n  var name = component.name || ''\n  return name + ' - JS'\n};\n"
         }
       ],
       "next": "56",
@@ -838,7 +838,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'designer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -1175,7 +1175,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'settings') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'settings') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3113,7 +3113,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'global_js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'global_js') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3158,7 +3158,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'global_css') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'global_css') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3924,7 +3924,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var res = app._state.get('res');\n  var currentRes = res.findBy('value', res.getData('selected'));\n  return currentRes.label;\n}"
+          "body": "function(scope, attributes) {\n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.resolution.selected)})\n  return resolution.label\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -3972,7 +3972,7 @@
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {\n    width: 'auto',\n    height: 'auto'\n  };\n  \n  var res = app._state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.previewWidth;\n  styles.height = selected.previewHeight;\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = { width: 'auto', height: 'auto' }\n  \n  var resolution = _.find(app.state.resolution.list,\n  \tfunction(item) {\n      return (app.state.resolution.selected === item.value)\n  \t})\n  \n  styles.width = resolution.previewWidth\n  styles.height = resolution.previewHeight\n  \n  return styles\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4104,7 +4104,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'css_vars') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'css_vars') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4149,7 +4149,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'page_load') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'page_load') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4194,7 +4194,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'node_packages') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'node_packages') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "dynamicAttributes": [
@@ -4288,7 +4288,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var viewState = app._state.get('view');\n\tvar view = viewState.findBy('name', viewState.getData('selected'));\n  return view.label;\n}"
+          "body": "function(scope, attributes) {\n  var view = _.find(app.state.views.list,\n\t\tfunction(item) {\n    \treturn (app.state.views.selected === item.name)})\n  return view.label\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -4351,7 +4351,7 @@
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  var views = app._state.get('view').getAll();\n  return views;\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.views.list;\n};\n"
         },
         {
           "name": "getText",
@@ -4359,7 +4359,7 @@
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var view = app._state.get('view');\n  var name = scope.repeater[scope.repeater_index].name;\n  \n  return function(e) {\n    //var value = e.target.value;\n    app.setState(function() {\n      view.setData('selected', name);\n    });\n  }\n};"
+          "body": "function(scope, attributes) {\n  var name = scope.repeater[scope.repeater_index].name;\n  \n  return function(e) {\n    app.dispatch({\n      path: '/views',\n      action: 'setView',\n      name: name\n    })\n  }\n};"
         }
       ],
       "dynamicAttributes": [
@@ -4453,7 +4453,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var viewState = app._state.get('res');\n\tvar view = viewState.findBy('value', viewState.getData('selected'));\n  return view.label;\n}"
+          "body": "function(scope, attributes) {\n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.resolution.selected)})\n  return resolution.label;\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -4516,7 +4516,7 @@
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  var res = app._state.get('res').getAll();\n  return res;\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.resolution.list\n};\n"
         },
         {
           "name": "getText",
@@ -4524,7 +4524,7 @@
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var view = app._state.get('res');\n  var name = scope.repeater[scope.repeater_index].value;\n  \n  return function(e) {\n    //var value = e.target.value;\n    app.setState(function() {\n      view.setData('selected', name);\n    });\n  }\n};"
+          "body": "function(scope, attributes) {\n  var value = scope.repeater[scope.repeater_index].value;\n  \n  return function(e) {\n    app.dispatch({\n      path: '/resolution',\n      action: 'setResolution',\n      value: value\n    })\n  }\n};"
         }
       ],
       "dynamicAttributes": [
@@ -4572,7 +4572,7 @@
       "js": [
         {
           "name": "getStyle",
-          "body": "function() {\n  var selected = app._state.get('view').getData('selected');\n  var displayValue = (selected === 'data') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'data') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
         }
       ],
       "next": "97",
@@ -5153,6 +5153,10 @@
         {
           "action": "init",
           "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
+        },
+        {
+          "action": "setView",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.selected = args.name\n  return newData\n}"
         }
       ]
     },
@@ -5162,15 +5166,10 @@
         {
           "action": "init",
           "body": "function (data, args) {\n  return {\n    selected: 'full',\n    list: [\n      {\n        value: 'full',\n        label: 'Viewport',\n        width: '100%',\n        height: 'calc(100% - 32px)',\n        previewWidth: '100%',\n        previewHeight: 'calc(100vh - 100px)'\n      },\n      {\n        value: 'galaxys5',\n        label: 'Galaxy S5',\n        width: '360px',\n        height: '640px',\n        previewWidth: 'calc(360px + 20px)',\n        previewHeight: 'calc(640px + 52px)'\n      },\n      {\n        value: 'nexus5x',\n        label: 'Nexus 5X',\n        width: '412px',\n        height: '732px',\n        previewWidth: 'calc(412px + 20px)',\n        previewHeight: 'calc(732px + 52px)'},\n      {\n        value: 'nexus6p',\n        label: 'Nexus 6P',\n        width: '412px',\n        height: '732px',\n        previewWidth: 'calc(412px + 20px)',\n        previewHeight: 'calc(732px + 52px)'\n      },\n      {\n        value: 'iphone5',\n        label: 'iPhone 5',\n        width: '320px',\n        height: '568px',\n        previewWidth: 'calc(320px + 20px)',\n        previewHeight: 'calc(568px + 52px)'\n      },\n      {\n        value: 'iphone6',\n        label: 'iPhone 6',\n        width: '375px',\n        height: '667px',\n        previewWidth: 'calc(375px + 20px)',\n        previewHeight: 'calc(667px + 52px)'\n      },\n      {\n        value: 'iphone6plus',\n        label: 'iPhone 6 Plus',\n        width: '414px',\n        height: '736px',\n        previewWidth: 'calc(414px + 20px)',\n        previewHeight: 'calc(736px + 52px)'\n      },\n      {\n        value: 'ipad',\n        label: 'iPad',\n        width: '768px',\n        height: '1024px',\n        previewWidth: 'calc(768px + 20px)',\n        previewHeight: 'calc(1024px + 52px)'\n      },\n      {\n        value: 'ipadpro',\n        label: 'iPad Pro',\n        width: '1024px',\n        height: '1366px',\n        previewWidth: 'calc(1024px + 20px)',\n        previewHeight: 'calc(1366px + 52px)'\n      }\n    ]\n  }\n}"
-        }
-      ]
-    },
-    {
-      "path": "/displays",
-      "actions": [
+        },
         {
-          "action": "init",
-          "body": "function (data, args) {\n  return {\n    list: [\n      { name: 'components', width: '20%', active: true},\n      { name: 'designer',   width: '60%', active: true, width2: '80%', width3: '100%' },\n      { name: 'properties', width: '20%', active: true}\n    ]\n  }\n}"
+          "action": "setResolution",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.selected = args.value\n  return newData\n}"
         }
       ]
     },

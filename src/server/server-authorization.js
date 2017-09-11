@@ -23,6 +23,16 @@ module.exports = function(options) {
         }
       }
       next()
+      return
+    } else if(env.bliss_ignore_auth === "true") {
+      req.session = {
+        user: {
+          email: env.bliss_user_email,
+          username: str.token(env.bliss_user_email)
+        }
+      }
+      next()
+      return
     }
 
     var matches = _.reduce(options.protected_urls, function(result, item) {

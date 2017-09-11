@@ -18,12 +18,14 @@ const tokens = require('./core/tokens.js')
 
 app.use(bodyParser.json())
 
-var secure = app.use(authorization({ protected_urls: ['/user',
-                                                      '/compiler',
-                                                      '/project',
-                                                      '/website',
-                                                      '/workspace',
-                                                      '/session']}));
+var secure = app.use(
+  authorization(
+    { protected_urls: ['/user',
+                       '/compiler',
+                       '/project',
+                       '/website',
+                       '/workspace',
+                       '/session']}));
 
 app.get('/', function(req, res) {
   res.redirect(`/hosted/${env.bliss_user}/website/`);

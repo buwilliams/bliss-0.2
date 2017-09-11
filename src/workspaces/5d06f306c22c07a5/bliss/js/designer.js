@@ -8,7 +8,7 @@ var blissUiV = (function() {
     };
     app.js['init'] = function() {
       // Start Bliss with Empty Project
-      app.buildProject = newBlissProject;
+      app.buildProject = newBlissProject
 
       // Send firebase security token
       $.ajaxSetup({
@@ -210,13 +210,6 @@ var blissUiV = (function() {
     app.js['cleanState'] = function(buildProject, shouldBuildProject) {
       app.js.log('app.js.cleanState() invoked.');
       app.setState(function() {
-        // Clean existing state
-        app._state = state();
-
-        // Set build project
-        //app.js.log('setting build', buildProject);
-        //app.buildProject = buildProject;
-
         // Set State
         app.state.shouldSave = false;
         app.state.shouldBuild = shouldBuildProject;
@@ -224,120 +217,6 @@ var blissUiV = (function() {
         // Set internal state
         //var internal = app._state.create('internal');
         //internal.setData('activeComponent', app.buildProject.rootId)
-
-        var view = app._state.create('view');
-        view.create({
-          name: 'designer',
-          label: 'Designer'
-        });
-        view.create({
-          name: 'js',
-          label: 'JavaScript'
-        });
-        view.create({
-          name: 'data',
-          label: 'Data Editor'
-        });
-        view.create({
-          name: 'global_js',
-          label: 'Global JS'
-        });
-        view.create({
-          name: 'global_css',
-          label: 'Global CSS'
-        });
-        view.create({
-          name: 'css_vars',
-          label: 'CSS Variables'
-        });
-        view.create({
-          name: 'page_load',
-          label: 'Page Load'
-        });
-        view.create({
-          name: 'node_packages',
-          label: 'Node Packages'
-        });
-        view.create({
-          name: 'settings',
-          label: 'Settings'
-        });
-        view.setData('selected', 'designer');
-
-        var res = app._state.create('res');
-        res.create({
-          value: 'full',
-          label: 'Viewport',
-          width: '100%',
-          height: 'calc(100% - 32px)',
-          previewWidth: '100%',
-          previewHeight: 'calc(100vh - 100px)'
-        });
-        res.create({
-          value: 'galaxys5',
-          label: 'Galaxy S5',
-          width: '360px',
-          height: '640px',
-          previewWidth: 'calc(360px + 20px)',
-          previewHeight: 'calc(640px + 52px)'
-        });
-        res.create({
-          value: 'nexus5x',
-          label: 'Nexus 5X',
-          width: '412px',
-          height: '732px',
-          previewWidth: 'calc(412px + 20px)',
-          previewHeight: 'calc(732px + 52px)'
-        });
-        res.create({
-          value: 'nexus6p',
-          label: 'Nexus 6P',
-          width: '412px',
-          height: '732px',
-          previewWidth: 'calc(412px + 20px)',
-          previewHeight: 'calc(732px + 52px)'
-        });
-        res.create({
-          value: 'iphone5',
-          label: 'iPhone 5',
-          width: '320px',
-          height: '568px',
-          previewWidth: 'calc(320px + 20px)',
-          previewHeight: 'calc(568px + 52px)'
-        });
-        res.create({
-          value: 'iphone6',
-          label: 'iPhone 6',
-          width: '375px',
-          height: '667px',
-          previewWidth: 'calc(375px + 20px)',
-          previewHeight: 'calc(667px + 52px)'
-        });
-        res.create({
-          value: 'iphone6plus',
-          label: 'iPhone 6 Plus',
-          width: '414px',
-          height: '736px',
-          previewWidth: 'calc(414px + 20px)',
-          previewHeight: 'calc(736px + 52px)'
-        });
-        res.create({
-          value: 'ipad',
-          label: 'iPad',
-          width: '768px',
-          height: '1024px',
-          previewWidth: 'calc(768px + 20px)',
-          previewHeight: 'calc(1024px + 52px)'
-        });
-        res.create({
-          value: 'ipadpro',
-          label: 'iPad Pro',
-          width: '1024px',
-          height: '1366px',
-          previewWidth: 'calc(1024px + 20px)',
-          previewHeight: 'calc(1366px + 52px)'
-        });
-        res.setData('selected', 'full');
       });
     }
     app.js['log'] = function() {
@@ -593,54 +472,56 @@ var blissUiV = (function() {
     };
     app.methods["229"] = {};
     app.methods["229"]['getText'] = function(scope, attributes) {
-      var viewState = app._state.get('view');
-      var view = viewState.findBy('name', viewState.getData('selected'));
-      return view.label;
+      var view = _.find(app.state.views.list,
+        function(item) {
+          return (app.state.views.selected === item.name)
+        })
+      return view.label
     }
     app.methods["231"] = {};
     app.methods["231"]['repeater'] = function(scope, attributes) {
-      var views = app._state.get('view').getAll();
-      return views;
+      return app.state.views.list;
     };
 
     app.methods["231"]['getText'] = function(scope, attributes) {
       return scope.repeater[scope.repeater_index].label;
     }
     app.methods["231"]['handleClick'] = function(scope, attributes) {
-      var view = app._state.get('view');
       var name = scope.repeater[scope.repeater_index].name;
 
       return function(e) {
-        //var value = e.target.value;
-        app.setState(function() {
-          view.setData('selected', name);
-        });
+        app.dispatch({
+          path: '/views',
+          action: 'setView',
+          name: name
+        })
       }
     };
     app.methods["234"] = {};
     app.methods["234"]['getText'] = function(scope, attributes) {
-      var viewState = app._state.get('res');
-      var view = viewState.findBy('value', viewState.getData('selected'));
-      return view.label;
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (item.value === app.state.resolution.selected)
+        })
+      return resolution.label;
     }
     app.methods["236"] = {};
     app.methods["236"]['repeater'] = function(scope, attributes) {
-      var res = app._state.get('res').getAll();
-      return res;
+      return app.state.resolution.list
     };
 
     app.methods["236"]['getText'] = function(scope, attributes) {
       return scope.repeater[scope.repeater_index].label;
     }
     app.methods["236"]['handleClick'] = function(scope, attributes) {
-      var view = app._state.get('res');
-      var name = scope.repeater[scope.repeater_index].value;
+      var value = scope.repeater[scope.repeater_index].value;
 
       return function(e) {
-        //var value = e.target.value;
-        app.setState(function() {
-          view.setData('selected', name);
-        });
+        app.dispatch({
+          path: '/resolution',
+          action: 'setResolution',
+          value: value
+        })
       }
     };
     app.methods["150"] = {};
@@ -868,7 +749,7 @@ var blissUiV = (function() {
     }
     app.methods["80"] = {};
     app.methods["80"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'designer') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -879,21 +760,25 @@ var blissUiV = (function() {
       var styles = {
         width: 'auto',
         height: 'auto'
-      };
+      }
 
-      var res = app._state.get('res');
-      var selected = res.findBy('value', res.getData('selected'));
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (app.state.resolution.selected === item.value)
+        })
 
-      styles.width = selected.previewWidth;
-      styles.height = selected.previewHeight;
+      styles.width = resolution.previewWidth
+      styles.height = resolution.previewHeight
 
-      return styles;
+      return styles
     }
     app.methods["204"] = {};
     app.methods["204"]['getText'] = function(scope, attributes) {
-      var res = app._state.get('res');
-      var currentRes = res.findBy('value', res.getData('selected'));
-      return currentRes.label;
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (item.value === app.state.resolution.selected)
+        })
+      return resolution.label
     }
     app.methods["17"] = {};
     app.methods["17"]['getStyles'] = function(scope, attributes) {
@@ -915,7 +800,7 @@ var blissUiV = (function() {
     }
     app.methods["54"] = {};
     app.methods["54"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'js') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -923,8 +808,9 @@ var blissUiV = (function() {
     }
     app.methods["55"] = {};
     app.methods["55"]['getText'] = function(scope, attributes) {
-      var name = app.buildProject.components[
-        app.state.settings.activeComponent] || ''
+      var component = app.buildProject.components[
+        app.state.settings.activeComponent]
+      var name = component.name || ''
       return name + ' - JS'
     };
     app.methods["79"] = {};
@@ -946,7 +832,7 @@ var blissUiV = (function() {
     }
     app.methods["238"] = {};
     app.methods["238"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'data') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -965,7 +851,7 @@ var blissUiV = (function() {
     }
     app.methods["97"] = {};
     app.methods["97"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'settings') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -986,7 +872,7 @@ var blissUiV = (function() {
     };
     app.methods["179"] = {};
     app.methods["179"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'global_js') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1005,7 +891,7 @@ var blissUiV = (function() {
     }
     app.methods["180"] = {};
     app.methods["180"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'global_css') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1025,7 +911,7 @@ var blissUiV = (function() {
     };
     app.methods["225"] = {};
     app.methods["225"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'css_vars') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1060,7 +946,7 @@ var blissUiV = (function() {
     }
     app.methods["226"] = {};
     app.methods["226"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'page_load') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1128,7 +1014,7 @@ var blissUiV = (function() {
     };
     app.methods["227"] = {};
     app.methods["227"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'node_packages') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1451,6 +1337,11 @@ var blissUiV = (function() {
         ]
       }
     }
+    app.schema['/views']['setView'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.selected = args.name
+      return newData
+    }
     if (app.schema['/views']['init']) {
       app.assignPath(app.state, '/views', app.schema['/views']['init']());
     } else {
@@ -1535,38 +1426,15 @@ var blissUiV = (function() {
         ]
       }
     }
+    app.schema['/resolution']['setResolution'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.selected = args.value
+      return newData
+    }
     if (app.schema['/resolution']['init']) {
       app.assignPath(app.state, '/resolution', app.schema['/resolution']['init']());
     } else {
       app.assignPath(app.state, '/resolution');
-    }
-    app.schema['/displays'] = {};
-    app.schema['/displays']['init'] = function(data, args) {
-      return {
-        list: [{
-            name: 'components',
-            width: '20%',
-            active: true
-          },
-          {
-            name: 'designer',
-            width: '60%',
-            active: true,
-            width2: '80%',
-            width3: '100%'
-          },
-          {
-            name: 'properties',
-            width: '20%',
-            active: true
-          }
-        ]
-      }
-    }
-    if (app.schema['/displays']['init']) {
-      app.assignPath(app.state, '/displays', app.schema['/displays']['init']());
-    } else {
-      app.assignPath(app.state, '/displays');
     }
     app.schema['/layout'] = {};
     app.schema['/layout']['init'] = function(data, args) {
