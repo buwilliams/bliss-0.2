@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 256,
+  "nextId": 257,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -4718,7 +4718,7 @@
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  return (app.state.firebase.user) ? true : false;\n}"
+          "body": "function() {\n  return (app.state.firebase.user &&\n         \tapp.state.workspaces.active === false) ? \n    \t\t\t\ttrue : false;\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -4942,7 +4942,7 @@
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  return false; // return (app.state.firebase.user) ? true : false;\n}"
+          "body": "function() {\n  return (app.state.workspaces.active === true)\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -4972,7 +4972,7 @@
         }
       ],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "256",
       "previous": null,
       "child": null,
       "parent": "251"
@@ -5060,6 +5060,23 @@
       "previous": null,
       "child": null,
       "parent": "253"
+    },
+    "256": {
+      "id": "256",
+      "name": "new_256",
+      "element": "div",
+      "text": "hey there",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "252",
+      "child": null,
+      "parent": "251"
     }
   },
   "schemas": [
@@ -5093,7 +5110,7 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return { list: [] }\n}"
+          "body": "function (data, args) {\n  var newData = {\n    active: false,\n    list: []\n  }\n  return newData\n}"
         },
         {
           "action": "add_workspace",

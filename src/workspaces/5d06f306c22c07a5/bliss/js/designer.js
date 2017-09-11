@@ -338,7 +338,7 @@ var blissUiV = (function() {
     }
     app.methods["251"] = {};
     app.methods["251"]['shouldShow'] = function() {
-      return false; // return (app.state.firebase.user) ? true : false;
+      return (app.state.workspaces.active === true)
     }
     app.methods["252"] = {};
     app.methods["252"]['workspaceList'] = function(scope, attributes) {
@@ -350,7 +350,9 @@ var blissUiV = (function() {
     };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
-      return (app.state.firebase.user) ? true : false;
+      return (app.state.firebase.user &&
+          app.state.workspaces.active === false) ?
+        true : false;
     }
     app.methods["85"] = {};
     app.methods["85"]['handleClick'] = function(scope, attributes) {
@@ -1227,9 +1229,11 @@ var blissUiV = (function() {
     }
     app.schema['/workspaces'] = {};
     app.schema['/workspaces']['init'] = function(data, args) {
-      return {
+      var newData = {
+        active: false,
         list: []
       }
+      return newData
     }
     app.schema['/workspaces']['add_workspace'] = function(data, args) {
       var newData = Object.assign({}, data)
@@ -1550,7 +1554,11 @@ var blissUiV = (function() {
                     }), app.methods['252']['getText'](scope)));
                   }
                   return out;
-                })(scope)));
+                })(scope),
+                React.createElement('div', app.mergeAttributes('256', scope, {}, {
+                  "id": "new_256",
+                  "key": app.getKey('id', '256')
+                }), 'hey there')));
             }
             return out;
           })(scope),
