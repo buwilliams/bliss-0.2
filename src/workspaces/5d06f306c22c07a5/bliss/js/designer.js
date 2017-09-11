@@ -35,21 +35,24 @@ var blissUiV = (function() {
     }
     app.js['build'] = function() {
       app.js.log('app.js.build() invoked.');
+
       if (app.buildProject.type === "bliss") {
         app.buildProject.build = "designer";
       }
 
-      var data = JSON.stringify(app.buildProject);
+      var data = JSON.stringify(app.buildProject)
+      var workspace = app.state.settings.workspace
 
       $.ajax({
         type: 'POST',
-        url: '/compiler/build?workspace=bliss',
+        url: '/compiler/build?workspace=' + workspace,
         data: data,
         success: function(data) {
           app.js.refreshIframe();
         },
         error: function(jqXHR, textStatus, errorThrown) {
-          console.error('POST /build', jqXHR, textStatus, errorThrown);
+          console.error('POST /build?workspace=' + workspace,
+            jqXHR, textStatus, errorThrown);
         },
         contentType: "application/json",
         dataType: 'json'
@@ -57,13 +60,17 @@ var blissUiV = (function() {
     }
     app.js['selectComponent'] = function(id) {
       app.js.log('app.js.selectComponent() invoked.');
-      app.setState(function() {
-        var internal = app._state.get('internal');
-        internal.setData('activeComponent', id);
-      });
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: id
+      })
     }
     app.js['update'] = function(fn) {
       app.js.log('app.js.update() invoked.');
+
       app.setState(function() {
         app.state.shouldSave = true;
         clearTimeout(app.state.timer);
@@ -83,12 +90,15 @@ var blissUiV = (function() {
     }
     app.js['server'] = function(path, success, data, requestType) {
       app.js.log('app.js.server() invoked.');
+
       if (_.isNil(data)) data = {};
       if (_.isNil(requestType)) requestType = 'GET';
 
+      var workspace = app.state.settings.workspace;
+
       $.ajax({
         type: requestType,
-        url: '/project/' + path + '?workspace=bliss',
+        url: '/project/' + path + '?workspace=' + workspace,
         data: data,
         success: function(data) {
           success(data);
@@ -156,9 +166,11 @@ var blissUiV = (function() {
       var data = JSON.stringify(proj);
       app.js.setStatus('Saving project ' + proj.name + '...');
 
+      var workspace = app.state.settings.workspace;
+
       $.ajax({
         type: 'POST',
-        url: '/project/save?workspace=bliss',
+        url: '/project/save?workspace=' + workspace,
         data: data,
         success: function(data) {
           app.js.setStatus('Saved project ' + proj.name + '.');
@@ -176,7 +188,18 @@ var blissUiV = (function() {
         if (!confirm('Are you sure you want to create a new project?')) return;
       }
 
-      app.js.cleanState(newBlissProject, false);
+      app.setState(function() {
+        app.buildProject = newBlissProject;
+      })
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: app.buildProject.rootId
+      })
+
+      //app.js.cleanState(newBlissProject, false);
     }
     app.js['saveAndReloadProject'] = function() {
       app.js.log('app.js.saveAndReloadProject() invoked.');
@@ -188,6 +211,7 @@ var blissUiV = (function() {
     }
     app.js['refreshIframe'] = function() {
       app.js.log('app.js.refreshIframe() invoked.');
+
       var iframe = $('#preview');
       var currentSrc = iframe.attr('src');
       if (_.isUndefined(currentSrc)) return;
@@ -209,15 +233,14 @@ var blissUiV = (function() {
     }
     app.js['cleanState'] = function(buildProject, shouldBuildProject) {
       app.js.log('app.js.cleanState() invoked.');
+
       app.setState(function() {
-        // Set State
         app.state.shouldSave = false;
         app.state.shouldBuild = shouldBuildProject;
-
         // Set internal state
         //var internal = app._state.create('internal');
         //internal.setData('activeComponent', app.buildProject.rootId)
-      });
+      })
     }
     app.js['log'] = function() {
       return;
@@ -1262,7 +1285,8 @@ var blissUiV = (function() {
         activeComponent: null,
         shouldSave: false,
         shouldBuild: false,
-        currentColor: '#ffffff'
+        currentColor: '#ffffff',
+        workspace: 'bliss'
       }
 
       var display = app._state.create('display');

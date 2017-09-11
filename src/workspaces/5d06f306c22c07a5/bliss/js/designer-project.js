@@ -88,23 +88,23 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({\n    headers: {\n      'X-User-Token': app.state.firebase.user_token\n    }\n  })\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  app.js.cleanState(newBlissProject, false)\n}"
+      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  app.js.cleanState(newBlissProject, false)\n}"
     },
     {
       "name": "build",
-      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject);\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=bliss',\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build', jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  \n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject)\n  var workspace = app.state.settings.workspace\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build?workspace=' + workspace,\n                    jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
-      "body": "function(id) {\n  app.js.log('app.js.selectComponent() invoked.');\n  app.setState(function() {\n    var internal = app._state.get('internal');\n  \tinternal.setData('activeComponent', id);\n  });\n}"
+      "body": "function(id) {\n  app.js.log('app.js.selectComponent() invoked.');\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: id\n  })\n}"
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  app.setState(function() {\n    app.state.shouldSave = true;\n    clearTimeout(app.state.timer);\n    try { fn(); } catch(e) { console.error('app.js.update', e); }\n    app.state.timer = setTimeout(function() {\n    \tif(app.state.shouldBuild === true) {\n        app.js.build();\n      } else {\n        app.js.saveAndReloadProject();\n      }\n  \t}, 500);\n  });\n}"
+      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  app.setState(function() {\n    app.state.shouldSave = true;\n    clearTimeout(app.state.timer);\n    try { fn(); } catch(e) { console.error('app.js.update', e); }\n    app.state.timer = setTimeout(function() {\n    \tif(app.state.shouldBuild === true) {\n        app.js.build();\n      } else {\n        app.js.saveAndReloadProject();\n      }\n  \t}, 500);\n  });\n}"
     },
     {
       "name": "server",
-      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path + '?workspace=bliss',\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(path, success, data, requestType) {\n  app.js.log('app.js.server() invoked.');\n  \n  if(_.isNil(data)) data = {};\n  if(_.isNil(requestType)) requestType = 'GET';\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: requestType,\n    url: '/project/' + path + '?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "getProjects",
@@ -124,11 +124,11 @@ var blissProject = {
     },
     {
       "name": "saveProject",
-      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=bliss',\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "newProject",
-      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.js.cleanState(newBlissProject, false);\n}"
+      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function(){\n    app.buildProject = newBlissProject;\n\t})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  //app.js.cleanState(newBlissProject, false);\n}"
     },
     {
       "name": "saveAndReloadProject",
@@ -136,7 +136,7 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/bliss/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/bliss/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
@@ -144,7 +144,7 @@ var blissProject = {
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n  });\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n\n  app.setState(function() {\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n  })\n}"
     },
     {
       "name": "log",
@@ -5139,7 +5139,7 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldBuild: false,\n    currentColor: '#ffffff'\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldBuild: false,\n    currentColor: '#ffffff',\n    workspace: 'bliss'\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
         },
         {
           "action": "set",
