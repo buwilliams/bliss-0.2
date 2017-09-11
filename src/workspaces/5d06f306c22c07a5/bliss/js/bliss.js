@@ -430,9 +430,11 @@ var blissUi = (function() {
       var data = JSON.stringify(proj);
       comp.setStatus('Building ' + proj.name + '...');
 
+      var workspace = app.state.settings.workspace
+
       $.ajax({
         type: 'POST',
-        url: '/compiler/export?workspace=bliss',
+        url: '/compiler/export?workspace=' + workspace,
         data: data,
         success: function(data) {
           comp.setStatus('Built ' + proj.name + '.');
@@ -459,9 +461,11 @@ var blissUi = (function() {
       var data = JSON.stringify(proj);
       comp.setStatus('Deploying ' + proj.name + '...');
 
+      var workspace = app.state.settings.workspace
+
       $.ajax({
         type: 'POST',
-        url: '/compiler/dist?workspace=bliss',
+        url: '/compiler/dist?workspace=' + workspace,
         data: data,
         success: function(data) {
           comp.setStatus('Deployed ' + proj.name + '.');

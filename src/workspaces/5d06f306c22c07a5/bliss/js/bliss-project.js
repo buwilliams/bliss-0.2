@@ -1403,7 +1403,7 @@ var blissProject = {
         },
         {
           "name": "createProjectDist",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Deploying ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/dist?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      comp.setStatus('Deployed ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [
@@ -3546,7 +3546,7 @@ var blissProject = {
         },
         {
           "name": "exportProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Building ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace\n  \n  $.ajax({\n    type: 'POST',\n    url: '/compiler/export?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      comp.setStatus('Built ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
         }
       ],
       "dynamicAttributes": [

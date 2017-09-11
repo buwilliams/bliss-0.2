@@ -136,7 +136,7 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/bliss/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
