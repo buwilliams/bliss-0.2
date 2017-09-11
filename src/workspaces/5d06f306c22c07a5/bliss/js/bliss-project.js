@@ -88,7 +88,7 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  app.js.cleanState(newBlissProject, false)\n}"
+      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  // app.js.cleanState(newBlissProject, false)\n}"
     },
     {
       "name": "build",
@@ -124,7 +124,7 @@ var blissProject = {
     },
     {
       "name": "saveProject",
-      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'shouldSave',\n        value: false\n      })\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace;\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: false\n  })\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "newProject",
@@ -144,7 +144,7 @@ var blissProject = {
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n\n  app.setState(function() {\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n  })\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n\n  app.setState(function() {\n    //app.state.shouldSave = false;\n    //app.state.shouldBuild = shouldBuildProject;\n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n  })\n}"
     },
     {
       "name": "log",
@@ -432,7 +432,7 @@ var blissProject = {
       "previous": "204",
       "child": null,
       "parent": "205",
-      "ifFn": "shouldShow"
+      "ifFn": ""
     },
     "18": {
       "id": "18",

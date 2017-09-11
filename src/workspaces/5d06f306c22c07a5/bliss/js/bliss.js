@@ -31,7 +31,7 @@ var blissUi = (function() {
       })
 
       // DEPRECATED: state manager
-      app.js.cleanState(newBlissProject, false)
+      // app.js.cleanState(newBlissProject, false)
     }
     app.js['build'] = function() {
       app.js.log('app.js.build() invoked.');
@@ -196,18 +196,19 @@ var blissUi = (function() {
 
       var workspace = app.state.settings.workspace;
 
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'shouldSave',
+        value: false
+      })
+
       $.ajax({
         type: 'POST',
         url: '/project/save?workspace=' + workspace,
         data: data,
         success: function(data) {
           app.js.setStatus('Saved project ' + proj.name + '.');
-          app.dispatch({
-            path: '/settings',
-            action: 'set',
-            key: 'shouldSave',
-            value: false
-          })
           if (!_.isNil(success)) success(data);
         },
         contentType: "application/json",
@@ -269,8 +270,8 @@ var blissUi = (function() {
       app.js.log('app.js.cleanState() invoked.');
 
       app.setState(function() {
-        app.state.shouldSave = false;
-        app.state.shouldBuild = shouldBuildProject;
+        //app.state.shouldSave = false;
+        //app.state.shouldBuild = shouldBuildProject;
         // Set internal state
         //var internal = app._state.create('internal');
         //internal.setData('activeComponent', app.buildProject.rootId)
@@ -1970,20 +1971,13 @@ var blissUi = (function() {
                             "id": "iframeHeader_204",
                             "key": app.getKey('id', '204')
                           }), app.methods['204']['getText'](scope)),
-                          (function(scope) {
-                            var out = [];
-                            scope['shouldShow'] = app.methods['17']['shouldShow'](scope);
-                            if (app.methods['17']['shouldShow'](scope) === true) {
-                              out.push(React.createElement('iframe', app.mergeAttributes('17', scope, {
-                                "style": "getStyles"
-                              }, {
-                                "id": "preview",
-                                "src": "about:blank",
-                                "key": app.getKey('id', '17')
-                              })));
-                            }
-                            return out;
-                          })(scope))),
+                          React.createElement('iframe', app.mergeAttributes('17', scope, {
+                            "style": "getStyles"
+                          }, {
+                            "id": "preview",
+                            "src": "about:blank",
+                            "key": app.getKey('id', '17')
+                          })))),
                       React.createElement('div', app.mergeAttributes('54', scope, {
                           "style": "getStyle"
                         }, {

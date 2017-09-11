@@ -88,7 +88,7 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n  \n  // DEPRECATED: state manager\n  app.js.cleanState(newBlissProject, false)\n}"
+      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n}"
     },
     {
       "name": "build",
@@ -128,7 +128,7 @@ var blissProject = {
     },
     {
       "name": "newProject",
-      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function(){\n    app.buildProject = newBlissProject;\n\t})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  //app.js.cleanState(newBlissProject, false);\n}"
+      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function(){\n    app.buildProject = newBlissProject;\n\t})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n}"
     },
     {
       "name": "saveAndReloadProject",
@@ -141,10 +141,6 @@ var blissProject = {
     {
       "name": "refresh",
       "body": "function() {\n  app.js.log('app.js.refresh() invoked.');\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  app.js.refreshIframe();\n}"
-    },
-    {
-      "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n\n  app.setState(function() {\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n  })\n}"
     },
     {
       "name": "log",
@@ -432,7 +428,7 @@ var blissProject = {
       "previous": "204",
       "child": null,
       "parent": "205",
-      "ifFn": "shouldShow"
+      "ifFn": ""
     },
     "18": {
       "id": "18",

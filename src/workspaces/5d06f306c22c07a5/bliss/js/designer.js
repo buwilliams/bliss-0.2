@@ -29,9 +29,6 @@ var blissUiV = (function() {
         path: '/firebase',
         action: 'setup'
       })
-
-      // DEPRECATED: state manager
-      app.js.cleanState(newBlissProject, false)
     }
     app.js['build'] = function() {
       app.js.log('app.js.build() invoked.');
@@ -233,8 +230,6 @@ var blissUiV = (function() {
         key: 'activeComponent',
         value: app.buildProject.rootId
       })
-
-      //app.js.cleanState(newBlissProject, false);
     }
     app.js['saveAndReloadProject'] = function() {
       app.js.log('app.js.saveAndReloadProject() invoked.');
@@ -265,17 +260,6 @@ var blissUiV = (function() {
 
       // refresh iframe
       app.js.refreshIframe();
-    }
-    app.js['cleanState'] = function(buildProject, shouldBuildProject) {
-      app.js.log('app.js.cleanState() invoked.');
-
-      app.setState(function() {
-        app.state.shouldSave = false;
-        app.state.shouldBuild = shouldBuildProject;
-        // Set internal state
-        //var internal = app._state.create('internal');
-        //internal.setData('activeComponent', app.buildProject.rootId)
-      })
     }
     app.js['log'] = function() {
       return;
