@@ -1,4 +1,4 @@
-var blissUi = (function() {
+var blissUiV = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -7,16 +7,30 @@ var blissUi = (function() {
       state: {}
     };
     app.js['init'] = function() {
+      // Start Bliss with Empty Project
+      app.buildProject = newBlissProject;
+
+      // Send firebase security token
       $.ajaxSetup({
         headers: {
           'X-User-Token': app.state.firebase.user_token
         }
-      });
+      })
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: app.buildProject.rootId
+      })
+
+      // Verify firebase session
       app.dispatch({
         path: '/firebase',
         action: 'setup'
-      });
-      app._state = state();
+      })
+
+      // DEPRECATED: state manager
       app.js.cleanState(newBlissProject, false)
     }
     app.js['build'] = function() {
@@ -84,16 +98,20 @@ var blissUi = (function() {
       });
     }
     app.js['getProjects'] = function(scope, attributes) {
-      app.js.log('app.js.getProjects() invoked.');
-      var projects = app._state.get('projects');
       app.js.server('list', function(data) {
-        projects.removeAll();
-        app.setState(function() {
-          data.projects.forEach(function(project) {
-            projects.create({
-              name: project
-            });
-          });
+        app.dispatch({
+          path: '/projects',
+          action: 'clear'
+        });
+
+        app.dispatch({
+          path: '/projects',
+          action: 'addAll',
+          projects: _.map(data.projects, function(item) {
+            return {
+              name: item
+            }
+          })
         });
       });
     }
@@ -193,20 +211,19 @@ var blissUi = (function() {
       app.js.log('app.js.cleanState() invoked.');
       app.setState(function() {
         // Clean existing state
-        //app._state.reset();
         app._state = state();
 
         // Set build project
-        app.js.log('setting build', buildProject);
-        app.buildProject = buildProject;
+        //app.js.log('setting build', buildProject);
+        //app.buildProject = buildProject;
 
         // Set State
         app.state.shouldSave = false;
         app.state.shouldBuild = shouldBuildProject;
 
         // Set internal state
-        var internal = app._state.create('internal');
-        internal.setData('activeComponent', app.buildProject.rootId);
+        //var internal = app._state.create('internal');
+        //internal.setData('activeComponent', app.buildProject.rootId)
 
         var view = app._state.create('view');
         view.create({
@@ -246,9 +263,6 @@ var blissUi = (function() {
           label: 'Settings'
         });
         view.setData('selected', 'designer');
-
-        var color = app._state.create('color');
-        color.setData('currentColor', '#ffffff');
 
         var res = app._state.create('res');
         res.create({
@@ -324,28 +338,6 @@ var blissUi = (function() {
           previewHeight: 'calc(1366px + 52px)'
         });
         res.setData('selected', 'full');
-
-        var display = app._state.create('display');
-        display.create({
-          name: 'components',
-          width: '20%',
-          active: true
-        });
-        display.create({
-          name: 'designer',
-          width: '60%',
-          width2: '80%',
-          width3: '100%',
-          active: true
-        });
-        display.create({
-          name: 'properties',
-          width: '20%',
-          active: true
-        });
-
-        var projects = app._state.create('projects');
-        //app.js.getProjects();
       });
     }
     app.js['log'] = function() {
@@ -357,7 +349,7 @@ var blissUi = (function() {
         }
       }
     }
-    app.js['firebase_auth_ui'] = function() {
+    app.js['firebaseAuthUI'] = function() {
       var ui = app.state.firebase.auth_ui;
 
       var config = {
@@ -399,21 +391,19 @@ var blissUi = (function() {
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', config);
     }
-    app.js['get_session'] = function() {
+    app.js['getSession'] = function() {
       $.ajax({
         type: 'GET',
         url: '/session',
         success: function(data) {
-          console.log('session', data);
           app.dispatch({
             'path': '/firebase',
-            'action': 'set_session',
+            'action': 'setSession',
             'designer_token': data.token,
             'email': data.email
           });
 
           app.setState(function() {
-            console.log('loading projects');
             app.js.getProjects();
           });
         },
@@ -449,7 +439,7 @@ var blissUi = (function() {
     };
     app.methods["161"] = {};
     app.methods["161"]['repeater'] = function(scope, attributes) {
-      return app._state.get('projects').getAll();
+      return app.state.projects.list
     };
 
     app.methods["161"]['getText'] = function(scope, attributes) {
@@ -561,10 +551,19 @@ var blissUi = (function() {
       }
     };
     app.methods["93"]['setStatus'] = function(message) {
-      app.setState(function() {
-        app.state.shouldSave = false;
-        app.state.status = message;
-      });
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'shouldSave',
+        value: false
+      })
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'status',
+        value: message
+      })
     }
     app.methods["93"]['getClass'] = function(scope, attributes) {
       if (app.state.shouldSave === true) {
@@ -646,8 +645,11 @@ var blissUi = (function() {
     };
     app.methods["150"] = {};
     app.methods["150"]['getClass'] = function() {
-      var show = app._state.get('display').findBy('name', 'components').active;
-      if (show === true) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'components')
+      })
+
+      if (layout.active === true) {
         return "btn btn-sm btn-primary";
       } else {
         return "btn btn-sm btn-default";
@@ -655,27 +657,40 @@ var blissUi = (function() {
     }
     app.methods["150"]['setContentValue'] = function() {
       return function() {
-        var components = app._state.get('display').findBy('name', 'components');
-        app.setState(function() {
-          app._state.get('display').update(components.id, {
-            active: !components.active
-          });
-        });
-      };
+        var layout = _.find(app.state.layout.list,
+          function(item) {
+            return (item.name === 'components')
+          })
+
+        app.dispatch({
+          path: '/layout',
+          action: 'setActive',
+          name: layout.name,
+          active: !layout.active
+        })
+      }
     }
     app.methods["150"]['getStyles'] = function(scope, attributes) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'components')
+      })
+
       var styles = {};
-      var show = app._state.get('display').findBy('name', 'components').active;
-      if (show === true) {
+
+      if (layout.active === true) {
         styles.backgroundColor = app.js.getCssVar('$menuHighlight');
         styles.borderColor = app.js.getCssVar('$menuHighlight');
       }
+
       return styles;
     }
     app.methods["157"] = {};
     app.methods["157"]['getClass'] = function() {
-      var show = app._state.get('display').findBy('name', 'properties').active;
-      if (show === true) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
+      if (layout.active === true) {
         return "btn btn-sm btn-primary";
       } else {
         return "btn btn-sm btn-default";
@@ -683,55 +698,85 @@ var blissUi = (function() {
     }
     app.methods["157"]['setContentValue'] = function() {
       return function() {
-        var properties = app._state.get('display').findBy('name', 'properties');
-        app.setState(function() {
-          app._state.get('display').update(properties.id, {
-            active: !properties.active
-          });
-        });
-      };
+        var layout = _.find(app.state.layout.list,
+          function(item) {
+            return (item.name === 'properties')
+          })
+
+        app.dispatch({
+          path: '/layout',
+          action: 'setActive',
+          name: layout.name,
+          active: !layout.active
+        })
+      }
     }
     app.methods["157"]['getStyles'] = function(scope, attributes) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
       var styles = {};
-      var show = app._state.get('display').findBy('name', 'properties').active;
-      if (show === true) {
+
+      if (layout.active === true) {
         styles.backgroundColor = app.js.getCssVar('$menuHighlight');
         styles.borderColor = app.js.getCssVar('$menuHighlight');
       }
+
       return styles;
     }
     app.methods["153"] = {};
     app.methods["153"]['getValue'] = function(scope, attributes) {
-      var color = app._state.get('color');
-      return color.getData('currentColor');
+      return app.state.settings.currentColor
     }
     app.methods["153"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        var color = app._state.get('color');
-        app.setState(function() {
-          color.setData('currentColor', e.target.value);
-        });
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'currentColor',
+          value: e.target.value
+        })
+      }
+    };
+    app.methods["253"] = {};
+    app.methods["253"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        e.preventDefault()
+
+        var input = document.querySelector('.hexColor');
+        input.select();
+
+        try {
+          var successful = document.execCommand('copy');
+          //var msg = successful ? 'successful' : 'unsuccessful';
+        } catch (err) {
+          //console.log('Oops, unable to copy');
+        }
       }
     };
     app.methods["154"] = {};
     app.methods["154"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        app.setState(function() {
-          var color = app._state.get('color');
-          color.setData('currentColor', e.target.value);
-        });
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'currentColor',
+          value: e.target.value
+        })
       };
     };
 
     app.methods["154"]['getValue'] = function(scope, attributes) {
-      var color = app._state.get('color');
-      return color.getData('currentColor');
+      return app.state.settings.currentColor
     }
     app.methods["3"] = {};
-    app.methods["3"]['shouldShow'] = function(scope, attributes) {
-      var display = app._state.get('display');
-      var show = display.findBy('name', 'components').active;
-      return show;
+    app.methods["3"]['shouldShow'] = function() {
+      var list = app.state.layout.list
+      var layout = _.find(list, function(item) {
+        return (item.name === "components")
+      })
+      return layout.active
     }
     app.methods["18"] = {};
     app.methods["18"]['setDataProp'] = function(scope, props) {
@@ -739,12 +784,18 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnSelectProp'] = function(scope, props) {
       return function(id) {
-        app.js.selectComponent(id);
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'activeComponent',
+          value: id
+        })
       };
     }
     app.methods["18"]['setOnCreateProp'] = function(scope, props) {
       return function(toId) {
-        var proj = BlissTree.createComponent(app.buildProject, toId);
+        var proj = BlissTree.createComponent(
+          app.buildProject, toId);
         app.js.update(function() {
           app.buildProject = proj;
         });
@@ -768,7 +819,8 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnMoveProp'] = function(scope, props) {
       return function(fromId, toId, shouldBeChild) {
-        var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);
+        var proj = BlissTree.moveComponent(
+          app.buildProject, fromId, toId, shouldBeChild);
         app.js.update(function() {
           app.buildProject = proj;
         });
@@ -781,14 +833,24 @@ var blissUi = (function() {
       };
     }
     app.methods["18"]['getSelected'] = function(scope, attributes) {
-      var selected = app._state.get('internal').getData('activeComponent');
-      return selected;
+      return app.state.settings.activeComponent
     }
     app.methods["4"] = {};
     app.methods["4"]['getStyles'] = function(scope, attributes) {
-      var designer = app._state.get('display').findBy('name', 'designer');
-      var properties = app._state.get('display').findBy('name', 'properties');
-      var components = app._state.get('display').findBy('name', 'components');
+      var list = app.state.layout.list
+
+      var designer = _.find(app.state.layout.list,
+        function(item) {
+          return (item.name === "designer")
+        })
+      var properties = _.find(app.state.layout.list,
+        function(item) {
+          return (item.name === "properties")
+        })
+      var components = _.find(app.state.layout.list,
+        function(item) {
+          return (item.name === "components")
+        })
 
       var newWidth = designer.width;
 
@@ -861,22 +923,24 @@ var blissUi = (function() {
     }
     app.methods["55"] = {};
     app.methods["55"]['getText'] = function(scope, attributes) {
-      var internal = app._state.get('internal');
-      var activeComponent = internal.getData('activeComponent');
-      return (app.buildProject.components[activeComponent].name || '') + " - JS";
+      var name = app.buildProject.components[
+        app.state.settings.activeComponent] || ''
+      return name + ' - JS'
     };
     app.methods["79"] = {};
     app.methods["79"]['setComponentProp'] = function(scope, props) {
-      var internal = app._state.get('internal');
-      var activeComponent = internal.getData('activeComponent');
-      return app.buildProject.components[activeComponent];
+      return app.buildProject.components[
+        app.state.settings.activeComponent]
     }
     app.methods["79"]['setOnChangeProp'] = function(scope, props) {
       return function(newComponent) {
         app.js.update(function() {
-          var internal = app._state.get('internal');
-          var activeComponent = internal.getData('activeComponent');
-          app.buildProject.components[activeComponent] = newComponent;
+          app.dispatch({
+            path: '/settings',
+            action: 'set',
+            key: 'activeComponent',
+            value: newComponent
+          })
         });
       }
     }
@@ -1099,24 +1163,25 @@ var blissUi = (function() {
     }
     app.methods["77"] = {};
     app.methods["77"]['shouldShow'] = function(scope, attributes) {
-      var display = app._state.get('display');
-      var show = display.findBy('name', 'properties').active;
-      return show;
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
+      return layout.active
     }
     app.methods["11"] = {};
     app.methods["11"]['setComponentProp'] = function(scope, props) {
-      var internal = app._state.get('internal');
-      return app.buildProject.components[internal.getData('activeComponent')];
+      return app.buildProject.components[
+        app.state.settings.activeComponent]
     }
     app.methods["11"]['setOnChangeProp'] = function(scope, props) {
       return function(newComponent) {
-        var internal = app._state.get('internal');
-        var activeComponent = internal.getData('activeComponent');
         app.js.update(function() {
           if (newComponent.id === app.buildProject.rootId) {
             app.buildProject.name = newComponent.name;
           }
-          app.buildProject.components[activeComponent] = newComponent;
+          app.buildProject.components[
+            app.state.settings.activeComponent] = newComponent;
         });
       }
     }
@@ -1184,14 +1249,14 @@ var blissUi = (function() {
         if (user) {
           app.dispatch({
             path: '/firebase',
-            action: 'set_user',
+            action: 'setUser',
             user: user
           });
 
           user.getIdToken(true).then(function(idToken) {
             app.dispatch({
               path: '/firebase',
-              action: 'set_token',
+              action: 'setToken',
               user_token: idToken
             });
           });
@@ -1199,26 +1264,26 @@ var blissUi = (function() {
           // Clear user state
           app.dispatch({
             path: '/firebase',
-            action: 'set_user',
+            action: 'setUser',
             user: null
           });
 
           app.dispatch({
             path: '/firebase',
-            action: 'set_token',
+            action: 'setToken',
             user_token: null
           });
 
           // Start UI flow
           app.setState(function() {
-            app.js.firebase_auth_ui();
+            app.js.firebaseAuthUI();
           });
         }
       });
 
       return newData;
     }
-    app.schema['/firebase']['set_user'] = function(data, args) {
+    app.schema['/firebase']['setUser'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.user = args.user;
       return newData;
@@ -1237,7 +1302,7 @@ var blissUi = (function() {
 
       return newData;
     }
-    app.schema['/firebase']['set_token'] = function(data, args) {
+    app.schema['/firebase']['setToken'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.user_token = args.user_token;
 
@@ -1247,12 +1312,11 @@ var blissUi = (function() {
           'X-User-Token': newData.user_token
         }
       });
-      console.log('getting session');
-      app.js.get_session();
+      app.js.getSession();
 
       return newData;
     }
-    app.schema['/firebase']['set_session'] = function(data, args) {
+    app.schema['/firebase']['setSession'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.designer_token = args.designer_token;
       newData.email = args.email;
@@ -1290,7 +1354,7 @@ var blissUi = (function() {
       newData.list.push(args.item)
       return newData
     }
-    app.schema['/projects']['add_all'] = function(data, args) {
+    app.schema['/projects']['addAll'] = function(data, args) {
       var newData = Object.assign({}, data)
       newData.list = args.projects
       return newData;
@@ -1314,6 +1378,25 @@ var blissUi = (function() {
         shouldBuild: false,
         currentColor: '#ffffff'
       }
+
+      var display = app._state.create('display');
+      display.create({
+        name: 'components',
+        width: '20%',
+        active: true
+      });
+      display.create({
+        name: 'designer',
+        width: '60%',
+        width2: '80%',
+        width3: '100%',
+        active: true
+      });
+      display.create({
+        name: 'properties',
+        width: '20%',
+        active: true
+      });
     }
     app.schema['/settings']['set'] = function(data, args) {
       var newData = Object.assign({}, data);
@@ -1485,6 +1568,43 @@ var blissUi = (function() {
     } else {
       app.assignPath(app.state, '/displays');
     }
+    app.schema['/layout'] = {};
+    app.schema['/layout']['init'] = function(data, args) {
+      var newData = {
+        list: [{
+            name: 'components',
+            width: '20%',
+            active: true
+          },
+          {
+            name: 'designer',
+            width: '60%',
+            width2: '80%',
+            width3: '100%',
+            active: true
+          },
+          {
+            name: 'properties',
+            width: '20%',
+            active: true
+          }
+        ]
+      }
+      return newData;
+    }
+    app.schema['/layout']['setActive'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      var layout = _.find(newData.list, function(item) {
+        return (item.name === args.name)
+      })
+      layout.active = args.active
+      return newData
+    }
+    if (app.schema['/layout']['init']) {
+      app.assignPath(app.state, '/layout', app.schema['/layout']['init']());
+    } else {
+      app.assignPath(app.state, '/layout');
+    }
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -1505,7 +1625,7 @@ var blissUi = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "blissUi_1",
+            "id": "blissUiV_1",
             "key": app.getKey('id', '1')
           }),
           (function(scope) {
@@ -1852,9 +1972,22 @@ var blissUi = (function() {
                       "value": "getValue",
                       "onChange": "handleChange"
                     }, {
+                      "className": "hexColor",
                       "id": "inputText_153",
                       "key": app.getKey('id', '153')
                     })),
+                    React.createElement('a', app.mergeAttributes('253', scope, {
+                        "onClick": "handleClick"
+                      }, {
+                        "href": "#",
+                        "id": "inputCopyLink_253",
+                        "key": app.getKey('id', '253')
+                      }),
+                      React.createElement('i', app.mergeAttributes('254', scope, {}, {
+                        "className": "fa fa-clipboard",
+                        "id": "clipboardIcon_254",
+                        "key": app.getKey('id', '254')
+                      }))),
                     React.createElement('input', app.mergeAttributes('154', scope, {
                       "onChange": "handleChange",
                       "value": "getValue"

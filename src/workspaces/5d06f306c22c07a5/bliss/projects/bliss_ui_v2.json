@@ -144,7 +144,7 @@
     },
     {
       "name": "cleanState",
-      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    app._state = state();\n    \n    // Set build project\n    //app.js.log('setting build', buildProject);\n    //app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n\n    var display = app._state.create('display');\n    display.create({name: 'components', width: '20%', active: true});\n    display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n    display.create({name: 'properties', width: '20%', active: true});\n  });\n}"
+      "body": "function(buildProject, shouldBuildProject) {\n  app.js.log('app.js.cleanState() invoked.');\n  app.setState(function() {\n    // Clean existing state\n    app._state = state();\n    \n    // Set build project\n    //app.js.log('setting build', buildProject);\n    //app.buildProject = buildProject;\n\n    // Set State\n    app.state.shouldSave = false;\n    app.state.shouldBuild = shouldBuildProject;\n    \n    // Set internal state\n    //var internal = app._state.create('internal');\n    //internal.setData('activeComponent', app.buildProject.rootId)\n    \n    var view = app._state.create('view');\n    view.create({name: 'designer', label: 'Designer'});\n    view.create({name: 'js', label: 'JavaScript'});\n    view.create({name: 'data', label: 'Data Editor'});\n    view.create({name: 'global_js', label: 'Global JS'});\n    view.create({name: 'global_css', label: 'Global CSS'});\n    view.create({name: 'css_vars', label: 'CSS Variables'});\n    view.create({name: 'page_load', label: 'Page Load'});\n    view.create({name: 'node_packages', label: 'Node Packages'});\n    view.create({name: 'settings', label: 'Settings'});\n    view.setData('selected', 'designer');\n\n    var res = app._state.create('res');\n    res.create({value: 'full', label: 'Viewport', width: '100%', height: 'calc(100% - 32px)', previewWidth: '100%', previewHeight: 'calc(100vh - 100px)'});\n    res.create({value: 'galaxys5', label: 'Galaxy S5', width: '360px', height: '640px', previewWidth: 'calc(360px + 20px)', previewHeight: 'calc(640px + 52px)'});\n    res.create({value: 'nexus5x', label: 'Nexus 5X', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'nexus6p', label: 'Nexus 6P', width: '412px', height: '732px', previewWidth: 'calc(412px + 20px)', previewHeight: 'calc(732px + 52px)'});\n    res.create({value: 'iphone5', label: 'iPhone 5', width: '320px', height: '568px', previewWidth: 'calc(320px + 20px)', previewHeight: 'calc(568px + 52px)'});\n    res.create({value: 'iphone6', label: 'iPhone 6', width: '375px', height: '667px', previewWidth: 'calc(375px + 20px)', previewHeight: 'calc(667px + 52px)'});\n    res.create({value: 'iphone6plus', label: 'iPhone 6 Plus', width: '414px', height: '736px', previewWidth: 'calc(414px + 20px)', previewHeight: 'calc(736px + 52px)'});\n    res.create({value: 'ipad', label: 'iPad', width: '768px', height: '1024px', previewWidth: 'calc(768px + 20px)', previewHeight: 'calc(1024px + 52px)'});\n    res.create({value: 'ipadpro', label: 'iPad Pro', width: '1024px', height: '1366px', previewWidth: 'calc(1024px + 20px)', previewHeight: 'calc(1366px + 52px)'});\n    res.setData('selected', 'full');\n  });\n}"
     },
     {
       "name": "log",
@@ -192,7 +192,7 @@
   "components": {
     "1": {
       "id": "1",
-      "name": "Bliss UI",
+      "name": "Bliss UI v2",
       "element": "div",
       "text": null,
       "attributes": [],
@@ -287,7 +287,7 @@
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var display = app._state.get('display');\n  var show = display.findBy('name', 'components').active;\n  return show;\n}"
+          "body": "function() {\n  var list = app.state.layout.list\n  var layout = _.find(list, function(item) {\n  \treturn (item.name === \"components\")})\n  return layout.active\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -326,7 +326,7 @@
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var designer = app._state.get('display').findBy('name', 'designer');\n  var properties = app._state.get('display').findBy('name', 'properties');\n  var components = app._state.get('display').findBy('name', 'components');\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var list = app.state.layout.list\n  \n  var designer = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"designer\")})\n  var properties = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"properties\")})\n  var components = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"components\")})\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -757,7 +757,7 @@
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var display = app._state.get('display');\n  var show = display.findBy('name', 'properties').active;\n  return show;\n}"
+          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  return layout.active\n}"
         }
       ],
       "next": null,
@@ -2305,15 +2305,15 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  var show = app._state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'components')\n  })\n  \n  if(layout.active === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    var components = app._state.get('display').findBy('name', 'components');\n    app.setState(function() {\n      app._state.get('display').update(components.id, {active: !components.active});\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    var layout = _.find(app.state.layout.list,\n  \t\tfunction(item) { return (item.name === 'components')})\n\n    app.dispatch({\n      path: '/layout',\n      action: 'setActive',\n      name: layout.name,\n      active: !layout.active\n    })\n  }\n}"
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  var show = app._state.get('display').findBy('name', 'components').active;\n  if(show === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'components')\n  })\n  \n  var styles = {};\n  \n  if(layout.active === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -2721,15 +2721,15 @@
       "js": [
         {
           "name": "getClass",
-          "body": "function() {\n  var show = app._state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
+          "body": "function() {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  if(layout.active === true) {\n    return \"btn btn-sm btn-primary\";\n  } else {\n    return \"btn btn-sm btn-default\";\n  }\n}"
         },
         {
           "name": "setContentValue",
-          "body": "function() {\n  return function() {\n    var properties = app._state.get('display').findBy('name', 'properties');\n    app.setState(function() {\n      app._state.get('display').update(properties.id, {active: !properties.active});\n  \t});\n  };\n}"
+          "body": "function() {\n  return function() {\n    var layout = _.find(app.state.layout.list,\n  \t\tfunction(item) { return (item.name === 'properties')})\n\n    app.dispatch({\n      path: '/layout',\n      action: 'setActive',\n      name: layout.name,\n      active: !layout.active\n    })\n  }\n}"
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  var show = app._state.get('display').findBy('name', 'properties').active;\n  if(show === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  var styles = {};\n  \n  if(layout.active === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  \n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -5139,7 +5139,7 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldBuild: false,\n    currentColor: '#ffffff'\n  }\n}"
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldBuild: false,\n    currentColor: '#ffffff'\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
         },
         {
           "action": "set",
@@ -5171,6 +5171,19 @@
         {
           "action": "init",
           "body": "function (data, args) {\n  return {\n    list: [\n      { name: 'components', width: '20%', active: true},\n      { name: 'designer',   width: '60%', active: true, width2: '80%', width3: '100%' },\n      { name: 'properties', width: '20%', active: true}\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "path": "/layout",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    list: [\n      {\n        name: 'components',\n        width: '20%',\n        active: true\n      },\n      {\n        name: 'designer',\n        width: '60%',\n        width2: '80%',\n        width3: '100%',\n        active: true\n      },\n      {\n        name: 'properties',\n        width: '20%',\n        active: true\n      }\n    ]\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "setActive",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  var layout = _.find(newData.list, function(item) {\n  \treturn (item.name === args.name)\n  })\n  layout.active = args.active\n  return newData\n}"
         }
       ]
     }

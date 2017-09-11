@@ -5015,7 +5015,7 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    list: ['hi', 'there', 'man']\n  }\n  return newData;\n}"
+          "body": "function (data, args) {\n  return { list: [] }\n}"
         },
         {
           "action": "add_workspace",
@@ -5028,19 +5028,59 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    list: []\n  }\n  return newData;\n}"
+          "body": "function (data, args) {\n  return { list: [] }\n}"
         },
         {
           "action": "add",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list.push(args.item);\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData\n}"
         },
         {
           "action": "add_all",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = args.projects\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.projects\n  return newData;\n}"
         },
         {
           "action": "clear",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = []\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = []\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/settings",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldBuild: false,\n    currentColor: '#ffffff'\n  }\n}"
+        },
+        {
+          "action": "set",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  if(newData.hasOwnProperty(args.key)) newData[args.key] = args.value;\n  return newData;\n}"
+        }
+      ]
+    },
+    {
+      "path": "/views",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "path": "/resolution",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    selected: 'full',\n    list: [\n      {\n        value: 'full',\n        label: 'Viewport',\n        width: '100%',\n        height: 'calc(100% - 32px)',\n        previewWidth: '100%',\n        previewHeight: 'calc(100vh - 100px)'\n      },\n      {\n        value: 'galaxys5',\n        label: 'Galaxy S5',\n        width: '360px',\n        height: '640px',\n        previewWidth: 'calc(360px + 20px)',\n        previewHeight: 'calc(640px + 52px)'\n      },\n      {\n        value: 'nexus5x',\n        label: 'Nexus 5X',\n        width: '412px',\n        height: '732px',\n        previewWidth: 'calc(412px + 20px)',\n        previewHeight: 'calc(732px + 52px)'},\n      {\n        value: 'nexus6p',\n        label: 'Nexus 6P',\n        width: '412px',\n        height: '732px',\n        previewWidth: 'calc(412px + 20px)',\n        previewHeight: 'calc(732px + 52px)'\n      },\n      {\n        value: 'iphone5',\n        label: 'iPhone 5',\n        width: '320px',\n        height: '568px',\n        previewWidth: 'calc(320px + 20px)',\n        previewHeight: 'calc(568px + 52px)'\n      },\n      {\n        value: 'iphone6',\n        label: 'iPhone 6',\n        width: '375px',\n        height: '667px',\n        previewWidth: 'calc(375px + 20px)',\n        previewHeight: 'calc(667px + 52px)'\n      },\n      {\n        value: 'iphone6plus',\n        label: 'iPhone 6 Plus',\n        width: '414px',\n        height: '736px',\n        previewWidth: 'calc(414px + 20px)',\n        previewHeight: 'calc(736px + 52px)'\n      },\n      {\n        value: 'ipad',\n        label: 'iPad',\n        width: '768px',\n        height: '1024px',\n        previewWidth: 'calc(768px + 20px)',\n        previewHeight: 'calc(1024px + 52px)'\n      },\n      {\n        value: 'ipadpro',\n        label: 'iPad Pro',\n        width: '1024px',\n        height: '1366px',\n        previewWidth: 'calc(1024px + 20px)',\n        previewHeight: 'calc(1366px + 52px)'\n      }\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "path": "/displays",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  return {\n    list: [\n      { name: 'components', width: '20%', active: true},\n      { name: 'designer',   width: '60%', active: true, width2: '80%', width3: '100%' },\n      { name: 'properties', width: '20%', active: true}\n    ]\n  }\n}"
         }
       ]
     }

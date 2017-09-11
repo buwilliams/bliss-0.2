@@ -1,4 +1,4 @@
-#blissUi_1 {
+#blissUiV_1 {
   min-width: 1400px;
 }
 
@@ -257,6 +257,15 @@
   padding: 4px 5px;
 }
 
+#inputCopyLink_253 {
+  display: inline-block;
+  color: #e0ebf0;
+  text-decoration: none;
+  position: absolute;
+  right: 65px;
+  top: 10px;
+}
+
 #inputColor_154 {
   border: none;
   -webkit-appearance: none;
@@ -269,6 +278,7 @@
   padding: 0px;
   top: 5px;
   display: inline-block;
+  cursor: pointer;
 }
 
 #colorPickerLabel_186 {
