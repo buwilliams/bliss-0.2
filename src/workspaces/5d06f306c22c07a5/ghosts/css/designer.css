@@ -1,13 +1,41 @@
-#ghost_1 {
-  border: solid 1px #000;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#manyGhosts_1 {
   background-color: gray;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#numberOfGhostsContainer_5 {
+  position: fixed;
+  background-color: #ececec;
+  margin-left: calc(50% - 100px);
+  margin-top: calc(50% - 200px);
+  padding: 25px 50px;
+  border-radius: 10px;
+  border: solid 1px #000;
+}
+
+#header_7 {
   text-align: center;
-  display: inline-block;
-  padding: 20px 10px;
-  color: #000;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 30px;
+  margin: 0;
+}
+
+#numberOfGhosts_6 {
+  padding: 15px 30px;
+  display: block;
+  border-radius: 5px;
+  border: solid 1px #ccc;
+  font-size: 16px;
+  text-align: center;
+  outline: 0;
 }
 

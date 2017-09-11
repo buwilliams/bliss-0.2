@@ -246,9 +246,11 @@ var blissUi = (function() {
       var currentSrc = iframe.attr('src');
       if (_.isUndefined(currentSrc)) return;
 
+      var workspace = app.state.settings.workspace;
+
       var url = location.origin +
         '/bliss/designer/' +
-        app.state.firebase.designer_token + '/bliss/' +
+        app.state.firebase.designer_token + '/' + workspace + '/' +
         'designer.html';
 
       iframe.attr('src', url);

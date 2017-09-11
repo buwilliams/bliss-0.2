@@ -1,4 +1,4 @@
-var ghost = (function() {
+var manyGhosts = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -7,43 +7,44 @@ var ghost = (function() {
       state: {}
     };
     app.js['init'] = function() {
-      app.state.top = 0;
-      app.state.left = 0;
-      app.render();
-      app.js.loop();
-    }
-    app.js['move'] = function() {
       app.setState(function() {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        var top = app.js.rando(0, h);
-        var left = app.js.rando(0, w);
-        app.state.top = top;
-        app.state.left = left;
+        app.state.numberOfGhosts = 500;
+        app.state.ghosts = app.js.makeGhosts(500);
       });
     }
-    app.js['rando'] = function(min, max) {
-      return Math.floor(Math.random() * max) + min;
+    app.js['makeGhosts'] = function(numberOfGhosts) {
+      var colors = ['blue', 'red', 'green', 'yellow',
+        'orange', 'purple', 'gray', 'pink',
+        'brown', 'white'
+      ];
+
+      var newArrayOfColors = [];
+      for (var i = 0; i < numberOfGhosts; i++) {
+        newArrayOfColors.push(colors[i % 10]);
+      }
+
+      return newArrayOfColors;
     }
-    app.js['loop'] = function(scope, attributes) {
-      var interval = app.js.rando(200, 500);
-      app.state.timer = setInterval(function() {
-        app.js.move();
-      }, interval);
+    app.methods["2"] = {};
+    app.methods["2"]['getBackgroundColor'] = function(scope, attributes) {
+      return scope.repeater[scope.repeater_index];
     }
-    app.js['destroy_component'] = function() {
-      clearInterval(app.state.timer);
+    app.methods["2"]['repeater'] = function(scope, attributes) {
+      return app.state.ghosts;
     };
-    app.methods["1"] = {};
-    app.methods["1"]['getStyles'] = function(scope, attributes) {
-      var styles = {};
-
-      styles.top = app.state.top + 'px';
-      styles.left = app.state.left + 'px';
-      styles.backgroundColor = app.props.backgroundColor || 'gray';
-
-      return styles;
+    app.methods["6"] = {};
+    app.methods["6"]['getValue'] = function(scope, attributes) {
+      return app.state.numberOfGhosts;
     }
+    app.methods["6"]['handleChange'] = function(scope, attributes) {
+      return function(e) {
+        var numberOfGhosts = parseInt(e.target.value) || 0;
+        app.setState(function() {
+          app.state.numberOfGhosts = numberOfGhosts;
+          app.state.ghosts = app.js.makeGhosts(numberOfGhosts);
+        });
+      }
+    };
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -63,12 +64,40 @@ var ghost = (function() {
       if (typeof props !== "undefined") app.props = props;
       var scope = {};
       return (
-        React.createElement('div', app.mergeAttributes('1', scope, {
-          "style": "getStyles"
-        }, {
-          "id": "ghost_1",
-          "key": app.getKey('id', '1')
-        }), 'Ghost'));
+        React.createElement('div', app.mergeAttributes('1', scope, {}, {
+            "id": "manyGhosts_1",
+            "key": app.getKey('id', '1')
+          }),
+          (function(scope) {
+            var out = [];
+            var list = scope['repeater'] = app.methods['2']['repeater'](scope);
+            for (var i = 0; i < list.length; i++) {
+              scope['repeater_index'] = i;
+              out.push(React.createElement(ghost.component, app.mergeAttributes('2', scope, {
+                "backgroundColor": "getBackgroundColor"
+              }, {
+                "id": "ghosts_2",
+                "key": app.getKey('id', '2', i)
+              })));
+            }
+            return out;
+          })(scope),
+          React.createElement('div', app.mergeAttributes('5', scope, {}, {
+              "id": "numberOfGhostsContainer_5",
+              "key": app.getKey('id', '5')
+            }),
+            React.createElement('h3', app.mergeAttributes('7', scope, {}, {
+              "id": "header_7",
+              "key": app.getKey('id', '7')
+            }), 'Number of Ghosts'),
+            React.createElement('input', app.mergeAttributes('6', scope, {
+              "value": "getValue",
+              "onChange": "handleChange"
+            }, {
+              "placeholder": "number of ghosts",
+              "id": "numberOfGhosts_6",
+              "key": app.getKey('id', '6')
+            })))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

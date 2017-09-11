@@ -1,15 +1,18 @@
 var blissProject = {
-  "name": "Ghost",
+  "name": "Many Ghosts",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 3,
+  "nextId": 8,
   "rootId": "1",
-  "externalCss": [],
+  "externalCss": [
+    "components/ghost/css/ghost.css"
+  ],
   "externalJs": [
     "node_modules/react/dist/react.js",
-    "node_modules/react-dom/dist/react-dom.js"
+    "node_modules/react-dom/dist/react-dom.js",
+    "components/ghost/js/ghost.js"
   ],
   "state": {},
   "packages": [
@@ -25,100 +28,264 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  app.state.top = 0;\n  app.state.left = 0;\n  app.render();\n  app.js.loop();\n}"
+      "body": "function() {\n  app.setState(function() {\n    app.state.numberOfGhosts = 500;\n    app.state.ghosts = app.js.makeGhosts(500);\n  });\n}"
     },
     {
-      "name": "move",
-      "body": "function() {\n  app.setState(function() {\n    var w = window.innerWidth;\n\t\tvar h = window.innerHeight;\n    var top = app.js.rando(0, h);\n    var left = app.js.rando(0, w);\n    app.state.top = top;\n    app.state.left = left;\n  });\n}"
-    },
-    {
-      "name": "rando",
-      "body": "function(min, max) {\n  return Math.floor(Math.random() * max) + min;  \n}"
-    },
-    {
-      "name": "loop",
-      "body": "function(scope, attributes) {\n  var interval = app.js.rando(200, 500);\n  app.state.timer = setInterval(function() {\n    app.js.move();\n  }, interval);\n}"
-    },
-    {
-      "name": "destroy_component",
-      "body": "function() {\n  clearInterval(app.state.timer);\n};\n"
+      "name": "makeGhosts",
+      "body": "function(numberOfGhosts) {\n  var colors = ['blue', 'red', 'green', 'yellow',\n                'orange', 'purple', 'gray', 'pink',\n                'brown', 'white'];\n  \n  var newArrayOfColors = [];\n  for(var i=0; i<numberOfGhosts; i++) {\n\t\tnewArrayOfColors.push(colors[i % 10]);\n  }\n\n\treturn newArrayOfColors;\n}"
     }
   ],
   "cssVars": [],
-  "css": [],
+  "css": [
+    {
+      "selector": "*",
+      "properties": [
+        {
+          "name": "box-sizing",
+          "value": "border-box"
+        }
+      ]
+    },
+    {
+      "selector": "body",
+      "properties": [
+        {
+          "name": "margin",
+          "value": "0"
+        },
+        {
+          "name": "padding",
+          "value": "0"
+        }
+      ]
+    }
+  ],
   "load": [
     "init"
   ],
   "components": {
     "1": {
       "id": "1",
-      "name": "Ghost",
+      "name": "Many Ghosts",
       "element": "div",
-      "text": "Ghost",
+      "text": null,
       "attributes": [],
       "css": [
         {
           "selector": "$id",
           "properties": [
             {
-              "name": "border",
-              "value": "solid 1px #000"
+              "name": "background-color",
+              "value": "gray"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "height",
+              "value": "100%"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "2",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "Ghosts",
+      "element": "ghost.component",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "getBackgroundColor",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index];\n}"
+        },
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  return app.state.ghosts;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "backgroundColor",
+          "value": "getBackgroundColor"
+        }
+      ],
+      "next": "5",
+      "previous": null,
+      "child": null,
+      "parent": "1"
+    },
+    "5": {
+      "id": "5",
+      "name": "number of ghosts container",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "fixed"
             },
             {
               "name": "background-color",
-              "value": "gray"
+              "value": "#ececec"
+            },
+            {
+              "name": "margin-left",
+              "value": "calc(50% - 100px)"
+            },
+            {
+              "name": "margin-top",
+              "value": "calc(50% - 200px)"
+            },
+            {
+              "name": "padding",
+              "value": "25px 50px"
+            },
+            {
+              "name": "border-radius",
+              "value": "10px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #000"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "2",
+      "child": "7",
+      "parent": "1"
+    },
+    "6": {
+      "id": "6",
+      "name": "number of ghosts",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "number of ghosts"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "15px 30px"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "border-radius",
+              "value": "5px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "font-size",
+              "value": "16px"
             },
             {
               "name": "text-align",
               "value": "center"
             },
             {
-              "name": "display",
-              "value": "inline-block"
-            },
-            {
-              "name": "padding",
-              "value": "20px 10px"
-            },
-            {
-              "name": "color",
-              "value": "#000"
-            },
-            {
-              "name": "position",
-              "value": "absolute"
-            },
-            {
-              "name": "top",
+              "name": "outline",
               "value": "0"
-            },
-            {
-              "name": "left",
-              "value": "0"
-            },
-            {
-              "name": "border-radius",
-              "value": "30px"
             }
           ]
         }
       ],
       "js": [
         {
-          "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  \n  styles.top = app.state.top + 'px';\n  styles.left = app.state.left + 'px';\n  styles.backgroundColor = app.props.backgroundColor || 'gray';\n  \n  return styles;\n}"
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.numberOfGhosts;\n}"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var numberOfGhosts = parseInt(e.target.value) || 0;\n    app.setState(function() {\n      app.state.numberOfGhosts = numberOfGhosts;\n      app.state.ghosts = app.js.makeGhosts(numberOfGhosts);\n    });\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
         {
-          "name": "style",
-          "value": "getStyles"
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
         }
       ],
       "next": null,
+      "previous": "7",
+      "child": null,
+      "parent": "5"
+    },
+    "7": {
+      "id": "7",
+      "name": "header",
+      "element": "h3",
+      "text": "Number of Ghosts",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "6",
       "previous": null,
       "child": null,
-      "parent": null
+      "parent": "5"
     }
   }
 }
