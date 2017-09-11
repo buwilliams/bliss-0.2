@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 255,
+  "nextId": 256,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -100,7 +100,7 @@
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  // reset timer so that it doesn't build too often\n  app.dispatch({\n    path: '/settings',\n    action: 'setTimer',\n    fn: function() {\n    \tif(app.state.settings.shouldReloadProject === true)\n        app.js.saveAndReloadProject()\n      else\n        app.js.build()\n  \t}\n  })\n  \n  // execute the update state function\n  // this function should call dispatch internally\n  try { fn() } catch(e) {\n    console.error('app.js.update', e)\n  }\n  \n  // set shouldSave so that the icon lights up\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: true\n  })\n}"
+      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  // execute the update state function\n  // this function should call dispatch internally\n  try {\n    fn()\n  } catch(e) {\n    console.error('app.js.update', e)\n    return\n  }\n  \n  // reset timer so that it doesn't build too often\n  app.dispatch({\n    path: '/settings',\n    action: 'setTimer',\n    fn: function() {\n    \tif(app.state.settings.shouldReloadProject === true)\n        app.js.saveAndReloadProject()\n      else\n        app.js.build()\n  \t}\n  })\n  \n  // set shouldSave so that the icon lights up\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: true\n  })\n}"
     },
     {
       "name": "server",
@@ -415,11 +415,11 @@
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var res = app._state.get('res');\n  var selected = res.findBy('value', res.getData('selected'));\n  \n  styles.width = selected.width;\n  styles.height = selected.height;\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  console.log('get style')\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.settings.selected)})\n  \n  styles.width = resolution.width\n  styles.height = resolution.height\n  \n  return styles;\n}"
         },
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  return (app.state.shouldBuild === true);\n}"
+          "body": "function(scope, attributes) {\n  var selected = app.state.view.selected\n  return (selected === 'designer')\n}"
         }
       ],
       "dynamicAttributes": [
@@ -785,7 +785,7 @@
         },
         {
           "name": "setOnChangeProp",
-          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'activeComponent',\n        value: newComponent\n      })\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(newComponent) {\n    app.js.update(function() {\n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'activeComponent',\n        value: newComponent.id\n      })\n    });\n  }\n}"
         }
       ],
       "dynamicAttributes": [

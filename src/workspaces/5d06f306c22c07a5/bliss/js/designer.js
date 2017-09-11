@@ -76,6 +76,15 @@ var blissUiV = (function() {
     app.js['update'] = function(fn) {
       app.js.log('app.js.update() invoked.');
 
+      // execute the update state function
+      // this function should call dispatch internally
+      try {
+        fn()
+      } catch (e) {
+        console.error('app.js.update', e)
+        return
+      }
+
       // reset timer so that it doesn't build too often
       app.dispatch({
         path: '/settings',
@@ -87,14 +96,6 @@ var blissUiV = (function() {
             app.js.build()
         }
       })
-
-      // execute the update state function
-      // this function should call dispatch internally
-      try {
-        fn()
-      } catch (e) {
-        console.error('app.js.update', e)
-      }
 
       // set shouldSave so that the icon lights up
       app.dispatch({
@@ -810,21 +811,25 @@ var blissUiV = (function() {
     }
     app.methods["17"] = {};
     app.methods["17"]['getStyles'] = function(scope, attributes) {
+      console.log('get style')
       var styles = {
         width: '100%',
         height: 'calc(100vh - 50px)'
       };
 
-      var res = app._state.get('res');
-      var selected = res.findBy('value', res.getData('selected'));
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (item.value === app.state.settings.selected)
+        })
 
-      styles.width = selected.width;
-      styles.height = selected.height;
+      styles.width = resolution.width
+      styles.height = resolution.height
 
       return styles;
     }
     app.methods["17"]['shouldShow'] = function(scope, attributes) {
-      return (app.state.shouldBuild === true);
+      var selected = app.state.view.selected
+      return (selected === 'designer')
     }
     app.methods["54"] = {};
     app.methods["54"]['getStyle'] = function() {
@@ -853,7 +858,7 @@ var blissUiV = (function() {
             path: '/settings',
             action: 'set',
             key: 'activeComponent',
-            value: newComponent
+            value: newComponent.id
           })
         });
       }
