@@ -153,6 +153,10 @@
     {
       "name": "getSession",
       "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'setSession',\n        'designer_token': data.token,\n        'email': data.email\n      });\n\n      app.setState(function() {\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "afterAuth",
+      "body": "function(scope, attributes) {\n  app.js.log('after auth invoked')\n\n  app.dispatch({\n    path: '/workspaces',\n    action: 'fetch'\n  })\n}"
     }
   ],
   "cssVars": [
@@ -4958,21 +4962,74 @@
       "text": "",
       "textFn": "getText",
       "ifFn": null,
-      "repeatFn": "workspaceList",
-      "attributes": [],
-      "css": [],
+      "repeatFn": "repeater",
+      "attributes": [
+        {
+          "name": "class",
+          "value": "workspaces"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px"
+            },
+            {
+              "name": "margin",
+              "value": "3px"
+            },
+            {
+              "name": "background-color",
+              "value": "#f3fbff"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "text-align",
+              "value": "left"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        },
+        {
+          "selector": "$id:hover",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#c0eaff"
+            }
+          ]
+        }
+      ],
       "js": [
         {
-          "name": "workspaceList",
+          "name": "repeater",
           "body": "function(scope, attributes) {\n  return app.state.workspaces.list;\n};\n"
         },
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  return scope.workspaceList[scope.workspaceList_index];\n};\n"
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  return item.name\n};\n"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.getProjects()\n  }\n};\n"
         }
       ],
-      "dynamicAttributes": [],
-      "next": "256",
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
       "previous": null,
       "child": null,
       "parent": "251"
@@ -5060,23 +5117,6 @@
       "previous": null,
       "child": null,
       "parent": "253"
-    },
-    "256": {
-      "id": "256",
-      "name": "new_256",
-      "element": "div",
-      "text": "hey there",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "252",
-      "child": null,
-      "parent": "251"
     }
   },
   "schemas": [
@@ -5085,7 +5125,7 @@
       "actions": [
         {
           "action": "setup",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var config = {\n    apiKey: \"AIzaSyBD09I5AfFlcQx5lpoY3XBjT150hw7tS0Y\",\n    authDomain: \"blissui-f09be.firebaseapp.com\",\n    databaseURL: \"https://blissui-f09be.firebaseio.com\",\n    projectId: \"blissui-f09be\",\n    storageBucket: \"blissui-f09be.appspot.com\",\n    messagingSenderId: \"843731683135\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  newData.user = null\n  newData.auth_ui = new firebaseui.auth.AuthUI(firebase.auth())\n  newData.auth = firebase.auth()\n  newData.database = firebase.database()\n  newData.storage = firebase.storage()\n  \n  newData.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      app.dispatch({\n        path: '/firebase',\n        action: 'setUser',\n        user: user\n      });\n      \n      user.getIdToken(true).then(function(idToken) {\n        app.dispatch({\n          path: '/firebase',\n          action: 'setToken',\n          user_token: idToken\n        });\n      });\n    } else {\n      // Clear user state\n      app.dispatch({\n        path: '/firebase',\n        action: 'setUser',\n        user: null\n      });\n      \n      app.dispatch({\n        path: '/firebase',\n        action: 'setToken',\n        user_token: null\n      });\n      \n      // Start UI flow\n      app.setState(function() {\n      \tapp.js.firebaseAuthUI();\n      });\n    }\n  });\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  \n  var config = {\n    apiKey: \"AIzaSyBD09I5AfFlcQx5lpoY3XBjT150hw7tS0Y\",\n    authDomain: \"blissui-f09be.firebaseapp.com\",\n    databaseURL: \"https://blissui-f09be.firebaseio.com\",\n    projectId: \"blissui-f09be\",\n    storageBucket: \"blissui-f09be.appspot.com\",\n    messagingSenderId: \"843731683135\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  newData.user = null\n  newData.auth_ui = new firebaseui.auth.AuthUI(firebase.auth())\n  newData.auth = firebase.auth()\n  newData.database = firebase.database()\n  newData.storage = firebase.storage()\n  \n  newData.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      app.dispatch({\n        path: '/firebase',\n        action: 'setUser',\n        user: user\n      });\n      \n      user.getIdToken(true).then(function(idToken) {\n        app.dispatch({\n          path: '/firebase',\n          action: 'setToken',\n          user_token: idToken\n        })\n        \n        app.js.afterAuth()\n        \n      })\n    } else {\n      // Clear user state\n      app.dispatch({\n        path: '/firebase',\n        action: 'setUser',\n        user: null\n      });\n      \n      app.dispatch({\n        path: '/firebase',\n        action: 'setToken',\n        user_token: null\n      });\n      \n      // Start UI flow\n      app.setState(function() {\n      \tapp.js.firebaseAuthUI();\n      });\n    }\n  });\n  \n  return newData;\n}"
         },
         {
           "action": "setUser",
@@ -5110,11 +5150,23 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    active: false,\n    list: []\n  }\n  return newData\n}"
+          "body": "function (data, args) {\n  var newData = {\n    active: true,\n    list: []\n  }\n  return newData\n}"
         },
         {
-          "action": "add_workspace",
+          "action": "add",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData;\n}"
+        },
+        {
+          "action": "fetch",
+          "body": "function (data, args) {\n  $.ajax({\n    type: 'GET',\n    url: '/workspace/list',\n    data: data,\n    success: function(data) {\n      app.dispatch({\n        path: '/workspaces',\n        action: 'addAll',\n        list: data.workspaces\n      })\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n  \n  return data;\n}"
+        },
+        {
+          "action": "addAll",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.list\n  return newData;\n}"
+        },
+        {
+          "action": "set",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  if(newData.hasOwnProperty(args.key))\n    newData[args.key] = args.value;\n  return newData;\n}"
         }
       ]
     },
