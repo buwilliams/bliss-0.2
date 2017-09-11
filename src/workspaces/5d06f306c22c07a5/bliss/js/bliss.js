@@ -7,35 +7,52 @@ var blissUi = (function() {
       state: {}
     };
     app.js['init'] = function() {
+      // Start Bliss with Empty Project
+      app.buildProject = newBlissProject
+
+      // Send firebase security token
       $.ajaxSetup({
         headers: {
           'X-User-Token': app.state.firebase.user_token
         }
-      });
+      })
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: app.buildProject.rootId
+      })
+
+      // Verify firebase session
       app.dispatch({
         path: '/firebase',
         action: 'setup'
-      });
-      app._state = state();
+      })
+
+      // DEPRECATED: state manager
       app.js.cleanState(newBlissProject, false)
     }
     app.js['build'] = function() {
       app.js.log('app.js.build() invoked.');
+
       if (app.buildProject.type === "bliss") {
         app.buildProject.build = "designer";
       }
 
-      var data = JSON.stringify(app.buildProject);
+      var data = JSON.stringify(app.buildProject)
+      var workspace = app.state.settings.workspace
 
       $.ajax({
         type: 'POST',
-        url: '/compiler/build?workspace=bliss',
+        url: '/compiler/build?workspace=' + workspace,
         data: data,
         success: function(data) {
           app.js.refreshIframe();
         },
         error: function(jqXHR, textStatus, errorThrown) {
-          console.error('POST /build', jqXHR, textStatus, errorThrown);
+          console.error('POST /build?workspace=' + workspace,
+            jqXHR, textStatus, errorThrown);
         },
         contentType: "application/json",
         dataType: 'json'
@@ -43,38 +60,57 @@ var blissUi = (function() {
     }
     app.js['selectComponent'] = function(id) {
       app.js.log('app.js.selectComponent() invoked.');
-      app.setState(function() {
-        var internal = app._state.get('internal');
-        internal.setData('activeComponent', id);
-      });
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: id
+      })
     }
     app.js['update'] = function(fn) {
       app.js.log('app.js.update() invoked.');
-      app.setState(function() {
-        app.state.shouldSave = true;
-        clearTimeout(app.state.timer);
-        try {
-          fn();
-        } catch (e) {
-          console.error('app.js.update', e);
+
+      // execute the update state function
+      // this function should call dispatch internally
+      try {
+        fn()
+      } catch (e) {
+        console.error('app.js.update', e)
+        return
+      }
+
+      // reset timer so that it doesn't build too often
+      app.dispatch({
+        path: '/settings',
+        action: 'setTimer',
+        fn: function() {
+          if (app.state.settings.shouldReloadProject === true)
+            app.js.saveAndReloadProject()
+          else
+            app.js.build()
         }
-        app.state.timer = setTimeout(function() {
-          if (app.state.shouldBuild === true) {
-            app.js.build();
-          } else {
-            app.js.saveAndReloadProject();
-          }
-        }, 500);
-      });
+      })
+
+      // set shouldSave so that the icon lights up
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'shouldSave',
+        value: true
+      })
     }
     app.js['server'] = function(path, success, data, requestType) {
       app.js.log('app.js.server() invoked.');
+
       if (_.isNil(data)) data = {};
       if (_.isNil(requestType)) requestType = 'GET';
 
+      var workspace = app.state.settings.workspace;
+
       $.ajax({
         type: requestType,
-        url: '/project/' + path + '?workspace=bliss',
+        url: '/project/' + path + '?workspace=' + workspace,
         data: data,
         success: function(data) {
           success(data);
@@ -84,16 +120,20 @@ var blissUi = (function() {
       });
     }
     app.js['getProjects'] = function(scope, attributes) {
-      app.js.log('app.js.getProjects() invoked.');
-      var projects = app._state.get('projects');
       app.js.server('list', function(data) {
-        projects.removeAll();
-        app.setState(function() {
-          data.projects.forEach(function(project) {
-            projects.create({
-              name: project
-            });
-          });
+        app.dispatch({
+          path: '/projects',
+          action: 'clear'
+        });
+
+        app.dispatch({
+          path: '/projects',
+          action: 'addAll',
+          projects: _.map(data.projects, function(item) {
+            return {
+              name: item
+            }
+          })
         });
       });
     }
@@ -112,7 +152,23 @@ var blissUi = (function() {
         app.setState(function() {
           app.js.setStatus('Loaded project ' + data.project.name + '.');
         });
-        app.js.cleanState(data.project, true);
+
+        app.buildProject = data.project
+
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'activeComponent',
+          value: app.buildProject.rootId
+        })
+
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'shouldReloadProject',
+          value: false
+        })
+
         app.js.build();
         app.js.getProjects();
       }, {
@@ -138,12 +194,20 @@ var blissUi = (function() {
       var data = JSON.stringify(proj);
       app.js.setStatus('Saving project ' + proj.name + '...');
 
+      var workspace = app.state.settings.workspace;
+
       $.ajax({
         type: 'POST',
-        url: '/project/save?workspace=bliss',
+        url: '/project/save?workspace=' + workspace,
         data: data,
         success: function(data) {
           app.js.setStatus('Saved project ' + proj.name + '.');
+          app.dispatch({
+            path: '/settings',
+            action: 'set',
+            key: 'shouldSave',
+            value: false
+          })
           if (!_.isNil(success)) success(data);
         },
         contentType: "application/json",
@@ -158,7 +222,18 @@ var blissUi = (function() {
         if (!confirm('Are you sure you want to create a new project?')) return;
       }
 
-      app.js.cleanState(newBlissProject, false);
+      app.setState(function() {
+        app.buildProject = newBlissProject;
+      })
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: app.buildProject.rootId
+      })
+
+      //app.js.cleanState(newBlissProject, false);
     }
     app.js['saveAndReloadProject'] = function() {
       app.js.log('app.js.saveAndReloadProject() invoked.');
@@ -170,6 +245,7 @@ var blissUi = (function() {
     }
     app.js['refreshIframe'] = function() {
       app.js.log('app.js.refreshIframe() invoked.');
+
       var iframe = $('#preview');
       var currentSrc = iframe.attr('src');
       if (_.isUndefined(currentSrc)) return;
@@ -191,162 +267,14 @@ var blissUi = (function() {
     }
     app.js['cleanState'] = function(buildProject, shouldBuildProject) {
       app.js.log('app.js.cleanState() invoked.');
+
       app.setState(function() {
-        // Clean existing state
-        //app._state.reset();
-        app._state = state();
-
-        // Set build project
-        app.js.log('setting build', buildProject);
-        app.buildProject = buildProject;
-
-        // Set State
         app.state.shouldSave = false;
         app.state.shouldBuild = shouldBuildProject;
-
         // Set internal state
-        var internal = app._state.create('internal');
-        internal.setData('activeComponent', app.buildProject.rootId);
-
-        var view = app._state.create('view');
-        view.create({
-          name: 'designer',
-          label: 'Designer'
-        });
-        view.create({
-          name: 'js',
-          label: 'JavaScript'
-        });
-        view.create({
-          name: 'data',
-          label: 'Data Editor'
-        });
-        view.create({
-          name: 'global_js',
-          label: 'Global JS'
-        });
-        view.create({
-          name: 'global_css',
-          label: 'Global CSS'
-        });
-        view.create({
-          name: 'css_vars',
-          label: 'CSS Variables'
-        });
-        view.create({
-          name: 'page_load',
-          label: 'Page Load'
-        });
-        view.create({
-          name: 'node_packages',
-          label: 'Node Packages'
-        });
-        view.create({
-          name: 'settings',
-          label: 'Settings'
-        });
-        view.setData('selected', 'designer');
-
-        var color = app._state.create('color');
-        color.setData('currentColor', '#ffffff');
-
-        var res = app._state.create('res');
-        res.create({
-          value: 'full',
-          label: 'Viewport',
-          width: '100%',
-          height: 'calc(100% - 32px)',
-          previewWidth: '100%',
-          previewHeight: 'calc(100vh - 100px)'
-        });
-        res.create({
-          value: 'galaxys5',
-          label: 'Galaxy S5',
-          width: '360px',
-          height: '640px',
-          previewWidth: 'calc(360px + 20px)',
-          previewHeight: 'calc(640px + 52px)'
-        });
-        res.create({
-          value: 'nexus5x',
-          label: 'Nexus 5X',
-          width: '412px',
-          height: '732px',
-          previewWidth: 'calc(412px + 20px)',
-          previewHeight: 'calc(732px + 52px)'
-        });
-        res.create({
-          value: 'nexus6p',
-          label: 'Nexus 6P',
-          width: '412px',
-          height: '732px',
-          previewWidth: 'calc(412px + 20px)',
-          previewHeight: 'calc(732px + 52px)'
-        });
-        res.create({
-          value: 'iphone5',
-          label: 'iPhone 5',
-          width: '320px',
-          height: '568px',
-          previewWidth: 'calc(320px + 20px)',
-          previewHeight: 'calc(568px + 52px)'
-        });
-        res.create({
-          value: 'iphone6',
-          label: 'iPhone 6',
-          width: '375px',
-          height: '667px',
-          previewWidth: 'calc(375px + 20px)',
-          previewHeight: 'calc(667px + 52px)'
-        });
-        res.create({
-          value: 'iphone6plus',
-          label: 'iPhone 6 Plus',
-          width: '414px',
-          height: '736px',
-          previewWidth: 'calc(414px + 20px)',
-          previewHeight: 'calc(736px + 52px)'
-        });
-        res.create({
-          value: 'ipad',
-          label: 'iPad',
-          width: '768px',
-          height: '1024px',
-          previewWidth: 'calc(768px + 20px)',
-          previewHeight: 'calc(1024px + 52px)'
-        });
-        res.create({
-          value: 'ipadpro',
-          label: 'iPad Pro',
-          width: '1024px',
-          height: '1366px',
-          previewWidth: 'calc(1024px + 20px)',
-          previewHeight: 'calc(1366px + 52px)'
-        });
-        res.setData('selected', 'full');
-
-        var display = app._state.create('display');
-        display.create({
-          name: 'components',
-          width: '20%',
-          active: true
-        });
-        display.create({
-          name: 'designer',
-          width: '60%',
-          width2: '80%',
-          width3: '100%',
-          active: true
-        });
-        display.create({
-          name: 'properties',
-          width: '20%',
-          active: true
-        });
-
-        var projects = app._state.create('projects');
-        //app.js.getProjects();
-      });
+        //var internal = app._state.create('internal');
+        //internal.setData('activeComponent', app.buildProject.rootId)
+      })
     }
     app.js['log'] = function() {
       return;
@@ -357,7 +285,7 @@ var blissUi = (function() {
         }
       }
     }
-    app.js['firebase_auth_ui'] = function() {
+    app.js['firebaseAuthUI'] = function() {
       var ui = app.state.firebase.auth_ui;
 
       var config = {
@@ -399,21 +327,19 @@ var blissUi = (function() {
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', config);
     }
-    app.js['get_session'] = function() {
+    app.js['getSession'] = function() {
       $.ajax({
         type: 'GET',
         url: '/session',
         success: function(data) {
-          console.log('session', data);
           app.dispatch({
             'path': '/firebase',
-            'action': 'set_session',
+            'action': 'setSession',
             'designer_token': data.token,
             'email': data.email
           });
 
           app.setState(function() {
-            console.log('loading projects');
             app.js.getProjects();
           });
         },
@@ -449,7 +375,7 @@ var blissUi = (function() {
     };
     app.methods["161"] = {};
     app.methods["161"]['repeater'] = function(scope, attributes) {
-      return app._state.get('projects').getAll();
+      return app.state.projects.list
     };
 
     app.methods["161"]['getText'] = function(scope, attributes) {
@@ -537,37 +463,13 @@ var blissUi = (function() {
       }
     };
     app.methods["93"] = {};
-    app.methods["93"]['saveProject'] = function() {
-      var comp = this;
-      var proj = app.buildProject;
-      var data = JSON.stringify(proj);
-      comp.setStatus('Saving project ' + proj.name + '...');
-
-      $.ajax({
-        type: 'POST',
-        url: '/project/save?workspace=bliss',
-        data: data,
-        success: function(data) {
-          comp.setStatus('Saved project ' + proj.name + '.');
-        },
-        contentType: "application/json",
-        dataType: 'json'
-      });
-    }
     app.methods["93"]['handleClick'] = function(scope, attributes) {
-      var comp = this;
       return function(e) {
-        comp.saveProject();
+        app.js.saveProject();
       }
     };
-    app.methods["93"]['setStatus'] = function(message) {
-      app.setState(function() {
-        app.state.shouldSave = false;
-        app.state.status = message;
-      });
-    }
     app.methods["93"]['getClass'] = function(scope, attributes) {
-      if (app.state.shouldSave === true) {
+      if (app.state.settings.shouldSave === true) {
         return "btn btn-primary btn-sm";
       } else {
         return "btn btn-default btn-sm";
@@ -575,7 +477,7 @@ var blissUi = (function() {
     }
     app.methods["93"]['getStyles'] = function(scope, attributes) {
       var styles = {};
-      if (app.state.shouldSave === true) {
+      if (app.state.settings.shouldSave === true) {
         styles.backgroundColor = app.js.getCssVar('$menuWarn');
         styles.borderColor = app.js.getCssVar('$menuWarn');
       }
@@ -594,60 +496,65 @@ var blissUi = (function() {
     };
     app.methods["229"] = {};
     app.methods["229"]['getText'] = function(scope, attributes) {
-      var viewState = app._state.get('view');
-      var view = viewState.findBy('name', viewState.getData('selected'));
-      return view.label;
+      var view = _.find(app.state.views.list,
+        function(item) {
+          return (app.state.views.selected === item.name)
+        })
+      return view.label
     }
     app.methods["231"] = {};
     app.methods["231"]['repeater'] = function(scope, attributes) {
-      var views = app._state.get('view').getAll();
-      return views;
+      return app.state.views.list;
     };
 
     app.methods["231"]['getText'] = function(scope, attributes) {
       return scope.repeater[scope.repeater_index].label;
     }
     app.methods["231"]['handleClick'] = function(scope, attributes) {
-      var view = app._state.get('view');
       var name = scope.repeater[scope.repeater_index].name;
 
       return function(e) {
-        //var value = e.target.value;
-        app.setState(function() {
-          view.setData('selected', name);
-        });
+        app.dispatch({
+          path: '/views',
+          action: 'setView',
+          name: name
+        })
       }
     };
     app.methods["234"] = {};
     app.methods["234"]['getText'] = function(scope, attributes) {
-      var viewState = app._state.get('res');
-      var view = viewState.findBy('value', viewState.getData('selected'));
-      return view.label;
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (item.value === app.state.resolution.selected)
+        })
+      return resolution.label;
     }
     app.methods["236"] = {};
     app.methods["236"]['repeater'] = function(scope, attributes) {
-      var res = app._state.get('res').getAll();
-      return res;
+      return app.state.resolution.list
     };
 
     app.methods["236"]['getText'] = function(scope, attributes) {
       return scope.repeater[scope.repeater_index].label;
     }
     app.methods["236"]['handleClick'] = function(scope, attributes) {
-      var view = app._state.get('res');
-      var name = scope.repeater[scope.repeater_index].value;
+      var value = scope.repeater[scope.repeater_index].value;
 
       return function(e) {
-        //var value = e.target.value;
-        app.setState(function() {
-          view.setData('selected', name);
-        });
+        app.dispatch({
+          path: '/resolution',
+          action: 'setResolution',
+          value: value
+        })
       }
     };
     app.methods["150"] = {};
     app.methods["150"]['getClass'] = function() {
-      var show = app._state.get('display').findBy('name', 'components').active;
-      if (show === true) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'components')
+      })
+
+      if (layout.active === true) {
         return "btn btn-sm btn-primary";
       } else {
         return "btn btn-sm btn-default";
@@ -655,27 +562,40 @@ var blissUi = (function() {
     }
     app.methods["150"]['setContentValue'] = function() {
       return function() {
-        var components = app._state.get('display').findBy('name', 'components');
-        app.setState(function() {
-          app._state.get('display').update(components.id, {
-            active: !components.active
-          });
-        });
-      };
+        var layout = _.find(app.state.layout.list,
+          function(item) {
+            return (item.name === 'components')
+          })
+
+        app.dispatch({
+          path: '/layout',
+          action: 'setActive',
+          name: layout.name,
+          active: !layout.active
+        })
+      }
     }
     app.methods["150"]['getStyles'] = function(scope, attributes) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'components')
+      })
+
       var styles = {};
-      var show = app._state.get('display').findBy('name', 'components').active;
-      if (show === true) {
+
+      if (layout.active === true) {
         styles.backgroundColor = app.js.getCssVar('$menuHighlight');
         styles.borderColor = app.js.getCssVar('$menuHighlight');
       }
+
       return styles;
     }
     app.methods["157"] = {};
     app.methods["157"]['getClass'] = function() {
-      var show = app._state.get('display').findBy('name', 'properties').active;
-      if (show === true) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
+      if (layout.active === true) {
         return "btn btn-sm btn-primary";
       } else {
         return "btn btn-sm btn-default";
@@ -683,55 +603,85 @@ var blissUi = (function() {
     }
     app.methods["157"]['setContentValue'] = function() {
       return function() {
-        var properties = app._state.get('display').findBy('name', 'properties');
-        app.setState(function() {
-          app._state.get('display').update(properties.id, {
-            active: !properties.active
-          });
-        });
-      };
+        var layout = _.find(app.state.layout.list,
+          function(item) {
+            return (item.name === 'properties')
+          })
+
+        app.dispatch({
+          path: '/layout',
+          action: 'setActive',
+          name: layout.name,
+          active: !layout.active
+        })
+      }
     }
     app.methods["157"]['getStyles'] = function(scope, attributes) {
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
       var styles = {};
-      var show = app._state.get('display').findBy('name', 'properties').active;
-      if (show === true) {
+
+      if (layout.active === true) {
         styles.backgroundColor = app.js.getCssVar('$menuHighlight');
         styles.borderColor = app.js.getCssVar('$menuHighlight');
       }
+
       return styles;
     }
     app.methods["153"] = {};
     app.methods["153"]['getValue'] = function(scope, attributes) {
-      var color = app._state.get('color');
-      return color.getData('currentColor');
+      return app.state.settings.currentColor
     }
     app.methods["153"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        var color = app._state.get('color');
-        app.setState(function() {
-          color.setData('currentColor', e.target.value);
-        });
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'currentColor',
+          value: e.target.value
+        })
+      }
+    };
+    app.methods["253"] = {};
+    app.methods["253"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        e.preventDefault()
+
+        var input = document.querySelector('.hexColor');
+        input.select();
+
+        try {
+          var successful = document.execCommand('copy');
+          //var msg = successful ? 'successful' : 'unsuccessful';
+        } catch (err) {
+          //console.log('Oops, unable to copy');
+        }
       }
     };
     app.methods["154"] = {};
     app.methods["154"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        app.setState(function() {
-          var color = app._state.get('color');
-          color.setData('currentColor', e.target.value);
-        });
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'currentColor',
+          value: e.target.value
+        })
       };
     };
 
     app.methods["154"]['getValue'] = function(scope, attributes) {
-      var color = app._state.get('color');
-      return color.getData('currentColor');
+      return app.state.settings.currentColor
     }
     app.methods["3"] = {};
-    app.methods["3"]['shouldShow'] = function(scope, attributes) {
-      var display = app._state.get('display');
-      var show = display.findBy('name', 'components').active;
-      return show;
+    app.methods["3"]['shouldShow'] = function() {
+      var list = app.state.layout.list
+      var layout = _.find(list, function(item) {
+        return (item.name === "components")
+      })
+      return layout.active
     }
     app.methods["18"] = {};
     app.methods["18"]['setDataProp'] = function(scope, props) {
@@ -739,12 +689,18 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnSelectProp'] = function(scope, props) {
       return function(id) {
-        app.js.selectComponent(id);
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'activeComponent',
+          value: id
+        })
       };
     }
     app.methods["18"]['setOnCreateProp'] = function(scope, props) {
       return function(toId) {
-        var proj = BlissTree.createComponent(app.buildProject, toId);
+        var proj = BlissTree.createComponent(
+          app.buildProject, toId);
         app.js.update(function() {
           app.buildProject = proj;
         });
@@ -768,7 +724,8 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnMoveProp'] = function(scope, props) {
       return function(fromId, toId, shouldBeChild) {
-        var proj = BlissTree.moveComponent(app.buildProject, fromId, toId, shouldBeChild);
+        var proj = BlissTree.moveComponent(
+          app.buildProject, fromId, toId, shouldBeChild);
         app.js.update(function() {
           app.buildProject = proj;
         });
@@ -781,14 +738,24 @@ var blissUi = (function() {
       };
     }
     app.methods["18"]['getSelected'] = function(scope, attributes) {
-      var selected = app._state.get('internal').getData('activeComponent');
-      return selected;
+      return app.state.settings.activeComponent
     }
     app.methods["4"] = {};
     app.methods["4"]['getStyles'] = function(scope, attributes) {
-      var designer = app._state.get('display').findBy('name', 'designer');
-      var properties = app._state.get('display').findBy('name', 'properties');
-      var components = app._state.get('display').findBy('name', 'components');
+      var list = app.state.layout.list
+
+      var designer = _.find(app.state.layout.list,
+        function(item) {
+          return (item.name === "designer")
+        })
+      var properties = _.find(app.state.layout.list,
+        function(item) {
+          return (item.name === "properties")
+        })
+      var components = _.find(app.state.layout.list,
+        function(item) {
+          return (item.name === "components")
+        })
 
       var newWidth = designer.width;
 
@@ -806,7 +773,7 @@ var blissUi = (function() {
     }
     app.methods["80"] = {};
     app.methods["80"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'designer') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -817,21 +784,25 @@ var blissUi = (function() {
       var styles = {
         width: 'auto',
         height: 'auto'
-      };
+      }
 
-      var res = app._state.get('res');
-      var selected = res.findBy('value', res.getData('selected'));
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (app.state.resolution.selected === item.value)
+        })
 
-      styles.width = selected.previewWidth;
-      styles.height = selected.previewHeight;
+      styles.width = resolution.previewWidth
+      styles.height = resolution.previewHeight
 
-      return styles;
+      return styles
     }
     app.methods["204"] = {};
     app.methods["204"]['getText'] = function(scope, attributes) {
-      var res = app._state.get('res');
-      var currentRes = res.findBy('value', res.getData('selected'));
-      return currentRes.label;
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (item.value === app.state.resolution.selected)
+        })
+      return resolution.label
     }
     app.methods["17"] = {};
     app.methods["17"]['getStyles'] = function(scope, attributes) {
@@ -840,20 +811,23 @@ var blissUi = (function() {
         height: 'calc(100vh - 50px)'
       };
 
-      var res = app._state.get('res');
-      var selected = res.findBy('value', res.getData('selected'));
+      var resolution = _.find(app.state.resolution.list,
+        function(item) {
+          return (item.value === app.state.resolution.selected)
+        })
 
-      styles.width = selected.width;
-      styles.height = selected.height;
+      styles.width = resolution.width
+      styles.height = resolution.height
 
       return styles;
     }
     app.methods["17"]['shouldShow'] = function(scope, attributes) {
-      return (app.state.shouldBuild === true);
+      var selected = app.state.views.selected
+      return (selected === 'designer')
     }
     app.methods["54"] = {};
     app.methods["54"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'js') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -861,28 +835,31 @@ var blissUi = (function() {
     }
     app.methods["55"] = {};
     app.methods["55"]['getText'] = function(scope, attributes) {
-      var internal = app._state.get('internal');
-      var activeComponent = internal.getData('activeComponent');
-      return (app.buildProject.components[activeComponent].name || '') + " - JS";
+      var component = app.buildProject.components[
+        app.state.settings.activeComponent]
+      var name = component.name || ''
+      return name + ' - JS'
     };
     app.methods["79"] = {};
     app.methods["79"]['setComponentProp'] = function(scope, props) {
-      var internal = app._state.get('internal');
-      var activeComponent = internal.getData('activeComponent');
-      return app.buildProject.components[activeComponent];
+      return app.buildProject.components[
+        app.state.settings.activeComponent]
     }
     app.methods["79"]['setOnChangeProp'] = function(scope, props) {
       return function(newComponent) {
         app.js.update(function() {
-          var internal = app._state.get('internal');
-          var activeComponent = internal.getData('activeComponent');
-          app.buildProject.components[activeComponent] = newComponent;
+          app.dispatch({
+            path: '/settings',
+            action: 'set',
+            key: 'activeComponent',
+            value: newComponent.id
+          })
         });
       }
     }
     app.methods["238"] = {};
     app.methods["238"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'data') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -901,7 +878,7 @@ var blissUi = (function() {
     }
     app.methods["97"] = {};
     app.methods["97"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'settings') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -922,7 +899,7 @@ var blissUi = (function() {
     };
     app.methods["179"] = {};
     app.methods["179"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'global_js') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -941,7 +918,7 @@ var blissUi = (function() {
     }
     app.methods["180"] = {};
     app.methods["180"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'global_css') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -961,7 +938,7 @@ var blissUi = (function() {
     };
     app.methods["225"] = {};
     app.methods["225"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'css_vars') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -996,7 +973,7 @@ var blissUi = (function() {
     }
     app.methods["226"] = {};
     app.methods["226"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'page_load') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1064,7 +1041,7 @@ var blissUi = (function() {
     };
     app.methods["227"] = {};
     app.methods["227"]['getStyle'] = function() {
-      var selected = app._state.get('view').getData('selected');
+      var selected = app.state.views.selected
       var displayValue = (selected === 'node_packages') ? 'block' : 'none';
       return {
         'display': displayValue
@@ -1099,24 +1076,25 @@ var blissUi = (function() {
     }
     app.methods["77"] = {};
     app.methods["77"]['shouldShow'] = function(scope, attributes) {
-      var display = app._state.get('display');
-      var show = display.findBy('name', 'properties').active;
-      return show;
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
+      return layout.active
     }
     app.methods["11"] = {};
     app.methods["11"]['setComponentProp'] = function(scope, props) {
-      var internal = app._state.get('internal');
-      return app.buildProject.components[internal.getData('activeComponent')];
+      return app.buildProject.components[
+        app.state.settings.activeComponent]
     }
     app.methods["11"]['setOnChangeProp'] = function(scope, props) {
       return function(newComponent) {
-        var internal = app._state.get('internal');
-        var activeComponent = internal.getData('activeComponent');
         app.js.update(function() {
           if (newComponent.id === app.buildProject.rootId) {
             app.buildProject.name = newComponent.name;
           }
-          app.buildProject.components[activeComponent] = newComponent;
+          app.buildProject.components[
+            app.state.settings.activeComponent] = newComponent;
         });
       }
     }
@@ -1184,14 +1162,14 @@ var blissUi = (function() {
         if (user) {
           app.dispatch({
             path: '/firebase',
-            action: 'set_user',
+            action: 'setUser',
             user: user
           });
 
           user.getIdToken(true).then(function(idToken) {
             app.dispatch({
               path: '/firebase',
-              action: 'set_token',
+              action: 'setToken',
               user_token: idToken
             });
           });
@@ -1199,26 +1177,26 @@ var blissUi = (function() {
           // Clear user state
           app.dispatch({
             path: '/firebase',
-            action: 'set_user',
+            action: 'setUser',
             user: null
           });
 
           app.dispatch({
             path: '/firebase',
-            action: 'set_token',
+            action: 'setToken',
             user_token: null
           });
 
           // Start UI flow
           app.setState(function() {
-            app.js.firebase_auth_ui();
+            app.js.firebaseAuthUI();
           });
         }
       });
 
       return newData;
     }
-    app.schema['/firebase']['set_user'] = function(data, args) {
+    app.schema['/firebase']['setUser'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.user = args.user;
       return newData;
@@ -1237,7 +1215,7 @@ var blissUi = (function() {
 
       return newData;
     }
-    app.schema['/firebase']['set_token'] = function(data, args) {
+    app.schema['/firebase']['setToken'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.user_token = args.user_token;
 
@@ -1247,12 +1225,11 @@ var blissUi = (function() {
           'X-User-Token': newData.user_token
         }
       });
-      console.log('getting session');
-      app.js.get_session();
+      app.js.getSession();
 
       return newData;
     }
-    app.schema['/firebase']['set_session'] = function(data, args) {
+    app.schema['/firebase']['setSession'] = function(data, args) {
       var newData = Object.assign({}, data);
       newData.designer_token = args.designer_token;
       newData.email = args.email;
@@ -1290,7 +1267,7 @@ var blissUi = (function() {
       newData.list.push(args.item)
       return newData
     }
-    app.schema['/projects']['add_all'] = function(data, args) {
+    app.schema['/projects']['addAll'] = function(data, args) {
       var newData = Object.assign({}, data)
       newData.list = args.projects
       return newData;
@@ -1311,14 +1288,41 @@ var blissUi = (function() {
         buildProject: null,
         activeComponent: null,
         shouldSave: false,
-        shouldBuild: false,
-        currentColor: '#ffffff'
+        shouldReloadProject: true,
+        currentColor: '#ffffff',
+        workspace: 'bliss',
+        timer: null
       }
+
+      var display = app._state.create('display');
+      display.create({
+        name: 'components',
+        width: '20%',
+        active: true
+      });
+      display.create({
+        name: 'designer',
+        width: '60%',
+        width2: '80%',
+        width3: '100%',
+        active: true
+      });
+      display.create({
+        name: 'properties',
+        width: '20%',
+        active: true
+      });
     }
     app.schema['/settings']['set'] = function(data, args) {
       var newData = Object.assign({}, data);
       if (newData.hasOwnProperty(args.key)) newData[args.key] = args.value;
       return newData;
+    }
+    app.schema['/settings']['setTimer'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      clearTimeout(app.state.settings.timer);
+      newData.timer = setTimeout(args.fn, 500)
+      return newData
     }
     if (app.schema['/settings']['init']) {
       app.assignPath(app.state, '/settings', app.schema['/settings']['init']());
@@ -1367,6 +1371,11 @@ var blissUi = (function() {
           }
         ]
       }
+    }
+    app.schema['/views']['setView'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.selected = args.name
+      return newData
     }
     if (app.schema['/views']['init']) {
       app.assignPath(app.state, '/views', app.schema['/views']['init']());
@@ -1452,14 +1461,19 @@ var blissUi = (function() {
         ]
       }
     }
+    app.schema['/resolution']['setResolution'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.selected = args.value
+      return newData
+    }
     if (app.schema['/resolution']['init']) {
       app.assignPath(app.state, '/resolution', app.schema['/resolution']['init']());
     } else {
       app.assignPath(app.state, '/resolution');
     }
-    app.schema['/displays'] = {};
-    app.schema['/displays']['init'] = function(data, args) {
-      return {
+    app.schema['/layout'] = {};
+    app.schema['/layout']['init'] = function(data, args) {
+      var newData = {
         list: [{
             name: 'components',
             width: '20%',
@@ -1468,9 +1482,9 @@ var blissUi = (function() {
           {
             name: 'designer',
             width: '60%',
-            active: true,
             width2: '80%',
-            width3: '100%'
+            width3: '100%',
+            active: true
           },
           {
             name: 'properties',
@@ -1479,11 +1493,20 @@ var blissUi = (function() {
           }
         ]
       }
+      return newData;
     }
-    if (app.schema['/displays']['init']) {
-      app.assignPath(app.state, '/displays', app.schema['/displays']['init']());
+    app.schema['/layout']['setActive'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      var layout = _.find(newData.list, function(item) {
+        return (item.name === args.name)
+      })
+      layout.active = args.active
+      return newData
+    }
+    if (app.schema['/layout']['init']) {
+      app.assignPath(app.state, '/layout', app.schema['/layout']['init']());
     } else {
-      app.assignPath(app.state, '/displays');
+      app.assignPath(app.state, '/layout');
     }
     app.getKey = function() {
       var out = [];
@@ -1505,7 +1528,7 @@ var blissUi = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "blissUi_1",
+            "id": "blissUiV_1",
             "key": app.getKey('id', '1')
           }),
           (function(scope) {
@@ -1852,9 +1875,22 @@ var blissUi = (function() {
                       "value": "getValue",
                       "onChange": "handleChange"
                     }, {
+                      "className": "hexColor",
                       "id": "inputText_153",
                       "key": app.getKey('id', '153')
                     })),
+                    React.createElement('a', app.mergeAttributes('253', scope, {
+                        "onClick": "handleClick"
+                      }, {
+                        "href": "#",
+                        "id": "inputCopyLink_253",
+                        "key": app.getKey('id', '253')
+                      }),
+                      React.createElement('i', app.mergeAttributes('254', scope, {}, {
+                        "className": "fa fa-clipboard",
+                        "id": "clipboardIcon_254",
+                        "key": app.getKey('id', '254')
+                      }))),
                     React.createElement('input', app.mergeAttributes('154', scope, {
                       "onChange": "handleChange",
                       "value": "getValue"

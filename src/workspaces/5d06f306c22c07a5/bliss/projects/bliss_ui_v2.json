@@ -92,7 +92,7 @@
     },
     {
       "name": "build",
-      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  \n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  if(app.buildProject.build === \"designer\") {\n    //console.log('skipping build')\n    return\n  }\n  \n  var data = JSON.stringify(app.buildProject)\n  var workspace = app.state.settings.workspace\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build?workspace=' + workspace,\n                    jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  \n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject)\n  var workspace = app.state.settings.workspace\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build?workspace=' + workspace,\n                    jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -415,11 +415,11 @@
       "js": [
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  console.log('get style')\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.settings.selected)})\n  \n  styles.width = resolution.width\n  styles.height = resolution.height\n  \n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = {\n    width: '100%',\n    height: 'calc(100vh - 50px)'\n  };\n  \n  var resolution = _.find(app.state.resolution.list,\n\t\tfunction(item) {\n    \treturn (item.value === app.state.resolution.selected)})\n  \n  styles.width = resolution.width\n  styles.height = resolution.height\n  \n  return styles;\n}"
         },
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var selected = app.state.view.selected\n  return (selected === 'designer')\n}"
+          "body": "function(scope, attributes) {\n  var selected = app.state.views.selected\n  return (selected === 'designer')\n}"
         }
       ],
       "dynamicAttributes": [

@@ -40,11 +40,6 @@ var blissUiV = (function() {
         app.buildProject.build = "designer";
       }
 
-      if (app.buildProject.build === "designer") {
-        //console.log('skipping build')
-        return
-      }
-
       var data = JSON.stringify(app.buildProject)
       var workspace = app.state.settings.workspace
 
@@ -811,7 +806,6 @@ var blissUiV = (function() {
     }
     app.methods["17"] = {};
     app.methods["17"]['getStyles'] = function(scope, attributes) {
-      console.log('get style')
       var styles = {
         width: '100%',
         height: 'calc(100vh - 50px)'
@@ -819,7 +813,7 @@ var blissUiV = (function() {
 
       var resolution = _.find(app.state.resolution.list,
         function(item) {
-          return (item.value === app.state.settings.selected)
+          return (item.value === app.state.resolution.selected)
         })
 
       styles.width = resolution.width
@@ -828,7 +822,7 @@ var blissUiV = (function() {
       return styles;
     }
     app.methods["17"]['shouldShow'] = function(scope, attributes) {
-      var selected = app.state.view.selected
+      var selected = app.state.views.selected
       return (selected === 'designer')
     }
     app.methods["54"] = {};
