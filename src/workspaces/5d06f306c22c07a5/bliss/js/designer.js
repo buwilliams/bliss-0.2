@@ -474,6 +474,12 @@ var blissUiV = (function() {
     app.methods["250"]['getText'] = function(scope, attributes) {
       return app.state.firebase.email;
     }
+    app.methods["260"] = {};
+    app.methods["260"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        firebase.auth().signOut();
+      }
+    };
     app.methods["247"] = {};
     app.methods["247"]['handleClick'] = function(scope, attributes) {
       return function(e) {
@@ -1769,6 +1775,23 @@ var blissUiV = (function() {
                           "id": "emailLabel_250",
                           "key": app.getKey('id', '250')
                         }), app.methods['250']['getText'](scope)),
+                        React.createElement('a', app.mergeAttributes('260', scope, {
+                            "onClick": "handleClick"
+                          }, {
+                            "href": "#",
+                            "className": "dropdown-item",
+                            "id": "switchWorkspace_260",
+                            "key": app.getKey('id', '260')
+                          }),
+                          React.createElement('i', app.mergeAttributes('258', scope, {}, {
+                            "className": "fa fa-hand-o-left",
+                            "id": "icon_258",
+                            "key": app.getKey('id', '258')
+                          })),
+                          React.createElement('span', app.mergeAttributes('259', scope, {}, {
+                            "id": "label_259",
+                            "key": app.getKey('id', '259')
+                          }), 'Switch Workspace')),
                         React.createElement('a', app.mergeAttributes('247', scope, {
                             "onClick": "handleClick"
                           }, {

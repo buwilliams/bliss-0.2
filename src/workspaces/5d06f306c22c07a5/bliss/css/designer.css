@@ -133,6 +133,17 @@
   text-transform: uppercase;
 }
 
+#switchWorkspace_260 {
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 10pt;
+}
+
+#label_259 {
+  display: inline-block;
+  margin-left: 10px;
+}
+
 #signOut_247 {
   cursor: pointer;
   margin-right: 5px;

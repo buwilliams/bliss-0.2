@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 257,
+  "nextId": 261,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -4794,7 +4794,7 @@ var blissProject = {
           "value": "#"
         },
         {
-          "name": "className",
+          "name": "class",
           "value": "dropdown-item"
         }
       ],
@@ -4830,7 +4830,7 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": "250",
+      "previous": "260",
       "child": "248",
       "parent": "107"
     },
@@ -4928,7 +4928,7 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "247",
+      "next": "260",
       "previous": "246",
       "child": null,
       "parent": "107"
@@ -5117,6 +5117,113 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "253"
+    },
+    "258": {
+      "id": "258",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-hand-o-left"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "259",
+      "previous": null,
+      "child": null,
+      "parent": "260"
+    },
+    "259": {
+      "id": "259",
+      "name": "label",
+      "element": "span",
+      "text": "Switch Workspace",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "258",
+      "child": null,
+      "parent": "260"
+    },
+    "260": {
+      "id": "260",
+      "name": "switch workspace",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "class",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut();\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "247",
+      "previous": "250",
+      "child": "258",
+      "parent": "107"
     }
   },
   "schemas": [
