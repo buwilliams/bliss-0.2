@@ -196,18 +196,19 @@ var blissUiV = (function() {
 
       var workspace = app.state.settings.workspace;
 
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'shouldSave',
+        value: false
+      })
+
       $.ajax({
         type: 'POST',
         url: '/project/save?workspace=' + workspace,
         data: data,
         success: function(data) {
           app.js.setStatus('Saved project ' + proj.name + '.');
-          app.dispatch({
-            path: '/settings',
-            action: 'set',
-            key: 'shouldSave',
-            value: false
-          })
           if (!_.isNil(success)) success(data);
         },
         contentType: "application/json",
