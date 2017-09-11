@@ -18,7 +18,7 @@ router.get('/list', function (req, res) {
     ws.workspace(env, req.session, req.query.workspace));
   res.send({success: true, projects: json});
   console.log(`Listed projects for '` +
-    `${session.user.username}/${session.user.workspace}'`);
+    `${req.session.user.username}/${req.query.workspace}'`);
 });
 
 router.get('/load', function (req, res) {
