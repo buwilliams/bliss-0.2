@@ -96,6 +96,17 @@ task('update-bliss', function() {
   fse.copySync('build','src/workspaces',{overwrite:true,dereference:true});
 });
 
+desc('Use bliss v2');
+task('migrate', function(version) {
+  var source = `src/workspaces/5d06f306c22c07a5/bliss/projects/bliss_ui_${version}.json`;
+  var dest = `src/workspaces/5d06f306c22c07a5/bliss/projects/bliss_ui.json`;
+  fse.copySync(source, dest, { overwrite: true, dereference: true });
+  var json = fse.readJsonSync(dest)
+  json.name = "Bliss UI"
+  json.build = "bliss"
+  fse.writeJsonSync(dest, json)
+})
+
 task('clean', function(){
   fse.removeSync('build');
 });
