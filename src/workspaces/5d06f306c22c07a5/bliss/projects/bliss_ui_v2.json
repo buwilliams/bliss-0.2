@@ -100,7 +100,7 @@
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  app.setState(function() {\n    app.state.shouldSave = true;\n    clearTimeout(app.state.timer);\n    try { fn(); } catch(e) { console.error('app.js.update', e); }\n    app.state.timer = setTimeout(function() {\n    \tif(app.state.shouldBuild === true) {\n        app.js.build();\n      } else {\n        app.js.saveAndReloadProject();\n      }\n  \t}, 500);\n  });\n}"
+      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  // reset timer so that it doesn't build too often\n  app.dispatch({\n    path: '/settings',\n    action: 'setTimer',\n    fn: function() {\n    \tif(app.state.settings.shouldReloadProject === true)\n        app.js.saveAndReloadProject()\n      else\n        app.js.build()\n  \t}\n  })\n  \n  // execute the update state function\n  // this function should call dispatch internally\n  try { fn() } catch(e) {\n    console.error('app.js.update', e)\n  }\n  \n  // set shouldSave so that the icon lights up\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: true\n  })\n}"
     },
     {
       "name": "server",
@@ -112,7 +112,7 @@
     },
     {
       "name": "loadProject",
-      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    app.js.cleanState(data.project, true);\n    app.js.build();\n    app.js.getProjects();\n  }, {name: projectName});\n}"
+      "body": "function(projectName, shouldConfirm) {\n  app.js.log('app.js.loadProjects() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n  if(shouldConfirm === true) {\n  \tif(!confirm('Are you sure you want to load a different project?')) return;\n  }\n  \n  app.setState(function() {\n  \tapp.js.setStatus('Loading project ' + projectName + '...');\n  });\n  \n  app.js.server('load', function(data) {\n    app.setState(function() {\n      app.js.setStatus('Loaded project ' + data.project.name + '.');\n    });\n    \n    app.buildProject = data.project\n  \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'activeComponent',\n      value: app.buildProject.rootId\n    })\n    \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'shouldReloadProject',\n      value: false\n    })\n    \n    app.js.build();\n    app.js.getProjects();\n  }, {name: projectName});\n}"
     },
     {
       "name": "setStatus",
@@ -124,7 +124,7 @@
     },
     {
       "name": "saveProject",
-      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(success) {\n  app.js.log('app.js.saveProject() invoked.');\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  app.js.setStatus('Saving project ' + proj.name + '...');\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.setStatus('Saved project ' + proj.name + '.');\n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'shouldSave',\n        value: false\n      })\n      if(!_.isNil(success)) success(data);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "newProject",
@@ -981,24 +981,16 @@
       ],
       "js": [
         {
-          "name": "saveProject",
-          "body": "function() {\n  var comp = this;\n  var proj = app.buildProject;\n  var data = JSON.stringify(proj);\n  comp.setStatus('Saving project ' + proj.name + '...');\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/save?workspace=bliss',\n    data: data,\n    success: function(data) {\n      comp.setStatus('Saved project ' + proj.name + '.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
-        },
-        {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    comp.saveProject();\n  }\n};"
-        },
-        {
-          "name": "setStatus",
-          "body": "function(message) {\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: false\n  })\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'status',\n    value: message\n  })\n}"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.saveProject();\n  }\n};"
         },
         {
           "name": "getClass",
-          "body": "function(scope, attributes) {\n  if(app.state.shouldSave === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
+          "body": "function(scope, attributes) {\n  if(app.state.settings.shouldSave === true) {\n    return \"btn btn-primary btn-sm\";\n  } else {\n    return \"btn btn-default btn-sm\";\n  }\n}"
         },
         {
           "name": "getStyles",
-          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuWarn');\n    styles.borderColor = app.js.getCssVar('$menuWarn');\n  }\n  return styles;\n}"
+          "body": "function(scope, attributes) {\n  var styles = {};\n  if(app.state.settings.shouldSave === true) {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuWarn');\n    styles.borderColor = app.js.getCssVar('$menuWarn');\n  }\n  return styles;\n}"
         }
       ],
       "dynamicAttributes": [
@@ -5139,11 +5131,15 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldBuild: false,\n    currentColor: '#ffffff',\n    workspace: 'bliss'\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldReloadProject: true,\n    currentColor: '#ffffff',\n    workspace: 'bliss',\n    timer: null\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
         },
         {
           "action": "set",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  if(newData.hasOwnProperty(args.key)) newData[args.key] = args.value;\n  return newData;\n}"
+        },
+        {
+          "action": "setTimer",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  clearTimeout(app.state.settings.timer);\n  newData.timer = setTimeout(args.fn, 500)\n  return newData\n}"
         }
       ]
     },

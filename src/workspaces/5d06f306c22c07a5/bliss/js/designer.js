@@ -71,22 +71,33 @@ var blissUiV = (function() {
     app.js['update'] = function(fn) {
       app.js.log('app.js.update() invoked.');
 
-      app.setState(function() {
-        app.state.shouldSave = true;
-        clearTimeout(app.state.timer);
-        try {
-          fn();
-        } catch (e) {
-          console.error('app.js.update', e);
+      // reset timer so that it doesn't build too often
+      app.dispatch({
+        path: '/settings',
+        action: 'setTimer',
+        fn: function() {
+          if (app.state.settings.shouldReloadProject === true)
+            app.js.saveAndReloadProject()
+          else
+            app.js.build()
         }
-        app.state.timer = setTimeout(function() {
-          if (app.state.shouldBuild === true) {
-            app.js.build();
-          } else {
-            app.js.saveAndReloadProject();
-          }
-        }, 500);
-      });
+      })
+
+      // execute the update state function
+      // this function should call dispatch internally
+      try {
+        fn()
+      } catch (e) {
+        console.error('app.js.update', e)
+      }
+
+      // set shouldSave so that the icon lights up
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'shouldSave',
+        value: true
+      })
     }
     app.js['server'] = function(path, success, data, requestType) {
       app.js.log('app.js.server() invoked.');
@@ -140,7 +151,23 @@ var blissUiV = (function() {
         app.setState(function() {
           app.js.setStatus('Loaded project ' + data.project.name + '.');
         });
-        app.js.cleanState(data.project, true);
+
+        app.buildProject = data.project
+
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'activeComponent',
+          value: app.buildProject.rootId
+        })
+
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'shouldReloadProject',
+          value: false
+        })
+
         app.js.build();
         app.js.getProjects();
       }, {
@@ -174,6 +201,12 @@ var blissUiV = (function() {
         data: data,
         success: function(data) {
           app.js.setStatus('Saved project ' + proj.name + '.');
+          app.dispatch({
+            path: '/settings',
+            action: 'set',
+            key: 'shouldSave',
+            value: false
+          })
           if (!_.isNil(success)) success(data);
         },
         contentType: "application/json",
@@ -429,46 +462,13 @@ var blissUiV = (function() {
       }
     };
     app.methods["93"] = {};
-    app.methods["93"]['saveProject'] = function() {
-      var comp = this;
-      var proj = app.buildProject;
-      var data = JSON.stringify(proj);
-      comp.setStatus('Saving project ' + proj.name + '...');
-
-      $.ajax({
-        type: 'POST',
-        url: '/project/save?workspace=bliss',
-        data: data,
-        success: function(data) {
-          comp.setStatus('Saved project ' + proj.name + '.');
-        },
-        contentType: "application/json",
-        dataType: 'json'
-      });
-    }
     app.methods["93"]['handleClick'] = function(scope, attributes) {
-      var comp = this;
       return function(e) {
-        comp.saveProject();
+        app.js.saveProject();
       }
     };
-    app.methods["93"]['setStatus'] = function(message) {
-      app.dispatch({
-        path: '/settings',
-        action: 'set',
-        key: 'shouldSave',
-        value: false
-      })
-
-      app.dispatch({
-        path: '/settings',
-        action: 'set',
-        key: 'status',
-        value: message
-      })
-    }
     app.methods["93"]['getClass'] = function(scope, attributes) {
-      if (app.state.shouldSave === true) {
+      if (app.state.settings.shouldSave === true) {
         return "btn btn-primary btn-sm";
       } else {
         return "btn btn-default btn-sm";
@@ -476,7 +476,7 @@ var blissUiV = (function() {
     }
     app.methods["93"]['getStyles'] = function(scope, attributes) {
       var styles = {};
-      if (app.state.shouldSave === true) {
+      if (app.state.settings.shouldSave === true) {
         styles.backgroundColor = app.js.getCssVar('$menuWarn');
         styles.borderColor = app.js.getCssVar('$menuWarn');
       }
@@ -1284,9 +1284,10 @@ var blissUiV = (function() {
         buildProject: null,
         activeComponent: null,
         shouldSave: false,
-        shouldBuild: false,
+        shouldReloadProject: true,
         currentColor: '#ffffff',
-        workspace: 'bliss'
+        workspace: 'bliss',
+        timer: null
       }
 
       var display = app._state.create('display');
@@ -1312,6 +1313,12 @@ var blissUiV = (function() {
       var newData = Object.assign({}, data);
       if (newData.hasOwnProperty(args.key)) newData[args.key] = args.value;
       return newData;
+    }
+    app.schema['/settings']['setTimer'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      clearTimeout(app.state.settings.timer);
+      newData.timer = setTimeout(args.fn, 500)
+      return newData
     }
     if (app.schema['/settings']['init']) {
       app.assignPath(app.state, '/settings', app.schema['/settings']['init']());
