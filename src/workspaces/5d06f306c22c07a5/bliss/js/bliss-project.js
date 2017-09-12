@@ -4934,7 +4934,7 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  return (app.state.workspaces.active === true)\n}"
+          "body": "function() {\n  return (!_.isNil(app.state.firebase.user) &&\n          app.state.workspaces.active === true)\n}"
         }
       ],
       "dynamicAttributes": [],

@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 271,
+  "nextId": 274,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -156,7 +156,7 @@
     },
     {
       "name": "afterAuth",
-      "body": "function(scope, attributes) {\n  app.js.log('after auth invoked')\n\n  app.dispatch({\n    path: '/workspaces',\n    action: 'fetch'\n  })\n}"
+      "body": "function(scope, attributes) {\n  app.js.log('after auth invoked')\n\n  app.dispatch({\n    path: '/workspaces',\n    action: 'httpListWorkspaces'\n  })\n}"
     }
   ],
   "cssVars": [
@@ -4979,7 +4979,7 @@
         }
       ],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "271",
       "previous": "261",
       "child": "267",
       "parent": "264"
@@ -5432,7 +5432,7 @@
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.getProjects()\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.newProject(false)\n    app.js.getProjects()\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -5549,6 +5549,137 @@
       "previous": "269",
       "child": null,
       "parent": "268"
+    },
+    "271": {
+      "id": "271",
+      "name": "new workspace container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "252",
+      "child": "272",
+      "parent": "264"
+    },
+    "272": {
+      "id": "272",
+      "name": "new workspace name",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "workspace name"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "padding",
+              "value": "6px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #ccc"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'newWorkspaceName',\n      value: e.target.value\n    })\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.workspaces.newWorkspaceName\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "273",
+      "previous": null,
+      "child": null,
+      "parent": "271"
+    },
+    "273": {
+      "id": "273",
+      "name": "create workspace button",
+      "element": "button",
+      "text": "Add Workspace",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-success"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    console.log('newWorkspaceName', app.state.workspaces.newWorkspaceName)\n    e.preventDefault()\n    app.dispatch({\n      path: '/workspaces',\n      action: 'httpCreateWorkspace',\n      name: app.state.workspaces.newWorkspaceName\n    })\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "272",
+      "child": null,
+      "parent": "271"
     }
   },
   "schemas": [
@@ -5582,15 +5713,15 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    active: true,\n    list: []\n  }\n  return newData\n}"
+          "body": "function (data, args) {\n  var newData = {\n    active: true,\n    newWorkspaceName: '',\n    list: []\n  }\n  return newData\n}"
         },
         {
           "action": "add",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list.push(args.item)\n  return newData;\n}"
         },
         {
-          "action": "fetch",
-          "body": "function (data, args) {\n  $.ajax({\n    type: 'GET',\n    url: '/workspace/list',\n    data: data,\n    success: function(data) {\n      app.dispatch({\n        path: '/workspaces',\n        action: 'addAll',\n        list: data.workspaces\n      })\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n  \n  return data;\n}"
+          "action": "httpListWorkspaces",
+          "body": "function (data, args) {\n  $.ajax({\n    type: 'GET',\n    url: '/workspace/list',\n    data: {},\n    success: function(data) {\n      app.dispatch({\n        path: '/workspaces',\n        action: 'addAll',\n        list: data.workspaces\n      })\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n  \n  return data;\n}"
         },
         {
           "action": "addAll",
@@ -5599,6 +5730,10 @@
         {
           "action": "set",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  if(newData.hasOwnProperty(args.key))\n    newData[args.key] = args.value;\n  return newData;\n}"
+        },
+        {
+          "action": "httpCreateWorkspace",
+          "body": "function (data, args) {\n  var postData = { name: args.name }\n  postData = JSON.stringify(postData)\n  \n  app.dispatch({\n    path: '/workspaces',\n    action: 'set',\n    key: 'newWorkspaceName',\n    value: ''\n  })\n  \n  $.ajax({\n    type: 'POST',\n    url: '/workspace',\n    data: postData,\n    success: function(data) {\n      app.dispatch({\n        path: '/workspaces',\n        action: 'httpListWorkspaces'\n      })\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n  \n  return data;\n}"
         }
       ]
     },

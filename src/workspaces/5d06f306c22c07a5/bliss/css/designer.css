@@ -64,6 +64,21 @@
   padding-left: 10px;
 }
 
+#newWorkspaceContainer_271 {
+  padding: 10px;
+}
+
+#newWorkspaceName_272 {
+  outline: none;
+  padding: 6px;
+  border-radius: 3px;
+  border: solid 1px #ccc;
+}
+
+#createWorkspaceButton_273 {
+  margin-left: 5px;
+}
+
 #topMenu_111 {
   position: absolute;
   top: 0;

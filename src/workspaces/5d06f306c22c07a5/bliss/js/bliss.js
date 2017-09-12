@@ -348,7 +348,8 @@ var blissUi = (function() {
     }
     app.methods["251"] = {};
     app.methods["251"]['shouldShow'] = function() {
-      return (app.state.workspaces.active === true)
+      return (!_.isNil(app.state.firebase.user) &&
+        app.state.workspaces.active === true)
     }
     app.methods["268"] = {};
     app.methods["268"]['handleClick'] = function(scope, attributes) {
