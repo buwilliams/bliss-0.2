@@ -64,11 +64,7 @@
   padding-left: 10px;
 }
 
-#projects_243 {
-  margin-top: 50px;
-}
-
-#mainNavigation_111 {
+#topMenu_111 {
   position: absolute;
   top: 0;
   left: 0;
@@ -367,11 +363,9 @@
   font-size: 10px;
 }
 
-#container_96 {
+#blissPanels_96 {
   margin-top: 48px;
-}
-
-#row_2 {
+  position: relative;
 }
 
 #elements_3 {
