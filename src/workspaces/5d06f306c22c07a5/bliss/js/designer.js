@@ -1639,7 +1639,7 @@ var blissUiV = (function() {
                   "key": app.getKey('id', '251')
                 }),
                 React.createElement('div', app.mergeAttributes('263', scope, {}, {
-                    "id": "mainNav",
+                    "id": "blissHeader_263",
                     "key": app.getKey('id', '263')
                   }),
                   React.createElement('div', app.mergeAttributes('268', scope, {
@@ -1717,7 +1717,7 @@ var blissUiV = (function() {
                   "key": app.getKey('id', '243')
                 }),
                 React.createElement('div', app.mergeAttributes('111', scope, {}, {
-                    "id": "mainNav",
+                    "id": "topMenu_111",
                     "key": app.getKey('id', '111')
                   }),
                   React.createElement('div', app.mergeAttributes('181', scope, {}, {
@@ -2061,315 +2061,310 @@ var blissUiV = (function() {
                     "key": app.getKey('id', '186')
                   }), 'Color picker')),
                 React.createElement('div', app.mergeAttributes('96', scope, {}, {
-                    "id": "container_96",
+                    "id": "blissPanels_96",
                     "key": app.getKey('id', '96')
                   }),
-                  React.createElement('div', app.mergeAttributes('2', scope, {}, {
-                      "className": "clearfix",
-                      "id": "row_2",
-                      "key": app.getKey('id', '2')
+                  (function(scope) {
+                    var out = [];
+                    scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
+                    if (app.methods['3']['shouldShow'](scope) === true) {
+                      out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
+                          "className": "float-left",
+                          "id": "elements_3",
+                          "key": app.getKey('id', '3')
+                        }),
+                        React.createElement('h3', app.mergeAttributes('20', scope, {}, {
+                          "id": "elementsHeader_20",
+                          "key": app.getKey('id', '20')
+                        }), 'Elements'),
+                        React.createElement('div', app.mergeAttributes('110', scope, {}, {
+                            "id": "treeContainer_110",
+                            "key": app.getKey('id', '110')
+                          }),
+                          React.createElement(BlissTree.component, app.mergeAttributes('18', scope, {
+                            "data": "setDataProp",
+                            "onSelect": "setOnSelectProp",
+                            "onCreate": "setOnCreateProp",
+                            "onClone": "setOnCloneProp",
+                            "onDelete": "setOnDeleteProp",
+                            "onMove": "setOnMoveProp",
+                            "_this": "setThis",
+                            "selected": "getSelected"
+                          }, {
+                            "id": "elementTree_18",
+                            "key": app.getKey('id', '18')
+                          })))));
+                    }
+                    return out;
+                  })(scope),
+                  React.createElement('div', app.mergeAttributes('4', scope, {
+                      "style": "getStyles"
+                    }, {
+                      "id": "designer",
+                      "className": "float-left",
+                      "key": app.getKey('id', '4')
                     }),
-                    (function(scope) {
-                      var out = [];
-                      scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
-                      if (app.methods['3']['shouldShow'](scope) === true) {
-                        out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
-                            "className": "float-left",
-                            "id": "elements_3",
-                            "key": app.getKey('id', '3')
-                          }),
-                          React.createElement('h3', app.mergeAttributes('20', scope, {}, {
-                            "id": "elementsHeader_20",
-                            "key": app.getKey('id', '20')
-                          }), 'Elements'),
-                          React.createElement('div', app.mergeAttributes('110', scope, {}, {
-                              "id": "treeContainer_110",
-                              "key": app.getKey('id', '110')
-                            }),
-                            React.createElement(BlissTree.component, app.mergeAttributes('18', scope, {
-                              "data": "setDataProp",
-                              "onSelect": "setOnSelectProp",
-                              "onCreate": "setOnCreateProp",
-                              "onClone": "setOnCloneProp",
-                              "onDelete": "setOnDeleteProp",
-                              "onMove": "setOnMoveProp",
-                              "_this": "setThis",
-                              "selected": "getSelected"
-                            }, {
-                              "id": "elementTree_18",
-                              "key": app.getKey('id', '18')
-                            })))));
-                      }
-                      return out;
-                    })(scope),
-                    React.createElement('div', app.mergeAttributes('4', scope, {
-                        "style": "getStyles"
+                    React.createElement('div', app.mergeAttributes('80', scope, {
+                        "style": "getStyle"
                       }, {
-                        "id": "designer",
-                        "className": "float-left",
-                        "key": app.getKey('id', '4')
+                        "id": "designerContainer_80",
+                        "key": app.getKey('id', '80')
                       }),
-                      React.createElement('div', app.mergeAttributes('80', scope, {
-                          "style": "getStyle"
+                      React.createElement('div', app.mergeAttributes('205', scope, {
+                          "style": "getStyles"
                         }, {
-                          "id": "designerContainer_80",
-                          "key": app.getKey('id', '80')
+                          "id": "previewContainer_205",
+                          "key": app.getKey('id', '205')
                         }),
-                        React.createElement('div', app.mergeAttributes('205', scope, {
-                            "style": "getStyles"
-                          }, {
-                            "id": "previewContainer_205",
-                            "key": app.getKey('id', '205')
-                          }),
-                          React.createElement('h3', app.mergeAttributes('204', scope, {}, {
-                            "className": "clearfix",
-                            "id": "iframeHeader_204",
-                            "key": app.getKey('id', '204')
-                          }), app.methods['204']['getText'](scope)),
-                          null)),
-                      React.createElement('div', app.mergeAttributes('54', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "jsEditor",
-                          "key": app.getKey('id', '54')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('55', scope, {}, {
-                          "id": "h3Js",
-                          "key": app.getKey('id', '55')
-                        }), app.methods['55']['getText'](scope)),
-                        React.createElement('div', app.mergeAttributes('56', scope, {}, {
-                            "id": "code",
-                            "key": app.getKey('id', '56')
-                          }),
-                          React.createElement(BlissJavascript.component, app.mergeAttributes('79', scope, {
-                            "component": "setComponentProp",
-                            "onChange": "setOnChangeProp"
-                          }, {
-                            "id": "blissJavascript_79",
-                            "key": app.getKey('id', '79')
-                          })))),
-                      React.createElement('div', app.mergeAttributes('238', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "dataEditor_238",
-                          "key": app.getKey('id', '238')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('239', scope, {}, {
-                          "id": "h3Js",
-                          "key": app.getKey('id', '239')
-                        }), 'Data Editor'),
-                        React.createElement('div', app.mergeAttributes('240', scope, {}, {
-                            "id": "codeContainer_240",
-                            "key": app.getKey('id', '240')
-                          }),
-                          React.createElement(BlissData.component, app.mergeAttributes('241', scope, {
-                            "schemas": "setSchemas",
-                            "onChange": "setOnChangeProp"
-                          }, {
-                            "id": "blissData_241",
-                            "key": app.getKey('id', '241')
-                          })))),
-                      React.createElement('div', app.mergeAttributes('97', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "generalEditor",
-                          "key": app.getKey('id', '97')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('98', scope, {}, {
-                          "id": "h3General",
-                          "key": app.getKey('id', '98')
-                        }), 'Settings'),
-                        React.createElement('div', app.mergeAttributes('199', scope, {}, {
-                            "className": "clearfix",
-                            "id": "projectDetailsContainer_199",
-                            "key": app.getKey('id', '199')
-                          }),
-                          React.createElement('span', app.mergeAttributes('103', scope, {}, {
-                            "className": "pull-left",
-                            "id": "nameLabel_103",
-                            "key": app.getKey('id', '103')
-                          }), 'Project name: '),
-                          React.createElement('input', app.mergeAttributes('102', scope, {
-                            "onChange": "handleChange",
-                            "value": "getValue"
-                          }, {
-                            "className": "form-control pull-left input-sm",
-                            "id": "projectName_102",
-                            "key": app.getKey('id', '102')
-                          })),
-                          React.createElement('button', app.mergeAttributes('196', scope, {}, {
-                              "className": "btn btn-default btn-sm pull-right",
-                              "id": "deleteProject_196",
-                              "key": app.getKey('id', '196')
-                            }),
-                            React.createElement('i', app.mergeAttributes('197', scope, {}, {
-                              "className": "fa fa-trash",
-                              "id": "icon_197",
-                              "key": app.getKey('id', '197')
-                            })),
-                            React.createElement('span', app.mergeAttributes('198', scope, {}, {
-                              "id": "deleteLabel_198",
-                              "key": app.getKey('id', '198')
-                            }), 'Delete project')))),
-                      React.createElement('div', app.mergeAttributes('179', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "globalJavascriptEditor_179",
-                          "key": app.getKey('id', '179')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('109', scope, {}, {
-                          "id": "h3GeneralJs",
-                          "key": app.getKey('id', '109')
-                        }), 'Global JavaScript'),
-                        React.createElement('div', app.mergeAttributes('137', scope, {}, {
-                            "className": "clearfix",
-                            "id": "generalJsEditorContainer_137",
-                            "key": app.getKey('id', '137')
-                          }),
-                          React.createElement(BlissJavascript.component, app.mergeAttributes('108', scope, {
-                            "component": "setComponentProp",
-                            "onChange": "setOnChangeProp"
-                          }, {
-                            "id": "projJs_108",
-                            "key": app.getKey('id', '108')
-                          })))),
-                      React.createElement('div', app.mergeAttributes('180', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "globalCssEditor_180",
-                          "key": app.getKey('id', '180')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('223', scope, {}, {
+                        React.createElement('h3', app.mergeAttributes('204', scope, {}, {
                           "className": "clearfix",
-                          "id": "globalCssHeader_223",
-                          "key": app.getKey('id', '223')
-                        }), 'Global CSS'),
-                        React.createElement(BlissPropertiesCss.component, app.mergeAttributes('224', scope, {
-                          "onChange": "setOnChange",
-                          "component": "setComponent"
-                        }, {
-                          "id": "globalCss_224",
-                          "key": app.getKey('id', '224')
-                        }))),
-                      React.createElement('div', app.mergeAttributes('225', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "cssVarsEditor_225",
-                          "key": app.getKey('id', '225')
+                          "id": "iframeHeader_204",
+                          "key": app.getKey('id', '204')
+                        }), app.methods['204']['getText'](scope)),
+                        null)),
+                    React.createElement('div', app.mergeAttributes('54', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "jsEditor",
+                        "key": app.getKey('id', '54')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('55', scope, {}, {
+                        "id": "h3Js",
+                        "key": app.getKey('id', '55')
+                      }), app.methods['55']['getText'](scope)),
+                      React.createElement('div', app.mergeAttributes('56', scope, {}, {
+                          "id": "code",
+                          "key": app.getKey('id', '56')
                         }),
-                        React.createElement('h3', app.mergeAttributes('140', scope, {}, {
-                          "className": "clearfix",
-                          "id": "globalCssVarsHeader_140",
-                          "key": app.getKey('id', '140')
-                        }), 'Global CSS Vars'),
-                        React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('141', scope, {
-                          "objectContainer": "setObjectContainer",
-                          "objectKey": "setObjectKey",
-                          "objectType": "setObjectType",
-                          "onChange": "setOnChange",
-                          "itemKey": "setItemKey",
-                          "itemValue": "setItemValue"
+                        React.createElement(BlissJavascript.component, app.mergeAttributes('79', scope, {
+                          "component": "setComponentProp",
+                          "onChange": "setOnChangeProp"
                         }, {
-                          "id": "globalCssVars_141",
-                          "key": app.getKey('id', '141')
-                        }))),
-                      React.createElement('div', app.mergeAttributes('226', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "pageLoadEditor_226",
-                          "key": app.getKey('id', '226')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('155', scope, {}, {
-                          "className": "clearfix",
-                          "id": "loadHeader_155",
-                          "key": app.getKey('id', '155')
-                        }), 'Page Load Functions'),
-                        React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('156', scope, {
-                          "objectContainer": "setObjectContainer",
-                          "objectKey": "setObjectKey",
-                          "objectType": "setObjectType",
-                          "onChange": "setOnChange"
-                        }, {
-                          "id": "loadFunctions_156",
-                          "key": app.getKey('id', '156')
-                        })),
-                        React.createElement('h3', app.mergeAttributes('138', scope, {}, {
-                          "className": "clearfix",
-                          "id": "stylesheetHeader_138",
-                          "key": app.getKey('id', '138')
-                        }), 'Stylesheets'),
-                        React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('139', scope, {
-                          "objectContainer": "setObjectContainer",
-                          "objectKey": "setObjectKey",
-                          "objectType": "setObjectType",
-                          "onChange": "setOnChange"
-                        }, {
-                          "id": "stylesheetProperties_139",
-                          "key": app.getKey('id', '139')
-                        })),
-                        React.createElement('h3', app.mergeAttributes('136', scope, {}, {
-                          "className": "clearfix",
-                          "id": "scriptsHeader_136",
-                          "key": app.getKey('id', '136')
-                        }), 'Scripts'),
-                        React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('135', scope, {
-                          "objectContainer": "setObjectContainer",
-                          "objectKey": "setObjectKey",
-                          "objectType": "setObjectType",
-                          "onChange": "setOnChange"
-                        }, {
-                          "id": "scriptProperties_135",
-                          "key": app.getKey('id', '135')
-                        }))),
-                      React.createElement('div', app.mergeAttributes('227', scope, {
-                          "style": "getStyle"
-                        }, {
-                          "id": "packagesEditor_227",
-                          "key": app.getKey('id', '227')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('142', scope, {}, {
-                          "className": "clearfix",
-                          "id": "packagesHeader_142",
-                          "key": app.getKey('id', '142')
-                        }), 'node packages (name, version)'),
-                        React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('143', scope, {
-                          "objectContainer": "setObjectContainer",
-                          "objectKey": "setObjectKey",
-                          "objectType": "setObjectType",
-                          "onChange": "setOnChange",
-                          "itemKey": "setItemKey",
-                          "itemValue": "setItemValue"
-                        }, {
-                          "id": "packagesProperties_143",
-                          "key": app.getKey('id', '143')
+                          "id": "blissJavascript_79",
+                          "key": app.getKey('id', '79')
                         })))),
-                    (function(scope) {
-                      var out = [];
-                      scope['shouldShow'] = app.methods['77']['shouldShow'](scope);
-                      if (app.methods['77']['shouldShow'](scope) === true) {
-                        out.push(React.createElement('div', app.mergeAttributes('77', scope, {}, {
-                            "id": "propertiesContainer",
-                            "className": "float-left",
-                            "key": app.getKey('id', '77')
+                    React.createElement('div', app.mergeAttributes('238', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "dataEditor_238",
+                        "key": app.getKey('id', '238')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('239', scope, {}, {
+                        "id": "h3Js",
+                        "key": app.getKey('id', '239')
+                      }), 'Data Editor'),
+                      React.createElement('div', app.mergeAttributes('240', scope, {}, {
+                          "id": "codeContainer_240",
+                          "key": app.getKey('id', '240')
+                        }),
+                        React.createElement(BlissData.component, app.mergeAttributes('241', scope, {
+                          "schemas": "setSchemas",
+                          "onChange": "setOnChangeProp"
+                        }, {
+                          "id": "blissData_241",
+                          "key": app.getKey('id', '241')
+                        })))),
+                    React.createElement('div', app.mergeAttributes('97', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "generalEditor",
+                        "key": app.getKey('id', '97')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('98', scope, {}, {
+                        "id": "h3General",
+                        "key": app.getKey('id', '98')
+                      }), 'Settings'),
+                      React.createElement('div', app.mergeAttributes('199', scope, {}, {
+                          "className": "clearfix",
+                          "id": "projectDetailsContainer_199",
+                          "key": app.getKey('id', '199')
+                        }),
+                        React.createElement('span', app.mergeAttributes('103', scope, {}, {
+                          "className": "pull-left",
+                          "id": "nameLabel_103",
+                          "key": app.getKey('id', '103')
+                        }), 'Project name: '),
+                        React.createElement('input', app.mergeAttributes('102', scope, {
+                          "onChange": "handleChange",
+                          "value": "getValue"
+                        }, {
+                          "className": "form-control pull-left input-sm",
+                          "id": "projectName_102",
+                          "key": app.getKey('id', '102')
+                        })),
+                        React.createElement('button', app.mergeAttributes('196', scope, {}, {
+                            "className": "btn btn-default btn-sm pull-right",
+                            "id": "deleteProject_196",
+                            "key": app.getKey('id', '196')
                           }),
-                          React.createElement('h3', app.mergeAttributes('182', scope, {}, {
-                            "id": "propertyHeader_182",
-                            "key": app.getKey('id', '182')
-                          }), 'properties'),
-                          React.createElement('div', app.mergeAttributes('151', scope, {}, {
-                              "id": "propertiesPadding_151",
-                              "key": app.getKey('id', '151')
-                            }),
-                            React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
-                              "component": "setComponentProp",
-                              "onChange": "setOnChangeProp"
-                            }, {
-                              "id": "blissProperties_11",
-                              "key": app.getKey('id', '11')
-                            })))));
-                      }
-                      return out;
-                    })(scope))),
+                          React.createElement('i', app.mergeAttributes('197', scope, {}, {
+                            "className": "fa fa-trash",
+                            "id": "icon_197",
+                            "key": app.getKey('id', '197')
+                          })),
+                          React.createElement('span', app.mergeAttributes('198', scope, {}, {
+                            "id": "deleteLabel_198",
+                            "key": app.getKey('id', '198')
+                          }), 'Delete project')))),
+                    React.createElement('div', app.mergeAttributes('179', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "globalJavascriptEditor_179",
+                        "key": app.getKey('id', '179')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('109', scope, {}, {
+                        "id": "h3GeneralJs",
+                        "key": app.getKey('id', '109')
+                      }), 'Global JavaScript'),
+                      React.createElement('div', app.mergeAttributes('137', scope, {}, {
+                          "className": "clearfix",
+                          "id": "generalJsEditorContainer_137",
+                          "key": app.getKey('id', '137')
+                        }),
+                        React.createElement(BlissJavascript.component, app.mergeAttributes('108', scope, {
+                          "component": "setComponentProp",
+                          "onChange": "setOnChangeProp"
+                        }, {
+                          "id": "projJs_108",
+                          "key": app.getKey('id', '108')
+                        })))),
+                    React.createElement('div', app.mergeAttributes('180', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "globalCssEditor_180",
+                        "key": app.getKey('id', '180')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('223', scope, {}, {
+                        "className": "clearfix",
+                        "id": "globalCssHeader_223",
+                        "key": app.getKey('id', '223')
+                      }), 'Global CSS'),
+                      React.createElement(BlissPropertiesCss.component, app.mergeAttributes('224', scope, {
+                        "onChange": "setOnChange",
+                        "component": "setComponent"
+                      }, {
+                        "id": "globalCss_224",
+                        "key": app.getKey('id', '224')
+                      }))),
+                    React.createElement('div', app.mergeAttributes('225', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "cssVarsEditor_225",
+                        "key": app.getKey('id', '225')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('140', scope, {}, {
+                        "className": "clearfix",
+                        "id": "globalCssVarsHeader_140",
+                        "key": app.getKey('id', '140')
+                      }), 'Global CSS Vars'),
+                      React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('141', scope, {
+                        "objectContainer": "setObjectContainer",
+                        "objectKey": "setObjectKey",
+                        "objectType": "setObjectType",
+                        "onChange": "setOnChange",
+                        "itemKey": "setItemKey",
+                        "itemValue": "setItemValue"
+                      }, {
+                        "id": "globalCssVars_141",
+                        "key": app.getKey('id', '141')
+                      }))),
+                    React.createElement('div', app.mergeAttributes('226', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "pageLoadEditor_226",
+                        "key": app.getKey('id', '226')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('155', scope, {}, {
+                        "className": "clearfix",
+                        "id": "loadHeader_155",
+                        "key": app.getKey('id', '155')
+                      }), 'Page Load Functions'),
+                      React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('156', scope, {
+                        "objectContainer": "setObjectContainer",
+                        "objectKey": "setObjectKey",
+                        "objectType": "setObjectType",
+                        "onChange": "setOnChange"
+                      }, {
+                        "id": "loadFunctions_156",
+                        "key": app.getKey('id', '156')
+                      })),
+                      React.createElement('h3', app.mergeAttributes('138', scope, {}, {
+                        "className": "clearfix",
+                        "id": "stylesheetHeader_138",
+                        "key": app.getKey('id', '138')
+                      }), 'Stylesheets'),
+                      React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('139', scope, {
+                        "objectContainer": "setObjectContainer",
+                        "objectKey": "setObjectKey",
+                        "objectType": "setObjectType",
+                        "onChange": "setOnChange"
+                      }, {
+                        "id": "stylesheetProperties_139",
+                        "key": app.getKey('id', '139')
+                      })),
+                      React.createElement('h3', app.mergeAttributes('136', scope, {}, {
+                        "className": "clearfix",
+                        "id": "scriptsHeader_136",
+                        "key": app.getKey('id', '136')
+                      }), 'Scripts'),
+                      React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('135', scope, {
+                        "objectContainer": "setObjectContainer",
+                        "objectKey": "setObjectKey",
+                        "objectType": "setObjectType",
+                        "onChange": "setOnChange"
+                      }, {
+                        "id": "scriptProperties_135",
+                        "key": app.getKey('id', '135')
+                      }))),
+                    React.createElement('div', app.mergeAttributes('227', scope, {
+                        "style": "getStyle"
+                      }, {
+                        "id": "packagesEditor_227",
+                        "key": app.getKey('id', '227')
+                      }),
+                      React.createElement('h3', app.mergeAttributes('142', scope, {}, {
+                        "className": "clearfix",
+                        "id": "packagesHeader_142",
+                        "key": app.getKey('id', '142')
+                      }), 'node packages (name, version)'),
+                      React.createElement(BlissPropertiesGeneric.component, app.mergeAttributes('143', scope, {
+                        "objectContainer": "setObjectContainer",
+                        "objectKey": "setObjectKey",
+                        "objectType": "setObjectType",
+                        "onChange": "setOnChange",
+                        "itemKey": "setItemKey",
+                        "itemValue": "setItemValue"
+                      }, {
+                        "id": "packagesProperties_143",
+                        "key": app.getKey('id', '143')
+                      })))),
+                  (function(scope) {
+                    var out = [];
+                    scope['shouldShow'] = app.methods['77']['shouldShow'](scope);
+                    if (app.methods['77']['shouldShow'](scope) === true) {
+                      out.push(React.createElement('div', app.mergeAttributes('77', scope, {}, {
+                          "id": "propertiesContainer",
+                          "className": "float-left",
+                          "key": app.getKey('id', '77')
+                        }),
+                        React.createElement('h3', app.mergeAttributes('182', scope, {}, {
+                          "id": "propertyHeader_182",
+                          "key": app.getKey('id', '182')
+                        }), 'properties'),
+                        React.createElement('div', app.mergeAttributes('151', scope, {}, {
+                            "id": "propertiesPadding_151",
+                            "key": app.getKey('id', '151')
+                          }),
+                          React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
+                            "component": "setComponentProp",
+                            "onChange": "setOnChangeProp"
+                          }, {
+                            "id": "blissProperties_11",
+                            "key": app.getKey('id', '11')
+                          })))));
+                    }
+                    return out;
+                  })(scope)),
                 React.createElement('div', app.mergeAttributes('95', scope, {}, {
                   "id": "statusBar",
                   "key": app.getKey('id', '95')

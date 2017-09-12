@@ -2,20 +2,10 @@
   min-width: 1400px;
 }
 
-#listOfWorkspaces_252 {
-  padding: 5px;
-  margin: 3px;
-  background-color: #f3fbff;
-  cursor: pointer;
-  text-align: left;
-  text-transform: uppercase;
+#workspaces_251 {
 }
 
-#listOfWorkspaces_252:hover {
-  background-color: #c0eaff;
-}
-
-#mainNav {
+#blissHeader_263 {
   position: absolute;
   top: 0;
   left: 0;
@@ -26,6 +16,69 @@
   padding: 7px 14px;
   height: auto;
   min-width: 1400px;
+}
+
+#signout_268 {
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#icon_269 {
+}
+
+#label_270 {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+#blissHeaderText_262 {
+  display: inline-block;
+  font-size: 14pt;
+  font-weight: bold;
+  color: #5fc0ec;
+  padding-top: 1px;
+}
+
+#listContainer_264 {
+  margin-top: 45px;
+}
+
+#workspacesHeader_261 {
+  background-color: #698290;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 16px;
+  padding: 10px;
+  margin: 0;
+}
+
+#listOfWorkspaces_252 {
+  margin: 10px;
+}
+
+#workspaceLink_267 {
+  display: block;
+}
+
+#listOfProjects_265 {
+  padding-left: 10px;
+}
+
+#projects_243 {
+  margin-top: 50px;
+}
+
+#mainNavigation_111 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: #263036;
+  border-bottom: solid 5px #435560;
+  padding: 7px 14px;
+  min-width: 1400px;
+  height: 48px;
 }
 
 #appHeader_181 {

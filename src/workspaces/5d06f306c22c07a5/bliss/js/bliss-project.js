@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 261,
+  "nextId": 271,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -183,6 +183,14 @@ var blissProject = {
     {
       "name": "lightBg",
       "value": "#dbe2e5"
+    },
+    {
+      "name": "headerFontSize",
+      "value": "16px"
+    },
+    {
+      "name": "headerPadding",
+      "value": "10px"
     }
   ],
   "css": [],
@@ -1663,12 +1671,7 @@ var blissProject = {
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "mainNav"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
@@ -1706,12 +1709,12 @@ var blissProject = {
               "value": "7px 14px"
             },
             {
-              "name": "height",
-              "value": "auto"
-            },
-            {
               "name": "min-width",
               "value": "1400px"
+            },
+            {
+              "name": "height",
+              "value": "48px"
             }
           ]
         }
@@ -4711,14 +4714,24 @@ var blissProject = {
     },
     "243": {
       "id": "243",
-      "name": "Secured",
+      "name": "Projects",
       "element": "div",
       "text": null,
       "textFn": null,
       "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "50px"
+            }
+          ]
+        }
+      ],
       "js": [
         {
           "name": "shouldShow",
@@ -4820,7 +4833,7 @@ var blissProject = {
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut();\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut()\n  }\n}\n"
         }
       ],
       "dynamicAttributes": [
@@ -4942,7 +4955,12 @@ var blissProject = {
       "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
       "js": [
         {
           "name": "shouldShow",
@@ -4952,7 +4970,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": "243",
       "previous": "242",
-      "child": "252",
+      "child": "263",
       "parent": "1"
     },
     "252": {
@@ -4960,13 +4978,17 @@ var blissProject = {
       "name": "List of workspaces",
       "element": "div",
       "text": "",
-      "textFn": "getText",
+      "textFn": "",
       "ifFn": null,
       "repeatFn": "repeater",
       "attributes": [
         {
           "name": "class",
           "value": "workspaces"
+        },
+        {
+          "name": "href",
+          "value": "#"
         }
       ],
       "css": [
@@ -4974,37 +4996,8 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
-              "name": "padding",
-              "value": "5px"
-            },
-            {
               "name": "margin",
-              "value": "3px"
-            },
-            {
-              "name": "background-color",
-              "value": "#f3fbff"
-            },
-            {
-              "name": "cursor",
-              "value": "pointer"
-            },
-            {
-              "name": "text-align",
-              "value": "left"
-            },
-            {
-              "name": "text-transform",
-              "value": "uppercase"
-            }
-          ]
-        },
-        {
-          "selector": "$id:hover",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "#c0eaff"
+              "value": "10px"
             }
           ]
         }
@@ -5013,26 +5006,13 @@ var blissProject = {
         {
           "name": "repeater",
           "body": "function(scope, attributes) {\n  return app.state.workspaces.list;\n};\n"
-        },
-        {
-          "name": "getText",
-          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  return item.name\n};\n"
-        },
-        {
-          "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.getProjects()\n  }\n};\n"
         }
       ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "handleClick"
-        }
-      ],
+      "dynamicAttributes": [],
       "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "251"
+      "previous": "261",
+      "child": "267",
+      "parent": "264"
     },
     "253": {
       "id": "253",
@@ -5224,6 +5204,381 @@ var blissProject = {
       "previous": "250",
       "child": "258",
       "parent": "107"
+    },
+    "261": {
+      "id": "261",
+      "name": "workspaces header",
+      "element": "h3",
+      "text": "Workspaces",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#ffffff"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "$headerFontSize"
+            },
+            {
+              "name": "padding",
+              "value": "$headerPadding"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "252",
+      "previous": null,
+      "child": null,
+      "parent": "264"
+    },
+    "262": {
+      "id": "262",
+      "name": "bliss header text",
+      "element": "div",
+      "text": "Bliss UI",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "font-size",
+              "value": "14pt"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "color",
+              "value": "#5fc0ec"
+            },
+            {
+              "name": "padding-top",
+              "value": "1px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "268",
+      "child": null,
+      "parent": "263"
+    },
+    "263": {
+      "id": "263",
+      "name": "bliss header",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "top",
+              "value": "0"
+            },
+            {
+              "name": "left",
+              "value": "0"
+            },
+            {
+              "name": "right",
+              "value": "0"
+            },
+            {
+              "name": "z-index",
+              "value": "100"
+            },
+            {
+              "name": "background-color",
+              "value": "#263036"
+            },
+            {
+              "name": "border-bottom",
+              "value": "solid 5px #435560"
+            },
+            {
+              "name": "padding",
+              "value": "7px 14px"
+            },
+            {
+              "name": "height",
+              "value": "auto"
+            },
+            {
+              "name": "min-width",
+              "value": "1400px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "264",
+      "previous": null,
+      "child": "268",
+      "parent": "251"
+    },
+    "264": {
+      "id": "264",
+      "name": "list container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "45px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "263",
+      "child": "261",
+      "parent": "251"
+    },
+    "265": {
+      "id": "265",
+      "name": "list of projects",
+      "element": "span",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "projectRepeater",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "projectRepeater",
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].projects;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.projectRepeater[\n    scope.projectRepeater_index].name;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "267",
+      "child": null,
+      "parent": "252"
+    },
+    "267": {
+      "id": "267",
+      "name": "workspace link",
+      "element": "a",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "",
+      "attributes": [
+        {
+          "name": "class",
+          "value": "workspaces"
+        },
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "block"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  return item.name\n};\n"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.getProjects()\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "265",
+      "previous": null,
+      "child": null,
+      "parent": "252"
+    },
+    "268": {
+      "id": "268",
+      "name": "signout",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "pull-right"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "#ffffff"
+            },
+            {
+              "name": "cursor",
+              "value": "pointer"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut()\n  }\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "262",
+      "previous": null,
+      "child": "269",
+      "parent": "263"
+    },
+    "269": {
+      "id": "269",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-sign-out"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "270",
+      "previous": null,
+      "child": null,
+      "parent": "268"
+    },
+    "270": {
+      "id": "270",
+      "name": "label",
+      "element": "span",
+      "text": "Sign out",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "269",
+      "child": null,
+      "parent": "268"
     }
   },
   "schemas": [

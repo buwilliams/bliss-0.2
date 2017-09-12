@@ -222,30 +222,6 @@ var blissProject = {
       "child": "242",
       "parent": null
     },
-    "2": {
-      "id": "2",
-      "name": "row",
-      "element": "div",
-      "text": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "3",
-      "parent": "96"
-    },
     "3": {
       "id": "3",
       "name": "elements",
@@ -302,7 +278,7 @@ var blissProject = {
       "next": "4",
       "previous": null,
       "child": "20",
-      "parent": "2",
+      "parent": "96",
       "ifFn": "shouldShow"
     },
     "4": {
@@ -346,7 +322,7 @@ var blissProject = {
       "next": "77",
       "previous": "3",
       "child": "80",
-      "parent": "2"
+      "parent": "96"
     },
     "11": {
       "id": "11",
@@ -771,7 +747,7 @@ var blissProject = {
       "next": null,
       "previous": "4",
       "child": "182",
-      "parent": "2",
+      "parent": "96",
       "ifFn": "shouldShow"
     },
     "79": {
@@ -1114,7 +1090,7 @@ var blissProject = {
     },
     "96": {
       "id": "96",
-      "name": "container",
+      "name": "bliss panels",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1128,6 +1104,10 @@ var blissProject = {
             {
               "name": "margin-top",
               "value": "48px"
+            },
+            {
+              "name": "position",
+              "value": "relative"
             }
           ]
         }
@@ -1136,7 +1116,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": "95",
       "previous": "111",
-      "child": "2",
+      "child": "3",
       "parent": "243"
     },
     "97": {
@@ -1665,18 +1645,13 @@ var blissProject = {
     },
     "111": {
       "id": "111",
-      "name": "main navigation",
+      "name": "top menu",
       "element": "div",
       "text": "",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "mainNav"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
@@ -1714,12 +1689,12 @@ var blissProject = {
               "value": "7px 14px"
             },
             {
-              "name": "height",
-              "value": "auto"
-            },
-            {
               "name": "min-width",
               "value": "1400px"
+            },
+            {
+              "name": "height",
+              "value": "48px"
             }
           ]
         }
@@ -4726,17 +4701,7 @@ var blissProject = {
       "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "50px"
-            }
-          ]
-        }
-      ],
+      "css": [],
       "js": [
         {
           "name": "shouldShow",
@@ -5313,12 +5278,7 @@ var blissProject = {
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "mainNav"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",

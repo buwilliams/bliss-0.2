@@ -5,7 +5,7 @@
 #workspaces_251 {
 }
 
-#mainNav {
+#blissHeader_263 {
   position: absolute;
   top: 0;
   left: 0;
@@ -64,11 +64,7 @@
   padding-left: 10px;
 }
 
-#projects_243 {
-  margin-top: 50px;
-}
-
-#mainNav {
+#topMenu_111 {
   position: absolute;
   top: 0;
   left: 0;
@@ -77,8 +73,8 @@
   background-color: #263036;
   border-bottom: solid 5px #435560;
   padding: 7px 14px;
-  height: auto;
   min-width: 1400px;
+  height: 48px;
 }
 
 #appHeader_181 {
@@ -367,11 +363,9 @@
   font-size: 10px;
 }
 
-#container_96 {
+#blissPanels_96 {
   margin-top: 48px;
-}
-
-#row_2 {
+  position: relative;
 }
 
 #elements_3 {
