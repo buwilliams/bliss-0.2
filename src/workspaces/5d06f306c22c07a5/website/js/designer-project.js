@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 80,
+  "nextId": 92,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Roboto",
@@ -34,7 +34,11 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  app.render();\n  \n  window.addEventListener(\"hashchange\", function(event) {\n    app.dispatch({\n      path: '/nav',\n      action: 'setCurrentPage',\n      value: location.hash\n    })\n  });\n}"
+      "body": "function() {\n  app.render();\n  \n  window.addEventListener(\"hashchange\", function(event) {\n    app.dispatch({\n      path: '/nav',\n      action: 'setCurrentPage',\n      value: location.hash\n    })\n  });\n  \n  app.js.subbly();\n}"
+    },
+    {
+      "name": "subbly",
+      "body": "function(scope, attributes) {\n  (function(d, s, id) {\n    var js, sjs = d.getElementsByTagName(s)[0];\n    if (d.getElementById(id)) return;\n    js = d.createElement(s);\n    js.id = id;js.src = \"//s3.amazonaws.com/subbly/cdn/subbly-sdk.min.js\";\n    sjs.parentNode.insertBefore(js, sjs);\n  }(document, 'script', 'subbly-jssdk'))\n}"
     }
   ],
   "cssVars": [
@@ -98,7 +102,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "14",
+      "child": "81",
       "parent": null
     },
     "14": {
@@ -141,7 +145,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "30",
-      "previous": null,
+      "previous": "81",
       "child": "22",
       "parent": "1"
     },
@@ -185,7 +189,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "70",
+      "previous": "59",
       "child": "51",
       "parent": "1"
     },
@@ -236,23 +240,23 @@ var blissProject = {
     },
     "19": {
       "id": "19",
-      "name": "Try for 30-days",
+      "name": "Pricing",
       "element": "a",
-      "text": "Try for 30-days",
+      "text": "Pricing",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
         {
           "name": "href",
-          "value": "#30daytrial"
+          "value": "#pricing"
         }
       ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "28",
-      "previous": "54",
+      "next": "20",
+      "previous": "55",
       "child": null,
       "parent": "17"
     },
@@ -273,8 +277,8 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
-      "previous": "73",
+      "next": "80",
+      "previous": "19",
       "child": null,
       "parent": "17"
     },
@@ -347,8 +351,8 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "55",
-      "previous": "19",
+      "next": null,
+      "previous": "80",
       "child": null,
       "parent": "17"
     },
@@ -356,7 +360,7 @@ var blissProject = {
       "id": "29",
       "name": "subbrand",
       "element": "small",
-      "text": "create apps visually",
+      "text": "say goodbye to static mockups",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -437,7 +441,7 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "59",
+      "next": "70",
       "previous": "14",
       "child": "31",
       "parent": "1"
@@ -446,7 +450,7 @@ var blissProject = {
       "id": "31",
       "name": "Hero Text",
       "element": "div",
-      "text": "Create Beautiful UI/UX in mintues.",
+      "text": "Create Beautiful UI/UX in minutes.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -732,7 +736,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "74",
+      "next": "86",
       "previous": "31",
       "child": "38",
       "parent": "30"
@@ -919,30 +923,30 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "19",
+      "next": "55",
       "previous": null,
       "child": null,
       "parent": "17"
     },
     "55": {
       "id": "55",
-      "name": "The Story",
+      "name": "Story",
       "element": "a",
-      "text": "The Story",
+      "text": "Story",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
         {
           "name": "href",
-          "value": "#thestory"
+          "value": "#story"
         }
       ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "73",
-      "previous": "28",
+      "next": "19",
+      "previous": "54",
       "child": null,
       "parent": "17"
     },
@@ -981,8 +985,8 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "68",
-      "previous": "30",
+      "next": "16",
+      "previous": "68",
       "child": "60",
       "parent": "1"
     },
@@ -1254,7 +1258,7 @@ var blissProject = {
     },
     "68": {
       "id": "68",
-      "name": "Try Page",
+      "name": "Pricing Page",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1283,20 +1287,20 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  return (app.state.nav.currentPage === \"#30daytrial\");\n}"
+          "body": "function(scope, attributes) {\n  return (app.state.nav.currentPage === \"#pricing\");\n}"
         }
       ],
       "dynamicAttributes": [],
-      "next": "70",
-      "previous": "59",
-      "child": "69",
+      "next": "59",
+      "previous": "70",
+      "child": "84",
       "parent": "1"
     },
     "69": {
       "id": "69",
-      "name": "coming soon",
-      "element": "div",
-      "text": "You've reached the \"Try for 30-days\" page. I'm not quite ready yet. #patience",
+      "name": "copy1",
+      "element": "p",
+      "text": "Unhappy? Cancel anytime and receive a full refund. Need support? Send us an email at bliss@blissui.com",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1305,10 +1309,6 @@ var blissProject = {
         {
           "selector": "$id",
           "properties": [
-            {
-              "name": "padding",
-              "value": "75px 0"
-            },
             {
               "name": "text-align",
               "value": "center"
@@ -1319,13 +1319,13 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": null,
+      "previous": "82",
       "child": null,
-      "parent": "68"
+      "parent": "83"
     },
     "70": {
       "id": "70",
-      "name": "The Story Page",
+      "name": "Story Page",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1354,12 +1354,12 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  return (app.state.nav.currentPage === \"#thestory\");\n}"
+          "body": "function(scope, attributes) {\n  return (app.state.nav.currentPage === \"#story\");\n}"
         }
       ],
       "dynamicAttributes": [],
-      "next": "16",
-      "previous": "68",
+      "next": "68",
+      "previous": "30",
       "child": "72",
       "parent": "1"
     },
@@ -1393,32 +1393,6 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "70"
-    },
-    "73": {
-      "id": "73",
-      "name": "Video",
-      "element": "a",
-      "text": "Sample Video",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "https://www.youtube.com/watch?v=Ka9OJSGVpvo"
-        },
-        {
-          "name": "target",
-          "value": "_blank"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "20",
-      "previous": "55",
-      "child": null,
-      "parent": "17"
     },
     "74": {
       "id": "74",
@@ -1468,7 +1442,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "76",
-      "previous": "46",
+      "previous": "86",
       "child": "75",
       "parent": "30"
     },
@@ -1592,7 +1566,7 @@ var blissProject = {
       "id": "78",
       "name": "A New Model_copy",
       "element": "h5",
-      "text": "Thursday - 9.14.2017",
+      "text": "Thursday, Sept. 14th 2017",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1607,7 +1581,7 @@ var blissProject = {
     },
     "79": {
       "id": "79",
-      "name": "9/14/2017",
+      "name": "copy",
       "element": "p",
       "text": "Well, well, well. We are finally ready for the public release of Bliss UI. How exciting! If you've reached out you'll receive an email with your invitation. In the meantime, take a look at our new website and if you have any questions shoot us an email at bliss@blissui.com",
       "textFn": null,
@@ -1621,6 +1595,433 @@ var blissProject = {
       "previous": "78",
       "child": null,
       "parent": "77"
+    },
+    "80": {
+      "id": "80",
+      "name": "divider",
+      "element": "span",
+      "text": "|",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$links"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin",
+              "value": "0 15px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "28",
+      "previous": "20",
+      "child": null,
+      "parent": "17"
+    },
+    "81": {
+      "id": "81",
+      "name": "Subbly",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "subbly-root"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "14",
+      "previous": null,
+      "child": null,
+      "parent": "1"
+    },
+    "82": {
+      "id": "82",
+      "name": "Subscribe Now",
+      "element": "a",
+      "text": "Subscribe Now",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "subbly-checkout btn btn-success"
+        },
+        {
+          "name": "href",
+          "value": "https://www.subbly.co/checkout/buy/5393"
+        },
+        {
+          "name": "data-product-id",
+          "value": "5393"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin",
+              "value": "50px 0"
+            },
+            {
+              "name": "font-size",
+              "value": "2em"
+            },
+            {
+              "name": "padding",
+              "value": "1em"
+            },
+            {
+              "name": "border",
+              "value": "solid 3px #c2ebcf"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "69",
+      "previous": null,
+      "child": null,
+      "parent": "83"
+    },
+    "83": {
+      "id": "83",
+      "name": "new_83",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "text-center"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "50px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "84",
+      "child": "82",
+      "parent": "68"
+    },
+    "84": {
+      "id": "84",
+      "name": "Hero Text_copy_copy",
+      "element": "div",
+      "text": "Monthly subscription at $75/user",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "hero col-md-12"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "#7a00ec"
+            },
+            {
+              "name": "padding",
+              "value": "100px 0"
+            },
+            {
+              "name": "color",
+              "value": "#ffffff"
+            },
+            {
+              "name": "font-size",
+              "value": "30px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "83",
+      "previous": null,
+      "child": "85",
+      "parent": "68"
+    },
+    "85": {
+      "id": "85",
+      "name": "new_53_copy_copy",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-credit-card"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "opacity",
+              "value": ".2"
+            },
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "top",
+              "value": "calc(50% - 80px)"
+            },
+            {
+              "name": "left",
+              "value": "calc(50% - 80px)"
+            },
+            {
+              "name": "font-size",
+              "value": "5em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "84"
+    },
+    "86": {
+      "id": "86",
+      "name": "in action",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "row justify-content-around"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "74",
+      "previous": "46",
+      "child": "87",
+      "parent": "30"
+    },
+    "87": {
+      "id": "87",
+      "name": "column 1_copy",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "col-md-10"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "40px 0"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "88",
+      "parent": "86"
+    },
+    "88": {
+      "id": "88",
+      "name": "A New Model_copy",
+      "element": "h3",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "91",
+      "previous": null,
+      "child": "89",
+      "parent": "87"
+    },
+    "89": {
+      "id": "89",
+      "name": "new_49_copy",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-youtube"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "90",
+      "previous": null,
+      "child": null,
+      "parent": "88"
+    },
+    "90": {
+      "id": "90",
+      "name": "new_50_copy",
+      "element": "span",
+      "text": " Watch Bliss in Action",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "89",
+      "child": null,
+      "parent": "88"
+    },
+    "91": {
+      "id": "91",
+      "name": "YouTube Video",
+      "element": "iframe",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "width",
+          "value": "560"
+        },
+        {
+          "name": "height",
+          "value": "315"
+        },
+        {
+          "name": "src",
+          "value": "https://www.youtube.com/embed/Ka9OJSGVpvo?rel=0"
+        },
+        {
+          "name": "frameBorder",
+          "value": "0"
+        },
+        {
+          "name": "allowFullScreen",
+          "value": "true"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "0 auto"
+            },
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "88",
+      "child": null,
+      "parent": "87"
     }
   },
   "schemas": [
