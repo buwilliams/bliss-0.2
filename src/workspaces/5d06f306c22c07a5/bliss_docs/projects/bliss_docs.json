@@ -7,13 +7,13 @@
   "nextId": 44,
   "rootId": "1",
   "externalCss": [
-    "node_modules/semantic-ui/dist/semantic.min.css"
+    "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js",
     "node_modules/jquery/dist/jquery.min.js",
-    "node_modules/semantic-ui/dist/semantic.min.js"
+    "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"
   ],
   "state": {},
   "packages": [
@@ -24,10 +24,6 @@
     {
       "name": "react-dom",
       "version": "15.4.2"
-    },
-    {
-      "name": "semantic-ui",
-      "version": "2.2.13"
     },
     {
       "name": "jquery",

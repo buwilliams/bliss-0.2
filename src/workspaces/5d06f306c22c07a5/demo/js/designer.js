@@ -1,4 +1,4 @@
-var demoBlissui = (function() {
+var demo = (function() {
   var createApp = function(component) {
     var app = {
       js: {},

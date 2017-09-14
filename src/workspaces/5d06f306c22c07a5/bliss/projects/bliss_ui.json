@@ -271,7 +271,7 @@
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  var list = app.state.layout.list\n  var layout = _.find(list, function(item) {\n  \treturn (item.name === \"components\")})\n  return layout.active\n}"
+          "body": "function() {\n  if(_.isNil(app.state.settings.activeComponent))\n    return false;\n  \n  var list = app.state.layout.list\n  var layout = _.find(list, function(item) {\n  \treturn (item.name === \"components\")})\n  return layout.active\n}"
         }
       ],
       "dynamicAttributes": [],
@@ -311,6 +311,10 @@
         {
           "name": "getStyles",
           "body": "function(scope, attributes) {\n  var list = app.state.layout.list\n  \n  var designer = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"designer\")})\n  var properties = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"properties\")})\n  var components = _.find(app.state.layout.list,\n\t\tfunction(item) { return (item.name === \"components\")})\n  \n  var newWidth = designer.width;\n  \n  if(!properties.active && !components.active) {\n    newWidth = designer.width3;\n  } else if(!properties.active || !components.active) {\n    newWidth = designer.width2;\n  }\n  \n  var styles = {\n    'width': newWidth\n  };\n  \n  return styles;\n}"
+        },
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  if(_.isNil(app.state.settings.activeComponent))\n    return false;\n  \n  return true\n}"
         }
       ],
       "dynamicAttributes": [
@@ -322,7 +326,8 @@
       "next": "77",
       "previous": "3",
       "child": "80",
-      "parent": "96"
+      "parent": "96",
+      "ifFn": "shouldShow"
     },
     "11": {
       "id": "11",
@@ -641,7 +646,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var component = app.buildProject.components[\n    app.state.settings.activeComponent]\n  var name = component.name || ''\n  return name + ' - JS'\n};\n"
+          "body": "function(scope, attributes) {\n  var title = 'JS'\n  var name = ''\n  try {\n    name = app.buildProject.components[\n      app.state.settings.activeComponent].name + ' - '\n  } catch(e) { console.error(e) }\n  return name + title\n};\n"
         }
       ],
       "next": "56",
@@ -741,7 +746,7 @@
       "js": [
         {
           "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  return layout.active\n}"
+          "body": "function(scope, attributes) {\n  if(_.isNil(app.state.settings.activeComponent))\n    return false;\n  \n  var layout = _.find(app.state.layout.list, function(item) {\n    return (item.name === 'properties')\n  })\n  \n  return layout.active\n}"
         }
       ],
       "next": null,
@@ -5432,7 +5437,7 @@
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.newProject(false)\n    app.js.getProjects()\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'activeComponent',\n      value: null\n    })\n    \n    app.dispatch({\n      path: '/views',\n      action: 'setView',\n      name: 'designer'\n    })\n    \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.newProject(false)\n    app.js.getProjects()\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [

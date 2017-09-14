@@ -1,5 +1,5 @@
 var blissProject = {
-  "name": "Demo BlissUI",
+  "name": "Demo",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
