@@ -51,7 +51,8 @@ module.exports = {
     var one_minute = 1000 * 60
     var code = exec(`yarn install`, {
       "cwd": workspace,
-      "timeout": one_minute
+      "timeout": one_minute,
+      "killSignal": "SIGKILL" // default: SIGTERM
     });
   },
 
