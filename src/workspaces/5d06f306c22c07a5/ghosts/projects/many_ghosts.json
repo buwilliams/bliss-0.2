@@ -28,11 +28,11 @@
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  app.setState(function() {\n    app.state.numberOfGhosts = 500;\n    app.state.ghosts = app.js.makeGhosts(500);\n  });\n}"
+      "body": "function() {\n  app.setState(function() {\n    app.state.numberOfGhosts = 50;\n    app.state.ghosts = app.js.makeGhosts(50);\n  });\n}"
     },
     {
       "name": "makeGhosts",
-      "body": "function(numberOfGhosts) {\n  var colors = ['blue', 'red', 'green', 'yellow',\n                'orange', 'purple', 'gray', 'pink',\n                'brown', 'white'];\n  \n  var newArrayOfColors = [];\n  for(var i=0; i<numberOfGhosts; i++) {\n\t\tnewArrayOfColors.push(colors[i % 10]);\n  }\n\n\treturn newArrayOfColors;\n}"
+      "body": "function(numberOfGhosts) {\n  var colors = ['#2ca5ff',\n                '#2594e7',\n                '#1f7cc1',\n                '#58b7ff',\n                '#80c8ff',\n                '#a3d8ff',\n                '#bee3ff',\n                '#d6edff',\n                '#e7f5ff',\n                '#f2faff'];\n  \n  var newArrayOfColors = [];\n  for(var i=0; i<numberOfGhosts; i++) {\n\t\tnewArrayOfColors.push(colors[i % 10]);\n  }\n\n\treturn newArrayOfColors;\n}"
     }
   ],
   "cssVars": [],
@@ -102,7 +102,7 @@
     },
     "2": {
       "id": "2",
-      "name": "Ghosts",
+      "name": "Ghost",
       "element": "ghost.component",
       "text": "",
       "textFn": null,
@@ -150,15 +150,15 @@
             },
             {
               "name": "background-color",
-              "value": "#ececec"
+              "value": "#fff"
             },
             {
-              "name": "margin-left",
-              "value": "calc(50% - 100px)"
+              "name": "top",
+              "value": "calc(100% / 2 - 100px)"
             },
             {
-              "name": "margin-top",
-              "value": "calc(50% - 200px)"
+              "name": "left",
+              "value": "calc(100% / 2 - 162px)"
             },
             {
               "name": "padding",
@@ -170,7 +170,11 @@
             },
             {
               "name": "border",
-              "value": "solid 1px #000"
+              "value": "solid 1px #ccc"
+            },
+            {
+              "name": "width",
+              "value": "325px"
             }
           ]
         }

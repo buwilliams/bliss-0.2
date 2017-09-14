@@ -339,7 +339,7 @@ var blissUi = (function() {
 
       app.dispatch({
         path: '/workspaces',
-        action: 'fetch'
+        action: 'httpListWorkspaces'
       })
     }
     app.methods["242"] = {};
@@ -385,6 +385,7 @@ var blissUi = (function() {
           value: false
         })
 
+        app.js.newProject(false)
         app.js.getProjects()
       }
     };
@@ -396,6 +397,33 @@ var blissUi = (function() {
     app.methods["265"]['getText'] = function(scope, attributes) {
       return scope.projectRepeater[
         scope.projectRepeater_index].name;
+    };
+    app.methods["272"] = {};
+    app.methods["272"]['handleChange'] = function(scope, attributes) {
+      return function(e) {
+        app.dispatch({
+          path: '/workspaces',
+          action: 'set',
+          key: 'newWorkspaceName',
+          value: e.target.value
+        })
+      }
+    };
+
+    app.methods["272"]['getValue'] = function(scope, attributes) {
+      return app.state.workspaces.newWorkspaceName
+    }
+    app.methods["273"] = {};
+    app.methods["273"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        console.log('newWorkspaceName', app.state.workspaces.newWorkspaceName)
+        e.preventDefault()
+        app.dispatch({
+          path: '/workspaces',
+          action: 'httpCreateWorkspace',
+          name: app.state.workspaces.newWorkspaceName
+        })
+      }
     };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
@@ -1298,6 +1326,7 @@ var blissUi = (function() {
     app.schema['/workspaces']['init'] = function(data, args) {
       var newData = {
         active: true,
+        newWorkspaceName: '',
         list: []
       }
       return newData
@@ -1307,11 +1336,11 @@ var blissUi = (function() {
       newData.list.push(args.item)
       return newData;
     }
-    app.schema['/workspaces']['fetch'] = function(data, args) {
+    app.schema['/workspaces']['httpListWorkspaces'] = function(data, args) {
       $.ajax({
         type: 'GET',
         url: '/workspace/list',
-        data: data,
+        data: {},
         success: function(data) {
           app.dispatch({
             path: '/workspaces',
@@ -1335,6 +1364,35 @@ var blissUi = (function() {
       if (newData.hasOwnProperty(args.key))
         newData[args.key] = args.value;
       return newData;
+    }
+    app.schema['/workspaces']['httpCreateWorkspace'] = function(data, args) {
+      var postData = {
+        name: args.name
+      }
+      postData = JSON.stringify(postData)
+
+      app.dispatch({
+        path: '/workspaces',
+        action: 'set',
+        key: 'newWorkspaceName',
+        value: ''
+      })
+
+      $.ajax({
+        type: 'POST',
+        url: '/workspace',
+        data: postData,
+        success: function(data) {
+          app.dispatch({
+            path: '/workspaces',
+            action: 'httpListWorkspaces'
+          })
+        },
+        contentType: "application/json",
+        dataType: 'json'
+      });
+
+      return data;
     }
     if (app.schema['/workspaces']['init']) {
       app.assignPath(app.state, '/workspaces', app.schema['/workspaces']['init']());
@@ -1705,7 +1763,26 @@ var blissUi = (function() {
                         })(scope)));
                     }
                     return out;
-                  })(scope))));
+                  })(scope),
+                  React.createElement('div', app.mergeAttributes('271', scope, {}, {
+                      "id": "newWorkspaceContainer_271",
+                      "key": app.getKey('id', '271')
+                    }),
+                    React.createElement('input', app.mergeAttributes('272', scope, {
+                      "onChange": "handleChange",
+                      "value": "getValue"
+                    }, {
+                      "placeholder": "workspace name",
+                      "id": "newWorkspaceName_272",
+                      "key": app.getKey('id', '272')
+                    })),
+                    React.createElement('button', app.mergeAttributes('273', scope, {
+                      "onClick": "handleClick"
+                    }, {
+                      "className": "btn btn-success",
+                      "id": "createWorkspaceButton_273",
+                      "key": app.getKey('id', '273')
+                    }), 'Add Workspace')))));
             }
             return out;
           })(scope),

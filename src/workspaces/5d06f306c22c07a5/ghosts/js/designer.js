@@ -8,14 +8,21 @@ var manyGhosts = (function() {
     };
     app.js['init'] = function() {
       app.setState(function() {
-        app.state.numberOfGhosts = 500;
-        app.state.ghosts = app.js.makeGhosts(500);
+        app.state.numberOfGhosts = 50;
+        app.state.ghosts = app.js.makeGhosts(50);
       });
     }
     app.js['makeGhosts'] = function(numberOfGhosts) {
-      var colors = ['blue', 'red', 'green', 'yellow',
-        'orange', 'purple', 'gray', 'pink',
-        'brown', 'white'
+      var colors = ['#2ca5ff',
+        '#2594e7',
+        '#1f7cc1',
+        '#58b7ff',
+        '#80c8ff',
+        '#a3d8ff',
+        '#bee3ff',
+        '#d6edff',
+        '#e7f5ff',
+        '#f2faff'
       ];
 
       var newArrayOfColors = [];
@@ -76,7 +83,7 @@ var manyGhosts = (function() {
               out.push(React.createElement(ghost.component, app.mergeAttributes('2', scope, {
                 "backgroundColor": "getBackgroundColor"
               }, {
-                "id": "ghosts_2",
+                "id": "ghost_2",
                 "key": app.getKey('id', '2', i)
               })));
             }
