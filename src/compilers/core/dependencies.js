@@ -48,10 +48,10 @@ module.exports = {
   },
 
   installPackageJson: function(workspace) {
-    var ten_minutes = 1000 * 60 * 10
+    var one_minute = 1000 * 60
     var code = exec(`yarn install`, {
       "cwd": workspace,
-      "timeout": ten_minutes
+      "timeout": one_minute
     });
   },
 
