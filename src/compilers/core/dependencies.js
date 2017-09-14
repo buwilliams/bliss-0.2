@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const { exec } = require('child_process');
 const _ = require('lodash');
 
 module.exports = {
@@ -48,7 +48,11 @@ module.exports = {
   },
 
   installPackageJson: function(workspace) {
-    var code = execSync(`yarn install`, {"cwd": workspace});
+    var ten_minutes = 1000 * 60 * 10
+    var code = exec(`yarn install`, {
+      "cwd": workspace,
+      "timeout": ten_minutes
+    });
   },
 
   update: function(workspace, projectJson, additionalDeps) {
