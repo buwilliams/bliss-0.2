@@ -7,14 +7,49 @@ var blissDocs = (function() {
       state: {}
     };
     app.js['init'] = function() {
+      app.js.initRouter();
       app.render();
     }
-    app.methods["38"] = {};
-    app.methods["38"]['handleClick'] = function(scope, attributes) {
-      return function(e) {
-        alert('hello there')
-      }
+    app.js['initRouter'] = function(scope, attributes) {
+      window.addEventListener("hashchange", function() {
+        app.dispatch({
+          path: '/routes',
+          action: 'setCurrent',
+          route: location.hash
+        })
+      }, false);
+    }
+    app.methods["47"] = {};
+    app.methods["47"]['repeater'] = function(scope, attributes) {
+      return app.state.routes.list;
     };
+    app.methods["3"] = {};
+    app.methods["3"]['getText'] = function(scope, attributes) {
+      var item = scope.repeater[scope.repeater_index]
+      return item.label
+    };
+
+    app.methods["3"]['getClass'] = function(scope, attributes) {
+      var route = scope.repeater[scope.repeater_index].route
+      var current = app.state.routes.current
+      return (route === current) ? "active" : ""
+    }
+    app.methods["3"]['getHref'] = function(scope, attributes) {
+      var route = scope.repeater[scope.repeater_index].route
+      return route
+    }
+    app.methods["3"]['shouldShow'] = function(scope, attributes) {
+      var is_nil = _.isNil(scope.repeater[scope.repeater_index].route)
+      return !is_nil
+    }
+    app.methods["30"] = {};
+    app.methods["30"]['shouldShow'] = function(scope, attributes) {
+      return (app.state.routes.current === '#introducing_bliss');
+    }
+    app.methods["32"] = {};
+    app.methods["32"]['shouldShow'] = function(scope, attributes) {
+      return (app.state.routes.current !== '#introducing_bliss');
+    }
     app.getPath = function(objRef, path) {
       var ref = objRef;
       var parts = path.split('/')
@@ -50,17 +85,100 @@ var blissDocs = (function() {
       })
     }
     app.schema = {};
-    app.schema['/demo'] = {};
-    app.schema['/demo']['init'] = function(data, args) {
+    app.schema['/routes'] = {};
+    app.schema['/routes']['init'] = function(data, args) {
       var newData = {
-        'list': ['One', 'Two']
+        current: '#introducing_bliss',
+        list: [{
+            label: 'Introducing Bliss UI',
+            route: '#introducing_bliss'
+          },
+          {
+            label: 'Getting Started',
+            route: '#getting_started'
+          },
+          {
+            label: 'Hosting',
+            route: '#hosting'
+          },
+          {
+            label: 'Workspaces',
+            route: '#workspaces'
+          },
+          {
+            label: 'Projects',
+            route: '#projects'
+          },
+          {
+            label: 'Components',
+            route: '#components'
+          },
+          {
+            label: 'Elements',
+            route: '#elements'
+          },
+          {
+            label: 'CSS',
+            route: '#css'
+          },
+          {
+            label: 'CSS Variables',
+            route: '#css_variables'
+          },
+          {
+            label: 'JavaScript',
+            route: '#javascript'
+          },
+          {
+            label: 'Data Editor',
+            route: '#data_editor'
+          },
+          {
+            label: 'Assets',
+            route: '#assets'
+          },
+          {
+            label: 'Properties',
+            route: '#properties'
+          },
+          {
+            label: 'Global JavaScript',
+            route: '#global_javascript'
+          },
+          {
+            label: 'Global CSS',
+            route: '#global_css'
+          },
+          {
+            label: 'Node Modules',
+            route: '#node_modules'
+          },
+          {
+            label: 'Page Load',
+            route: '#page_load'
+          },
+          {
+            label: 'Settings',
+            route: '#settings'
+          },
+          {
+            label: 'Bliss JavaScript Reference',
+            route: '#bliss_javascript_reference'
+          }
+        ]
       }
+      if (location.hash !== '') newData.current = location.hash;
       return newData;
     }
-    if (app.schema['/demo']['init']) {
-      app.assignPath(app.state, '/demo', app.schema['/demo']['init']());
+    app.schema['/routes']['setCurrent'] = function(data, args) {
+      var newData = Object.assign({}, data);
+      newData.current = args.route;
+      return newData;
+    }
+    if (app.schema['/routes']['init']) {
+      app.assignPath(app.state, '/routes', app.schema['/routes']['init']());
     } else {
-      app.assignPath(app.state, '/demo');
+      app.assignPath(app.state, '/routes');
     }
     app.getKey = function() {
       var out = [];
@@ -82,208 +200,132 @@ var blissDocs = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "className": "ui grid container",
+            "className": "container",
             "id": "blissDocs_1",
             "key": app.getKey('id', '1')
           }),
           React.createElement('div', app.mergeAttributes('40', scope, {}, {
-              "className": "ui row",
+              "className": "row",
               "id": "row_40",
               "key": app.getKey('id', '40')
             }),
-            React.createElement('h1', app.mergeAttributes('38', scope, {
-              "onClick": "handleClick"
-            }, {
-              "className": "sixteen wide column",
-              "id": "header_38",
-              "key": app.getKey('id', '38')
-            }), 'Bliss UI Docs')),
+            React.createElement('div', app.mergeAttributes('44', scope, {}, {
+                "className": "col-md-12",
+                "id": "column_44",
+                "key": app.getKey('id', '44')
+              }),
+              React.createElement('h1', app.mergeAttributes('38', scope, {}, {
+                "id": "header_38",
+                "key": app.getKey('id', '38')
+              }), 'Bliss UI Docs'))),
           React.createElement('div', app.mergeAttributes('41', scope, {}, {
-              "className": "ui row",
+              "className": "row",
               "id": "row_41",
               "key": app.getKey('id', '41')
             }),
             React.createElement('div', app.mergeAttributes('22', scope, {}, {
-                "className": "four wide column",
+                "className": "col-md-3",
                 "id": "leftColumn_22",
                 "key": app.getKey('id', '22')
               }),
               React.createElement('div', app.mergeAttributes('2', scope, {}, {
-                  "className": "ui secondary vertical pointing menu",
+                  "className": "menu",
                   "id": "menu_2",
                   "key": app.getKey('id', '2')
                 }),
-                React.createElement('a', app.mergeAttributes('3', scope, {}, {
-                  "href": "#introducing",
-                  "className": "item active",
-                  "id": "introducingBlissUi_3",
-                  "key": app.getKey('id', '3')
-                }), 'Introducing Bliss UI'),
-                React.createElement('a', app.mergeAttributes('36', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "gettingStarted_36",
-                  "key": app.getKey('id', '36')
-                }), 'Getting Started'),
-                React.createElement('a', app.mergeAttributes('7', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "hosting_7",
-                  "key": app.getKey('id', '7')
-                }), 'Hosting'),
-                React.createElement('a', app.mergeAttributes('4', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "workspaces_4",
-                  "key": app.getKey('id', '4')
-                }), 'Workspaces'),
-                React.createElement('a', app.mergeAttributes('5', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "projects_5",
-                  "key": app.getKey('id', '5')
-                }), 'Projects'),
-                React.createElement('a', app.mergeAttributes('6', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "components_6",
-                  "key": app.getKey('id', '6')
-                }), 'Components'),
-                React.createElement('a', app.mergeAttributes('8', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "elements_8",
-                  "key": app.getKey('id', '8')
-                }), 'Elements'),
-                React.createElement('a', app.mergeAttributes('10', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "css_10",
-                  "key": app.getKey('id', '10')
-                }), 'CSS'),
-                React.createElement('a', app.mergeAttributes('17', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "cssVariables_17",
-                  "key": app.getKey('id', '17')
-                }), 'CSS  Variables'),
-                React.createElement('a', app.mergeAttributes('11', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "javascript_11",
-                  "key": app.getKey('id', '11')
-                }), 'JavaScript'),
-                React.createElement('a', app.mergeAttributes('20', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "dataEditor_20",
-                  "key": app.getKey('id', '20')
-                }), 'Data Editor'),
-                React.createElement('a', app.mergeAttributes('12', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "assets_12",
-                  "key": app.getKey('id', '12')
-                }), 'Assets'),
-                React.createElement('a', app.mergeAttributes('13', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "properties_13",
-                  "key": app.getKey('id', '13')
-                }), 'Properties'),
-                React.createElement('a', app.mergeAttributes('18', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "globalJavascript_18",
-                  "key": app.getKey('id', '18')
-                }), 'Global JavaScript'),
-                React.createElement('a', app.mergeAttributes('19', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "globalCss_19",
-                  "key": app.getKey('id', '19')
-                }), 'Global JavaScript'),
-                React.createElement('a', app.mergeAttributes('14', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "nodeModules_14",
-                  "key": app.getKey('id', '14')
-                }), 'Node Modules'),
-                React.createElement('a', app.mergeAttributes('15', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "pageLoad_15",
-                  "key": app.getKey('id', '15')
-                }), 'Page Load'),
-                React.createElement('a', app.mergeAttributes('16', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "settings_16",
-                  "key": app.getKey('id', '16')
-                }), 'Settings'),
-                React.createElement('a', app.mergeAttributes('21', scope, {}, {
-                  "href": "#comingsoon",
-                  "className": "item",
-                  "id": "blissJavascriptReference_21",
-                  "key": app.getKey('id', '21')
-                }), 'Bliss JavaScript Reference'))),
+                (function(scope) {
+                  var out = [];
+                  var list = scope['repeater'] = app.methods['47']['repeater'](scope);
+                  for (var i = 0; i < list.length; i++) {
+                    scope['repeater_index'] = i;
+                    out.push(React.createElement('div', app.mergeAttributes('47', scope, {}, {
+                        "id": "linkContainer_47",
+                        "key": app.getKey('id', '47', i)
+                      }),
+                      (function(scope) {
+                        var out = [];
+                        scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
+                        if (app.methods['3']['shouldShow'](scope) === true) {
+                          out.push(React.createElement('a', app.mergeAttributes('3', scope, {
+                            "className": "getClass",
+                            "href": "getHref"
+                          }, {
+                            "id": "link_3",
+                            "key": app.getKey('id', '3')
+                          }), app.methods['3']['getText'](scope)));
+                        }
+                        return out;
+                      })(scope)));
+                  }
+                  return out;
+                })(scope))),
             React.createElement('div', app.mergeAttributes('23', scope, {}, {
-                "className": "twelve wide column",
+                "className": "col-md-9",
                 "id": "rightColumn_23",
                 "key": app.getKey('id', '23')
               }),
-              React.createElement('div', app.mergeAttributes('30', scope, {}, {
-                  "id": "introducingBlissUiContent_30",
-                  "key": app.getKey('id', '30')
-                }),
-                React.createElement('a', app.mergeAttributes('31', scope, {}, {
-                  "name": "introducing",
-                  "id": "link_31",
-                  "key": app.getKey('id', '31')
-                })),
-                React.createElement('h2', app.mergeAttributes('24', scope, {}, {
-                  "className": "ui header dividing",
-                  "id": "header_24",
-                  "key": app.getKey('id', '24')
-                }), 'Introducing Bliss UI'),
-                React.createElement('p', app.mergeAttributes('25', scope, {}, {
-                  "id": "copy_25",
-                  "key": app.getKey('id', '25')
-                }), 'Hello. My name is Buddy, I\'m the creator of Bliss UI and I\'m very proud to share this labor of love with you. Let me start by sharing the inspiration for Bliss UI, in 2012, Bret Victor gave a talk entitled, "Inventing on Principal", in his talk he suggests that "creators need an immediate connection with their creations." He said that as you work you need see what you\'re making right then as if you were drawing on paper. On paper, you can see what you draw instantly. This is not true for the UI/UX in web apps.'),
-                React.createElement('p', app.mergeAttributes('26', scope, {}, {
-                  "id": "copy_26",
-                  "key": app.getKey('id', '26')
-                }), 'There exists today several problems with UI/UX development. First, there is a dividing wall between designers and developers. Today a designer creates a mockup and then pitches the design over the wall and it lands in a developer\'s lap. Once the developer takes that design to code, the designer is unable to make changes without going through the same process. Is this the only process that can work?'),
-                React.createElement('p', app.mergeAttributes('27', scope, {}, {
-                  "id": "copy_27",
-                  "key": app.getKey('id', '27')
-                }), 'Our next problem is developer tooling. Code, code, and more code. Have you ever wondered why the tools we use to make visual software are not in fact visual themselves? Why is creating a UI the same process as writing backend code? It just doesn\'t make any sense and it doesn\'t have to be so. I made Bliss UI to be visual from the start. There\'s still code and it\'s hidden and when it\'s not hidden it\'s well organized.'),
-                React.createElement('p', app.mergeAttributes('28', scope, {}, {
-                  "id": "copy_28",
-                  "key": app.getKey('id', '28')
-                }), 'Finally, there is so much boilerplate programming going on and so little collaboration between disciplines. Designers, developers, and product should be able to sit in the same room virtually or physically and create a stunning look and feel along with user flow for their product.'),
-                React.createElement('p', app.mergeAttributes('42', scope, {}, {
-                  "id": "copy_42",
-                  "key": app.getKey('id', '42')
-                }), 'Today, it simply takes too long. Too long to turn those ideas into wireframes, mockups, and code. I say no more. I say, let\'s go from concept to production in minutes. I say let\'s do it together in the same room at the same time.')),
-              React.createElement('div', app.mergeAttributes('32', scope, {}, {
-                  "id": "comingSoonContent_32",
-                  "key": app.getKey('id', '32')
-                }),
-                React.createElement('a', app.mergeAttributes('34', scope, {}, {
-                  "name": "comingsoon",
-                  "id": "link_34",
-                  "key": app.getKey('id', '34')
-                })),
-                React.createElement('h2', app.mergeAttributes('33', scope, {}, {
-                  "className": "ui header dividing",
-                  "id": "header_33",
-                  "key": app.getKey('id', '33')
-                }), 'Coming soon'),
-                React.createElement('p', app.mergeAttributes('29', scope, {}, {
-                  "id": "copy_29",
-                  "key": app.getKey('id', '29')
-                }), 'These docs are not finished yet. I expect to be finished with them by the end of September 2017.'))))));
+              (function(scope) {
+                var out = [];
+                scope['shouldShow'] = app.methods['30']['shouldShow'](scope);
+                if (app.methods['30']['shouldShow'](scope) === true) {
+                  out.push(React.createElement('div', app.mergeAttributes('30', scope, {}, {
+                      "id": "introducingBlissUiContent_30",
+                      "key": app.getKey('id', '30')
+                    }),
+                    React.createElement('h2', app.mergeAttributes('24', scope, {}, {
+                      "id": "header_24",
+                      "key": app.getKey('id', '24')
+                    }), 'Introducing Bliss UI'),
+                    React.createElement('hr', app.mergeAttributes('45', scope, {}, {
+                      "id": "line_45",
+                      "key": app.getKey('id', '45')
+                    })),
+                    React.createElement('p', app.mergeAttributes('25', scope, {}, {
+                      "id": "copy_25",
+                      "key": app.getKey('id', '25')
+                    }), 'Hello, I\'m Buddy, the creator of Bliss UI and it\'s my joy to share Bliss UI with you. Let me start by sharing the inspiration for this project, back in 2012, Bret Victor gave a talk entitled, "Inventing on Principal", in his talk he suggests that "creators need an immediate connection with their creations." He said that as you work you need see what you\'re making right then as if you were drawing on paper. On paper, you can see what you draw instantly. This is not true for the UI/UX in web apps.'),
+                    React.createElement('p', app.mergeAttributes('26', scope, {}, {
+                      "id": "copy_26",
+                      "key": app.getKey('id', '26')
+                    }), 'There exists today several problems with UI/UX development. First, there is a dividing wall between designers and developers. Today a designer creates a mockup and then pitches the design over the wall and it lands in a developer\'s lap. Once the developer takes that design to code, the designer is unable to make changes without going through the same process. Is this the only process that can work?'),
+                    React.createElement('p', app.mergeAttributes('27', scope, {}, {
+                      "id": "copy_27",
+                      "key": app.getKey('id', '27')
+                    }), 'Our next problem is developer tooling. Code, code, and more code. Have you ever wondered why the tools we use to make visual software are not in fact visual themselves? Why is creating a UI the same process as writing backend code? It just doesn\'t make any sense and it doesn\'t have to be so. I made Bliss UI to be visual from the start. There\'s still code and it\'s hidden and when it\'s not hidden it\'s well organized.'),
+                    React.createElement('p', app.mergeAttributes('28', scope, {}, {
+                      "id": "copy_28",
+                      "key": app.getKey('id', '28')
+                    }), 'Finally, there is so much boilerplate programming going on and so little collaboration between disciplines. Designers, developers, and product should be able to sit in the same room virtually or physically and create a stunning look and feel along with user flow for their product.'),
+                    React.createElement('p', app.mergeAttributes('42', scope, {}, {
+                      "id": "copy_42",
+                      "key": app.getKey('id', '42')
+                    }), 'Today, it simply takes too long. Too long to turn those ideas into wireframes, mockups, and code. I say no more. I say, let\'s go from concept to production in minutes. I say let\'s do it together in the same room at the same time.')));
+                }
+                return out;
+              })(scope),
+              (function(scope) {
+                var out = [];
+                scope['shouldShow'] = app.methods['32']['shouldShow'](scope);
+                if (app.methods['32']['shouldShow'](scope) === true) {
+                  out.push(React.createElement('div', app.mergeAttributes('32', scope, {}, {
+                      "id": "comingSoonContent_32",
+                      "key": app.getKey('id', '32')
+                    }),
+                    React.createElement('h2', app.mergeAttributes('33', scope, {}, {
+                      "id": "header_33",
+                      "key": app.getKey('id', '33')
+                    }), 'Coming soon'),
+                    React.createElement('hr', app.mergeAttributes('46', scope, {}, {
+                      "id": "line_46",
+                      "key": app.getKey('id', '46')
+                    })),
+                    React.createElement('p', app.mergeAttributes('29', scope, {}, {
+                      "id": "copy_29",
+                      "key": app.getKey('id', '29')
+                    }), 'These docs are not quite finished, sad. I expect them completed by October 1st 2017, happy.')));
+                }
+                return out;
+              })(scope)))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

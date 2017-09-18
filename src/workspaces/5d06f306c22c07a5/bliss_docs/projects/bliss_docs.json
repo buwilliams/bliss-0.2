@@ -4,36 +4,30 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 44,
+  "nextId": 49,
   "rootId": "1",
   "externalCss": [
-    "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css",
+    "https://fonts.googleapis.com/css?family=Roboto"
   ],
   "externalJs": [
-    "node_modules/react/dist/react.js",
-    "node_modules/react-dom/dist/react-dom.js",
-    "node_modules/jquery/dist/jquery.min.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"
+    "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js",
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"
   ],
   "state": {},
-  "packages": [
-    {
-      "name": "react",
-      "version": "15.4.2"
-    },
-    {
-      "name": "react-dom",
-      "version": "15.4.2"
-    },
-    {
-      "name": "jquery",
-      "version": "3.2.1"
-    }
-  ],
+  "packages": [],
   "js": [
     {
       "name": "init",
-      "body": "function() { app.render(); }"
+      "body": "function() {\n  app.js.initRouter();\n  app.render();\n}"
+    },
+    {
+      "name": "initRouter",
+      "body": "function(scope, attributes) {\n  window.addEventListener(\"hashchange\", function() {\n    app.dispatch({\n      path: '/routes',\n      action: 'setCurrent',\n      route: location.hash\n    })\n  }, false);\n}"
     }
   ],
   "cssVars": [],
@@ -48,6 +42,14 @@
         {
           "name": "background-color",
           "value": "#e2e8ea"
+        },
+        {
+          "name": "font-family",
+          "value": "'Roboto', sans-serif;"
+        },
+        {
+          "name": "color",
+          "value": "#333333"
         }
       ]
     }
@@ -64,7 +66,7 @@
       "attributes": [
         {
           "name": "class",
-          "value": "ui grid container"
+          "value": "container"
         }
       ],
       "css": [],
@@ -86,484 +88,119 @@
       "attributes": [
         {
           "name": "class",
-          "value": "ui secondary vertical pointing menu"
+          "value": "menu"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": ".menu a",
+          "properties": [
+            {
+              "name": "display",
+              "value": "block"
+            },
+            {
+              "name": "font-size",
+              "value": "14px"
+            },
+            {
+              "name": "padding",
+              "value": ".5rem 1rem"
+            },
+            {
+              "name": "color",
+              "value": "#333333"
+            },
+            {
+              "name": "border-right",
+              "value": "solid 2px rgba(0,0,0,.1)"
+            },
+            {
+              "name": "text-decoration",
+              "value": "none"
+            }
+          ]
+        },
+        {
+          "selector": ".menu a.active, .menu a.active:hover",
+          "properties": [
+            {
+              "name": "border-right",
+              "value": "solid 2px #333333"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "background-color",
+              "value": "rgba(0,0,0,.1)"
+            }
+          ]
+        },
+        {
+          "selector": ".menu a:hover",
+          "properties": [
+            {
+              "name": "border-right",
+              "value": "solid 2px rgba(0,0,0,.3)"
+            },
+            {
+              "name": "background-color",
+              "value": "rgba(0,0,0,.05)"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "3",
+      "child": "47",
       "parent": "22"
     },
     "3": {
       "id": "3",
-      "name": "Introducing Bliss UI",
+      "name": "link",
       "element": "a",
-      "text": "Introducing Bliss UI",
-      "textFn": null,
-      "ifFn": null,
+      "text": "",
+      "textFn": "getText",
+      "ifFn": "shouldShow",
       "repeatFn": null,
-      "attributes": [
+      "attributes": [],
+      "css": [],
+      "js": [
         {
-          "name": "href",
-          "value": "#introducing"
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  return item.label\n};\n"
         },
         {
-          "name": "class",
-          "value": "item active"
+          "name": "getClass",
+          "body": "function(scope, attributes) {\n  var route = scope.repeater[scope.repeater_index].route\n  var current = app.state.routes.current\n  return (route === current) ? \"active\" : \"\"\n}"
+        },
+        {
+          "name": "getHref",
+          "body": "function(scope, attributes) {\n  var route = scope.repeater[scope.repeater_index].route\n  return route\n}"
+        },
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var is_nil = _.isNil(scope.repeater[scope.repeater_index].route)\n  return !is_nil\n}"
         }
       ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "36",
+      "dynamicAttributes": [
+        {
+          "name": "className",
+          "value": "getClass"
+        },
+        {
+          "name": "href",
+          "value": "getHref"
+        }
+      ],
+      "next": null,
       "previous": null,
       "child": null,
-      "parent": "2"
-    },
-    "4": {
-      "id": "4",
-      "name": "Workspaces",
-      "element": "a",
-      "text": "Workspaces",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "5",
-      "previous": "7",
-      "child": null,
-      "parent": "2"
-    },
-    "5": {
-      "id": "5",
-      "name": "Projects",
-      "element": "a",
-      "text": "Projects",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "6",
-      "previous": "4",
-      "child": null,
-      "parent": "2"
-    },
-    "6": {
-      "id": "6",
-      "name": "Components",
-      "element": "a",
-      "text": "Components",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "8",
-      "previous": "5",
-      "child": null,
-      "parent": "2"
-    },
-    "7": {
-      "id": "7",
-      "name": "Hosting",
-      "element": "a",
-      "text": "Hosting",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "4",
-      "previous": "36",
-      "child": null,
-      "parent": "2"
-    },
-    "8": {
-      "id": "8",
-      "name": "Elements",
-      "element": "a",
-      "text": "Elements",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "10",
-      "previous": "6",
-      "child": null,
-      "parent": "2"
-    },
-    "10": {
-      "id": "10",
-      "name": "CSS",
-      "element": "a",
-      "text": "CSS",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "17",
-      "previous": "8",
-      "child": null,
-      "parent": "2"
-    },
-    "11": {
-      "id": "11",
-      "name": "JavaScript",
-      "element": "a",
-      "text": "JavaScript",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "20",
-      "previous": "17",
-      "child": null,
-      "parent": "2"
-    },
-    "12": {
-      "id": "12",
-      "name": "Assets",
-      "element": "a",
-      "text": "Assets",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "13",
-      "previous": "20",
-      "child": null,
-      "parent": "2"
-    },
-    "13": {
-      "id": "13",
-      "name": "Properties",
-      "element": "a",
-      "text": "Properties",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "18",
-      "previous": "12",
-      "child": null,
-      "parent": "2"
-    },
-    "14": {
-      "id": "14",
-      "name": "Node Modules",
-      "element": "a",
-      "text": "Node Modules",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "15",
-      "previous": "19",
-      "child": null,
-      "parent": "2"
-    },
-    "15": {
-      "id": "15",
-      "name": "Page Load",
-      "element": "a",
-      "text": "Page Load",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "16",
-      "previous": "14",
-      "child": null,
-      "parent": "2"
-    },
-    "16": {
-      "id": "16",
-      "name": "Settings",
-      "element": "a",
-      "text": "Settings",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "21",
-      "previous": "15",
-      "child": null,
-      "parent": "2"
-    },
-    "17": {
-      "id": "17",
-      "name": "CSS  Variables",
-      "element": "a",
-      "text": "CSS  Variables",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "11",
-      "previous": "10",
-      "child": null,
-      "parent": "2"
-    },
-    "18": {
-      "id": "18",
-      "name": "Global JavaScript",
-      "element": "a",
-      "text": "Global JavaScript",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "19",
-      "previous": "13",
-      "child": null,
-      "parent": "2"
-    },
-    "19": {
-      "id": "19",
-      "name": "Global CSS",
-      "element": "a",
-      "text": "Global JavaScript",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "14",
-      "previous": "18",
-      "child": null,
-      "parent": "2"
-    },
-    "20": {
-      "id": "20",
-      "name": "Data Editor",
-      "element": "a",
-      "text": "Data Editor",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "12",
-      "previous": "11",
-      "child": null,
-      "parent": "2"
-    },
-    "21": {
-      "id": "21",
-      "name": "Bliss JavaScript Reference",
-      "element": "a",
-      "text": "Bliss JavaScript Reference",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "16",
-      "child": null,
-      "parent": "2"
+      "parent": "47"
     },
     "22": {
       "id": "22",
@@ -576,7 +213,7 @@
       "attributes": [
         {
           "name": "class",
-          "value": "four wide column"
+          "value": "col-md-3"
         }
       ],
       "css": [],
@@ -598,10 +235,20 @@
       "attributes": [
         {
           "name": "class",
-          "value": "twelve wide column"
+          "value": "col-md-9"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "h2",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1rem"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -617,17 +264,12 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "ui header dividing"
-        }
-      ],
+      "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "25",
-      "previous": "31",
+      "next": "45",
+      "previous": null,
       "child": null,
       "parent": "30"
     },
@@ -635,7 +277,7 @@
       "id": "25",
       "name": "copy 1",
       "element": "p",
-      "text": "Hello. My name is Buddy, I'm the creator of Bliss UI and I'm very proud to share this labor of love with you. Let me start by sharing the inspiration for Bliss UI, in 2012, Bret Victor gave a talk entitled, \"Inventing on Principal\", in his talk he suggests that \"creators need an immediate connection with their creations.\" He said that as you work you need see what you're making right then as if you were drawing on paper. On paper, you can see what you draw instantly. This is not true for the UI/UX in web apps.",
+      "text": "Hello, I'm Buddy, the creator of Bliss UI and it's my joy to share Bliss UI with you. Let me start by sharing the inspiration for this project, back in 2012, Bret Victor gave a talk entitled, \"Inventing on Principal\", in his talk he suggests that \"creators need an immediate connection with their creations.\" He said that as you work you need see what you're making right then as if you were drawing on paper. On paper, you can see what you draw instantly. This is not true for the UI/UX in web apps.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -644,7 +286,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "26",
-      "previous": "24",
+      "previous": "45",
       "child": null,
       "parent": "30"
     },
@@ -703,7 +345,7 @@
       "id": "29",
       "name": "copy 1",
       "element": "p",
-      "text": "These docs are not finished yet. I expect to be finished with them by the end of September 2017.",
+      "text": "These docs are not quite finished, sad. I expect them completed by October 1st 2017, happy.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -712,7 +354,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "33",
+      "previous": "46",
       "child": null,
       "parent": "32"
     },
@@ -722,38 +364,21 @@
       "element": "div",
       "text": null,
       "textFn": null,
-      "ifFn": null,
+      "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
       "css": [],
-      "js": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return (app.state.routes.current === '#introducing_bliss');\n}"
+        }
+      ],
       "dynamicAttributes": [],
       "next": "32",
       "previous": null,
-      "child": "31",
+      "child": "24",
       "parent": "23"
-    },
-    "31": {
-      "id": "31",
-      "name": "link",
-      "element": "a",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "name",
-          "value": "introducing"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "24",
-      "previous": null,
-      "child": null,
-      "parent": "30"
     },
     "32": {
       "id": "32",
@@ -761,15 +386,20 @@
       "element": "div",
       "text": null,
       "textFn": null,
-      "ifFn": null,
+      "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
       "css": [],
-      "js": [],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return (app.state.routes.current !== '#introducing_bliss');\n}"
+        }
+      ],
       "dynamicAttributes": [],
       "next": null,
       "previous": "30",
-      "child": "34",
+      "child": "33",
       "parent": "23"
     },
     "33": {
@@ -780,67 +410,14 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "ui header dividing"
-        }
-      ],
+      "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "29",
-      "previous": "34",
-      "child": null,
-      "parent": "32"
-    },
-    "34": {
-      "id": "34",
-      "name": "link",
-      "element": "a",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "name",
-          "value": "comingsoon"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "33",
+      "next": "46",
       "previous": null,
       "child": null,
       "parent": "32"
-    },
-    "36": {
-      "id": "36",
-      "name": "Getting Started",
-      "element": "a",
-      "text": "Getting Started",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#comingsoon"
-        },
-        {
-          "name": "class",
-          "value": "item"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "7",
-      "previous": "3",
-      "child": null,
-      "parent": "2"
     },
     "38": {
       "id": "38",
@@ -850,20 +427,11 @@
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "sixteen wide column"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            {
-              "name": "text-align",
-              "value": "center"
-            },
             {
               "name": "margin-top",
               "value": "1rem"
@@ -871,22 +439,12 @@
           ]
         }
       ],
-      "js": [
-        {
-          "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    alert('hello there')\n  }\n};\n"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "handleClick"
-        }
-      ],
+      "js": [],
+      "dynamicAttributes": [],
       "next": null,
       "previous": null,
       "child": null,
-      "parent": "40"
+      "parent": "44"
     },
     "40": {
       "id": "40",
@@ -899,15 +457,25 @@
       "attributes": [
         {
           "name": "class",
-          "value": "ui row"
+          "value": "row"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "41",
       "previous": null,
-      "child": "38",
+      "child": "44",
       "parent": "1"
     },
     "41": {
@@ -921,7 +489,7 @@
       "attributes": [
         {
           "name": "class",
-          "value": "ui row"
+          "value": "row"
         }
       ],
       "css": [
@@ -939,6 +507,14 @@
             {
               "name": "border-radius",
               "value": "5px"
+            },
+            {
+              "name": "margin",
+              "value": "0 0 3rem 0"
+            },
+            {
+              "name": "padding",
+              "value": "1rem 0 0 0"
             }
           ]
         }
@@ -966,15 +542,97 @@
       "previous": "28",
       "child": null,
       "parent": "30"
+    },
+    "44": {
+      "id": "44",
+      "name": "column",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "col-md-12"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "38",
+      "parent": "40"
+    },
+    "45": {
+      "id": "45",
+      "name": "line",
+      "element": "hr",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "25",
+      "previous": "24",
+      "child": null,
+      "parent": "30"
+    },
+    "46": {
+      "id": "46",
+      "name": "line",
+      "element": "hr",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "29",
+      "previous": "33",
+      "child": null,
+      "parent": "32"
+    },
+    "47": {
+      "id": "47",
+      "name": "Link Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  return app.state.routes.list;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "3",
+      "parent": "2"
     }
   },
   "schemas": [
     {
-      "path": "/demo",
+      "path": "/routes",
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {'list':['One','Two']}\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    current: '#introducing_bliss',\n    list: [\n      {\n        label: 'Introducing Bliss UI',\n        route: '#introducing_bliss'\n      },\n      {\n        label: 'Getting Started',\n        route: '#getting_started'\n      },\n      {\n        label: 'Hosting',\n        route: '#hosting'\n      },\n      {\n        label: 'Workspaces',\n        route: '#workspaces'\n      },\n      {\n        label: 'Projects',\n        route: '#projects'\n      },\n      {\n        label: 'Components',\n        route: '#components'\n      },\n      {\n        label: 'Elements',\n        route: '#elements'\n      },\n      {\n        label: 'CSS',\n        route: '#css'\n      },\n      {\n        label: 'CSS Variables',\n        route: '#css_variables'\n      },\n      {\n        label: 'JavaScript',\n        route: '#javascript'\n      },\n      {\n        label: 'Data Editor',\n        route: '#data_editor'\n      },\n      {\n        label: 'Assets',\n        route: '#assets'\n      },\n      {\n        label: 'Properties',\n        route: '#properties'\n      },\n      {\n        label: 'Global JavaScript',\n        route: '#global_javascript'\n      },\n      {\n        label: 'Global CSS',\n        route: '#global_css'\n      },\n      {\n        label: 'Node Modules',\n        route: '#node_modules'\n      },\n      {\n        label: 'Page Load',\n        route: '#page_load'\n      },\n      {\n        label: 'Settings',\n        route: '#settings'\n      },\n      {\n        label: 'Bliss JavaScript Reference',\n        route: '#bliss_javascript_reference'\n      }\n    ]\n  }\n  if(location.hash !== '') newData.current = location.hash;\n  return newData;\n}"
+        },
+        {
+          "action": "setCurrent",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.current = args.route;\n  return newData;\n}"
         }
       ]
     }
