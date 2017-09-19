@@ -46,9 +46,22 @@ var blissDocs = (function() {
     app.methods["30"]['shouldShow'] = function(scope, attributes) {
       return (app.state.routes.current === '#introducing_bliss');
     }
+    app.methods["49"] = {};
+    app.methods["49"]['shouldShow'] = function(scope, attributes) {
+      return (app.state.routes.current === '#getting_started');
+    }
     app.methods["32"] = {};
     app.methods["32"]['shouldShow'] = function(scope, attributes) {
-      return (app.state.routes.current !== '#introducing_bliss');
+      var route = app.state.routes.current
+      var finished = ['#introducing_bliss',
+        '#getting_started'
+      ]
+      var shouldShow = _.reduce(finished,
+        function(accum, item) {
+          return (item === route || accum === false) ?
+            false : accum
+        }, true)
+      return shouldShow;
     }
     app.getPath = function(objRef, path) {
       var ref = objRef;
@@ -300,6 +313,87 @@ var blissDocs = (function() {
                       "id": "copy_42",
                       "key": app.getKey('id', '42')
                     }), 'Today, it simply takes too long. Too long to turn those ideas into wireframes, mockups, and code. I say no more. I say, let\'s go from concept to production in minutes. I say let\'s do it together in the same room at the same time.')));
+                }
+                return out;
+              })(scope),
+              (function(scope) {
+                var out = [];
+                scope['shouldShow'] = app.methods['49']['shouldShow'](scope);
+                if (app.methods['49']['shouldShow'](scope) === true) {
+                  out.push(React.createElement('div', app.mergeAttributes('49', scope, {}, {
+                      "id": "gettingStarted_49",
+                      "key": app.getKey('id', '49')
+                    }),
+                    React.createElement('h2', app.mergeAttributes('50', scope, {}, {
+                      "id": "header_50",
+                      "key": app.getKey('id', '50')
+                    }), 'Getting Started'),
+                    React.createElement('hr', app.mergeAttributes('51', scope, {}, {
+                      "id": "line_51",
+                      "key": app.getKey('id', '51')
+                    })),
+                    React.createElement('p', app.mergeAttributes('52', scope, {}, {
+                      "id": "copy_52",
+                      "key": app.getKey('id', '52')
+                    }), 'Bliss is organized by workspaces and projects. A workspace produces a single app and url. A workspace is made up of one or more projects.'),
+                    React.createElement('p', app.mergeAttributes('53', scope, {}, {
+                      "id": "copy_53",
+                      "key": app.getKey('id', '53')
+                    }), 'Here\'s a high-level step-by-step guide to getting started:'),
+                    React.createElement('ol', app.mergeAttributes('54', scope, {}, {
+                        "id": "stepByStep_54",
+                        "key": app.getKey('id', '54')
+                      }),
+                      React.createElement('li', app.mergeAttributes('55', scope, {}, {
+                          "id": "item_55",
+                          "key": app.getKey('id', '55')
+                        }), 'Sign-up for an account at ',
+                        React.createElement('a', app.mergeAttributes('58', scope, {}, {
+                          "href": "https://blissui.com/#pricing",
+                          "target": "_blank",
+                          "id": "link_58",
+                          "key": app.getKey('id', '58')
+                        }), 'https://blissui.com/#pricing'),
+                        React.createElement('div', app.mergeAttributes('59', scope, {}, {
+                          "id": "parens_59",
+                          "key": app.getKey('id', '59')
+                        }), ' (instructions will be sent for how to sign-in)')),
+                      React.createElement('li', app.mergeAttributes('56', scope, {}, {
+                        "id": "item_56",
+                        "key": app.getKey('id', '56')
+                      }), 'After signing-in, create a new workspace and click it once it\'s created.'),
+                      React.createElement('li', app.mergeAttributes('57', scope, {}, {
+                        "id": "item_57",
+                        "key": app.getKey('id', '57')
+                      }), 'Change the name of the first element. This will give your project a personalized name. You can change the name by clicking on the first item on the left-hand side then finding the name property on the right-hand side and simply typing in a new name.'),
+                      React.createElement('li', app.mergeAttributes('61', scope, {}, {
+                        "id": "item_61",
+                        "key": app.getKey('id', '61')
+                      }), 'Below the name property, you will see: Element, Text, Text(FN), IF(FN), and Repeat(FN). For now, change the text property to read, "Hello, world."'),
+                      React.createElement('li', app.mergeAttributes('62', scope, {}, {
+                        "id": "item_62",
+                        "key": app.getKey('id', '62')
+                      }), 'In the middle (Viewport aka. Designer screen), you should see the text, "Hello, world." If not, contact support at bliss@blissui.com otherwise, click on Projects and choose "Deploy project"'),
+                      React.createElement('li', app.mergeAttributes('63', scope, {}, {
+                        "id": "item_63",
+                        "key": app.getKey('id', '63')
+                      }), 'Now that your project is deployed, click "Projects" again, and this time choose, "View Live Project". This will open a new browser window taking you to your new UI.')),
+                    React.createElement('p', app.mergeAttributes('64', scope, {}, {
+                      "id": "copy_64",
+                      "key": app.getKey('id', '64')
+                    }), 'So... what just happened? In a few clicks, you created a new application and made it live to the world. So far it only says, "Hello, world." but it\'s packed with a large set of features waiting for you to explore.'),
+                    React.createElement('p', app.mergeAttributes('65', scope, {}, {
+                      "id": "copy_65",
+                      "key": app.getKey('id', '65')
+                    }), 'Bliss is a full-featured UI/UX platform. This means you create buttons, drop-downs, grids, graphs, screens, animations, and just about anything you can imagine. Bliss is so powerful in fact that the Bliss interface was created using Bliss and so the website. In fact, I\'m writing the documentation using Bliss!'),
+                    React.createElement('p', app.mergeAttributes('66', scope, {}, {
+                      "id": "copy_66",
+                      "key": app.getKey('id', '66')
+                    }), 'Okay, sounds great. How do I get all this feature-rich goodness? Hello, world while traditional isn\'t impressive. That\'s what this documentation is designed to do, to be a guide. Not only to show the features of Bliss but share it\'s mindset. Bliss is a new way of working.'),
+                    React.createElement('p', app.mergeAttributes('67', scope, {}, {
+                      "id": "copy_67",
+                      "key": app.getKey('id', '67')
+                    }), 'A word of "fun" not caution. Bliss is sneakily robust. Click around, try things because it should do what you expect. If not, reach out to us at bliss@blissui.com')));
                 }
                 return out;
               })(scope),
