@@ -66,14 +66,14 @@ if(env.bliss_env === "development" || env.bliss_env === "test") {
   http.get('*', function(req,res) {
     res.redirect('https://blissui.com'+req.url)
   });
-  http.listen(80);
+  http.listen(env.port);
 
   const options = {
     key: fs.readFileSync(path.join(__dirname, '../../tls/key.pem')),
     cert: fs.readFileSync(path.join(__dirname, '../../tls/cert.pem'))
   };
 
-  https.createServer(options, app).listen(env.port);
+  https.createServer(options, app).listen(env.port_ssl);
 } else {
   console.log('Unable to start web server because BLISS_ENV not set.');
 }
