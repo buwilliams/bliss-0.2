@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 92,
+  "nextId": 93,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Roboto",
@@ -450,7 +450,7 @@
       "id": "31",
       "name": "Hero Text",
       "element": "div",
-      "text": "Create Beautiful UI/UX in minutes.",
+      "text": "Create beautiful UI/UX in minutes.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -491,7 +491,7 @@
       "dynamicAttributes": [],
       "next": "46",
       "previous": null,
-      "child": "53",
+      "child": "92",
       "parent": "30"
     },
     "32": {
@@ -902,7 +902,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": null,
+      "previous": "92",
       "child": null,
       "parent": "31"
     },
@@ -2022,6 +2022,41 @@
       "previous": "88",
       "child": null,
       "parent": "87"
+    },
+    "92": {
+      "id": "92",
+      "name": "subtext",
+      "element": "div",
+      "text": "functional & sharable",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1rem"
+            },
+            {
+              "name": "color",
+              "value": "rgba(255, 255, 255, 0.9)"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "53",
+      "previous": null,
+      "child": null,
+      "parent": "31"
     }
   },
   "schemas": [

@@ -201,7 +201,11 @@ var blissUiWebsite = (function() {
                     "className": "hero col-md-12",
                     "id": "heroText_31",
                     "key": app.getKey('id', '31')
-                  }), 'Create Beautiful UI/UX in minutes.',
+                  }), 'Create beautiful UI/UX in minutes.',
+                  React.createElement('div', app.mergeAttributes('92', scope, {}, {
+                    "id": "subtext_92",
+                    "key": app.getKey('id', '92')
+                  }), 'functional & sharable'),
                   React.createElement('i', app.mergeAttributes('53', scope, {}, {
                     "className": "fa fa-picture-o",
                     "id": "new_53",
