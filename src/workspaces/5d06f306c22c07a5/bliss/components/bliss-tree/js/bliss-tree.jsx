@@ -393,7 +393,6 @@ var BlissTree = {
               <a title="Add" className="float-left" href="#" onClick={this.handleCreateClick}><i className="fa fa-plus" aria-hidden="true"></i></a>
               <a title="Clone" className="float-left" href="#" onClick={this.handleCloneClick}><i className="fa fa-clone" aria-hidden="true"></i></a>
               <a title="Delete" className="float-left" href="#" onClick={this.handleDeleteClick}><i className="fa fa-trash" aria-hidden="true"></i></a>
-              <a title="Full Screen" className="float-right" href="/designer/designer.html" target="_blank"><i className="fa fa-external-link-square" aria-hidden="true"></i></a>
               <a title="Expand" className="float-right" href="#" onClick={this.handleExpandClick}><i className="fa fa-expand" aria-hidden="true"></i></a>
               <a title="Collapse" className="float-right" href="#" onClick={this.handleCollapseClick}><i className="fa fa-compress" aria-hidden="true"></i></a>
             </div>

@@ -43,7 +43,8 @@ app.get('/session', function(req, res) {
   var token = tokens.createToken([req.session.user.username], env.secret_key);
   res.send({
     'token': token,
-    'email': req.session.user.email
+    'email': req.session.user.email,
+    'username': req.session.user.username
   });
 });
 

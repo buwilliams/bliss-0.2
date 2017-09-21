@@ -323,7 +323,8 @@ var blissUiV = (function() {
             'path': '/firebase',
             'action': 'setSession',
             'designer_token': data.token,
-            'email': data.email
+            'email': data.email,
+            'username': data.username
           });
 
           app.setState(function() {
@@ -585,6 +586,22 @@ var blissUiV = (function() {
           console.log('Unable to refresh preview iframe', e);
         }
         app.js.getProjects();
+      }
+    };
+    app.methods["275"] = {};
+    app.methods["275"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        var username = app.state.firebase.username
+        var workspace = app.state.settings.workspace
+
+        if (username === null) return
+
+        var url = location.origin +
+          '/hosted/' +
+          username + '/' +
+          workspace + '/'
+
+        window.open(url)
       }
     };
     app.methods["229"] = {};
@@ -1320,6 +1337,7 @@ var blissUiV = (function() {
         user_token: null,
         designer_token: null,
         email: null,
+        username: null,
         auth_ui: null,
         auth: null,
         database: null,
@@ -1346,6 +1364,7 @@ var blissUiV = (function() {
       var newData = Object.assign({}, data);
       newData.designer_token = args.designer_token;
       newData.email = args.email;
+      newData.username = args.username;
       return newData;
     }
     if (app.schema['/firebase']['init']) {
@@ -2021,6 +2040,27 @@ var blissUiV = (function() {
                         "id": "icon_202",
                         "key": app.getKey('id', '202')
                       })))),
+                  React.createElement('div', app.mergeAttributes('274', scope, {}, {
+                      "className": "float-left",
+                      "id": "openContainer_274",
+                      "key": app.getKey('id', '274')
+                    }),
+                    React.createElement('button', app.mergeAttributes('275', scope, {
+                        "onClick": "handleClick"
+                      }, {
+                        "className": "btn btn-default btn-sm",
+                        "id": "openButton_275",
+                        "key": app.getKey('id', '275')
+                      }),
+                      React.createElement('i', app.mergeAttributes('276', scope, {}, {
+                        "className": "fa fa-rocket",
+                        "id": "icon_276",
+                        "key": app.getKey('id', '276')
+                      })),
+                      React.createElement('span', app.mergeAttributes('277', scope, {}, {
+                        "id": "span_277",
+                        "key": app.getKey('id', '277')
+                      }), ' Launch'))),
                   React.createElement('div', app.mergeAttributes('101', scope, {}, {
                       "className": "pull-left",
                       "id": "toggleContent",

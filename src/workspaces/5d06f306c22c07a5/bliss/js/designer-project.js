@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 274,
+  "nextId": 278,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -152,7 +152,7 @@ var blissProject = {
     },
     {
       "name": "getSession",
-      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'setSession',\n        'designer_token': data.token,\n        'email': data.email\n      });\n\n      app.setState(function() {\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  $.ajax({\n    type: 'GET',\n    url: '/session',\n    success: function(data) {\n      app.dispatch({\n        'path': '/firebase',\n        'action': 'setSession',\n        'designer_token': data.token,\n        'email': data.email,\n        'username': data.username\n      });\n\n      app.setState(function() {\n        app.js.getProjects();\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "afterAuth",
@@ -926,7 +926,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "101",
+      "next": "274",
       "previous": "181",
       "child": "105",
       "parent": "111"
@@ -1258,7 +1258,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "147",
-      "previous": "88",
+      "previous": "274",
       "child": "189",
       "parent": "111"
     },
@@ -5685,6 +5685,140 @@ var blissProject = {
       "previous": "272",
       "child": null,
       "parent": "271"
+    },
+    "274": {
+      "id": "274",
+      "name": "Open container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "float-left"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "15px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "101",
+      "previous": "88",
+      "child": "275",
+      "parent": "111"
+    },
+    "275": {
+      "id": "275",
+      "name": "Open button",
+      "element": "button",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-default btn-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "border-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "margin-left",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var username = app.state.firebase.username\n    var workspace = app.state.settings.workspace\n    \n    if(username === null) return\n    \n    var url = location.origin +\n        '/hosted/' +\n        username + '/' +\n        workspace + '/'\n    \n    window.open(url)\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": "276",
+      "parent": "274"
+    },
+    "276": {
+      "id": "276",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "className",
+          "value": "fa fa-rocket"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "277",
+      "previous": null,
+      "child": null,
+      "parent": "275"
+    },
+    "277": {
+      "id": "277",
+      "name": "span",
+      "element": "span",
+      "text": " Launch",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "276",
+      "child": null,
+      "parent": "275"
     }
   },
   "schemas": [
@@ -5701,7 +5835,7 @@ var blissProject = {
         },
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    email: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    user: null,\n    user_token: null,\n    designer_token: null,\n    email: null,\n    username: null,\n    auth_ui: null,\n    auth: null,\n    database: null,\n  \tstorage: null\n  }\n  \n  return newData;\n}"
         },
         {
           "action": "setToken",
@@ -5709,7 +5843,7 @@ var blissProject = {
         },
         {
           "action": "setSession",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.designer_token = args.designer_token;\n  newData.email = args.email;\n  newData.username = args.username;\n  return newData;\n}"
         }
       ]
     },
