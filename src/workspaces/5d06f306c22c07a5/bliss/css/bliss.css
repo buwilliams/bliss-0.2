@@ -243,6 +243,21 @@
 #icon_202 {
 }
 
+#openContainer_274 {
+  margin-left: 15px;
+}
+
+#openButton_275 {
+  cursor: pointer;
+  color: #e0ebf0;
+  background-color: #313e45;
+  border-color: #313e45;
+  margin-left: 5px;
+}
+
+#icon_276 {
+}
+
 #toggleContent {
   margin-left: 15px;
 }

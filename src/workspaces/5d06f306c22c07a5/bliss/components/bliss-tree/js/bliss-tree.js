@@ -423,11 +423,6 @@ var BlissTree = {
             ),
             React.createElement(
               "a",
-              { title: "Full Screen", className: "float-right", href: "/designer/designer.html", target: "_blank" },
-              React.createElement("i", { className: "fa fa-external-link-square", "aria-hidden": "true" })
-            ),
-            React.createElement(
-              "a",
               { title: "Expand", className: "float-right", href: "#", onClick: this.handleExpandClick },
               React.createElement("i", { className: "fa fa-expand", "aria-hidden": "true" })
             ),

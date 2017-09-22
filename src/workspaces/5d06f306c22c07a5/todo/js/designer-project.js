@@ -3,7 +3,7 @@ var blissProject = {
   "type": "designer",
   "build": "designer",
   "compiler": "react",
-  "nextId": 11,
+  "nextId": 12,
   "rootId": "1",
   "externalCss": [
     "css/reset.css",
@@ -11,7 +11,8 @@ var blissProject = {
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
-    "node_modules/react-dom/dist/react-dom.js"
+    "node_modules/react-dom/dist/react-dom.js",
+    "components/foo/js/foo.js"
   ],
   "packages": [
     {
