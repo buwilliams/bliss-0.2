@@ -1959,7 +1959,7 @@ var blissUi = (function() {
                           }, {
                             "href": "#",
                             "className": "dropdown-item",
-                            "id": "deployProject_104",
+                            "id": "publishProject_104",
                             "key": app.getKey('id', '104')
                           }),
                           React.createElement('i', app.mergeAttributes('167', scope, {}, {
@@ -1970,7 +1970,7 @@ var blissUi = (function() {
                           React.createElement('span', app.mergeAttributes('168', scope, {}, {
                             "id": "label_168",
                             "key": app.getKey('id', '168')
-                          }), 'Deploy project')),
+                          }), 'Publish')),
                         React.createElement('div', app.mergeAttributes('246', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_246",
