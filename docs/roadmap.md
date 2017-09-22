@@ -1,31 +1,22 @@
 # Roadmap
 
-## In-progress work
+## Working
 
-- feature: Authentication with Firebase
-- feature: Support multiple workspaces for a users
-- feature: upload image support
-- feature: compile deps js, css, and assets (videos, images, etc.)
-- file explorer: selecting file or folder
-- file explorer: put inside bliss
+- feature: typeahead for css properties (my hands are getting tired)
+
+## Up next
+
+- feature: creating and including components (refactor existing code)
 
 ## Backlog
 
-- feature: data (ajax, json, state)
-- bug: on selected drag in between room is too small, like 1px
+- file explorer: selecting file or folder
+- file explorer: put inside bliss
 - bug: bliss-tree, deep nav selection doesn't expand fully
 - feature: delete project
 - feature: up and down to change pixel values for property
-- feature: api manager
-- feature: creating and including components (refactor existing code)
 - feature: export project (concat and minify)
-- idea: resolution could show an image of the device
-- feature: import component
-- feature: typeahead for css properties (my hands are getting tired)
-- bug: reload deps on packages update (save, load)
-- bug: state is saved when switching projects (new, load, delete)
-- bug: need loading screen (or a way to pre-build deps for startup)
-- improvement: make status more obvious so that the user can see what is going on
+- feature: reload dependencies as they change
 - cleanup: rename components to element throughout all the code
 - feature: javascript function in alphabetical order
 - feature: one-click copy function to global js functions (protect from overwrite)
@@ -36,18 +27,15 @@
 - improvement: electron, move workspace to documents
 - feature: import HTML
 - Open project (open components from a project)
-- New UI Theme
-- Feature: Build Environment (npm packages)
 - Feature: Zoom, focus on one component and children
 - Feature: Endpoint Mocks (with functions for dynamic data)
 - Feature: Add JSX to React Compiler
 - Feature: Unit Tests
 - Feature: Automated user-testing via browser test framework like Rspec
-- Compile to Angular
 - Compile to Webpack
 - Feature: Upgrade Project (uses the new project json)
 
-## Completed work
+## Done
 
 - use bootstrap to make basic layout for app
 - 3 column layout in bootstrap (preview, tree, properties)
@@ -133,3 +121,16 @@
 - feature: global css editor
 - todo.json is not converted to new json format yet, sigh...
 - feature: edit css selectors and properties (missing selectors)
+- feature: Authentication with Firebase
+- feature: Support multiple workspaces for a users
+- feature: upload image support
+- feature: compile deps js, css, and assets (videos, images, etc.)
+- feature: data (ajax, json, state)
+- bug: on selected drag in between room is too small, like 1px
+- feature: api manager
+- idea: resolution could show an image of the device
+- bug: state is saved when switching projects (new, load, delete)
+- bug: need loading screen (or a way to pre-build deps for startup)
+- New UI Theme
+- Feature: Build Environment (npm packages)
+- improvement: make status more obvious so that the user can see what is going on
