@@ -14,6 +14,7 @@ const user = require('./routes/user.js')
 const website = require('./routes/website.js')
 const workspace = require('./routes/workspace.js')
 const hosted = require('./routes/hosted.js')
+const reference = require('./routes/reference.js')
 const tokens = require('./core/tokens.js')
 
 app.use(bodyParser.json())
@@ -38,6 +39,7 @@ app.use('/website', website);
 app.use('/workspace', workspace);
 app.use('/bliss', bliss);
 app.use('/hosted', hosted);
+app.use('/reference', reference);
 
 app.get('/session', function(req, res) {
   var token = tokens.createToken([req.session.user.username], env.secret_key);
