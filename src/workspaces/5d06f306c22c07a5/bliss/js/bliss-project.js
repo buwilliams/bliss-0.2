@@ -1350,7 +1350,7 @@ var blissProject = {
     },
     "104": {
       "id": "104",
-      "name": "deploy project",
+      "name": "publish project",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -3035,7 +3035,7 @@ var blissProject = {
       "id": "168",
       "name": "label",
       "element": "span",
-      "text": "Deploy project",
+      "text": "Publish",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
