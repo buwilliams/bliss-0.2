@@ -1,32 +1,17 @@
-# Roadmap
-
-## Working
-
-- feature: typeahead for css properties (my hands are getting tired)
-
-## Up next
-
-- feature: creating and including components (refactor existing code)
+# Bliss Backlog
 
 ## Backlog
 
+- feature: typeahead for css properties (my hands are getting tired)
 - file explorer: selecting file or folder
 - file explorer: put inside bliss
-- bug: bliss-tree, deep nav selection doesn't expand fully
-- feature: delete project
 - feature: up and down to change pixel values for property
 - feature: export project (concat and minify)
-- feature: reload dependencies as they change
 - cleanup: rename components to element throughout all the code
 - feature: javascript function in alphabetical order
 - feature: one-click copy function to global js functions (protect from overwrite)
-- bug: adding new component expands currently selected on???
 - improvement: auto-save project
-- bug: tree, expand will expand all children
-- bug: bliss-tree, drag onto node doesn't highlight full row
-- improvement: electron, move workspace to documents
 - feature: import HTML
-- Open project (open components from a project)
 - Feature: Zoom, focus on one component and children
 - Feature: Endpoint Mocks (with functions for dynamic data)
 - Feature: Add JSX to React Compiler
@@ -134,3 +119,6 @@
 - New UI Theme
 - Feature: Build Environment (npm packages)
 - improvement: make status more obvious so that the user can see what is going on
+- bug: bliss-tree, drag onto node doesn't highlight full row
+- improvement: electron, move workspace to documents
+- Open project (open components from a project)
