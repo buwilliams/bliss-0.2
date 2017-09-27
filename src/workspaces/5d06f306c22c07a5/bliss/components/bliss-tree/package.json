@@ -1,0 +1,21 @@
+{
+  "name": "bliss-tree",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "jquery": "3.2.1",
+    "react": "15.4.2",
+    "react-dom": "15.4.2",
+    "tether": "1.4.0",
+    "bootstrap": "^4.0.0-alpha.6",
+    "font-awesome": "^4.7.0",
+    "popper.js": "1.12.5"
+  }
+}
