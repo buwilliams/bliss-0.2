@@ -16,6 +16,15 @@
     "tether": "1.4.0",
     "bootstrap": "^4.0.0-alpha.6",
     "font-awesome": "^4.7.0",
-    "popper.js": "1.12.5"
+    "popper.js": "1.12.5",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.23.0",
+    "babel-preset-env": "^1.2.1",
+    "jake": "^8.0.15",
+    "jasmine": "^2.5.3",
+    "sync-exec": "^0.6.2"
   }
 }
