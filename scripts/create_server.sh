@@ -58,8 +58,9 @@ ssh -t git@$IP <<EOF
   echo y | sudo ufw enable
 EOF
 
-echo 'Installing letsencrypt and firebase creds...'
+echo 'Installing letsencrypt creds...'
 ssh -t git@$IP <<EOF
+  sudo chown -R git:git /etc/letsencrypt
   yarn global add http-server
   sudo $(yarn global bin)/http-server -p 80 /home/git/work/scripts/certbot > /dev/null 2>&1 & echo $! > /home/git/work/scripts/certbot/run.pid
   sudo certbot certonly --webroot -w /home/git/work/scripts/certbot -d blissui.com -d www.blissui.com
@@ -67,6 +68,8 @@ ssh -t git@$IP <<EOF
   sudo rm /home/git/work/scripts/certbot/run.pid
 EOF
 
+echo 'Installing Firebase creds...'
+scp ~/.ssh/blissui-firebase.json git@$IP:.ssh/
 
 # Setup git server
 echo 'Setting up Git server...'
