@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "BlissUI deployment script, built for Ubuntu 17.10"
+
 programname=$0
 
 function usage {
@@ -25,8 +27,6 @@ IP=$3
 echo Setting up SSH...
 ssh-copy-id -i ~/.ssh/id_rsa $USER@$IP
 
-# setup git server
-
 echo 'Enter new password for new Git user.'
 echo -n Password:
 read -s password
@@ -47,34 +47,18 @@ EOF
 ssh-copy-id -i ~/.ssh/id_rsa git@$IP
 
 # install server dependencies (git, node, npm, yarn)
-echo 'Installing build-essential and git...'
+echo 'Installing system deps...'
 ssh -t git@$IP <<EOF
   sudo apt-get udpate
-  sudo apt-get install -y build-essential git
-  sudo apt-get install ufw
+  sudo apt-get install -y build-essential git ufw nodejs npm
+  sudo npm install -g yarn
   sudo ufw allow ssh
-  sudo ufw allow 80/tcp
   sudo ufw allow http/tcp
+  sudo ufw allow https/tcp
   echo y | sudo ufw enable
 EOF
 
-echo 'Installing nodejs...'
-ssh -t git@$IP <<EOF
-  curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-  sudo apt-get install -y nodejs
-EOF
-
-echo 'Installing yarn, jake, and forever...'
-ssh -t git@$IP <<EOF
-  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add
-  echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  sudo apt-get update
-  sudo apt-get install yarn
-  sudo yarn global add jake
-  sudo yarn global add forever
-EOF
-
-# setup git server
+# Setup git server
 echo 'Setting up Git server...'
 ssh -t git@$IP <<EOF
   mkdir bliss-0.2.git
@@ -89,3 +73,11 @@ ssh -t git@$IP "sudo chmod +x bliss-0.2.git/hooks/post-receive"
 echo 'Adding local git origin...'
 git remote add $NAME git@$IP:bliss-0.2.git
 git push $NAME master
+
+echo 'Setting up remote service...'
+ssh -t git@$IP <<EOF
+  sudo ln -s /home/git/work/scripts/bliss.service /etc/systemd/system/bliss.service
+  sudo systemctl daemon-reload
+  sudo systemctl enable bliss.service
+  sudo systemctl start bliss.service
+EOF

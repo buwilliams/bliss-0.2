@@ -1,0 +1,11 @@
+[Unit]
+Description=BlissUI
+
+[Service]
+Environment=
+WorkingDirectory=/home/git/work
+ExecStart=/usr/bin/node ./src/server/server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
