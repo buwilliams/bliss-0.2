@@ -50,13 +50,23 @@ ssh-copy-id -i ~/.ssh/id_rsa git@$IP
 echo 'Installing system deps...'
 ssh -t git@$IP <<EOF
   sudo apt-get udpate
-  sudo apt-get install -y build-essential git ufw nodejs npm
+  sudo apt-get install -y build-essential git certbot ufw nodejs npm
   sudo npm install -g yarn
   sudo ufw allow ssh
   sudo ufw allow http/tcp
   sudo ufw allow https/tcp
   echo y | sudo ufw enable
 EOF
+
+echo 'Installing letsencrypt and firebase creds...'
+ssh -t git@$IP <<EOF
+  yarn global add http-server
+  sudo $(yarn global bin)/http-server -p 80 /home/git/work/scripts/certbot > /dev/null 2>&1 & echo $! > /home/git/work/scripts/certbot/run.pid
+  sudo certbot certonly --webroot -w /home/git/work/scripts/certbot -d blissui.com -d www.blissui.com
+  sudo pkill -P $(cat /home/git/work/scripts/certbot/run.pid)
+  sudo rm /home/git/work/scripts/certbot/run.pid
+EOF
+
 
 # Setup git server
 echo 'Setting up Git server...'
