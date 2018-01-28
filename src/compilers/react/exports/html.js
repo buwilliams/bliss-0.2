@@ -22,6 +22,12 @@ module.exports = {
     out += html.openTag('title', null, projectJson.name);
     out += html.closeTag('title');
 
+    out += html.openTag('meta', {
+      'name': 'viewport',
+      'content': 'width=device-width, initial-scale=1'
+    })
+    out += html.closeTag('meta');
+
     // CSS
     out += html.getExternalCss(projectJson.externalCss);
     out += html.getExternalCss([`css/${projectJson.build}.css`]);
