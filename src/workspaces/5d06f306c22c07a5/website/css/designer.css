@@ -1,5 +1,5 @@
 body {
-  background-image: url("https://www.transparenttextures.com/patterns/arabesque.png"), linear-gradient(to right, #1fc8db, #2cb5e8);
+  background-image: url("https://i.imgur.com/BdaB2OY.png"), linear-gradient(to right, #1fc8db, #2cb5e8);
   color: white;
   font-family: 'Quicksand', sans-serif;;
   font-size: 18px;
@@ -20,9 +20,13 @@ h2, h3, h4, h5 {
   font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
-a, a:hover, a:visited, a:active {
+a, a:visited {
   color: #2cb6e7;
+}
+
+a:hover, a:active {
   text-decoration: underline;
+  color: #e7762c;
 }
 
 .header-col {
@@ -52,5 +56,36 @@ a, a:hover, a:visited, a:active {
   border-bottom-right-radius: 5px;
   margin-bottom: 2em;
   box-shadow: 0 0 5px 3px rgba(0,0,0,.35);
+}
+
+#chevronBottom_51 {
+  text-align: center;
+}
+
+.screenshot {
+  margin-top: 15px;
+  margin-bottom: 45px;
+  text-align: center;
+}
+
+#ellipses_52 {
+  opacity: 0.2;
+  text-align: center;
+  margin: 24px 0;
+  display: none;
+}
+
+#para_22 {
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 2em;
+}
+
+#emailAddress_57 {
+  margin-left: 2px;
+}
+
+#twitterHandle_55 {
+  margin-left: 2px;
 }
 

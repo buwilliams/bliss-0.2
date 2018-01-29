@@ -4,11 +4,12 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 46,
+  "nextId": 58,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz",
-    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+    "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
@@ -38,7 +39,7 @@
       "properties": [
         {
           "name": "background-image",
-          "value": "url(\"https://www.transparenttextures.com/patterns/arabesque.png\"), linear-gradient(to right, #1fc8db, #2cb5e8)"
+          "value": "url(\"https://i.imgur.com/BdaB2OY.png\"), linear-gradient(to right, #1fc8db, #2cb5e8)"
         },
         {
           "name": "color",
@@ -94,15 +95,24 @@
       ]
     },
     {
-      "selector": "a, a:hover, a:visited, a:active",
+      "selector": "a, a:visited",
       "properties": [
         {
           "name": "color",
           "value": "#2cb6e7"
-        },
+        }
+      ]
+    },
+    {
+      "selector": "a:hover, a:active",
+      "properties": [
         {
           "name": "text-decoration",
           "value": "underline"
+        },
+        {
+          "name": "color",
+          "value": "#e7762c"
         }
       ]
     }
@@ -208,7 +218,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "16",
-      "previous": "15",
+      "previous": "27",
       "child": null,
       "parent": "9"
     },
@@ -312,7 +322,7 @@
       "id": "10",
       "name": "The niche",
       "element": "h2",
-      "text": "The niche",
+      "text": "Quick Prototypes",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -355,7 +365,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "27",
-      "previous": "22",
+      "previous": "52",
       "child": null,
       "parent": "9"
     },
@@ -372,7 +382,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "34",
-      "previous": "27",
+      "previous": "18",
       "child": null,
       "parent": "9"
     },
@@ -380,7 +390,7 @@
       "id": "15",
       "name": "para",
       "element": "p",
-      "text": "Simply put, it’s a webapp creation toolkit. It presently builds React.js applications and pairs nicely with Firebase. But these are just the technical details. What’s interesting is that you don’t need to worry much about that. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on creating and experimenting. That’s the kind of environment I want to work in.",
+      "text": "Simply put, it's a webapp creation toolkit. It presently builds React.js applications and pairs nicely with Firebase. But these are just the technical details. What’s interesting is that you don’t need to worry much about that. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on creating and experimenting. That’s the kind of environment I want to work in.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -388,7 +398,7 @@
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "6",
+      "next": "51",
       "previous": "4",
       "child": null,
       "parent": "9"
@@ -439,7 +449,7 @@
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "22",
+      "next": "14",
       "previous": "11",
       "child": null,
       "parent": "9"
@@ -470,11 +480,29 @@
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "0"
+            },
+            {
+              "name": "margin-top",
+              "value": "2em"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "13",
-      "previous": "18",
+      "next": null,
+      "previous": "34",
       "child": "23",
       "parent": "9"
     },
@@ -482,7 +510,7 @@
       "id": "23",
       "name": "span",
       "element": "span",
-      "text": "Feel free to reach out for help - ",
+      "text": "Let's get connected!  ",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -499,7 +527,7 @@
       "id": "24",
       "name": "link",
       "element": "a",
-      "text": "bliss@blissui.com",
+      "text": "",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -514,7 +542,7 @@
       "dynamicAttributes": [],
       "next": "25",
       "previous": "23",
-      "child": null,
+      "child": "56",
       "parent": "22"
     },
     "25": {
@@ -538,7 +566,7 @@
       "id": "26",
       "name": "link",
       "element": "a",
-      "text": "@buwilliams",
+      "text": "",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -557,7 +585,7 @@
       "dynamicAttributes": [],
       "next": null,
       "previous": "25",
-      "child": null,
+      "child": "54",
       "parent": "22"
     },
     "27": {
@@ -572,7 +600,7 @@
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "14",
+      "next": "6",
       "previous": "13",
       "child": "28",
       "parent": "9"
@@ -709,7 +737,7 @@
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "22",
       "previous": "14",
       "child": "35",
       "parent": "9"
@@ -861,6 +889,288 @@
       "previous": "40",
       "child": "9",
       "parent": "1"
+    },
+    "46": {
+      "id": "46",
+      "name": "image",
+      "element": "img",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "src",
+          "value": "https://i.imgur.com/ood3FcY.png"
+        },
+        {
+          "name": "width",
+          "value": "100%"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "47"
+    },
+    "47": {
+      "id": "47",
+      "name": "screenshot",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "screenshot"
+        }
+      ],
+      "css": [
+        {
+          "selector": ".screenshot",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "15px"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "45px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "52",
+      "previous": "51",
+      "child": "46",
+      "parent": "9"
+    },
+    "50": {
+      "id": "50",
+      "name": "chevron down icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-chevron-down"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "51"
+    },
+    "51": {
+      "id": "51",
+      "name": "chevron bottom",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "47",
+      "previous": "15",
+      "child": "50",
+      "parent": "9"
+    },
+    "52": {
+      "id": "52",
+      "name": "ellipses",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "opacity",
+              "value": "0.2"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "24px 0"
+            },
+            {
+              "name": "display",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "13",
+      "previous": "47",
+      "child": "53",
+      "parent": "9"
+    },
+    "53": {
+      "id": "53",
+      "name": "ellipses image",
+      "element": "img",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "src",
+          "value": "https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/svg/ellipses.svg"
+        },
+        {
+          "name": "width",
+          "value": "50"
+        },
+        {
+          "name": "alt",
+          "value": "separating content"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "52"
+    },
+    "54": {
+      "id": "54",
+      "name": "twitter icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-twitter"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "55",
+      "previous": null,
+      "child": null,
+      "parent": "26"
+    },
+    "55": {
+      "id": "55",
+      "name": "twitter handle",
+      "element": "span",
+      "text": "twitter",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "2px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "54",
+      "child": null,
+      "parent": "26"
+    },
+    "56": {
+      "id": "56",
+      "name": "email icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-envelope"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "57",
+      "previous": null,
+      "child": null,
+      "parent": "24"
+    },
+    "57": {
+      "id": "57",
+      "name": "email address",
+      "element": "span",
+      "text": "email",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "2px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "56",
+      "child": null,
+      "parent": "24"
     }
   }
 }
