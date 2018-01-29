@@ -52,7 +52,7 @@ var blissUiWebsite = (function() {
                   "className": "small",
                   "id": "smallHeader_8",
                   "key": app.getKey('id', '8')
-                }), 'User Interface Toolkit')))),
+                }), 'Get Your Inspiration Back')))),
           React.createElement('div', app.mergeAttributes('45', scope, {}, {
               "className": "row",
               "id": "contentRow_45",
@@ -68,9 +68,33 @@ var blissUiWebsite = (function() {
                 "key": app.getKey('id', '4')
               }), 'What is BlissUI?'),
               React.createElement('p', app.mergeAttributes('15', scope, {}, {
-                "id": "para_15",
-                "key": app.getKey('id', '15')
-              }), 'Simply put, it\'s a webapp creation toolkit. It presently builds React.js applications and pairs nicely with Firebase. But these are just the technical details. What’s interesting is that you don’t need to worry much about that. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on creating and experimenting. That’s the kind of environment I want to work in.'),
+                  "id": "para_15",
+                  "key": app.getKey('id', '15')
+                }),
+                React.createElement('span', app.mergeAttributes('62', scope, {}, {
+                  "id": "span_62",
+                  "key": app.getKey('id', '62')
+                }), 'Simply put, it’s a '),
+                React.createElement('span', app.mergeAttributes('64', scope, {}, {
+                  "id": "span_64",
+                  "key": app.getKey('id', '64')
+                }), 'web app toolkit'),
+                React.createElement('span', app.mergeAttributes('63', scope, {}, {
+                  "id": "span_63",
+                  "key": app.getKey('id', '63')
+                }), ' built for one aim, to free you. BlissUI removes technical barriers so that you can focus on pure creation. Why? Your inspiration is trapped behind a mountain of to-dos, business constraints, tech culture, and technical details. Our inspiration has been taken from us and… we don’t even know it. The same old is killing us. It wasn’t done on purpose but sadly, we’re so used to it we stopped caring. It’s time for a change. It’s time to see the sunrise, to feel its warmth.')),
+              React.createElement('p', app.mergeAttributes('58', scope, {}, {
+                "id": "para_58",
+                "key": app.getKey('id', '58')
+              }), 'Introducing BlissUI, get your inspiration back.'),
+              React.createElement('p', app.mergeAttributes('59', scope, {}, {
+                "id": "para_59",
+                "key": app.getKey('id', '59')
+              }), 'Presently, BlissUI creates React.js apps and pairs nicely with Firebase. But these are just the technical details. What’s interesting is that you don’t need to worry much about that. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on exploring concepts, ideas, and beauty.'),
+              React.createElement('p', app.mergeAttributes('60', scope, {}, {
+                "id": "para_60",
+                "key": app.getKey('id', '60')
+              }), 'The mission is simple yet enormous, we want to remove all barriers that prevent pure creation. To bring back that thing that makes us uniquely human, to take a step in the land of dreams. But hey, maybe we’re crazy.'),
               React.createElement('div', app.mergeAttributes('51', scope, {}, {
                   "id": "chevronBottom_51",
                   "key": app.getKey('id', '51')
@@ -145,19 +169,23 @@ var blissUiWebsite = (function() {
               React.createElement('p', app.mergeAttributes('16', scope, {}, {
                 "id": "para_16",
                 "key": app.getKey('id', '16')
-              }), 'Years ago, we had nice visual tools for creating apps. If you wanted a button in your program, you dragged it there. You could edit the properties of it in a visual designer. Those tools were before web apps surfaced. It feels that we’ve taken a step backwards really. Now everything is code, code, and more code. I wanted to bring back that visual experience and see just how nice it could really be. A harmony of code and visual tooling.'),
+              }), 'Years ago, we have visual tools for creating applications. Back then if you wanted a button in your program, you dragged it there. You could edit properties in a visual tool. Those tools were before web apps took hold. It feels that we’ve taken a step backwards really. Now everything is code, frameworks, burdensome processes, and more code. We want to bring back that visual experience and see just how freeing it could really be. Instead of a general purpose IDE, BlissUI gives you a full featured toolkit for building web apps.'),
               React.createElement('p', app.mergeAttributes('21', scope, {}, {
                 "id": "para_21",
                 "key": app.getKey('id', '21')
-              }), 'Instead of a general purpose IDE, BlissUI gives you a full featured toolkit for building web apps.'),
+              }), 'BlissUI is so inspired it built itself. I know that’s confusing but let me say it a different way, we used BlissUI to create BlissUI. How inspired is that?!'),
+              React.createElement('p', app.mergeAttributes('61', scope, {}, {
+                "id": "para_61",
+                "key": app.getKey('id', '61')
+              }), 'I can almost hear you now… people have tried that. These solutions are always less than ideal. There’s always a greatly limiting architecture. Do not be afraid! BlissUI is an open system. It’s built with open-source and supports the community. We try hard not to lock you in. It’s is not a black box. It’s not even a box. It’s a spaceship. Aren’t you curious? A harmony of code and visual tooling is waiting for you. Are you ready to go exploring?'),
               React.createElement('h2', app.mergeAttributes('10', scope, {}, {
-                "id": "theNiche_10",
+                "id": "quickPrototypes_10",
                 "key": app.getKey('id', '10')
               }), 'Quick Prototypes'),
               React.createElement('p', app.mergeAttributes('17', scope, {}, {
                 "id": "para_17",
                 "key": app.getKey('id', '17')
-              }), 'BlissUI helps you rapidly prototype and experiment with the ideas you have. You can realistically build and publish an app in a few short minutes. So it’s a great way to explore your ideas. Through my research I haven’t been able to find anything quite like it. It’s actually a lot of fun to use.'),
+              }), 'BlissUI helps you rapidly prototype and experiment with the ideas you have. You can realistically build and publish an app in a few short minutes. So it’s a great way to explore your ideas and it’s a fun experience.'),
               React.createElement('h2', app.mergeAttributes('11', scope, {}, {
                 "id": "currentStateOfBlissui_11",
                 "key": app.getKey('id', '11')
