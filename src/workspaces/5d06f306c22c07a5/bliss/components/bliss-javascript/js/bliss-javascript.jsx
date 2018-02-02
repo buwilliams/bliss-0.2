@@ -69,9 +69,11 @@ var BlissJavascript = {
       var js = "";
       js += "function(scope, attributes) {\n";
       js += "  return function(e) {\n";
-      js += "    app.setState(function() {\n";
-      js += "      // Your code here\n";
-      js += "    });\n";
+      js += "    app.dispatch({\n"
+      js += "      path: '/some_path',\n"
+      js += "      action: 'some_action',\n"
+      js += "      label: 'some_label'\n"
+      js += "    })\n"
       js += "  }\n";
       js += "};\n";
       this.addJsTemplate(js);
