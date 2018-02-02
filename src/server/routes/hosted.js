@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
   users.forEach(function(user) {
     var workspaces = fs.readdirSync(path.join(deployedDir, user));
     workspaces.forEach(function(workspace) {
-      links.push(`/${user}/${workspace}`);
+      links.push(`/hosted/${user}/${workspace}`);
     });
   });
 
