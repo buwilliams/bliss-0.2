@@ -29,7 +29,7 @@ var BlissActions = {
       var schema = this.props.schema;
       var newValue = {
         "action": "new_action",
-        "body": "function (data, args) {\n  var newData = {}\n  return newData;\n}"
+        "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  // your edits here\n  return newData;\n}"
       };
       schema.actions.push(newValue);
       this.props.onChange(schema);
