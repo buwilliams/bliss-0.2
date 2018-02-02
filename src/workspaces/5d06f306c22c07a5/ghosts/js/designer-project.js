@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 8,
+  "nextId": 9,
   "rootId": "1",
   "externalCss": [
     "components/ghost/css/ghost.css"
@@ -76,7 +76,7 @@ var blissProject = {
           "properties": [
             {
               "name": "background-color",
-              "value": "gray"
+              "value": "white"
             },
             {
               "name": "display",
@@ -84,11 +84,15 @@ var blissProject = {
             },
             {
               "name": "width",
-              "value": "100%"
+              "value": "100vw"
             },
             {
               "name": "height",
-              "value": "100%"
+              "value": "100vh"
+            },
+            {
+              "name": "overflow",
+              "value": "hidden"
             }
           ]
         }
@@ -255,7 +259,7 @@ var blissProject = {
           "value": "handleChange"
         }
       ],
-      "next": null,
+      "next": "8",
       "previous": "7",
       "child": null,
       "parent": "5"
@@ -288,6 +292,23 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": "6",
       "previous": null,
+      "child": null,
+      "parent": "5"
+    },
+    "8": {
+      "id": "8",
+      "name": "info",
+      "element": "p",
+      "text": "Example of BlissUI components. Each individual component moves at a random time with a random color. Showing how each component manages state effectively.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "6",
       "child": null,
       "parent": "5"
     }

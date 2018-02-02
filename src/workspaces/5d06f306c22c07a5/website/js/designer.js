@@ -52,7 +52,7 @@ var blissUiWebsite = (function() {
                   "className": "small",
                   "id": "smallHeader_8",
                   "key": app.getKey('id', '8')
-                }), 'Get Your Inspiration Back')))),
+                }), 'Inspired Web App Toolkit')))),
           React.createElement('div', app.mergeAttributes('45', scope, {}, {
               "className": "row",
               "id": "contentRow_45",
@@ -82,19 +82,19 @@ var blissUiWebsite = (function() {
                 React.createElement('span', app.mergeAttributes('63', scope, {}, {
                   "id": "span_63",
                   "key": app.getKey('id', '63')
-                }), ' built for one aim, to free you. BlissUI removes technical barriers so that you can focus on pure creation. Why? Your inspiration is trapped behind a mountain of to-dos, business constraints, tech culture, and technical details. Our inspiration has been taken from us and… we don’t even know it. The same old is killing us. It wasn’t done on purpose but sadly, we’re so used to it we stopped caring. It’s time for a change. It’s time to see the sunrise, to feel its warmth.')),
-              React.createElement('p', app.mergeAttributes('58', scope, {}, {
-                "id": "para_58",
-                "key": app.getKey('id', '58')
-              }), 'Introducing BlissUI, get your inspiration back.'),
-              React.createElement('p', app.mergeAttributes('59', scope, {}, {
-                "id": "para_59",
-                "key": app.getKey('id', '59')
-              }), 'Presently, BlissUI creates React.js apps and pairs nicely with Firebase. But these are just the technical details. What’s interesting is that you don’t need to worry much about that. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on exploring concepts, ideas, and beauty.'),
+                }), ' built to remove technical barriers so that you can focus on designing and creating. It\'s is in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it\'s live.')),
+              React.createElement('p', app.mergeAttributes('65', scope, {}, {
+                "id": "para_65",
+                "key": app.getKey('id', '65')
+              })),
+              React.createElement('h2', app.mergeAttributes('69', scope, {}, {
+                "id": "mission_69",
+                "key": app.getKey('id', '69')
+              }), 'The mission'),
               React.createElement('p', app.mergeAttributes('60', scope, {}, {
                 "id": "para_60",
                 "key": app.getKey('id', '60')
-              }), 'The mission is simple yet enormous, we want to remove all barriers that prevent pure creation. To bring back that thing that makes us uniquely human, to take a step in the land of dreams. But hey, maybe we’re crazy.'),
+              }), 'The mission is simple yet enormous, we want to remove all barriers that get in the way of inspiration. To bring back that thing that makes us uniquely human. But hey, maybe we’re crazy.'),
               React.createElement('div', app.mergeAttributes('51', scope, {}, {
                   "id": "chevronBottom_51",
                   "key": app.getKey('id', '51')
@@ -134,6 +134,20 @@ var blissUiWebsite = (function() {
                   "id": "ol_27",
                   "key": app.getKey('id', '27')
                 }),
+                React.createElement('li', app.mergeAttributes('67', scope, {}, {
+                    "id": "li_67",
+                    "key": app.getKey('id', '67')
+                  }),
+                  React.createElement('span', app.mergeAttributes('70', scope, {}, {
+                    "id": "browseSpan_70",
+                    "key": app.getKey('id', '70')
+                  }), 'Browse '),
+                  React.createElement('a', app.mergeAttributes('66', scope, {}, {
+                    "href": "/hosted/",
+                    "target": "_blank",
+                    "id": "publishedAppsLink_66",
+                    "key": app.getKey('id', '66')
+                  }), 'published apps')),
                 React.createElement('li', app.mergeAttributes('28', scope, {}, {
                     "id": "li_28",
                     "key": app.getKey('id', '28')
@@ -147,21 +161,29 @@ var blissUiWebsite = (function() {
                 React.createElement('li', app.mergeAttributes('30', scope, {}, {
                     "id": "li_30",
                     "key": app.getKey('id', '30')
-                  }), 'Create your ',
+                  }),
+                  React.createElement('span', app.mergeAttributes('71', scope, {}, {
+                    "id": "span_71",
+                    "key": app.getKey('id', '71')
+                  }), 'Create your '),
                   React.createElement('a', app.mergeAttributes('31', scope, {}, {
                     "href": "https://blissui.com/bliss/",
                     "target": "_blank",
                     "id": "link_31",
                     "key": app.getKey('id', '31')
-                  }), 'free account')),
+                  }), 'free account'),
+                  React.createElement('span', app.mergeAttributes('72', scope, {}, {
+                    "id": "spanCopy_72",
+                    "key": app.getKey('id', '72')
+                  }), ' to use it right away')),
                 React.createElement('li', app.mergeAttributes('32', scope, {}, {
                   "id": "li_32",
                   "key": app.getKey('id', '32')
-                }), 'Build something fun'),
+                }), 'Experiment!'),
                 React.createElement('li', app.mergeAttributes('33', scope, {}, {
                   "id": "li_33",
                   "key": app.getKey('id', '33')
-                }), 'Publish to share with friends')),
+                }), 'Share what you make, we\'d love to see it')),
               React.createElement('h2', app.mergeAttributes('6', scope, {}, {
                 "id": "theInspirationForBlissui_6",
                 "key": app.getKey('id', '6')
@@ -182,10 +204,14 @@ var blissUiWebsite = (function() {
                 "id": "quickPrototypes_10",
                 "key": app.getKey('id', '10')
               }), 'Quick Prototypes'),
+              React.createElement('p', app.mergeAttributes('59', scope, {}, {
+                "id": "para_59",
+                "key": app.getKey('id', '59')
+              }), 'Presently, BlissUI creates React.js apps and pairs nicely with Firebase. You don’t need to worry about those details. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on exploring concepts, ideas, and beauty.'),
               React.createElement('p', app.mergeAttributes('17', scope, {}, {
                 "id": "para_17",
                 "key": app.getKey('id', '17')
-              }), 'BlissUI helps you rapidly prototype and experiment with the ideas you have. You can realistically build and publish an app in a few short minutes. So it’s a great way to explore your ideas and it’s a fun experience.'),
+              }), 'BlissUI helps you rapidly prototype and experiment with the ideas you have. You can realistically build and publish an app in a few short minutes. So it’s a great way to explore your ideas and it’s fun to experience.'),
               React.createElement('h2', app.mergeAttributes('11', scope, {}, {
                 "id": "currentStateOfBlissui_11",
                 "key": app.getKey('id', '11')

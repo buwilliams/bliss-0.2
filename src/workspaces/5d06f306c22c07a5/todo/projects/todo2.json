@@ -1,4 +1,4 @@
-var blissProject = {
+{
   "name": "Todo2",
   "compiler": "react",
   "version": "v0.2",
@@ -137,13 +137,8 @@ var blissProject = {
         {
           "action": "setCurrent",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.current = args.label\n  return newData;\n}"
-        },
-        {
-          "action": "new_action",
-          "body": "function (data, args) {\n  var newData = {}\n  return newData;\n}"
         }
       ]
     }
   ]
 }
-if(typeof module !== "undefined") module.exports = blissProject;

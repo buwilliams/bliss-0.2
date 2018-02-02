@@ -104,7 +104,11 @@ var manyGhosts = (function() {
               "placeholder": "number of ghosts",
               "id": "numberOfGhosts_6",
               "key": app.getKey('id', '6')
-            })))));
+            })),
+            React.createElement('p', app.mergeAttributes('8', scope, {}, {
+              "id": "info_8",
+              "key": app.getKey('id', '8')
+            }), 'Example of BlissUI components. Each individual component moves at a random time with a random color. Showing how each component manages state effectively.'))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

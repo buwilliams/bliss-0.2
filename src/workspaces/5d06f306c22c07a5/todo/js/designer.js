@@ -7,343 +7,83 @@ var todo = (function() {
       state: {}
     };
     app.js['init'] = function() {
-      // setup app state
-      var state = app.js.createState('todo');
-      state.setData('currentColor', '#5f38a9');
-      state.setData('currentTodo', '');
-
-      app.todo = state;
-
-      //app.state.currentColor = '#5f38a9';
-      //app.state.currentTodo = '';
-      //app.state.completedTodos = {};
-      //app.state.todoColors = [];
-      //app.state.todos = [];
-
-      // render application
       app.render();
     }
-    app.js['createState'] = function(rawName) {
-      var name = rawName.replace(/[^\w]/gi, '');
-
-      var hasValue = function(item) {
-        return (typeof item !== "undefined" && item !== null);
-      };
-
-      if (!hasValue(app.state._managed)) app.state._managed = {};
-      if (!hasValue(app.state._managed[name])) app.state._managed[name] = {};
-
-      var managed = app.state._managed[name];
-
-      var getNewId = function() {
-        return managed.nextId++;
-      };
-
-      var getAll = function() {
-        return managed.data;
-      };
-
-      var find = function(id) {
-        var found = null;
-        for (var i = 0; i < managed.data.length; i++) {
-          var item = managed.data[i];
-          if (item.id === id) {
-            found = item;
-            break;
-          }
-        }
-        return found;
-      };
-
-      var findIndex = function(id) {
-        var found = -1;
-        for (var i = 0; i < managed.data.length; i++) {
-          var item = managed.data[i];
-          if (item.id === id) {
-            found = i;
-            break;
-          }
-        }
-        return found;
-      };
-
-      var create = function(data) {
-        if (!hasValue(data)) return;
-        if (!hasValue(data.id)) data.id = getNewId();
-        managed.data.push(data);
-      };
-
-      var update = function(id, data) {
-        var item = find(id);
-        for (key in data) {
-          if (data.hasOwnProperty(key)) {
-            item[key] = data[key];
-          }
-        }
-      };
-
-      var remove = function(id) {
-        var index = findIndex(id);
-        if (index !== -1) managed.data.splice(index, 1);
-      };
-
-      var removeAll = function() {
-        managed.data.splice(0, managed.data.length);
-      };
-
-      var replaceAll = function(dataArray) {
-        removeAll();
-        for (var i = 0; i < dataArray.length; i++) {
-          create(dataArray[i]);
-        }
-      };
-
-      var setData = function(key, value) {
-        managed.internalData[key] = value;
-      };
-
-      var getData = function(key) {
-        return managed.internalData[key];
-      };
-
-      managed.selected = null;
-      managed.nextId = 0;
-      managed.data = [];
-      managed.internalData = {};
-      managed.getNewId = getNewId;
-      managed.hasValue = hasValue;
-      managed.getAll = getAll;
-      managed.find = find;
-      managed.findIndex = findIndex;
-      managed.create = create;
-      managed.update = update;
-      managed.remove = remove;
-      managed.removeAll = removeAll;
-      managed.replaceAll = replaceAll;
-      managed.setData = setData;
-      managed.getData = getData;
-
-      return managed;
-    }
-    app.js['getState'] = function(rawName) {
-      var name = rawName.replace(/[^\w]/gi, '');
-      return app.state._managed[name];
-    }
-    app.methods["9"] = {};
-    app.methods["9"]['handleClearCompleted'] = function(scope, attributes) {
+    app.methods["2"] = {};
+    app.methods["2"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        app.setState(function() {
-          var ts = app.todo.getAll();
-          var dels = [];
-          for (var i = 0; i < ts.length; i++) {
-            var t = ts[i];
-            if (t.done === true) dels.push(t.id);
-          }
-
-          for (var i = 0; i < dels.length; i++) {
-            app.todo.remove(dels[i]);
-          }
-        });
+        app.dispatch({
+          path: '/some_path',
+          action: 'some_action',
+          label: 'some_label'
+        })
       }
     };
-    app.methods["4"] = {};
-    app.methods["4"]['handleChange'] = function(scope, attributes) {
-      return function(e) {
-        app.setState(function() {
-          app.todo.setData('currentTodo', e.target.value);
-        });
+    app.getPath = function(objRef, path) {
+      var ref = objRef;
+      var parts = path.split('/')
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part === '') continue;
+        ref = ref[part] || (ref[part] = {})
       }
-    };
-
-    app.methods["4"]['getValue'] = function(scope, attributes) {
-      return app.todo.getData('currentTodo');
+      return ref;
     }
-    app.methods["4"]['changeHue'] = function(rgb, degree) {
-      function changeHue(rgb, degree) {
-        var hsl = rgbToHSL(rgb);
-        hsl.h += degree;
-        if (hsl.h > 360) {
-          hsl.h -= 360;
-        } else if (hsl.h < 0) {
-          hsl.h += 360;
-        }
-        return hslToRGB(hsl);
-      }
-
-      // exepcts a string and returns an object
-      function rgbToHSL(rgb) {
-        // strip the leading # if it's there
-        rgb = rgb.replace(/^\s*#|\s*$/g, '');
-
-        // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
-        if (rgb.length == 3) {
-          rgb = rgb.replace(/(.)/g, '$1$1');
-        }
-
-        var r = parseInt(rgb.substr(0, 2), 16) / 255,
-          g = parseInt(rgb.substr(2, 2), 16) / 255,
-          b = parseInt(rgb.substr(4, 2), 16) / 255,
-          cMax = Math.max(r, g, b),
-          cMin = Math.min(r, g, b),
-          delta = cMax - cMin,
-          l = (cMax + cMin) / 2,
-          h = 0,
-          s = 0;
-
-        if (delta == 0) {
-          h = 0;
-        } else if (cMax == r) {
-          h = 60 * (((g - b) / delta) % 6);
-        } else if (cMax == g) {
-          h = 60 * (((b - r) / delta) + 2);
+    app.assignPath = function(objRef, path, data) {
+      var ref = objRef;
+      var parts = path.split('/')
+      data || (data = {})
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part === '') continue;
+        if (i === parts.length - 1) {
+          ref = (ref[part] = data)
         } else {
-          h = 60 * (((r - g) / delta) + 4);
-        }
-
-        if (delta == 0) {
-          s = 0;
-        } else {
-          s = (delta / (1 - Math.abs(2 * l - 1)))
-        }
-
-        return {
-          h: h,
-          s: s,
-          l: l
+          ref = ref[part] || (ref[part] = {})
         }
       }
-
-      // expects an object and returns a string
-      function hslToRGB(hsl) {
-        var h = hsl.h,
-          s = hsl.s,
-          l = hsl.l,
-          c = (1 - Math.abs(2 * l - 1)) * s,
-          x = c * (1 - Math.abs((h / 60) % 2 - 1)),
-          m = l - c / 2,
-          r, g, b;
-
-        if (h < 60) {
-          r = c;
-          g = x;
-          b = 0;
-        } else if (h < 120) {
-          r = x;
-          g = c;
-          b = 0;
-        } else if (h < 180) {
-          r = 0;
-          g = c;
-          b = x;
-        } else if (h < 240) {
-          r = 0;
-          g = x;
-          b = c;
-        } else if (h < 300) {
-          r = x;
-          g = 0;
-          b = c;
-        } else {
-          r = c;
-          g = 0;
-          b = x;
-        }
-
-        r = normalize_rgb_value(r, m);
-        g = normalize_rgb_value(g, m);
-        b = normalize_rgb_value(b, m);
-
-        return rgbToHex(r, g, b);
-      }
-
-      function normalize_rgb_value(color, m) {
-        color = Math.floor((color + m) * 255);
-        if (color < 0) {
-          color = 0;
-        }
-        return color;
-      }
-
-      function rgbToHex(r, g, b) {
-        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      }
-
-      return changeHue(rgb, degree);
+      return ref;
     }
-    app.methods["4"]['handleKeyDown'] = function(scope, attributes) {
-      var comp = this;
-      return function(e) {
-        var key = e.which,
-          ENTER = 13,
-          ESCAPE = 27;
-        if (key !== ENTER && key !== ESCAPE) return;
-
-        app.setState(function() {
-          if (key === ENTER) {
-            app.todo.setData(
-              'currentColor',
-              comp.changeHue(app.todo.getData('currentColor'), 15)
-            );
-            app.todo.create({
-              "label": app.todo.getData('currentTodo'),
-              "done": false,
-              "color": app.todo.getData('currentColor')
-            });
-          }
-          app.todo.setData('currentTodo', '');
-        });
-      }
-    };
-    app.methods["3"] = {};
-    app.methods["3"]['repeatTodos'] = function(scope, attributes) {
-      return app.todo.getAll();
-    };
-
-    app.methods["3"]['showTodo'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-      return t.label;
-    };
-
-    app.methods["3"]['getStyles'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-      var styles = {
-        'backgroundColor': t.color
-      };
-
-      if (t.done === true) {
-        styles.backgroundColor = '#444';
-        styles.textDecoration = 'line-through';
-      }
-
-      return styles;
+    app.dispatch = function(options) {
+      var ref = app.state;
+      app.setState(function() {
+        var data = app.getPath(ref, options.path);
+        var fn = app.schema[options.path][options.action];
+        var newData = fn(data, options);
+        app.assignPath(ref, options.path, newData);
+      })
     }
-    app.methods["3"]['handleClick'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-
-      return function(e) {
-        app.setState(function() {
-          app.todo.update(t.id, {
-            'done': !t.done
-          });
-        });
+    app.schema = {};
+    app.schema['/todos'] = {};
+    app.schema['/todos']['init'] = function(data, args) {
+      var newData = {
+        current: '',
+        list: []
       }
-    };
-
-    app.methods["3"]['getKey'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-      return t.id;
+      return newData;
     }
-    app.methods["10"] = {};
-    app.methods["10"]['handleDelete'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-
-      return function(e) {
-        e.stopPropagation();
-        app.setState(function() {
-          app.todo.remove(t.id);
-        });
-      }
-    };
+    app.schema['/todos']['addTodo'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.list.push({
+        label: args.label,
+        done: false
+      })
+      return newData;
+    }
+    app.schema['/todos']['setCurrent'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.current = args.label
+      return newData;
+    }
+    app.schema['/todos']['new_action'] = function(data, args) {
+      var newData = {}
+      return newData;
+    }
+    if (app.schema['/todos']['init']) {
+      app.assignPath(app.state, '/todos', app.schema['/todos']['init']());
+    } else {
+      app.assignPath(app.state, '/todos');
+    }
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -367,57 +107,22 @@ var todo = (function() {
             "id": "todo_1",
             "key": app.getKey('id', '1')
           }),
-          React.createElement('div', app.mergeAttributes('7', scope, {}, {
-              "id": "todoListContainer_7",
-              "key": app.getKey('id', '7')
-            }),
-            React.createElement('h1', app.mergeAttributes('6', scope, {}, {
-              "className": "float-left",
-              "id": "label_6",
-              "key": app.getKey('id', '6')
-            }), 'Todos'),
-            React.createElement('a', app.mergeAttributes('9', scope, {
-              "onClick": "handleClearCompleted"
-            }, {
-              "href": "#",
-              "id": "clearCompleted_9",
-              "key": app.getKey('id', '9')
-            }), 'Clear Completed'),
-            React.createElement('input', app.mergeAttributes('4', scope, {
-              "value": "getValue",
-              "onChange": "handleChange",
-              "onKeyDown": "handleKeyDown"
-            }, {
-              "id": "input_4",
-              "key": app.getKey('id', '4')
-            })),
-            React.createElement('div', app.mergeAttributes('8', scope, {}, {
-                "id": "listContainer_8",
-                "key": app.getKey('id', '8')
-              }),
-              (function(scope) {
-                var out = [];
-                var list = scope['repeatTodos'] = app.methods['3']['repeatTodos'](scope);
-                for (var i = 0; i < list.length; i++) {
-                  scope['repeatTodos_index'] = i;
-                  out.push(React.createElement('div', app.mergeAttributes('3', scope, {
-                      "style": "getStyles",
-                      "onClick": "handleClick",
-                      "key": "getKey"
-                    }, {
-                      "id": "listItem_3",
-                      "key": app.getKey('id', '3', i)
-                    }), app.methods['3']['showTodo'](scope),
-                    React.createElement('a', app.mergeAttributes('10', scope, {
-                      "onClick": "handleDelete"
-                    }, {
-                      "href": "#",
-                      "id": "deletebutton_10",
-                      "key": app.getKey('id', '10')
-                    }), 'Delete')));
-                }
-                return out;
-              })(scope)))));
+          React.createElement('h1', app.mergeAttributes('5', scope, {}, {
+            "id": "header_5",
+            "key": app.getKey('id', '5')
+          }), 'To-do List'),
+          React.createElement('input', app.mergeAttributes('2', scope, {}, {
+            "id": "todoInput_2",
+            "key": app.getKey('id', '2')
+          })),
+          React.createElement('button', app.mergeAttributes('4', scope, {}, {
+            "id": "addTodoButton_4",
+            "key": app.getKey('id', '4')
+          }), 'add todo'),
+          React.createElement('div', app.mergeAttributes('3', scope, {}, {
+            "id": "listOfTodos_3",
+            "key": app.getKey('id', '3')
+          }), 'I\'m a todo')));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
