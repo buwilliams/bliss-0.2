@@ -1209,6 +1209,29 @@ var blissUi = (function() {
 
       return layout.active
     }
+    app.methods["278"] = {};
+    app.methods["278"]['getStyles'] = function(scope, attributes) {
+      var styles = {}
+      var view = app.state.views.selected
+
+      if (view === 'js') {
+        styles.backgroundColor = app.js.getCssVar('$menuHighlight');
+        styles.borderColor = app.js.getCssVar('$menuHighlight');
+      }
+
+      return styles;
+    }
+    app.methods["278"]['handleClick'] = function(scope, attributes) {
+      var viewName = (app.state.views.selected === 'js') ? 'designer' : 'js'
+      return function(e) {
+        console.log('new view', viewName)
+        app.dispatch({
+          path: '/views',
+          action: 'setView',
+          name: viewName
+        })
+      }
+    };
     app.methods["11"] = {};
     app.methods["11"]['setComponentProp'] = function(scope, props) {
       return app.buildProject.components[
@@ -2517,6 +2540,14 @@ var blissUi = (function() {
                             "id": "propertiesPadding_151",
                             "key": app.getKey('id', '151')
                           }),
+                          React.createElement('button', app.mergeAttributes('278', scope, {
+                            "style": "getStyles",
+                            "onClick": "handleClick"
+                          }, {
+                            "className": "btn btn-default btn-block btn-sm",
+                            "id": "toggleJavascript_278",
+                            "key": app.getKey('id', '278')
+                          }), 'element javascript'),
                           React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
                             "component": "setComponentProp",
                             "onChange": "setOnChangeProp"

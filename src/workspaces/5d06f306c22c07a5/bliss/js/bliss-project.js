@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 278,
+  "nextId": 279,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -362,7 +362,7 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": null,
+      "previous": "278",
       "child": null,
       "parent": "151"
     },
@@ -2343,7 +2343,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": null,
       "previous": "182",
-      "child": "11",
+      "child": "278",
       "parent": "77"
     },
     "152": {
@@ -5819,6 +5819,64 @@ var blissProject = {
       "previous": "276",
       "child": null,
       "parent": "275"
+    },
+    "278": {
+      "id": "278",
+      "name": "toggle javascript",
+      "element": "button",
+      "text": "element javascript",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-default btn-block btn-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$menuFg"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuBg"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyles",
+          "body": "function(scope, attributes) {\n  var styles = {}\n  var view = app.state.views.selected\n\t\n  if(view === 'js') {\n  \tstyles.backgroundColor = app.js.getCssVar('$menuHighlight');\n    styles.borderColor = app.js.getCssVar('$menuHighlight');\n  }\n  \n  return styles;\n}"
+        },
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var viewName = (app.state.views.selected === 'js') ? 'designer' : 'js'\n  return function(e) {\n    console.log('new view', viewName)\n    app.dispatch({\n      path: '/views',\n      action: 'setView',\n      name: viewName\n    })\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyles"
+        },
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "11",
+      "previous": null,
+      "child": null,
+      "parent": "151"
     }
   },
   "schemas": [
