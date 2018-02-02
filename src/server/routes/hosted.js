@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
   users.forEach(function(user) {
     var workspaces = fs.readdirSync(path.join(deployedDir, user));
     workspaces.forEach(function(workspace) {
-      links.push(`/hosted/${user}/${workspace}`);
+      links.push(`/hosted/${user}/${workspace}/`);
     });
   });
 
@@ -23,9 +23,10 @@ router.get('/', function(req, res) {
 router.get('/:user', function(req, res) {
   var deployedDir = path.join(env.workspace, '_deployed');
   var links = [];
-  var workspaces = fs.readdirSync(path.join(deployedDir, req.params.user));
+  var user = req.params.user
+  var workspaces = fs.readdirSync(path.join(deployedDir, user));
   workspaces.forEach(function(workspace) {
-    links.push(`${workspace}`);
+    links.push(`/hosted/${user}/${workspace}/`);
   });
 
   res.render('project-list', { title: 'Project list', links: links})
