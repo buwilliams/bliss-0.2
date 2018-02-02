@@ -500,17 +500,18 @@ var BlissTree = {
       clone.child = null;
 
       proj.components[newId] = clone;
+      return clone
     }
 
     var map = {}
     var component = this.get(proj, cloneId);
-    var root_clone = _clone(component, null, null, null, null)
-    map[component.id] = root_clone.id
+    var rootClone = _clone(component)
+    map[component.id] = rootClone.id
 
     var walkDown = function(compRef, fn) {
       fn(compRef)
-      if(component.next !== null) walkDown(this.get(proj, compRef.next))
-      if(component.child !== null) walkDown(this.get(proj, compRef.child))
+      if(compRef.next !== null) walkDown(that.get(proj, compRef.next), fn)
+      if(compRef.child !== null) walkDown(that.get(proj, compRef.child), fn)
     }
 
     if(component.child !== null) {
@@ -521,16 +522,18 @@ var BlissTree = {
       })
 
       // setup links for all children
-      walkDown(this.get(component.child), function(component) {
-        var clonedComponent = that.get(proj, map[component.id])
-        cloneComponent.next = map[component.next]
-        cloneComponent.prev = map[component.prev]
-        cloneComponent.parent = map[component.parent]
-        cloneComponent.child = map[component.child]
+      walkDown(this.get(proj, component.child), function(component) {
+        var cloneComponent = that.get(proj, map[component.id])
+        if(component.next !== null) cloneComponent.next = map[component.next]
+        if(component.prev !== null) cloneComponent.prev = map[component.prev]
+        if(component.parent !== null) cloneComponent.parent = map[component.parent]
+        if(component.child !== null) cloneComponent.child = map[component.child]
       })
+
+      rootClone.child = map[component.child]
     }
 
-    return this.moveComponent(proj, newId, cloneId, false);
+    return this.moveComponent(proj, rootClone.id, cloneId, false);
   },
 
   deleteComponent: function(proj, id) {
