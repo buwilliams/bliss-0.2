@@ -1,15 +1,15 @@
-var blissProject = {
-  "name": "Social Story v2",
+{
+  "name": "Social Story v1",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 64,
+  "nextId": 63,
   "rootId": "1",
   "externalCss": [
     "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css",
-    "node_modules/font-awesome/css/font-awesome.css",
-    "https://fonts.googleapis.com/css?family=Playfair+Display|Pacifico|Rammetto+One|Supermercado+One"
+    "https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i",
+    "node_modules/font-awesome/css/font-awesome.css"
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
@@ -52,7 +52,7 @@ var blissProject = {
     },
     {
       "name": "story_start",
-      "body": "function(storyId) {\n  var createStory = function(title, first_line) {\n    var db = app.state.database;\n\n    // create new story\n    var newStory = db.ref().child('stories').push();\n    newStory.set({\"title\": title});\n    newStory.child('authors').child(app.state.user.uid).set(true);\n\n    // create author\n    var newAuthor = db.ref().child('authors')\n                            .child(app.state.user.uid)\n                            .child(newStory.key)\n                            .set(true);\n\n    // create first line\n    var newLine = db.ref().child('lines')\n    .child(newStory.key)\n    .push()\n    .set({\n      \"text\": first_line,\n      \"user\": app.state.user.uid\n    });\n\n    app.js.firebase_subscribe('lines/'+newStory.key);\n\n    app.setState(function() {\n      app.state.currentPage = 'write';\n      app.state.currentStory = newStory.key;\n    });\n  };\n  \n  var url = 'https://talaikis.com/api/quotes/random/'\n  \n  $.get(url, function(data) {\n    createStory(data.quote, data.quote);\n  });\n}"
+      "body": "function(storyId) {\n  var createStory = function(title, first_line) {\n    var db = app.state.database;\n\n    // create new story\n    var newStory = db.ref().child('stories').push();\n    newStory.set({\"title\": title});\n    newStory.child('authors').child(app.state.user.uid).set(true);\n\n    // create author\n    var newAuthor = db.ref().child('authors')\n                            .child(app.state.user.uid)\n                            .child(newStory.key)\n                            .set(true);\n\n    // create first line\n    var newLine = db.ref().child('lines')\n    .child(newStory.key)\n    .push()\n    .set({\n      \"text\": first_line,\n      \"user\": app.state.user.uid\n    });\n\n    app.js.firebase_subscribe('lines/'+newStory.key);\n\n    app.setState(function() {\n      app.state.currentPage = 'write';\n      app.state.currentStory = newStory.key;\n    });\n  };\n  \n  $.get('/story/sentence', {\"format\": \"A story about {{ an_adjective }} {{ noun }} and {{ an_adjective }} {{ noun }}.\"}, function(data) {\n    createStory(data.sentence, \"Once upon a time there was a ...\");\n  });\n}"
     },
     {
       "name": "story_home",
@@ -103,18 +103,6 @@ var blissProject = {
     {
       "name": "darkFontColor",
       "value": "#333"
-    },
-    {
-      "name": "font1",
-      "value": "'Supermercado One', cursive"
-    },
-    {
-      "name": "font2",
-      "value": "'Pacifico', cursive"
-    },
-    {
-      "name": "font3",
-      "value": "'Playfair Display', serif"
     }
   ],
   "css": [
@@ -131,7 +119,7 @@ var blissProject = {
         },
         {
           "name": "font-family",
-          "value": "$font3"
+          "value": "'Roboto', sans-serif"
         },
         {
           "name": "font-size",
@@ -223,7 +211,7 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "Social Story v2",
+      "name": "Social Story v1",
       "element": "div",
       "text": null,
       "attributes": [],
@@ -327,7 +315,7 @@ var blissProject = {
       "id": "6",
       "name": "Sign-out",
       "element": "a",
-      "text": "Sign-out",
+      "text": "",
       "textFn": null,
       "ifFn": "shouldShow",
       "repeatFn": null,
@@ -342,8 +330,28 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
-              "name": "margin-left",
-              "value": "10px"
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "right",
+              "value": "15px"
+            },
+            {
+              "name": "top",
+              "value": "40px"
+            },
+            {
+              "name": "z-index",
+              "value": "100"
+            },
+            {
+              "name": "color",
+              "value": "$lightFontColor"
+            },
+            {
+              "name": "font-size",
+              "value": "12pt"
             }
           ]
         }
@@ -365,9 +373,9 @@ var blissProject = {
         }
       ],
       "next": null,
-      "previous": "41",
-      "child": null,
-      "parent": "39"
+      "previous": "10",
+      "child": "19",
+      "parent": "9"
     },
     "7": {
       "id": "7",
@@ -447,24 +455,12 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
+              "name": "background-color",
+              "value": "$dark"
+            },
+            {
               "name": "font-size",
               "value": "30pt"
-            },
-            {
-              "name": "background-image",
-              "value": "url(https://sleepycoffeeandfables.files.wordpress.com/2014/11/img_6794.jpg)"
-            },
-            {
-              "name": "height",
-              "value": "300px"
-            },
-            {
-              "name": "background-size",
-              "value": "cover"
-            },
-            {
-              "name": "border-bottom",
-              "value": "solid 3px #333"
             }
           ]
         }
@@ -498,22 +494,83 @@ var blissProject = {
               "value": "15px"
             },
             {
-              "name": "color",
-              "value": "$lightFontColor"
+              "name": "font-weight",
+              "value": "bold"
             },
             {
-              "name": "background-color",
-              "value": "rgba(15, 13, 10, 0.5)"
+              "name": "color",
+              "value": "$lightFontColor"
             }
           ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "6",
       "previous": null,
-      "child": "22",
+      "child": "21",
       "parent": "9"
+    },
+    "19": {
+      "id": "19",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-sign-out"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "20",
+      "previous": null,
+      "child": null,
+      "parent": "6"
+    },
+    "20": {
+      "id": "20",
+      "name": "label",
+      "element": "span",
+      "text": " Sign-out",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "19",
+      "child": null,
+      "parent": "6"
+    },
+    "21": {
+      "id": "21",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-book"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "22",
+      "previous": null,
+      "child": null,
+      "parent": "10"
     },
     "22": {
       "id": "22",
@@ -524,21 +581,11 @@ var blissProject = {
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "font-family",
-              "value": "'Supermercado One', cursive"
-            }
-          ]
-        }
-      ],
+      "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": "28",
-      "previous": null,
+      "previous": "21",
       "child": null,
       "parent": "10"
     },
@@ -560,8 +607,8 @@ var blissProject = {
               "value": "center"
             },
             {
-              "name": "margin",
-              "value": "10px 0"
+              "name": "margin-top",
+              "value": "5px"
             },
             {
               "name": "font-size",
@@ -590,7 +637,21 @@ var blissProject = {
       "ifFn": "shouldShow",
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "margin-top",
+              "value": "20px"
+            }
+          ]
+        }
+      ],
       "js": [
         {
           "name": "shouldShow",
@@ -607,7 +668,7 @@ var blissProject = {
       "id": "28",
       "name": "Brand subtitle",
       "element": "div",
-      "text": "collaborative story-telling",
+      "text": "Imaginations running amuk",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -621,16 +682,16 @@ var blissProject = {
               "value": "$lightFontColor"
             },
             {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
               "name": "font-size",
               "value": "14pt"
             },
             {
               "name": "text-align",
               "value": "center"
-            },
-            {
-              "name": "font-family",
-              "value": "'Pacifico', cursive"
             }
           ]
         }
@@ -656,8 +717,12 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
-              "name": "margin-top",
-              "value": "30px"
+              "name": "width",
+              "value": "65%"
+            },
+            {
+              "name": "margin-right",
+              "value": "12px"
             }
           ]
         }
@@ -678,12 +743,22 @@ var blissProject = {
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "35%"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": "31",
-      "child": "54",
+      "child": "34",
       "parent": "26"
     },
     "33": {
@@ -714,14 +789,6 @@ var blissProject = {
             {
               "name": "font-weight",
               "value": "bold"
-            },
-            {
-              "name": "font-family",
-              "value": "$font1"
-            },
-            {
-              "name": "font-size",
-              "value": "1.5em"
             }
           ]
         }
@@ -763,16 +830,8 @@ var blissProject = {
               "value": "10px"
             },
             {
-              "name": "margin-top",
-              "value": "30px"
-            },
-            {
-              "name": "font-family",
-              "value": "$font1"
-            },
-            {
-              "name": "font-size",
-              "value": "1.5em"
+              "name": "font-weight",
+              "value": "bold"
             }
           ]
         }
@@ -780,7 +839,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "53",
-      "previous": "55",
+      "previous": null,
       "child": null,
       "parent": "32"
     },
@@ -879,47 +938,6 @@ var blissProject = {
             {
               "name": "text-align",
               "value": "center"
-            },
-            {
-              "name": "position",
-              "value": "absolute"
-            },
-            {
-              "name": "top",
-              "value": "-91px"
-            },
-            {
-              "name": "width",
-              "value": "100%"
-            }
-          ]
-        },
-        {
-          "selector": "$id a",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "#af1f23"
-            },
-            {
-              "name": "text-decoration",
-              "value": "none"
-            },
-            {
-              "name": "padding",
-              "value": "10px 20px"
-            },
-            {
-              "name": "border-radius",
-              "value": "5px"
-            },
-            {
-              "name": "color",
-              "value": "#ffffff"
-            },
-            {
-              "name": "box-shadow",
-              "value": "4px 4px 2px -2px rgba(0,0,0,0.4);"
             }
           ]
         }
@@ -945,7 +963,17 @@ var blissProject = {
           "value": "#"
         }
       ],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
       "js": [
         {
           "name": "handleClick",
@@ -1000,7 +1028,7 @@ var blissProject = {
           "value": "handleClick"
         }
       ],
-      "next": "6",
+      "next": null,
       "previous": "40",
       "child": null,
       "parent": "39"
@@ -1265,20 +1293,15 @@ var blissProject = {
       "id": "53",
       "name": "About Text",
       "element": "div",
-      "text": "Social Story is a fun way to get creative with your friends. You'll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It's also a great way to escape writers block!",
+      "text": "Social Story is a fun way to get creative with your friends. You'll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It's also a great way to escape writes block!",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
+      "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "54",
       "previous": "34",
       "child": null,
       "parent": "32"
@@ -1311,14 +1334,6 @@ var blissProject = {
             {
               "name": "border-bottom-color",
               "value": "$darkFontColor"
-            },
-            {
-              "name": "font-family",
-              "value": "$font1"
-            },
-            {
-              "name": "font-size",
-              "value": "1.5em"
             }
           ]
         }
@@ -1326,7 +1341,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "55",
-      "previous": null,
+      "previous": "53",
       "child": null,
       "parent": "32"
     },
@@ -1356,7 +1371,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "34",
+      "next": null,
       "previous": "54",
       "child": "56",
       "parent": "32"
@@ -1465,4 +1480,3 @@ var blissProject = {
     }
   }
 }
-if(typeof module !== "undefined") module.exports = blissProject;

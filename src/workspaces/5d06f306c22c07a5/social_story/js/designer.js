@@ -1,4 +1,4 @@
-var socialStory = (function() {
+var socialStoryV = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -134,10 +134,10 @@ var socialStory = (function() {
         });
       };
 
-      $.get('/story/sentence', {
-        "format": "A story about {{ an_adjective }} {{ noun }} and {{ an_adjective }} {{ noun }}."
-      }, function(data) {
-        createStory(data.sentence, "Once upon a time there was a ...");
+      var url = 'https://talaikis.com/api/quotes/random/'
+
+      $.get(url, function(data) {
+        createStory(data.quote, data.quote);
       });
     }
     app.js['story_home'] = function() {
@@ -274,16 +274,6 @@ var socialStory = (function() {
     app.js['story_excerpt'] = function(storyId) {
       return null;
     }
-    app.methods["6"] = {};
-    app.methods["6"]['handleClick'] = function(scope, attributes) {
-      return function(e) {
-        firebase.auth().signOut();
-      }
-    };
-
-    app.methods["6"]['shouldShow'] = function(scope, attributes) {
-      return app.state.signedIn;
-    }
     app.methods["7"] = {};
     app.methods["7"]['shouldShow'] = function(scope, attributes) {
       return !app.state.signedIn;
@@ -306,6 +296,16 @@ var socialStory = (function() {
         app.js.story_start();
       }
     };
+    app.methods["6"] = {};
+    app.methods["6"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        firebase.auth().signOut();
+      }
+    };
+
+    app.methods["6"]['shouldShow'] = function(scope, attributes) {
+      return app.state.signedIn;
+    }
     app.methods["26"] = {};
     app.methods["26"]['shouldShow'] = function() {
       return app.state.currentPage === 'home';
@@ -430,7 +430,7 @@ var socialStory = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "socialStory_1",
+            "id": "socialStoryV_1",
             "key": app.getKey('id', '1')
           }),
           React.createElement('div', app.mergeAttributes('9', scope, {}, {
@@ -441,11 +441,6 @@ var socialStory = (function() {
                 "id": "brand_10",
                 "key": app.getKey('id', '10')
               }),
-              React.createElement('i', app.mergeAttributes('21', scope, {}, {
-                "className": "fa fa-book",
-                "id": "icon_21",
-                "key": app.getKey('id', '21')
-              })),
               React.createElement('span', app.mergeAttributes('22', scope, {}, {
                 "id": "label_22",
                 "key": app.getKey('id', '22')
@@ -453,30 +448,7 @@ var socialStory = (function() {
               React.createElement('div', app.mergeAttributes('28', scope, {}, {
                 "id": "brandSubtitle_28",
                 "key": app.getKey('id', '28')
-              }), 'Imaginations running amuk')),
-            (function(scope) {
-              var out = [];
-              scope['shouldShow'] = app.methods['6']['shouldShow'](scope);
-              if (app.methods['6']['shouldShow'](scope) === true) {
-                out.push(React.createElement('a', app.mergeAttributes('6', scope, {
-                    "onClick": "handleClick"
-                  }, {
-                    "href": "#",
-                    "id": "signOut_6",
-                    "key": app.getKey('id', '6')
-                  }),
-                  React.createElement('i', app.mergeAttributes('19', scope, {}, {
-                    "className": "fa fa-sign-out",
-                    "id": "icon_19",
-                    "key": app.getKey('id', '19')
-                  })),
-                  React.createElement('span', app.mergeAttributes('20', scope, {}, {
-                    "id": "label_20",
-                    "key": app.getKey('id', '20')
-                  }), ' Sign-out')));
-              }
-              return out;
-            })(scope)),
+              }), 'collaborative story-telling'))),
           (function(scope) {
             var out = [];
             scope['shouldShow'] = app.methods['7']['shouldShow'](scope);
@@ -517,7 +489,21 @@ var socialStory = (function() {
                     "href": "#",
                     "id": "startANewStory_41",
                     "key": app.getKey('id', '41')
-                  }), 'Start a new story')),
+                  }), 'Start a new story'),
+                  (function(scope) {
+                    var out = [];
+                    scope['shouldShow'] = app.methods['6']['shouldShow'](scope);
+                    if (app.methods['6']['shouldShow'](scope) === true) {
+                      out.push(React.createElement('a', app.mergeAttributes('6', scope, {
+                        "onClick": "handleClick"
+                      }, {
+                        "href": "#",
+                        "id": "signOut_6",
+                        "key": app.getKey('id', '6')
+                      }), 'Sign-out'));
+                    }
+                    return out;
+                  })(scope)),
                 (function(scope) {
                   var out = [];
                   scope['shouldShow'] = app.methods['26']['shouldShow'](scope);
@@ -568,14 +554,6 @@ var socialStory = (function() {
                           "id": "about_32",
                           "key": app.getKey('id', '32')
                         }),
-                        React.createElement('div', app.mergeAttributes('34', scope, {}, {
-                          "id": "header_34",
-                          "key": app.getKey('id', '34')
-                        }), 'About'),
-                        React.createElement('div', app.mergeAttributes('53', scope, {}, {
-                          "id": "aboutText_53",
-                          "key": app.getKey('id', '53')
-                        }), 'Social Story is a fun way to get creative with your friends. You\'ll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It\'s also a great way to escape writes block!'),
                         React.createElement('div', app.mergeAttributes('54', scope, {}, {
                           "id": "instructions_54",
                           "key": app.getKey('id', '54')
@@ -607,7 +585,15 @@ var socialStory = (function() {
                           React.createElement('li', app.mergeAttributes('61', scope, {}, {
                             "id": "listItem_61",
                             "key": app.getKey('id', '61')
-                          }), 'There\'s no need to refresh the page. All stories and lines are updated immediately.')))));
+                          }), 'There\'s no need to refresh the page. All stories and lines are updated immediately.')),
+                        React.createElement('div', app.mergeAttributes('34', scope, {}, {
+                          "id": "header_34",
+                          "key": app.getKey('id', '34')
+                        }), 'About'),
+                        React.createElement('div', app.mergeAttributes('53', scope, {}, {
+                          "id": "aboutText_53",
+                          "key": app.getKey('id', '53')
+                        }), 'Social Story is a fun way to get creative with your friends. You\'ll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It\'s also a great way to escape writers block!'))));
                   }
                   return out;
                 })(scope),

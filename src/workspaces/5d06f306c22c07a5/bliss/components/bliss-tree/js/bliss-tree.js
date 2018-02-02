@@ -523,20 +523,54 @@ var BlissTree = {
   },
 
   cloneComponent: function cloneComponent(proj, cloneId) {
-    var newId = String(proj.nextId++);
+    var that = this;
+
+    var _clone = function _clone(component) {
+      var newId = String(proj.nextId++);
+      var clone = _.cloneDeep(component);
+
+      clone.id = newId;
+      clone.name = clone.name + "_copy";
+      clone.next = null;
+      clone.previous = null;
+      clone.parent = null;
+      clone.child = null;
+
+      proj.components[newId] = clone;
+      return clone;
+    };
+
+    var map = {};
     var component = this.get(proj, cloneId);
-    var clone = _.cloneDeep(component);
+    var rootClone = _clone(component);
+    map[component.id] = rootClone.id;
 
-    clone.id = newId;
-    clone.name = clone.name + "_copy";
-    clone.next = null;
-    clone.previous = null;
-    clone.parent = null;
-    clone.child = null;
+    var walkDown = function walkDown(compRef, fn) {
+      fn(compRef);
+      if (compRef.next !== null) walkDown(that.get(proj, compRef.next), fn);
+      if (compRef.child !== null) walkDown(that.get(proj, compRef.child), fn);
+    };
 
-    proj.components[newId] = clone;
+    if (component.child !== null) {
+      // create the child clones
+      walkDown(this.get(proj, component.child), function (component) {
+        var clone = _clone(component);
+        map[component.id] = clone.id;
+      }
 
-    return this.moveComponent(proj, newId, cloneId, false);
+      // setup links for all children
+      );walkDown(this.get(proj, component.child), function (component) {
+        var cloneComponent = that.get(proj, map[component.id]);
+        if (component.next !== null) cloneComponent.next = map[component.next];
+        if (component.prev !== null) cloneComponent.prev = map[component.prev];
+        if (component.parent !== null) cloneComponent.parent = map[component.parent];
+        if (component.child !== null) cloneComponent.child = map[component.child];
+      });
+
+      rootClone.child = map[component.child];
+    }
+
+    return this.moveComponent(proj, rootClone.id, cloneId, false);
   },
 
   deleteComponent: function deleteComponent(proj, id) {
