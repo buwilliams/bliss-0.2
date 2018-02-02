@@ -96,7 +96,7 @@ task('update-bliss', function() {
   fse.copySync('build','src/workspaces',{overwrite:true,dereference:true});
 });
 
-desc('Use bliss v2');
+desc('Use bliss v2, ex: jake update-bliss && jake migrate[v2] && jake build');
 task('migrate', function(version) {
   var source = `src/workspaces/5d06f306c22c07a5/bliss/projects/bliss_ui_${version}.json`;
   var dest = `src/workspaces/5d06f306c22c07a5/bliss/projects/bliss_ui.json`;
