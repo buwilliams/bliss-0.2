@@ -239,10 +239,20 @@ var blissUi = (function() {
         app.js.loadProject(app.buildProject.name, false);
       });
     }
-    app.js['refreshIframe'] = function() {
+    app.js['refreshIframe'] = function(resetState) {
       app.js.log('app.js.refreshIframe() invoked.');
 
-      app.js.savePreviewState()
+      resetState = (resetState === true) ? true : false
+
+      if (resetState) {
+        app.dispatch({
+          path: '/preview',
+          action: 'setState',
+          state: {}
+        })
+      } else {
+        app.js.savePreviewState()
+      }
 
       var iframe = $('#preview');
       var currentSrc = iframe.attr('src');
@@ -263,7 +273,7 @@ var blissUi = (function() {
       app.js.getProjects();
 
       // refresh iframe
-      app.js.refreshIframe();
+      app.js.refreshIframe(true);
     }
     app.js['log'] = function() {
       return;
@@ -387,8 +397,8 @@ var blissUi = (function() {
       var _app = window.top.blissUi
       prevApp.setState(function() {
         try {
-          Object.keys(_app.state.previous.state).forEach(function(key) {
-            var stateStr = JSON.stringify(_app.state.previous.state[key])
+          Object.keys(_app.state.preview.state).forEach(function(key) {
+            var stateStr = JSON.stringify(_app.state.preview.state[key])
             var value = JSON.parse(stateStr)
             prevApp.state[key] = value
             console.log('reloaded state', key, value)

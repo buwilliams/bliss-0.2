@@ -136,11 +136,11 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  app.js.savePreviewState()\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function(resetState) {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  resetState = (resetState === true) ? true : false\n  \n  if(resetState) {\n    app.dispatch({\n      path: '/preview',\n      action: 'setState',\n      state: {}\n    })\n  } else {\n    app.js.savePreviewState()\n  }\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
-      "body": "function() {\n  app.js.log('app.js.refresh() invoked.');\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  app.js.refreshIframe();\n}"
+      "body": "function() {\n  app.js.log('app.js.refresh() invoked.');\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  app.js.refreshIframe(true);\n}"
     },
     {
       "name": "log",
@@ -164,7 +164,7 @@ var blissProject = {
     },
     {
       "name": "reloadSavedState",
-      "body": "function(prevApp) {\n  var _app = window.top.blissUi\n  prevApp.setState(function() {\n    try {\n      Object.keys(_app.state.previous.state).forEach(function(key) {\n        var stateStr = JSON.stringify(_app.state.previous.state[key])\n        var value = JSON.parse(stateStr)\n        prevApp.state[key] = value\n        console.log('reloaded state', key, value)\n      })\n    } catch(e) {\n      console.error('reloadSavedState', e)\n    }\n  })\n}"
+      "body": "function(prevApp) {\n  var _app = window.top.blissUi\n  prevApp.setState(function() {\n    try {\n      Object.keys(_app.state.preview.state).forEach(function(key) {\n        var stateStr = JSON.stringify(_app.state.preview.state[key])\n        var value = JSON.parse(stateStr)\n        prevApp.state[key] = value\n        console.log('reloaded state', key, value)\n      })\n    } catch(e) {\n      console.error('reloadSavedState', e)\n    }\n  })\n}"
     }
   ],
   "cssVars": [

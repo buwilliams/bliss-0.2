@@ -239,10 +239,20 @@ var blissUiV = (function() {
         app.js.loadProject(app.buildProject.name, false);
       });
     }
-    app.js['refreshIframe'] = function() {
+    app.js['refreshIframe'] = function(resetState) {
       app.js.log('app.js.refreshIframe() invoked.');
 
-      app.js.savePreviewState()
+      resetState = (resetState === true) ? true : false
+
+      if (resetState) {
+        app.dispatch({
+          path: '/preview',
+          action: 'setState',
+          state: {}
+        })
+      } else {
+        app.js.savePreviewState()
+      }
 
       var iframe = $('#preview');
       var currentSrc = iframe.attr('src');
@@ -263,7 +273,7 @@ var blissUiV = (function() {
       app.js.getProjects();
 
       // refresh iframe
-      app.js.refreshIframe();
+      app.js.refreshIframe(true);
     }
     app.js['log'] = function() {
       return;
@@ -360,6 +370,8 @@ var blissUiV = (function() {
 
       var prevApp = document.getElementById('preview').contentWindow[appName]
       var prevState = {}
+
+      if (typeof(prevApp) === 'undefined') return;
 
       try {
         var keys = Object.keys(prevApp.state)
@@ -635,12 +647,7 @@ var blissUiV = (function() {
     app.methods["201"] = {};
     app.methods["201"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        try {
-          $('#preview').attr("src", $('#preview').attr("src"));
-        } catch (e) {
-          console.log('Unable to refresh preview iframe', e);
-        }
-        app.js.getProjects();
+        app.js.refresh()
       }
     };
     app.methods["275"] = {};

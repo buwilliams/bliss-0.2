@@ -165,7 +165,7 @@ var blissProject = {
             },
             {
               "name": "background-color",
-              "value": "#fff6da"
+              "value": "#d5eafe"
             },
             {
               "name": "padding",

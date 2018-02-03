@@ -219,6 +219,17 @@ var todo = (function() {
     };
     app.load = function() {
       app.js.init();
+      if (window.parent && !window.blissUi) {
+        if (window.parent.blissUi) {
+          if (window.parent.blissUi.js.reloadSavedState) {
+            try {
+              window.parent.blissUi.js.reloadSavedState(app)
+            } catch (e) {
+              console.error('error reloading saved state', e)
+            }
+          }
+        }
+      }
     }
     app.load();
 
