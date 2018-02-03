@@ -2,6 +2,7 @@
 
 ```javascript
 // if fresh state, then skip all below
+// invalidate state if data manager made a change
 // determine how to get app name
 var appName = 'app_name'
 var prevApp = document.getElementById('preview').contentWindow[appName]

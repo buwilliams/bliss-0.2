@@ -9,62 +9,16 @@ var todo = (function() {
     app.js['init'] = function() {
       app.render();
     }
-    app.methods["7"] = {};
-    app.methods["7"]['handleChange'] = function(scope, attributes) {
+    app.methods["2"] = {};
+    app.methods["2"]['handleChange'] = function(scope, attributes) {
       return function(e) {
         app.dispatch({
-          path: '/todos',
-          action: 'setLabel',
-          label: e.target.value
+          path: '/some_path',
+          action: 'some_action',
+          label: 'some_label'
         })
       }
     };
-
-    app.methods["7"]['getValue'] = function(scope, attributes) {
-      return app.state.todos.label;
-    }
-    app.methods["8"] = {};
-    app.methods["8"]['handleClick'] = function(scope, attributes) {
-      return function(e) {
-        app.dispatch({
-          path: '/todos',
-          action: 'addTodo',
-          label: app.state.todos.label
-        })
-
-        app.dispatch({
-          path: '/todos',
-          action: 'setLabel',
-          label: ''
-        })
-      }
-    };
-    app.methods["9"] = {};
-    app.methods["9"]['repeater'] = function(scope, attributes) {
-      return app.state.todos.list
-    };
-
-    app.methods["9"]['getText'] = function(scope, attributes) {
-      return scope.repeater[scope.repeater_index].label
-    };
-
-    app.methods["9"]['handleClick'] = function(scope, attributes) {
-      var index = scope.repeater_index
-      return function(e) {
-        app.dispatch({
-          path: '/todos',
-          action: 'toggleTodo',
-          index: index
-        })
-      }
-    };
-
-    app.methods["9"]['getStyle'] = function(scope, attributes) {
-      var style = {}
-      var done = scope.repeater[scope.repeater_index].done
-      if (done) style.textDecoration = 'line-through'
-      return style;
-    }
     app.getPath = function(objRef, path) {
       var ref = objRef;
       var parts = path.split('/')
@@ -102,27 +56,28 @@ var todo = (function() {
     app.schema = {};
     app.schema['/todos'] = {};
     app.schema['/todos']['init'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.label = ''
-      newData.list = []
-      return newData;
-    }
-    app.schema['/todos']['setLabel'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.label = args.label
+      var newData = {
+        current: '',
+        list: []
+      }
       return newData;
     }
     app.schema['/todos']['addTodo'] = function(data, args) {
       var newData = Object.assign({}, data)
       newData.list.push({
-        done: false,
-        label: args.label
+        label: args.label,
+        done: false
       })
       return newData;
     }
-    app.schema['/todos']['toggleTodo'] = function(data, args) {
+    app.schema['/todos']['setCurrent'] = function(data, args) {
       var newData = Object.assign({}, data)
-      newData.list[args.index].done = !newData.list[args.index].done
+      newData.current = args.label
+      return newData;
+    }
+    app.schema['/todos']['new_action'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      // your edits here
       return newData;
     }
     if (app.schema['/todos']['init']) {
@@ -153,39 +108,22 @@ var todo = (function() {
             "id": "todo_1",
             "key": app.getKey('id', '1')
           }),
-          React.createElement('h1', app.mergeAttributes('6', scope, {}, {
-            "id": "header_6",
-            "key": app.getKey('id', '6')
+          React.createElement('h1', app.mergeAttributes('5', scope, {}, {
+            "id": "header_5",
+            "key": app.getKey('id', '5')
           }), 'To-do List'),
-          React.createElement('input', app.mergeAttributes('7', scope, {
-            "value": "getValue",
-            "onChange": "handleChange"
-          }, {
-            "placeholder": "enter new to-do",
-            "id": "todoInput_7",
-            "key": app.getKey('id', '7')
+          React.createElement('input', app.mergeAttributes('2', scope, {}, {
+            "id": "todoInput_2",
+            "key": app.getKey('id', '2')
           })),
-          React.createElement('button', app.mergeAttributes('8', scope, {
-            "onClick": "handleClick"
-          }, {
-            "id": "button_8",
-            "key": app.getKey('id', '8')
-          }), 'add to-do'),
-          (function(scope) {
-            var out = [];
-            var list = scope['repeater'] = app.methods['9']['repeater'](scope);
-            for (var i = 0; i < list.length; i++) {
-              scope['repeater_index'] = i;
-              out.push(React.createElement('div', app.mergeAttributes('9', scope, {
-                "style": "getStyle",
-                "onClick": "handleClick"
-              }, {
-                "id": "listOfToDos_9",
-                "key": app.getKey('id', '9', i)
-              }), app.methods['9']['getText'](scope)));
-            }
-            return out;
-          })(scope)));
+          React.createElement('button', app.mergeAttributes('4', scope, {}, {
+            "id": "addTodoButton_4",
+            "key": app.getKey('id', '4')
+          }), 'add todo'),
+          React.createElement('div', app.mergeAttributes('3', scope, {}, {
+            "id": "listOfTodos_3",
+            "key": app.getKey('id', '3')
+          }), 'I\'m a todo')));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
@@ -219,6 +157,17 @@ var todo = (function() {
     };
     app.load = function() {
       app.js.init();
+      if (window.parent && !window.blissUi) {
+        if (window.parent.blissUi) {
+          if (window.parent.blissUi.js.reloadSavedState) {
+            try {
+              window.parent.blissUi.js.reloadSavedState(app)
+            } catch (e) {
+              console.error('error reloading saved state', e)
+            }
+          }
+        }
+      }
     }
     app.load();
 

@@ -104,6 +104,13 @@ module.exports = {
     projectJson.load.forEach(function(fnName) {
       out += `  app.js.${fnName}();`;
     });
+    out += `  if(window.parent && !window.blissUi) {`
+    out += `    if(window.parent.blissUi) {`
+    out += `      if (window.parent.blissUi.js.reloadSavedState) {`
+    out += `        try { window.parent.blissUi.js.reloadSavedState(app) } catch(e) { console.error('error reloading saved state', e)}`
+    out += `      }`
+    out += `    }`
+    out += `  }`
     out += `}\n`;
     out += `app.load();\n`;
 

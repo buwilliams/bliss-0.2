@@ -242,6 +242,8 @@ var blissUiV = (function() {
     app.js['refreshIframe'] = function() {
       app.js.log('app.js.refreshIframe() invoked.');
 
+      app.js.savePreviewState()
+
       var iframe = $('#preview');
       var currentSrc = iframe.attr('src');
       if (_.isUndefined(currentSrc)) return;
@@ -341,6 +343,59 @@ var blissUiV = (function() {
       app.dispatch({
         path: '/workspaces',
         action: 'httpListWorkspaces'
+      })
+    }
+    app.js['savePreviewState'] = function(scope, attributes) {
+      app.js.log('app.js.savePreviewState() invoked.');
+
+      // copied from backend
+      var appName = app.buildProject.name.replace(/[^a-z]/gi, ' ').trim()
+      appName = appName.split(" ").map(function(word, index) {
+        if (index === 0) {
+          return word.toLowerCase();
+        } else {
+          return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+        }
+      }).join("");
+
+      var prevApp = document.getElementById('preview').contentWindow[appName]
+      var prevState = {}
+
+      try {
+        var keys = Object.keys(prevApp.state)
+        keys.forEach(function(key) {
+          try {
+            var stateStr = JSON.stringify(prevApp.state[key])
+            prevState[key] = JSON.parse(stateStr)
+          } catch (e) {
+            console.error('unable to parse state', e)
+          }
+        })
+      } catch (e) {
+        console.error('unable to parse state', e)
+      }
+
+      app.dispatch({
+        path: '/preview',
+        action: 'setState',
+        state: prevState
+      })
+
+      console.log('saving state', prevState)
+    }
+    app.js['reloadSavedState'] = function(prevApp) {
+      var _app = window.top.blissUi
+      prevApp.setState(function() {
+        try {
+          Object.keys(_app.state.preview.state).forEach(function(key) {
+            var stateStr = JSON.stringify(_app.state.preview.state[key])
+            var value = JSON.parse(stateStr)
+            prevApp.state[key] = value
+            console.log('reloaded state', key, value)
+          })
+        } catch (e) {
+          console.error('reloadSavedState', e)
+        }
       })
     }
     app.methods["242"] = {};
@@ -1724,6 +1779,22 @@ var blissUiV = (function() {
     } else {
       app.assignPath(app.state, '/layout');
     }
+    app.schema['/preview'] = {};
+    app.schema['/preview']['init'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.state = ""
+      return newData;
+    }
+    app.schema['/preview']['setState'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.state = args.state
+      return newData;
+    }
+    if (app.schema['/preview']['init']) {
+      app.assignPath(app.state, '/preview', app.schema['/preview']['init']());
+    } else {
+      app.assignPath(app.state, '/preview');
+    }
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -2592,6 +2663,17 @@ var blissUiV = (function() {
     };
     app.load = function() {
       app.js.init();
+      if (window.parent && !window.blissUi) {
+        if (window.parent.blissUi) {
+          if (window.parent.blissUi.js.reloadSavedState) {
+            try {
+              window.parent.blissUi.js.reloadSavedState(app)
+            } catch (e) {
+              console.error('error reloading saved state', e)
+            }
+          }
+        }
+      }
     }
     app.load();
 

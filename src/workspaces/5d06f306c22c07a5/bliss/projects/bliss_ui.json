@@ -136,7 +136,7 @@
     },
     {
       "name": "refreshIframe",
-      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n  \n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function() {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  app.js.savePreviewState()\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
@@ -157,6 +157,14 @@
     {
       "name": "afterAuth",
       "body": "function(scope, attributes) {\n  app.js.log('after auth invoked')\n\n  app.dispatch({\n    path: '/workspaces',\n    action: 'httpListWorkspaces'\n  })\n}"
+    },
+    {
+      "name": "savePreviewState",
+      "body": "function(scope, attributes) {\n  app.js.log('app.js.savePreviewState() invoked.');\n  \n  // copied from backend\n  var appName = app.buildProject.name.replace(/[^a-z]/gi, ' ').trim()\n  appName = appName.split(\" \").map(function(word, index) {\n    if(index === 0) {\n      return word.toLowerCase();\n    } else {\n      return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();\n    }\n  }).join(\"\");\n  \n  var prevApp = document.getElementById('preview').contentWindow[appName]\n\tvar prevState = {}\n\t\n  try {\n    var keys = Object.keys(prevApp.state)\n    keys.forEach(function(key) {\n      try {\n      \tvar stateStr = JSON.stringify(prevApp.state[key])\n        prevState[key] = JSON.parse(stateStr)\n      } catch(e) {\n        console.error('unable to parse state', e)\n      }\n    })\n  } catch(e) {\n    console.error('unable to parse state', e)\n  }\n\n  app.dispatch({\n    path: '/preview',\n    action: 'setState',\n    state: prevState\n  })\n  \n  console.log('saving state', prevState)\n}"
+    },
+    {
+      "name": "reloadSavedState",
+      "body": "function(prevApp) {\n  var _app = window.top.blissUi\n  prevApp.setState(function() {\n    try {\n      Object.keys(_app.state.preview.state).forEach(function(key) {\n        var stateStr = JSON.stringify(_app.state.preview.state[key])\n        var value = JSON.parse(stateStr)\n        prevApp.state[key] = value\n        console.log('reloaded state', key, value)\n      })\n    } catch(e) {\n      console.error('reloadSavedState', e)\n    }\n  })\n}"
     }
   ],
   "cssVars": [
@@ -6008,6 +6016,19 @@
         {
           "action": "setActive",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  var layout = _.find(newData.list, function(item) {\n  \treturn (item.name === args.name)\n  })\n  layout.active = args.active\n  return newData\n}"
+        }
+      ]
+    },
+    {
+      "path": "/preview",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.state = \"\"\n  return newData;\n}"
+        },
+        {
+          "action": "setState",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.state = args.state\n  return newData;\n}"
         }
       ]
     }
