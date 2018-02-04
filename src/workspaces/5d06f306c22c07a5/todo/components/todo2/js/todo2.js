@@ -1,5 +1,6 @@
 var todo = (function() {
   var createApp = function(component) {
+    if (typeof component === 'undefined') return {};
     var app = {
       js: {},
       methods: {},
@@ -230,7 +231,7 @@ var todo = (function() {
                 React.createElement('h1', app.mergeAttributes('6', scope, {}, {
                   "id": "header_6",
                   "key": app.getKey('id', '6')
-                }), 'Pretty To-do list'),
+                }), 'TO-DO LIST'),
                 React.createElement('input', app.mergeAttributes('7', scope, {
                   "value": "getValue",
                   "onChange": "handleChange",

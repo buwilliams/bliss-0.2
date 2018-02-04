@@ -3,13 +3,12 @@ var blissProject = {
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
-  "build": "designer",
+  "build": "todo2",
   "nextId": 17,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
-    "https://use.fontawesome.com/releases/v5.0.6/css/all.css",
-    "https://fonts.googleapis.com/css?family= Sacramento|Shadows+Into+Light"
+    "https://use.fontawesome.com/releases/v5.0.6/css/all.css"
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
@@ -85,14 +84,6 @@ var blissProject = {
         {
           "name": "background-repeat",
           "value": "no-repeat"
-        },
-        {
-          "name": "background-position",
-          "value": "center center"
-        },
-        {
-          "name": "font-family",
-          "value": "'Shadows Into Light', cursive"
         }
       ]
     }
@@ -107,17 +98,7 @@ var blissProject = {
       "element": "div",
       "text": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "min-height",
-              "value": "100vh"
-            }
-          ]
-        }
-      ],
+      "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
@@ -129,7 +110,7 @@ var blissProject = {
       "id": "6",
       "name": "header",
       "element": "h1",
-      "text": "Pretty To-do list",
+      "text": "TO-DO LIST",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,

@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 73,
+  "nextId": 77,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz",
@@ -32,7 +32,16 @@ var blissProject = {
       "body": "function() { app.render(); }"
     }
   ],
-  "cssVars": [],
+  "cssVars": [
+    {
+      "name": "linkColor",
+      "value": "#f64e54"
+    },
+    {
+      "name": "linkHoverColor",
+      "value": "#ff2252"
+    }
+  ],
   "css": [
     {
       "selector": "body",
@@ -99,7 +108,7 @@ var blissProject = {
       "properties": [
         {
           "name": "color",
-          "value": "#2cb6e7"
+          "value": "$linkColor"
         }
       ]
     },
@@ -112,7 +121,7 @@ var blissProject = {
         },
         {
           "name": "color",
-          "value": "#e7762c"
+          "value": "$linkHoverColor"
         }
       ]
     }
@@ -201,7 +210,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "15",
-      "previous": null,
+      "previous": "75",
       "child": null,
       "parent": "9"
     },
@@ -315,7 +324,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "4",
+      "child": "75",
       "parent": "45"
     },
     "10": {
@@ -633,7 +642,7 @@ var blissProject = {
       "attributes": [
         {
           "name": "href",
-          "value": "https://www.youtube.com/watch?v=Ka9OJSGVpvo"
+          "value": "https://www.youtube.com/watch?v=j7bxCtu3SVo"
         },
         {
           "name": "target",
@@ -1411,6 +1420,119 @@ var blissProject = {
       "previous": "31",
       "child": null,
       "parent": "30"
+    },
+    "73": {
+      "id": "73",
+      "name": "browse link",
+      "element": "a",
+      "text": "Browse Apps",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "/hosted/"
+        },
+        {
+          "name": "target",
+          "value": "_blank"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "76",
+      "previous": null,
+      "child": null,
+      "parent": "75"
+    },
+    "75": {
+      "id": "75",
+      "name": "menu item_copy",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id a",
+          "properties": [
+            {
+              "name": "height",
+              "value": "4em"
+            },
+            {
+              "name": "background-color",
+              "value": "$linkColor"
+            },
+            {
+              "name": "color",
+              "value": "white"
+            },
+            {
+              "name": "padding",
+              "value": "5px 12px"
+            },
+            {
+              "name": "margin",
+              "value": "0 3px"
+            }
+          ]
+        },
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-bottom",
+              "value": "20px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "4",
+      "previous": null,
+      "child": "73",
+      "parent": "9"
+    },
+    "76": {
+      "id": "76",
+      "name": "launch bliss link",
+      "element": "a",
+      "text": "Launch",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "/bliss/"
+        },
+        {
+          "name": "target",
+          "value": "_blank"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "73",
+      "child": null,
+      "parent": "75"
     }
   }
 }

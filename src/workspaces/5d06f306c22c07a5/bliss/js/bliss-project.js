@@ -160,7 +160,7 @@ var blissProject = {
     },
     {
       "name": "savePreviewState",
-      "body": "function(scope, attributes) {\n  app.js.log('app.js.savePreviewState() invoked.');\n  \n  // copied from backend\n  var appName = app.buildProject.name.replace(/[^a-z]/gi, ' ').trim()\n  appName = appName.split(\" \").map(function(word, index) {\n    if(index === 0) {\n      return word.toLowerCase();\n    } else {\n      return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();\n    }\n  }).join(\"\");\n  \n  var prevApp = document.getElementById('preview').contentWindow[appName]\n\tvar prevState = {}\n\t\n  try {\n    var keys = Object.keys(prevApp.state)\n    keys.forEach(function(key) {\n      try {\n      \tvar stateStr = JSON.stringify(prevApp.state[key])\n        prevState[key] = JSON.parse(stateStr)\n      } catch(e) {\n        console.error('unable to parse state', e)\n      }\n    })\n  } catch(e) {\n    console.error('unable to parse state', e)\n  }\n\n  app.dispatch({\n    path: '/preview',\n    action: 'setState',\n    state: prevState\n  })\n  \n  console.log('saving state', prevState)\n}"
+      "body": "function(scope, attributes) {\n  app.js.log('app.js.savePreviewState() invoked.');\n  \n  // copied from backend\n  var appName = app.buildProject.name.replace(/[^a-z]/gi, ' ').trim()\n  appName = appName.split(\" \").map(function(word, index) {\n    if(index === 0) {\n      return word.toLowerCase();\n    } else {\n      return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();\n    }\n  }).join(\"\");\n  \n  var prevApp = document.getElementById('preview').contentWindow[appName]\n\tvar prevState = {}\n  \n  if(typeof(prevApp) === 'undefined') return;\n\t\n  try {\n    var keys = Object.keys(prevApp.state)\n    keys.forEach(function(key) {\n      try {\n      \tvar stateStr = JSON.stringify(prevApp.state[key])\n        prevState[key] = JSON.parse(stateStr)\n      } catch(e) {\n        console.error('unable to parse state', e)\n      }\n    })\n  } catch(e) {\n    console.error('unable to parse state', e)\n  }\n\n  app.dispatch({\n    path: '/preview',\n    action: 'setState',\n    state: prevState\n  })\n  \n  console.log('saving state', prevState)\n}"
     },
     {
       "name": "reloadSavedState",
@@ -3823,7 +3823,7 @@ var blissProject = {
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    try {\n      $('#preview').attr(\"src\", $('#preview').attr(\"src\"));\n    } catch(e){\n      console.log('Unable to refresh preview iframe', e);\n    }\n    app.js.getProjects();\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.refresh()\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [

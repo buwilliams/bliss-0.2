@@ -371,6 +371,8 @@ var blissUi = (function() {
       var prevApp = document.getElementById('preview').contentWindow[appName]
       var prevState = {}
 
+      if (typeof(prevApp) === 'undefined') return;
+
       try {
         var keys = Object.keys(prevApp.state)
         keys.forEach(function(key) {
@@ -645,12 +647,7 @@ var blissUi = (function() {
     app.methods["201"] = {};
     app.methods["201"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        try {
-          $('#preview').attr("src", $('#preview').attr("src"));
-        } catch (e) {
-          console.log('Unable to refresh preview iframe', e);
-        }
-        app.js.getProjects();
+        app.js.refresh()
       }
     };
     app.methods["275"] = {};

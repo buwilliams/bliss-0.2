@@ -5,12 +5,6 @@ body {
   background-image: url(https://www.hdwallpapers.in/download/colorful_flowers_dark_background-1920x1200.jpg);
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
-  font-family: 'Shadows Into Light', cursive;
-}
-
-#todo_1 {
-  min-height: 100vh;
 }
 
 #header_6 {

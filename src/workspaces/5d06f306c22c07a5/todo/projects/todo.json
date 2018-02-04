@@ -11,8 +11,7 @@
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
-    "node_modules/react-dom/dist/react-dom.js",
-    "components/foo/js/foo.js"
+    "node_modules/react-dom/dist/react-dom.js"
   ],
   "packages": [
     {

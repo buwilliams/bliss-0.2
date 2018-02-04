@@ -21,12 +21,12 @@ h2, h3, h4, h5 {
 }
 
 a, a:visited {
-  color: #2cb6e7;
+  color: #f64e54;
 }
 
 a:hover, a:active {
   text-decoration: underline;
-  color: #e7762c;
+  color: #ff2252;
 }
 
 .header-col {
@@ -56,6 +56,19 @@ a:hover, a:active {
   border-bottom-right-radius: 5px;
   margin-bottom: 2em;
   box-shadow: 0 0 5px 3px rgba(0,0,0,.35);
+}
+
+#menuItemCopy_75 a {
+  height: 4em;
+  background-color: #f64e54;
+  color: white;
+  padding: 5px 12px;
+  margin: 0 3px;
+}
+
+#menuItemCopy_75 {
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 #span_64 {

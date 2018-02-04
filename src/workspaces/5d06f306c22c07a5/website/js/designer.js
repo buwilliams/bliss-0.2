@@ -63,6 +63,23 @@ var blissUiWebsite = (function() {
                 "id": "contentCol_9",
                 "key": app.getKey('id', '9')
               }),
+              React.createElement('div', app.mergeAttributes('75', scope, {}, {
+                  "href": "#",
+                  "id": "menuItemCopy_75",
+                  "key": app.getKey('id', '75')
+                }),
+                React.createElement('a', app.mergeAttributes('73', scope, {}, {
+                  "href": "/hosted/",
+                  "target": "_blank",
+                  "id": "browseLink_73",
+                  "key": app.getKey('id', '73')
+                }), 'Browse Apps'),
+                React.createElement('a', app.mergeAttributes('76', scope, {}, {
+                  "href": "/bliss/",
+                  "target": "_blank",
+                  "id": "launchBlissLink_76",
+                  "key": app.getKey('id', '76')
+                }), 'Launch')),
               React.createElement('h2', app.mergeAttributes('4', scope, {}, {
                 "id": "whatIsBlissui_4",
                 "key": app.getKey('id', '4')
@@ -153,7 +170,7 @@ var blissUiWebsite = (function() {
                     "key": app.getKey('id', '28')
                   }), 'Watch the video for  ',
                   React.createElement('a', app.mergeAttributes('29', scope, {}, {
-                    "href": "https://www.youtube.com/watch?v=Ka9OJSGVpvo",
+                    "href": "https://www.youtube.com/watch?v=j7bxCtu3SVo",
                     "target": "_blank",
                     "id": "link_29",
                     "key": app.getKey('id', '29')
@@ -318,6 +335,17 @@ var blissUiWebsite = (function() {
     };
     app.load = function() {
       app.js.init();
+      if (window.parent && !window.blissUi) {
+        if (window.parent.blissUi) {
+          if (window.parent.blissUi.js.reloadSavedState) {
+            try {
+              window.parent.blissUi.js.reloadSavedState(app)
+            } catch (e) {
+              console.error('error reloading saved state', e)
+            }
+          }
+        }
+      }
     }
     app.load();
 
