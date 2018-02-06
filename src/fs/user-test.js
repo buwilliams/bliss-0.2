@@ -38,5 +38,4 @@ describe('user', function() {
     expect(user(env, session).fullpath).to.equal(
       path.join(env.workspace, session.user.username))
   });
-
 });

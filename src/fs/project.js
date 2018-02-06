@@ -1,9 +1,7 @@
 module.exports = function(workspace, project) {
-
-  // if project doesn't exist, then create it
-  var createProject = function() {
+  
+  pub.createProject = function(projectJson) {
   }
-  createProject()
 
   pub.deleteProject = function() {
   }
@@ -12,8 +10,14 @@ module.exports = function(workspace, project) {
     return project
   }
 
+  pub.listProjects = function() {
+    // TODO: array of project paths
+  }
+
   pub.fullPath = function() {
   }
+
+  pub.name = project
 
   return pub
 }
