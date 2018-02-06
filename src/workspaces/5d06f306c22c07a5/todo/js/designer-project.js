@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 17,
+  "nextId": 37,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
@@ -605,7 +605,7 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.label = ''\n  newData.list = []\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    label: '',\n    list: []\n  }\n  return newData;\n}"
         },
         {
           "action": "setLabel",

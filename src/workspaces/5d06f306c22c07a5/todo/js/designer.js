@@ -156,9 +156,10 @@ var todo = (function() {
     app.schema = {};
     app.schema['/todos'] = {};
     app.schema['/todos']['init'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.label = ''
-      newData.list = []
+      var newData = {
+        label: '',
+        list: []
+      }
       return newData;
     }
     app.schema['/todos']['setLabel'] = function(data, args) {
