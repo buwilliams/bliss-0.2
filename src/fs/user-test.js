@@ -11,14 +11,16 @@ describe('user', function() {
     fs.removeSync(dir)
   });
 
-  describe('invoked', function() {
+  describe('init', function() {
     it('should create user if not exists', function () {
       var dir = path.join(env.workspace, session.user.username)
       expect(fs.existsSync(dir)).to.equal(false)
       var u = user(env, session)
       expect(fs.existsSync(dir)).to.equal(true)
     });
+  })
 
+  describe('methods', function() {
     it('should create one workspace', function () {
       var u = user(env, session)
       expect(u.listWorkspaces().length).to.equal(0)
@@ -30,6 +32,16 @@ describe('user', function() {
     it('should give back the correct path', function () {
       expect(user(env, session).fullpath).to.equal(
         path.join(env.workspace, session.user.username))
+    });
+
+    it('should delete workspace', function () {
+      var u = user(env, session)
+      u.createWorkspace('test')
+      u.createWorkspace('test2')
+      expect(u.listWorkspaces().length).to.equal(2)
+      u.deleteWorkspace('test')
+      expect(u.listWorkspaces().length).to.equal(1)
+      expect(u.listWorkspaces()[0]).to.equal('test2')
     });
   });
 });

@@ -24,6 +24,10 @@ module.exports = function(env, session) {
     return fs.readdirSync(dir)
   }
 
+  pub.deleteWorkspace = function(name) {
+    fs.removeSync(path.join(dir, name))
+  }
+
   pub.fullpath = dir
   pub.env = env
   pub.session = session
