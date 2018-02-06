@@ -18,5 +18,18 @@ describe('user', function() {
       var u = user(env, session)
       expect(fs.existsSync(dir)).to.equal(true)
     });
+
+    it('should create one workspace', function () {
+      var u = user(env, session)
+      expect(u.listWorkspaces().length).to.equal(0)
+      u.createWorkspace('test')
+      expect(u.listWorkspaces().length).to.equal(1)
+      expect(u.listWorkspaces()[0]).to.equal('test')
+    });
+
+    it('should give back the correct path', function () {
+      expect(user(env, session).fullpath).to.equal(
+        path.join(env.workspace, session.user.username))
+    });
   });
 });

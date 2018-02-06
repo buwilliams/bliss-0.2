@@ -11,14 +11,20 @@ module.exports = function(env, session) {
   }
   createUser()
 
+  pub.createWorkspace = function(name) {
+    fs.ensureDirSync(path.join(dir, name))
+    fs.ensureDirSync(path.join(dir, name, 'projects'))
+    fs.ensureDirSync(path.join(dir, name, 'components'))
+    fs.ensureDirSync(path.join(dir, name, 'js'))
+    fs.ensureDirSync(path.join(dir, name, 'css'))
+    fs.ensureDirSync(path.join(dir, name, 'assets'))
+  }
+
   pub.listWorkspaces = function() {
     return fs.readdirSync(dir)
   }
 
-  pub.fullpath = function() {
-    return dir
-  }
-
+  pub.fullpath = dir
   pub.env = env
   pub.session = session
 
