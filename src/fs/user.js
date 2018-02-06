@@ -8,10 +8,12 @@ module.exports = function(env, session) {
 
   pub.createUser = function() {
     fs.ensureDirSync(dir)
+    return this
   }
 
   pub.deleteUser = function() {
     fs.removeSync(dir)
+    return this
   }
 
   pub.listUsers = function() {

@@ -10,15 +10,14 @@ chai.use(assertArrays)
 
 describe('user', function() {
   after(function() {
-    var dir = path.join(env.workspace, session.user.username)
-    fs.removeSync(dir)
+    fs.removeSync(path.join(env.workspace, session.user.username))
   });
 
   it('should create user', function () {
-    var dir = path.join(env.workspace, session.user.username)
-    expect(fs.existsSync(dir)).to.equal(false)
-    var u = user(env, session).createUser()
-    expect(fs.existsSync(dir)).to.equal(true)
+    var u = user(env, session)
+    expect(u.listUsers()).not.to.be.containing(u.name)
+    u.createUser()
+    expect(u.listUsers()).to.be.containing(u.name)
   });
 
   it('should list users', function () {
@@ -30,6 +29,7 @@ describe('user', function() {
   it('should delete user', function () {
     var u = user(env, session)
     u.createUser()
+    expect(u.listUsers()).to.be.containing(u.name)
     u.deleteUser()
     expect(u.listUsers()).not.to.be.containing(u.name)
   });
