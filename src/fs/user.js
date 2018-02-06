@@ -6,31 +6,22 @@ module.exports = function(env, session) {
   var pub = {}
   var dir = path.join(env.workspace, session.user.username)
 
-  var createUser = function() {
+  pub.createUser = function() {
     fs.ensureDirSync(dir)
   }
-  createUser()
 
-  pub.createWorkspace = function(name) {
-    fs.ensureDirSync(path.join(dir, name))
-    fs.ensureDirSync(path.join(dir, name, 'projects'))
-    fs.ensureDirSync(path.join(dir, name, 'components'))
-    fs.ensureDirSync(path.join(dir, name, 'js'))
-    fs.ensureDirSync(path.join(dir, name, 'css'))
-    fs.ensureDirSync(path.join(dir, name, 'assets'))
+  pub.deleteUser = function() {
+    fs.removeSync(dir)
   }
 
-  pub.listWorkspaces = function() {
-    return fs.readdirSync(dir)
-  }
-
-  pub.deleteWorkspace = function(name) {
-    fs.removeSync(path.join(dir, name))
+  pub.listUsers = function() {
+    return fs.readdirSync(env.workspace)
   }
 
   pub.fullpath = dir
   pub.env = env
   pub.session = session
+  pub.name = session.user.username
 
   return pub
 }

@@ -1,10 +1,9 @@
+const path = require('path')
+const fs = require('fs-extra')
+
 module.exports = function(user, workspace) {
   var pub = {}
-
-  var createWorkspace = function() {
-    // if workspace doesn't exist create it
-  }
-  createWorkspace()
+  var dir = path.join(user.fullpath, workspace)
 
   pub.deploy = function() {
   }
@@ -23,14 +22,23 @@ module.exports = function(user, workspace) {
     // TODO: array of project paths (user/workspace)
   }
 
-  pub.deleteProject = function(projectName) {
+  pub.deleteComponent = function(name) {
   }
 
-  pub.deleteComponent = function(projectName) {
+  pub.createWorkspace = function() {
+    fs.ensureDirSync(path.join(dir))
+    fs.ensureDirSync(path.join(dir, 'projects'))
+    fs.ensureDirSync(path.join(dir, 'components'))
+    fs.ensureDirSync(path.join(dir, 'js'))
+    fs.ensureDirSync(path.join(dir, 'css'))
+    fs.ensureDirSync(path.join(dir, 'assets'))
   }
 
   pub.deleteWorkspace = function() {
+    fs.removeSync(dir)
   }
+
+  pub.fullpath = dir
 
   return pub
 }

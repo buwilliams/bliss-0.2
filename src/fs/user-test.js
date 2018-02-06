@@ -1,9 +1,12 @@
-const expect = require('chai').expect
+const chai = require('chai')
+const expect = chai.expect
+const assertArrays = require('chai-arrays')
 const fs = require('fs-extra')
 const path = require('path')
 const env = require('../server/env.js')
 const session = require('../server/session.js')
 const user = require('./user.js')
+chai.use(assertArrays)
 
 describe('user', function() {
   after(function() {
@@ -11,37 +14,29 @@ describe('user', function() {
     fs.removeSync(dir)
   });
 
-  describe('init', function() {
-    it('should create user if not exists', function () {
-      var dir = path.join(env.workspace, session.user.username)
-      expect(fs.existsSync(dir)).to.equal(false)
-      var u = user(env, session)
-      expect(fs.existsSync(dir)).to.equal(true)
-    });
+  it('should create user', function () {
+    var dir = path.join(env.workspace, session.user.username)
+    expect(fs.existsSync(dir)).to.equal(false)
+    var u = user(env, session).createUser()
+    expect(fs.existsSync(dir)).to.equal(true)
+  });
+
+  it('should list users', function () {
+    var u = user(env, session)
+    u.createUser()
+    expect(u.listUsers()).to.be.containing(u.name)
   })
 
-  describe('methods', function() {
-    it('should create one workspace', function () {
-      var u = user(env, session)
-      expect(u.listWorkspaces().length).to.equal(0)
-      u.createWorkspace('test')
-      expect(u.listWorkspaces().length).to.equal(1)
-      expect(u.listWorkspaces()[0]).to.equal('test')
-    });
-
-    it('should give back the correct path', function () {
-      expect(user(env, session).fullpath).to.equal(
-        path.join(env.workspace, session.user.username))
-    });
-
-    it('should delete workspace', function () {
-      var u = user(env, session)
-      u.createWorkspace('test')
-      u.createWorkspace('test2')
-      expect(u.listWorkspaces().length).to.equal(2)
-      u.deleteWorkspace('test')
-      expect(u.listWorkspaces().length).to.equal(1)
-      expect(u.listWorkspaces()[0]).to.equal('test2')
-    });
+  it('should delete user', function () {
+    var u = user(env, session)
+    u.createUser()
+    u.deleteUser()
+    expect(u.listUsers()).not.to.be.containing(u.name)
   });
+
+  it('should give back the correct path', function () {
+    expect(user(env, session).fullpath).to.equal(
+      path.join(env.workspace, session.user.username))
+  });
+
 });
