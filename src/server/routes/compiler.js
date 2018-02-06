@@ -66,11 +66,44 @@ router.post('/dist', function (req, res) {
 
   var projectJson = req.body;
   var deployer = getDeployer(projectJson);
+
   deployer.write(projectJson,
     ws.workspace(env, req.session, req.query.workspace),
     ws.deploy(env, req.session, req.query.workspace));
+
   res.send({success: true});
+
   console.log(`Deployed '${projectJson.name}'`);
+});
+
+router.post('/share', function (req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
+  var projectJson = req.body;
+  var deployer = getDeployer(projectJson);
+
+  deployer.write(projectJson,
+    ws.workspace(env, req.session, req.query.workspace),
+    ws.share(env, req.session, req.query.workspace));
+
+  res.send({success: true});
+
+  console.log(`Deployed '${projectJson.name}'`);
+});
+
+router.post('/import', function (req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
+  // copy build/_shared/(userFrom)/(workspaceFrom)
+  //   to build/(userTo)/(workspaceTo)/components/(workspaceFrom)
+  // copy build/(userTo)/(workspaceTo)/components/(workspaceFrom)/(project.json)
+  //   to build/(userTo)/(workspaceTo)/projects/(project.json)
 });
 
 module.exports = router

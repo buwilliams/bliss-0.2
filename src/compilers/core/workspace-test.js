@@ -1,11 +1,20 @@
 const expect = require('chai').expect
+const path = require('path')
+const fs = require('fs-extra')
 const env = require('../../server/env.js');
 const session = require('../../server/session.js');
 const ws = require('./workspace.js');
 
+/*
 describe('workspace', function() {
+  after(function() {
+    var dir = path.join(env.workspace, session.user.username)
+    fs.removeSync(dir)
+  });
+
   describe('list', function() {
     it('should have one workspace', function () {
+      ws.newWs(env, session, 'ghost')
       var wsList = ws.list(env, session)
       expect(wsList.length).to.equal(1)
     });
@@ -74,3 +83,4 @@ describe('workspace', function() {
     })
   });
 });
+*/

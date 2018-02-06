@@ -31,6 +31,14 @@ module.exports = {
       workspaceName);
   },
 
+  share: function(env, session, workspaceName) {
+    return path.join(
+      env.workspace,
+      '_shared',
+      session.user.username,
+      workspaceName);
+  },
+
   list: function(env, session) {
     var dir = path.join(env.workspace,
                         session.user.username);
