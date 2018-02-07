@@ -21,26 +21,120 @@ module.exports = function(user, workspace) {
   }
 
   pub.listWorkspaces = function() {
-    return fs.readdirSync(user.fullpath)
+    try {
+      return fs.readdirSync(user.fullpath)
+    } catch(e) {
+      return []
+    }
   }
 
-  pub.deploy = function() {
-    // TODO: copy files to _deployed
+  pub.listFiles = function(appendPath) {
+    try {
+      return fs.readdirSync(path.join(dir, appendPath))
+    } catch(e) {
+      return []
+    }
   }
 
-  pub.share = function() {
-    // TODO: copy files to _shared
+  pub.createFile = function(appendPath, contents) {
+    fs.ensureDirSync(path.dirname(path.join(dir, appendPath)))
+    fs.writeFileSync(path.join(dir, appendPath), contents)
+    return this
   }
 
-  pub.import = function(workspace) {
-    // TODO: copy files from _shared
+  pub.deleteFile = function(appendPath) {
+    fs.removeSync(path.join(dir, appendPath))
+    return this
+  }
+
+  pub.deployWorkspace = function() {
+    var deployPath = path.join(user.env.workspace, '_deployed', user.name, workspace)
+    fs.ensureDirSync(deployPath)
+    fs.copySync(dir,
+                deployPath,
+                {overwrite: true, dereference: true})
+    if(fs.existsSync(path.join(deployPath, 'designer.html'))) {
+      fs.moveSync(path.join(deployPath, 'designer.html'),
+                  path.join(deployPath, 'index.html'),
+                  {overwrite: true});
+    }
+    return this
+  }
+
+  pub.listDeployed = function() {
+    try {
+      var sharedPath = path.join(user.env.workspace, '_deployed')
+      var out = []
+      var dirs = fs.readdirSync(sharedPath)
+      dirs.forEach(function(dir) {
+        var subdirs = fs.readdirSync(path.join(sharedPath, dir))
+        subdirs.forEach(function(subdir) {
+          out.push(`${dir}/${subdir}`)
+        })
+      })
+      return out
+    } catch(e) {
+      return []
+    }
+  }
+
+  pub.shareWorkspace = function() {
+    var sharePath = path.join(user.env.workspace, '_shared', user.name, workspace)
+    fs.ensureDirSync(sharePath)
+    fs.copySync(dir,
+                sharePath,
+                {overwrite: true, dereference: true})
+    if(fs.existsSync(path.join(sharePath, 'designer.html'))) {
+      fs.moveSync(path.join(sharePath, 'designer.html'),
+                  path.join(sharePath, 'index.html'),
+                  {overwrite: true});
+    }
+    return this
+  }
+
+  pub.importWorkspace = function(fromUser, fromWorkspace) {
+    var sharePath = path.join(user.env.workspace, '_shared', fromUser, fromWorkspace)
+    var componentsPath = path.join(dir, 'components', fromWorkspace)
+    fs.ensureDirSync(componentsPath)
+    fs.copySync(sharePath,
+                componentsPath,
+                {overwrite: true, dereference: true})
+    if(fs.existsSync(path.join(sharePath, 'designer.html'))) {
+      fs.moveSync(path.join(componentsPath, 'index.html'),
+                  path.join(componentsPath, 'designer.html'),
+                  {overwrite: true});
+    }
+    return this
   }
 
   pub.listShared = function() {
-    // TODO: array of project paths from _shared
+    try {
+      var sharedPath = path.join(user.env.workspace, '_shared')
+      var out = []
+      var dirs = fs.readdirSync(sharedPath)
+      dirs.forEach(function(dir) {
+        var subdirs = fs.readdirSync(path.join(sharedPath, dir))
+        subdirs.forEach(function(subdir) {
+          out.push(`${dir}/${subdir}`)
+        })
+      })
+      return out
+    } catch(e) {
+      return []
+    }
   }
 
-  pub.deleteComponent = function(name) {
+  pub.listComponents = function() {
+    try {
+      return fs.readdirSync(path.join(dir, 'components'))
+    } catch(e) {
+      return []
+    }
+  }
+
+  pub.deleteComponent = function(componentName) {
+    fs.removeSync(path.join(dir, 'components', componentName))
+    return this
   }
 
   pub.fullpath = dir

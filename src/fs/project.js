@@ -1,5 +1,5 @@
 module.exports = function(workspace, project) {
-  
+
   pub.createProject = function(projectJson) {
   }
 
