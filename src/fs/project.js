@@ -6,10 +6,6 @@ module.exports = function(workspace, project) {
   pub.deleteProject = function() {
   }
 
-  pub.name = function() {
-    return project
-  }
-
   pub.listProjects = function() {
     // TODO: array of project paths
   }
@@ -17,7 +13,8 @@ module.exports = function(workspace, project) {
   pub.fullPath = function() {
   }
 
-  pub.name = project
+  pub.name = projectJson.name
+  pub.projectJson = projectJson
 
   return pub
 }

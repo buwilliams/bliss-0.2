@@ -139,6 +139,7 @@ module.exports = function(user, workspace) {
 
   pub.fullpath = dir
   pub.name = workspace
+  pub.user = user
 
   return pub
 }
