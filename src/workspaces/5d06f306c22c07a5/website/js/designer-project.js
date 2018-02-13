@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 77,
+  "nextId": 80,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz",
@@ -210,7 +210,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "15",
-      "previous": "75",
+      "previous": "79",
       "child": null,
       "parent": "9"
     },
@@ -543,7 +543,7 @@ var blissProject = {
       "attributes": [
         {
           "name": "href",
-          "value": "mailto: bliss@blissui.com"
+          "value": "mailto: buddy@blissui.com"
         }
       ],
       "css": [],
@@ -618,7 +618,7 @@ var blissProject = {
       "id": "28",
       "name": "li",
       "element": "li",
-      "text": "Watch the video for  ",
+      "text": "Watch ",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1253,7 +1253,7 @@ var blissProject = {
       "id": "63",
       "name": "span",
       "element": "span",
-      "text": " built to remove technical barriers so that you can focus on designing and creating. It's is in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it's live.",
+      "text": " built to remove technical barriers so that you can focus on designing and creating. It's in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it's live.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1362,7 +1362,17 @@ var blissProject = {
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "20px"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "60",
@@ -1425,7 +1435,7 @@ var blissProject = {
       "id": "73",
       "name": "browse link",
       "element": "a",
-      "text": "Browse Apps",
+      "text": "Browse",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1443,7 +1453,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "76",
-      "previous": null,
+      "previous": "77",
       "child": null,
       "parent": "75"
     },
@@ -1503,16 +1513,16 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "4",
+      "next": "79",
       "previous": null,
-      "child": "73",
+      "child": "77",
       "parent": "9"
     },
     "76": {
       "id": "76",
-      "name": "launch bliss link",
+      "name": "play link",
       "element": "a",
-      "text": "Launch",
+      "text": "Play",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1533,7 +1543,191 @@ var blissProject = {
       "previous": "73",
       "child": null,
       "parent": "75"
+    },
+    "77": {
+      "id": "77",
+      "name": "watch link",
+      "element": "a",
+      "text": "Watch",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var currentValue = app.state.settings.showVideo\n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'showVideo',\n      value: !currentValue\n    })\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "73",
+      "previous": null,
+      "child": null,
+      "parent": "75"
+    },
+    "78": {
+      "id": "78",
+      "name": "todo video",
+      "element": "iframe",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "name",
+          "value": ""
+        },
+        {
+          "name": "width",
+          "value": "560"
+        },
+        {
+          "name": "height",
+          "value": "315"
+        },
+        {
+          "name": "src",
+          "value": "https://www.youtube.com/embed/j7bxCtu3SVo?rel=0&controls=0&showinfo=0&autoplay=1"
+        },
+        {
+          "name": "frameBorder",
+          "value": "0"
+        },
+        {
+          "name": "allowFullScreen",
+          "value": "true"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "margin",
+              "value": "0 auto"
+            },
+            {
+              "name": "width",
+              "value": "560px"
+            },
+            {
+              "name": "display",
+              "value": "block"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "79"
+    },
+    "79": {
+      "id": "79",
+      "name": "video container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "padding-bottom",
+              "value": "56.25%"
+            },
+            {
+              "name": "padding-top",
+              "value": "30px"
+            },
+            {
+              "name": "height",
+              "value": "0"
+            },
+            {
+              "name": "overflow",
+              "value": "hidden"
+            }
+          ]
+        },
+        {
+          "selector": "$id iframe, $id object, $id embed",
+          "properties": [
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "top",
+              "value": "0"
+            },
+            {
+              "name": "left",
+              "value": "0"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "height",
+              "value": "100%"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return app.state.settings.showVideo;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "4",
+      "previous": "75",
+      "child": "78",
+      "parent": "9"
     }
-  }
+  },
+  "schemas": [
+    {
+      "path": "/settings",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  var newData = {\n    showVideo: false\n  }\n  return newData;\n}"
+        },
+        {
+          "action": "set",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData[args.key] = args.value\n  return newData;\n}"
+        }
+      ]
+    }
+  ]
 }
 if(typeof module !== "undefined") module.exports = blissProject;

@@ -71,8 +71,35 @@ a:hover, a:active {
   text-align: center;
 }
 
+#videoContainer_79 {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+
+#videoContainer_79 iframe, #videoContainer_79 object, #videoContainer_79 embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#todoVideo_78 {
+  border: none;
+  margin: 0 auto;
+  width: 560px;
+  display: block;
+}
+
 #span_64 {
   text-decoration: underline;
+}
+
+#mission_69 {
+  margin-top: 20px;
 }
 
 #chevronBottom_51 {

@@ -9,6 +9,74 @@ var blissUiWebsite = (function() {
     app.js['init'] = function() {
       app.render();
     }
+    app.methods["77"] = {};
+    app.methods["77"]['handleClick'] = function(scope, attributes) {
+      var currentValue = app.state.settings.showVideo
+      return function(e) {
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'showVideo',
+          value: !currentValue
+        })
+      }
+    };
+    app.methods["79"] = {};
+    app.methods["79"]['shouldShow'] = function(scope, attributes) {
+      return app.state.settings.showVideo;
+    }
+    app.getPath = function(objRef, path) {
+      var ref = objRef;
+      var parts = path.split('/')
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part === '') continue;
+        ref = ref[part] || (ref[part] = {})
+      }
+      return ref;
+    }
+    app.assignPath = function(objRef, path, data) {
+      var ref = objRef;
+      var parts = path.split('/')
+      data || (data = {})
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part === '') continue;
+        if (i === parts.length - 1) {
+          ref = (ref[part] = data)
+        } else {
+          ref = ref[part] || (ref[part] = {})
+        }
+      }
+      return ref;
+    }
+    app.dispatch = function(options) {
+      var ref = app.state;
+      app.setState(function() {
+        var data = app.getPath(ref, options.path);
+        var fn = app.schema[options.path][options.action];
+        var newData = fn(data, options);
+        app.assignPath(ref, options.path, newData);
+      })
+    }
+    app.schema = {};
+    app.schema['/settings'] = {};
+    app.schema['/settings']['init'] = function(data, args) {
+      var newData = {
+        showVideo: false
+      }
+      return newData;
+    }
+    app.schema['/settings']['set'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData[args.key] = args.value
+      return newData;
+    }
+    if (app.schema['/settings']['init']) {
+      app.assignPath(app.state, '/settings', app.schema['/settings']['init']());
+    } else {
+      app.assignPath(app.state, '/settings');
+    }
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -68,18 +136,46 @@ var blissUiWebsite = (function() {
                   "id": "menuItemCopy_75",
                   "key": app.getKey('id', '75')
                 }),
+                React.createElement('a', app.mergeAttributes('77', scope, {
+                  "onClick": "handleClick"
+                }, {
+                  "href": "#",
+                  "id": "watchLink_77",
+                  "key": app.getKey('id', '77')
+                }), 'Watch'),
                 React.createElement('a', app.mergeAttributes('73', scope, {}, {
                   "href": "/hosted/",
                   "target": "_blank",
                   "id": "browseLink_73",
                   "key": app.getKey('id', '73')
-                }), 'Browse Apps'),
+                }), 'Browse'),
                 React.createElement('a', app.mergeAttributes('76', scope, {}, {
                   "href": "/bliss/",
                   "target": "_blank",
-                  "id": "launchBlissLink_76",
+                  "id": "playLink_76",
                   "key": app.getKey('id', '76')
-                }), 'Launch')),
+                }), 'Play')),
+              (function(scope) {
+                var out = [];
+                scope['shouldShow'] = app.methods['79']['shouldShow'](scope);
+                if (app.methods['79']['shouldShow'](scope) === true) {
+                  out.push(React.createElement('div', app.mergeAttributes('79', scope, {}, {
+                      "id": "videoContainer_79",
+                      "key": app.getKey('id', '79')
+                    }),
+                    React.createElement('iframe', app.mergeAttributes('78', scope, {}, {
+                      "name": "",
+                      "width": "560",
+                      "height": "315",
+                      "src": "https://www.youtube.com/embed/j7bxCtu3SVo?rel=0&controls=0&showinfo=0&autoplay=1",
+                      "frameBorder": "0",
+                      "allowFullScreen": "true",
+                      "id": "todoVideo_78",
+                      "key": app.getKey('id', '78')
+                    }))));
+                }
+                return out;
+              })(scope),
               React.createElement('h2', app.mergeAttributes('4', scope, {}, {
                 "id": "whatIsBlissui_4",
                 "key": app.getKey('id', '4')
@@ -99,7 +195,7 @@ var blissUiWebsite = (function() {
                 React.createElement('span', app.mergeAttributes('63', scope, {}, {
                   "id": "span_63",
                   "key": app.getKey('id', '63')
-                }), ' built to remove technical barriers so that you can focus on designing and creating. It\'s is in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it\'s live.')),
+                }), ' built to remove technical barriers so that you can focus on designing and creating. It\'s in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it\'s live.')),
               React.createElement('p', app.mergeAttributes('65', scope, {}, {
                 "id": "para_65",
                 "key": app.getKey('id', '65')
@@ -168,7 +264,7 @@ var blissUiWebsite = (function() {
                 React.createElement('li', app.mergeAttributes('28', scope, {}, {
                     "id": "li_28",
                     "key": app.getKey('id', '28')
-                  }), 'Watch the video for  ',
+                  }), 'Watch ',
                   React.createElement('a', app.mergeAttributes('29', scope, {}, {
                     "href": "https://www.youtube.com/watch?v=j7bxCtu3SVo",
                     "target": "_blank",
@@ -270,7 +366,7 @@ var blissUiWebsite = (function() {
                   "key": app.getKey('id', '23')
                 }), 'Let\'s get connected!  '),
                 React.createElement('a', app.mergeAttributes('24', scope, {}, {
-                    "href": "mailto: bliss@blissui.com",
+                    "href": "mailto: buddy@blissui.com",
                     "id": "link_24",
                     "key": app.getKey('id', '24')
                   }),
