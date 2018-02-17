@@ -1,23 +1,24 @@
 const path = require('path')
-const fs = require('fs-extra')
+const fs = require('./secure-fs.js')
 const str = require('../compilers/core/str.js')
 
 module.exports = function(env, session) {
   var pub = {}
-  var dir = path.join(env.workspace, session.user.username)
+  var username = session.user.username
+  var dir = path.join(env.workspace, username)
 
   pub.createUser = function() {
-    fs.ensureDirSync(dir)
+    fs(username, true).ensureDirSync(dir)
     return this
   }
 
   pub.deleteUser = function() {
-    fs.removeSync(dir)
+    fs(username, true).removeSync(dir)
     return this
   }
 
   pub.listUsers = function() {
-    return fs.readdirSync(env.workspace)
+    return fs(username, true).readdirSync(env.workspace)
   }
 
   pub.fullpath = dir
