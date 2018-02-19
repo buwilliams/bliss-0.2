@@ -1,19 +1,26 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
-const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
+const user = require('../../fs/user.js');
 
 router.get('/list', function(req, res) {
-  var workspaces = ws.list(env, req.session)
-  workspaces.forEach(function(w) {
-    w.projects = w.projects.concat(ws.listProjects(env, req.session, w.name));
+  var w = user(env, session).workspace()
+
+  var workspaces = w.listWorkspaces().map(function(workspace) {
+    return { 'name': workspace, 'projects': [] }
+  })
+
+  workspaces.forEach(function(work) {
+    var projects = user(env, session).workspace(work.name).listFiles('projects')
+    projects = projects.map(function(project) {
+      return { 'name': project }
+    })
+    work.projects = work.projects.concat(projects);
   });
 
-  res.send({
-    "workspaces": workspaces
-  })
+  res.send({ "workspaces": workspaces })
 })
 
 router.post('/', function(req, res) {
@@ -22,43 +29,20 @@ router.post('/', function(req, res) {
     return;
   }
 
-  ws.newWs(env, req.session, req.body.name)
+  user(env, session)
+    .createUser()
+    .workspace(req.body.name)
+    .createWorkspace()
+
   res.send({ "success": true })
 })
 
 router.delete('/:workspaceName', function(req, res) {
-  ws.deleteWs(env, req.session, req.params.workspaceName)
+  user(env, session)
+    .workspace(req.params.workspaceName)
+    .deleteWorkspace()
+
   res.send({ "success": true })
-})
-
-router.post('/rename', function(req, res) {
-  if (!req.body.name || !req.body.newName) {
-    res.status(400).send('name or newName param missing');
-    return;
-  }
-
-  ws.renameWs(env, req.session, req.body.name, req.body.newName)
-  res.send({ 'name': req.body.newName })
-})
-
-router.post('/copy', function(req, res) {
-  if (!req.body.fromWs || !req.body.toWs) {
-    res.status(400).send('fromWs or toWs param missing');
-    return;
-  }
-
-  try {
-    ws.copyWs(env,
-              req.session.user.username,
-              req.body.fromWs,
-              req.session.user.username,
-              req.body.toWs);
-  } catch(e) {
-    res.status(500).send(`toWs or fromWs path(s) not found. Error: ${e}`);
-    return;
-  }
-
-  res.send({ 'name': req.body.newName })
 })
 
 module.exports = router

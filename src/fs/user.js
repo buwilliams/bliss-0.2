@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('./secure-fs.js')
 const str = require('../compilers/core/str.js')
+const ws = require('./workspace.js')
 
 module.exports = function(env, session) {
   var pub = {}
@@ -19,6 +20,10 @@ module.exports = function(env, session) {
 
   pub.listUsers = function() {
     return fs(username, true).readdirSync(env.workspace)
+  }
+
+  pub.workspace = function(workspaceName) {
+    return ws(this, workspaceName)
   }
 
   pub.fullpath = dir

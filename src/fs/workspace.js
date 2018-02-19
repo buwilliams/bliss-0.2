@@ -3,8 +3,12 @@ const fs = require('./secure-fs.js')
 
 module.exports = function(user, workspace) {
   var pub = {}
-  var dir = path.join(user.fullpath, workspace)
   var username = user.name
+  var dir
+
+  if(typeof(workspace) === 'string') {
+    dir = path.join(user.fullpath, workspace)
+  }
 
   pub.createWorkspace = function() {
     fs(username).ensureDirSync(path.join(dir))
