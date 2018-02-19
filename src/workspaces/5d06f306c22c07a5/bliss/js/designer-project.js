@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 8,
+  "nextId": 10,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -67,10 +67,6 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
-              "name": "width",
-              "value": "100%"
-            },
-            {
               "name": "position",
               "value": "relative"
             },
@@ -91,10 +87,10 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "4",
-      "previous": "7",
+      "next": null,
+      "previous": null,
       "child": "5",
-      "parent": "1"
+      "parent": "8"
     },
     "3": {
       "id": "3",
@@ -167,7 +163,7 @@ var blissProject = {
     },
     "4": {
       "id": "4",
-      "name": "new_4",
+      "name": "text",
       "element": "div",
       "text": "CONTENT",
       "textFn": null,
@@ -177,8 +173,8 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
-      "previous": "2",
+      "next": "9",
+      "previous": "8",
       "child": null,
       "parent": "1"
     },
@@ -203,14 +199,22 @@ var blissProject = {
       "css": [],
       "js": [
         {
-          "name": "handleDrag",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    console.log('drag handler', e)\n  }\n};\n"
+          "name": "handleDragMove",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    console.log('drag handler', e)\n    //console.log('drag handler', e.x, e.pageX, e.offsetX, e.layerX, e.movementX)\n  }\n};\n"
+        },
+        {
+          "name": "handleDragStop",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    console.log('stop', e.x, e.clientX, e.pageX, e.offsetX, e.layerX, e.movementX, e.screenX)\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
         {
           "name": "onDrag",
-          "value": "handleDrag"
+          "value": "handleDragMove"
+        },
+        {
+          "name": "onStop",
+          "value": "handleDragStop"
         }
       ],
       "next": null,
@@ -220,7 +224,7 @@ var blissProject = {
     },
     "7": {
       "id": "7",
-      "name": "new_4_copy",
+      "name": "text",
       "element": "div",
       "text": "CONTENT",
       "textFn": null,
@@ -230,8 +234,57 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "2",
+      "next": "8",
       "previous": null,
+      "child": null,
+      "parent": "1"
+    },
+    "8": {
+      "id": "8",
+      "name": "resize container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "50%"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "4",
+      "previous": "7",
+      "child": "2",
+      "parent": "1"
+    },
+    "9": {
+      "id": "9",
+      "name": "show size",
+      "element": "div",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return \"Size: \" + app.state.drag.size;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "4",
       "child": null,
       "parent": "1"
     }
@@ -242,7 +295,7 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    left: -1,\n    dragging: false\n  }\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = {\n    size: 0\n  }\n  return newData;\n}"
         },
         {
           "action": "set",

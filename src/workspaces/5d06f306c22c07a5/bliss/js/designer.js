@@ -10,9 +10,16 @@ var size = (function() {
       app.render()
     }
     app.methods["5"] = {};
-    app.methods["5"]['handleDrag'] = function(scope, attributes) {
+    app.methods["5"]['handleDragMove'] = function(scope, attributes) {
       return function(e) {
         console.log('drag handler', e)
+        //console.log('drag handler', e.x, e.pageX, e.offsetX, e.layerX, e.movementX)
+      }
+    };
+
+    app.methods["5"]['handleDragStop'] = function(scope, attributes) {
+      return function(e) {
+        console.log('stop', e.x, e.clientX, e.pageX, e.offsetX, e.layerX, e.movementX, e.screenX)
       }
     };
     app.methods["3"] = {};
@@ -35,6 +42,10 @@ var size = (function() {
           value: true
         })
       }
+    };
+    app.methods["9"] = {};
+    app.methods["9"]['getText'] = function(scope, attributes) {
+      return "Size: " + app.state.drag.size;
     };
     app.getPath = function(objRef, path) {
       var ref = objRef;
@@ -74,8 +85,7 @@ var size = (function() {
     app.schema['/drag'] = {};
     app.schema['/drag']['init'] = function(data, args) {
       var newData = {
-        left: -1,
-        dragging: false
+        size: 0
       }
       return newData;
     }
@@ -113,31 +123,40 @@ var size = (function() {
             "key": app.getKey('id', '1')
           }),
           React.createElement('div', app.mergeAttributes('7', scope, {}, {
-            "id": "newCopy_7",
+            "id": "text_7",
             "key": app.getKey('id', '7')
           }), 'CONTENT'),
-          React.createElement('div', app.mergeAttributes('2', scope, {}, {
-              "id": "line_2",
-              "key": app.getKey('id', '2')
+          React.createElement('div', app.mergeAttributes('8', scope, {}, {
+              "id": "resizeContainer_8",
+              "key": app.getKey('id', '8')
             }),
-            React.createElement(ReactDraggable, app.mergeAttributes('5', scope, {
-                "onDrag": "handleDrag"
-              }, {
-                "axis": "x",
-                "bounds": "parent",
-                "id": "draggable_5",
-                "key": app.getKey('id', '5')
+            React.createElement('div', app.mergeAttributes('2', scope, {}, {
+                "id": "line_2",
+                "key": app.getKey('id', '2')
               }),
-              React.createElement('div', app.mergeAttributes('3', scope, {
-                "style": "getStyles"
-              }, {
-                "id": "circle_3",
-                "key": app.getKey('id', '3')
-              })))),
+              React.createElement(ReactDraggable, app.mergeAttributes('5', scope, {
+                  "onDrag": "handleDragMove",
+                  "onStop": "handleDragStop"
+                }, {
+                  "axis": "x",
+                  "bounds": "parent",
+                  "id": "draggable_5",
+                  "key": app.getKey('id', '5')
+                }),
+                React.createElement('div', app.mergeAttributes('3', scope, {
+                  "style": "getStyles"
+                }, {
+                  "id": "circle_3",
+                  "key": app.getKey('id', '3')
+                }))))),
           React.createElement('div', app.mergeAttributes('4', scope, {}, {
-            "id": "new_4",
+            "id": "text_4",
             "key": app.getKey('id', '4')
-          }), 'CONTENT')));
+          }), 'CONTENT'),
+          React.createElement('div', app.mergeAttributes('9', scope, {}, {
+            "id": "showSize_9",
+            "key": app.getKey('id', '9')
+          }), app.methods['9']['getText'](scope))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;
