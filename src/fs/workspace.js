@@ -145,6 +145,7 @@ module.exports = function(user, workspace) {
   pub.fullpath = dir
   pub.name = workspace
   pub.user = user
+  pub.deployPath = path.join(user.env.workspace, '_deployed')
 
   return pub
 }
