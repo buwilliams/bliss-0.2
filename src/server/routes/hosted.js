@@ -1,38 +1,17 @@
-const path = require('path');
-const fs = require('fs');
-const express = require('express');
-const router = express.Router();
-const ws = require('../../compilers/core/workspace.js');
-const env = require('../env.js');
-const session = require('../session.js');
+const express = require('express')
+const router = express.Router()
+const env = require('../env.js')
+const session = require('../session.js')
+const user = require('../../fs/user.js')
+const ws = user(env, session).workspace()
 
 router.get('/', function(req, res) {
-  var deployedDir = path.join(env.workspace, '_deployed');
-  var links = [];
-  var users = fs.readdirSync(deployedDir);
-  users.forEach(function(user) {
-    var workspaces = fs.readdirSync(path.join(deployedDir, user));
-    workspaces.forEach(function(workspace) {
-      links.push(`/hosted/${user}/${workspace}/`);
-    });
-  });
+  var deployed = ws.listDeployed().map(function(dir){
+    return `/hosted/${dir}/`
+  })
+  res.render('project-list', { title: 'Project list', links: deployed})
+})
 
-  res.render('project-list', { title: 'Project list', links: links})
-});
-
-router.get('/:user', function(req, res) {
-  var deployedDir = path.join(env.workspace, '_deployed');
-  var links = [];
-  var user = req.params.user
-  var workspaces = fs.readdirSync(path.join(deployedDir, user));
-  workspaces.forEach(function(workspace) {
-    links.push(`/hosted/${user}/${workspace}/`);
-  });
-
-  res.render('project-list', { title: 'Project list', links: links})
-});
-
-router.use('/',
-  express.static(ws.deployed(env)));
+router.use('/', express.static(ws.deployPath))
 
 module.exports = router
