@@ -1,9 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const env = require('../env.js')
-const session = require('../session.js')
-const user = require('../../fs/user.js')
-const ws = user(env, session).workspace()
+const ws = require('../../fs/user.js')().workspace()
 
 router.get('/', function(req, res) {
   var deployed = ws.listDeployed().map(function(dir){

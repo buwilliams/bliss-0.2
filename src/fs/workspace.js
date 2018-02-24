@@ -146,6 +146,7 @@ module.exports = function(user, workspace) {
   pub.name = workspace
   pub.user = user
   pub.deployPath = path.join(user.env.workspace, '_deployed')
+  pub.websitePath = path.join(pub.deployPath, user.env.bliss_user, 'website')
 
   return pub
 }

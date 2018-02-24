@@ -1,9 +1,14 @@
 const path = require('path')
 const fs = require('./secure-fs.js')
 const str = require('../compilers/core/str.js')
+const defaultEnv = require('../server/env.js');
+const defaultSession = require('../server/session.js');
 const ws = require('./workspace.js')
 
 module.exports = function(env, session) {
+  if(typeof(env) === 'undefined') env = defaultEnv
+  if(typeof(session) === 'undefined') session = defaultSession
+  
   var pub = {}
   var username = session.user.username
   var dir = path.join(env.workspace, username)
