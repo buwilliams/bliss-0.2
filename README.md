@@ -2,6 +2,8 @@
 
 Application Management System (AMS) for Coders and Designers
 
+![BlissUI](https://i.imgur.com/ood3FcY.png)
+
 ## Features
 
 - JSON Data Structure
