@@ -76,6 +76,11 @@ module.exports = function(username, override) {
     return fs.writeFileSync(dir, contents)
   }
 
+  pub.readFileSync = function(dir) {
+    isAllowed(dir)
+    return fs.readFileSync(dir)
+  }
+
   pub.existsSync = function(dir) {
     isAllowed(dir)
     return fs.existsSync(dir)

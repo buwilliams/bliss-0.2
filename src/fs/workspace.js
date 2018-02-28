@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('./secure-fs.js')
+const proj = require('./project.js')
 
 module.exports = function(user, workspace) {
   var pub = {}
@@ -143,7 +144,7 @@ module.exports = function(user, workspace) {
   }
 
   pub.project = function(projectJson) {
-    return ws(this, projectJson)
+    return proj(this, projectJson)
   }
 
   pub.fullpath = dir
