@@ -1522,7 +1522,7 @@ var blissProject = {
       "id": "76",
       "name": "play link",
       "element": "a",
-      "text": "Play",
+      "text": "Sign-in",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,

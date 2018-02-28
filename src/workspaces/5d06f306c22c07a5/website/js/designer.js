@@ -154,7 +154,7 @@ var blissUiWebsite = (function() {
                   "target": "_blank",
                   "id": "playLink_76",
                   "key": app.getKey('id', '76')
-                }), 'Play')),
+                }), 'Sign-in')),
               (function(scope) {
                 var out = [];
                 scope['shouldShow'] = app.methods['79']['shouldShow'](scope);

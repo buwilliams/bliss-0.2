@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 47,
+  "nextId": 67,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
@@ -129,7 +129,7 @@
       "id": "6",
       "name": "header",
       "element": "h1",
-      "text": "Pretty To-do list",
+      "text": "Pretty To-do List",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
