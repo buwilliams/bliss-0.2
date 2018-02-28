@@ -1,6 +1,6 @@
 # Bliss UI
 
-AMS or Application Management Systems
+Application Management System (AMS) for Coders and Designers
 
 ## Features
 
