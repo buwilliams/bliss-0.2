@@ -142,6 +142,10 @@ module.exports = function(user, workspace) {
     return this
   }
 
+  pub.project = function(projectJson) {
+    return ws(this, projectJson)
+  }
+
   pub.fullpath = dir
   pub.name = workspace
   pub.user = user
