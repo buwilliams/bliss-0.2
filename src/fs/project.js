@@ -1,13 +1,21 @@
 const str = require('../compilers/core/str.js');
 
 module.exports = function(workspace, projectJson) {
+  if(!projectJson) {
+    projectJson = { name: 'New project' }
+  }
+  
   var filename = str.getSnake(projectJson.name) + '.js'
 
   pub.createProject = function() { }
 
-  pub.deleteProject = function() { }
+  pub.saveProject = function() { }
+
+  pub.loadProject = function() { }
 
   pub.listProjects = function() { }
+
+  pub.deleteProject = function() { }
 
   pub.compile = function() {
     var compilerPath = path.join(__dirname, "..", "compilers",
