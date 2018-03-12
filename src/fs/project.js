@@ -30,10 +30,10 @@ module.exports = function(workspace, projectJson) {
 
   pub.loadProject = function(filename) {
     var dir = `${pub.fullpath}/${filename}`
-    var jsonStr = fs(workspace.user.name)
-      .readFileSync(dir)
+    var jsonStr = fs(workspace.user.name).readFileSync(dir)
     var projectJson = JSON.parse(jsonStr)
     init(projectJson)
+    return this
   }
 
   pub.deleteProject = function(filename) {
@@ -55,6 +55,8 @@ module.exports = function(workspace, projectJson) {
     var compiler = require(compilerPath);
     compiler.export(workspace.fullpath, projectJson, null)
   }
+
+  pub.workspace = workspace
 
   return pub
 }
