@@ -1,16 +1,20 @@
 # Bliss UI
 
-A platform to create UIs in the cloud.
+Application Management System (AMS) for Coders and Designers
 
-Features:
+![BlissUI](https://i.imgur.com/ood3FcY.png)
 
-- Application Designer
-- Marketplace
-- Application Hosting
+## Features
 
-Getting Started:
+- JSON Data Structure
+- Compilers (Plain, React)
+- Cloud-based IDE
+- Website
 
-- Run `$ jake build`
-- Run `$ jake server`
+## Getting Started
+
+- `yarn install`
+- `jake test`
+- `jake build`
+- `jake server`
 - Open `http://localhost:3000/bliss/`
-

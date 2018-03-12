@@ -1,13 +1,16 @@
 const tokens = require('./core/tokens.js')
 const env = require('./env.js')
-const session = require('./session.js');
-const ws = require('../compilers/core/workspace.js');
+const session = require('./session.js')
+const user = require('../fs/user.js')
+const ws = require('../fs/workspace.js')
 
 module.exports = function(req, res, next) {
+  /*
   console.log('Designer url:', req.url,
     'Token:', req.params.token,
     'Workspace:', req.params.workspace,
     'Params:', req.params)
+  */
 
   var token = req.params.token;
   var workspace = req.params.workspace;
@@ -20,14 +23,17 @@ module.exports = function(req, res, next) {
   }
 
   if(!workspace) {
-    res.status(400).send('missing workspace path in url');
+    res.status(400).send('Missing workspace path in url');
     return;
   }
 
   var parts = tokens.getTokenParts(req.params.token);
   var newSession = Object.assign({}, session);
   newSession.user.username = parts[0];
-  res.sendFile(filePath, {
-    root: ws.workspace(env, newSession, workspace)
-  });
+
+  // Initialize user and workspace
+  var u = user(env, newSession).createUser()
+  var w = ws(u, workspace).createWorkspace()
+
+  res.sendFile(filePath, { root: w.fullpath });
 }

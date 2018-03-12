@@ -2,11 +2,10 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const router = express.Router();
-const ws = require('../../compilers/core/workspace.js');
 const env = require('../env.js');
 const session = require('../session.js');
-const project = require('../../compilers/core/project.js');
-const deps = require('../../compilers/core/dependencies.js');
+const user = require('../../fs/user.js');
+const deps = require('../../fs/dependencies.js');
 
 router.get('/list', function (req, res) {
   if (!req.query.workspace) {
@@ -14,11 +13,12 @@ router.get('/list', function (req, res) {
     return;
   }
 
-  var json = project.listProjects(
-    ws.workspace(env, req.session, req.query.workspace));
-  res.send({success: true, projects: json});
-  console.log(`Listed projects for '` +
-    `${req.session.user.username}/${req.query.workspace}'`);
+  var projects = user(env, req.session)
+    .workspace(req.query.workspace)
+    .project()
+    .listProjects()
+
+  res.send({success: true, projects: projects});
 });
 
 router.get('/load', function (req, res) {
@@ -28,17 +28,20 @@ router.get('/load', function (req, res) {
   }
 
   if (!req.query.name) {
-    res.status(400).send('missing name param ');
+    res.status(400).send('missing name param');
     return;
   }
 
   var name = req.query.name;
-  var json = project.readProject(
-    ws.workspace(env, req.session, req.query.workspace), name);
-  deps.update(
-    ws.workspace(env, req.session, req.query.workspace), json);
-  res.send({success: true, project: json});
-  console.log(`Loaded '${json.name}'`);
+
+  var project = user(env, req.session)
+    .workspace(req.query.workspace)
+    .project()
+    .loadProject(name)
+
+  deps.update(project.workspace.fullpath, project.projectJson);
+
+  res.send({success: true, project: project.projectJson});
 });
 
 router.post('/save', function (req, res) {
@@ -47,13 +50,17 @@ router.post('/save', function (req, res) {
     return;
   }
 
-  var projectJson = req.body;
-  project.writeProject(
-    ws.workspace(env, req.session, req.query.workspace), projectJson);
-  res.send({success: true});
-  console.log(`Saved '${projectJson.name}'`);
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .project(req.body)
+    .saveProject()
+
+  res.send({ success: true });
 });
 
+// TODO: delete project
+
+/*
 router.get('/explore', function(req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
@@ -80,7 +87,6 @@ router.get('/explore', function(req, res) {
   });
   res.send({success: true, entries: list});
 });
-
-// TODO: delete project
+*/
 
 module.exports = router

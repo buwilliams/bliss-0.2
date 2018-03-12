@@ -1,17 +1,12 @@
 module.exports = {
-  "name": "tests",
+  "name": "test",
   "compiler": "react",
   "version": "v0.2",
   "type": "bliss",
   "build": "designer",
   "nextId": 4,
   "rootId": "1",
-  "packages": [
-    {
-      "name": "someDep",
-      "version": ""
-    }
-  ],
+  "packages": [],
   "externalCss": [],
   "externalJs": [],
   "state": {},

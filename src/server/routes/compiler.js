@@ -1,76 +1,90 @@
-const path = require('path');
-const express = require('express');
-const router = express.Router();
-const ws = require('../../compilers/core/workspace.js');
-const env = require('../env.js');
-const session = require('../session.js');
-
-var getCompiler = function(projectJson) {
-  var compilerPath = path.join(__dirname,
-                               "..",
-                               "..",
-                               "compilers",
-                               projectJson.compiler,
-                               `${projectJson.compiler}.js`);
-  return require(compilerPath);
-};
-
-var getDeployer = function(projectJson) {
-  var deployerPath = path.join(__dirname,
-                               "..",
-                               "..",
-                               "compilers",
-                               projectJson.compiler,
-                               "exports",
-                               'deploy.js');
-  return require(deployerPath);
-};
+const path = require('path')
+const express = require('express')
+const router = express.Router()
+const env = require('../env.js')
+const user = require('../../fs/user.js')
 
 router.post('/build', function (req, res) {
   if (!req.query.workspace) {
-    res.status(400).send('missing workspace param');
-    return;
+    return res.status(400).send('missing workspace param')
   }
 
-  var projectJson = req.body;
-  var compiler = getCompiler(projectJson);
-  compiler.compile(
-    ws.workspace(env, req.session, req.query.workspace),
-    projectJson,
-    null);
-  res.send({success: true});
-  console.log(`Built '${projectJson.name}'`);
+  var projectJson = req.body
+
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .project(projectJson)
+    .compile()
+
+  console.log(`Built '${projectJson.name}'`)
+  res.send({success: true})
 });
 
 router.post('/export', function (req, res) {
   if (!req.query.workspace) {
-    res.status(400).send('missing workspace param');
-    return;
+    return res.status(400).send('missing workspace param')
   }
 
-  var projectJson = req.body;
-  var compiler = getCompiler(projectJson);
-  compiler.export(
-    ws.workspace(env, req.session, req.query.workspace),
-    projectJson,
-    null);
-  res.send({success: true});
-  console.log(`Exported component '${projectJson.name}'`);
+  var projectJson = req.body
+
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .project(projectJson)
+    .export()
+
+  res.send({success: true})
+  console.log(`Exported component '${projectJson.name}'`)
 });
 
 router.post('/dist', function (req, res) {
+  if (!req.query.workspace) {
+    return res.status(400).send('missing workspace param')
+  }
+
+  var projectJson = req.body
+
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .deployWorkspace()
+
+  res.send({success: true});
+  console.log(`Deployed '${projectJson.name}'`);
+});
+
+router.post('/share', function (req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
     return;
   }
 
-  var projectJson = req.body;
-  var deployer = getDeployer(projectJson);
-  deployer.write(projectJson,
-    ws.workspace(env, req.session, req.query.workspace),
-    ws.deploy(env, req.session, req.query.workspace));
+  var projectJson = req.body
+
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .shareWorkspace()
+
   res.send({success: true});
-  console.log(`Deployed '${projectJson.name}'`);
+
+  console.log(`Shared '${projectJson.name}'`);
+});
+
+router.post('/import', function (req, res) {
+  if (!req.query.workspace || !req.query.fromUser || !req.query.fromWorkspace) {
+    return res
+      .status(400)
+      .send('missing workspace, fromUser, or fromWorkspace params')
+  }
+
+  var fromUser = req.query.fromUser
+  var fromWorkspace = req.query.fromWorkspace
+
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .importWorkspace(fromUser, fromWorkspace)
+
+  res.send({success: true});
+
+  console.log(`Imported '${fromUser}/${fromWorkspace}'`);
 });
 
 module.exports = router
