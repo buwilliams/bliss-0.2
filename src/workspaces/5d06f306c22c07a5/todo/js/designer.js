@@ -231,7 +231,7 @@ var todo = (function() {
                 React.createElement('h1', app.mergeAttributes('6', scope, {}, {
                   "id": "header_6",
                   "key": app.getKey('id', '6')
-                }), 'Pretty To-do List'),
+                }), 'Beauitful To-do List'),
                 React.createElement('input', app.mergeAttributes('7', scope, {
                   "value": "getValue",
                   "onChange": "handleChange",
@@ -264,7 +264,7 @@ var todo = (function() {
                         "style": "getStyle",
                         "onClick": "handleClick"
                       }, {
-                        "id": "listOfToDos_9",
+                        "id": "todoItem_9",
                         "key": app.getKey('id', '9', i)
                       }), app.methods['9']['getText'](scope),
                       React.createElement('i', app.mergeAttributes('13', scope, {

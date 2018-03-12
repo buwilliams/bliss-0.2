@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 67,
+  "nextId": 77,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
@@ -129,7 +129,7 @@
       "id": "6",
       "name": "header",
       "element": "h1",
-      "text": "Pretty To-do List",
+      "text": "Beauitful To-do List",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -227,7 +227,7 @@
         },
         {
           "name": "handleKeyup",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    if (e.keyCode == 13) {\n      if(app.state.todos.label === '') return;\n      app.dispatch({\n        path: '/todos',\n        action: 'addTodo',\n        label: app.state.todos.label\n      })\n\n      app.dispatch({\n        path: '/todos',\n        action: 'setLabel',\n        label: ''\n      })\n    }\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    if (e.keyCode == 13) {\n      if(app.state.todos.label === '') return;\n      app.dispatch({\n        path: '/todos',\n        action: 'addTodo',\n        label: app.state.todos.label\n      })\n      \n      app.dispatch({\n        path: '/todos',\n        action: 'setLabel',\n        label: ''\n      })\n    }\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -316,7 +316,7 @@
     },
     "9": {
       "id": "9",
-      "name": "list of to-dos",
+      "name": "todo item",
       "element": "div",
       "text": "",
       "textFn": "getText",
