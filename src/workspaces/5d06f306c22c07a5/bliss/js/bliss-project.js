@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 279,
+  "nextId": 292,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -1184,7 +1184,7 @@ var blissProject = {
     },
     "98": {
       "id": "98",
-      "name": "settings header",
+      "name": "Settings header",
       "element": "h3",
       "text": "Settings",
       "textFn": null,
@@ -1229,7 +1229,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "199",
+      "next": "288",
       "previous": null,
       "child": null,
       "parent": "97"
@@ -1269,92 +1269,6 @@ var blissProject = {
       "previous": "274",
       "child": "189",
       "parent": "111"
-    },
-    "102": {
-      "id": "102",
-      "name": "project name",
-      "element": "input",
-      "text": null,
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "form-control pull-left input-sm"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "width",
-              "value": "50%"
-            },
-            {
-              "name": "margin-left",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "getValue",
-          "body": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n"
-        },
-        {
-          "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.shouldSave = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onChange",
-          "value": "handleChange"
-        },
-        {
-          "name": "value",
-          "value": "getValue"
-        }
-      ],
-      "next": "196",
-      "previous": "103",
-      "child": null,
-      "parent": "199"
-    },
-    "103": {
-      "id": "103",
-      "name": "name label",
-      "element": "span",
-      "text": "Project name: ",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "pull-left"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "8px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "102",
-      "previous": null,
-      "child": null,
-      "parent": "199"
     },
     "104": {
       "id": "104",
@@ -3652,7 +3566,7 @@ var blissProject = {
     },
     "196": {
       "id": "196",
-      "name": "delete project",
+      "name": "delete page",
       "element": "button",
       "text": "",
       "textFn": null,
@@ -3661,17 +3575,13 @@ var blissProject = {
       "attributes": [
         {
           "name": "class",
-          "value": "btn btn-default btn-sm pull-right"
+          "value": "btn btn-default btn-sm"
         }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            {
-              "name": "background-color",
-              "value": "$menuWarn"
-            },
             {
               "name": "color",
               "value": "#fff"
@@ -3683,6 +3593,10 @@ var blissProject = {
             {
               "name": "margin-top",
               "value": "6px"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuWarn"
             }
           ]
         }
@@ -3690,9 +3604,9 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "102",
+      "previous": "291",
       "child": "197",
-      "parent": "199"
+      "parent": "97"
     },
     "197": {
       "id": "197",
@@ -3725,7 +3639,7 @@ var blissProject = {
       "id": "198",
       "name": "delete label",
       "element": "span",
-      "text": "Delete project",
+      "text": "Delete page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3751,33 +3665,6 @@ var blissProject = {
       "previous": "197",
       "child": null,
       "parent": "196"
-    },
-    "199": {
-      "id": "199",
-      "name": "project details container",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "98",
-      "child": "103",
-      "parent": "97"
     },
     "201": {
       "id": "201",
@@ -5885,6 +5772,277 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "151"
+    },
+    "281": {
+      "id": "281",
+      "name": "page title input",
+      "element": "input",
+      "text": null,
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control pull-left input-sm"
+        },
+        {
+          "name": "placeholder",
+          "value": "Page title"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.shouldSave = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "282",
+      "previous": null,
+      "child": null,
+      "parent": "279"
+    },
+    "285": {
+      "id": "285",
+      "name": "page title input",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control"
+        },
+        {
+          "name": "placeholder",
+          "value": "Page title"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      app.buildProject.pageTitle = value;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return app.buildProject.pageTitle || '';\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getText"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": null,
+      "previous": "286",
+      "child": null,
+      "parent": "287"
+    },
+    "286": {
+      "id": "286",
+      "name": "page title label",
+      "element": "label",
+      "text": "Page title",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "285",
+      "previous": null,
+      "child": null,
+      "parent": "287"
+    },
+    "287": {
+      "id": "287",
+      "name": "Page title container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "291",
+      "previous": "288",
+      "child": "286",
+      "parent": "97"
+    },
+    "288": {
+      "id": "288",
+      "name": "File name container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "287",
+      "previous": "98",
+      "child": "289",
+      "parent": "97"
+    },
+    "289": {
+      "id": "289",
+      "name": "file name label",
+      "element": "label",
+      "text": "File name",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "290",
+      "previous": null,
+      "child": null,
+      "parent": "288"
+    },
+    "290": {
+      "id": "290",
+      "name": "file name input",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control"
+        },
+        {
+          "name": "placeholder",
+          "value": "File name"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return app.buildProject.filename || '';\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      app.buildProject.filename = value;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getText"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "288"
+    },
+    "291": {
+      "id": "291",
+      "name": "separator",
+      "element": "hr",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "196",
+      "previous": "287",
+      "child": null,
+      "parent": "97"
     }
   },
   "schemas": [
