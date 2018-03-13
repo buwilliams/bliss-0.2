@@ -6,7 +6,7 @@ var mkdirp = require('mkdirp');
 
 module.exports = {
   write: function(outputPath, projectJson, startId) {
-    var filename = `${projectJson.build}.html`;
+    var filename = (projectJson.filename || 'designer') + '.html';
     var strData = this.build(projectJson, startId);
     var fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, strData);
@@ -30,7 +30,7 @@ module.exports = {
 
     // CSS
     out += html.getExternalCss(projectJson.externalCss);
-    out += html.getExternalCss([`css/${projectJson.build}.css`]);
+    out += html.getExternalCss(['css/' + (projectJson.filename || 'designer') + '.css']);
 
     out += html.closeTag('head');
     out += html.openTag('body');
@@ -45,9 +45,9 @@ module.exports = {
     out += html.closeTag('script');
 
     out += html.getExternalJs(projectJson.externalJs);
-    out += html.getExternalJs([`js/${projectJson.build}-new-project.js`]);
-    out += html.getExternalJs([`js/${projectJson.build}-project.js`]);
-    out += html.getExternalJs([`js/${projectJson.build}.js`]);
+    out += html.getExternalJs(['js/' + (projectJson.filename || '-new-project') + '.js']);
+    out += html.getExternalJs(['js/' + (projectJson.filename || '-project') + '.js']);
+    out += html.getExternalJs(['js/' + (projectJson.filename || 'designer') + '.js']);
 
     out += html.openTag('script');
     out += "if (window.module) module = window.module;";

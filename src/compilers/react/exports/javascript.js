@@ -10,7 +10,7 @@ module.exports = {
   write: function(outputPath, projectJson, startId, writeAsComponent) {
     if(typeof writeAsComponent === 'undefined') writeAsComponent = false;
     // write bliss javascript
-    var filename = `${projectJson.build}.js`;
+    var filename = (projectJson.filename || 'designer') + '.js';
     var builtStr = this.buildAppJs(projectJson, startId);
     builtStr += this.buildSchemas(projectJson);
     builtStr += this.buildReact(projectJson, startId);
@@ -23,13 +23,13 @@ module.exports = {
 
     // write new project javascript
     builtStr = this.buildNewProjectJson(projectJson);
-    filename = `${projectJson.build}-new-project.js`;
+    filename = (projectJson.filename || 'designer') + '-new-project.js';
     fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, builtStr);
 
     // write current json
     var projectJsonStr = this.buildProjectJson(projectJson);
-    filename = `${projectJson.build}-project.js`;
+    filename = (projectJson.filename || 'designer') + '-project.js';
     fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, projectJsonStr);
   },

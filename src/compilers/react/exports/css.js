@@ -5,7 +5,7 @@ const css = require('../../core/css.js');
 
 module.exports = {
   write: function(outputPath, projectJson, startId) {
-    var filename = `${projectJson.build}.css`;
+    var filename = (projectJson.filename || 'designer') + '.css';
     var builtStr = this.build(projectJson, startId);
     var fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, builtStr);
