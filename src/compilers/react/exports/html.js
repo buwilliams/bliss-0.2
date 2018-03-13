@@ -19,7 +19,7 @@ module.exports = {
 
     out += html.openTag('head');
     out += html.getMetaCharset();
-    out += html.openTag('title', null, projectJson.name);
+    out += html.openTag('title', null, (projectJson.pageTitle || projectJson.name));
     out += html.closeTag('title');
 
     out += html.openTag('meta', {

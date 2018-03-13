@@ -59,11 +59,13 @@ module.exports = function(user, workspace) {
     fs(username).copySync(dir,
                 deployPath,
                 {overwrite: true, dereference: true})
+    /*
     if(fs(username).existsSync(path.join(deployPath, 'designer.html'))) {
       fs(username).moveSync(path.join(deployPath, 'designer.html'),
                   path.join(deployPath, 'index.html'),
                   {overwrite: true});
     }
+    */
     return this
   }
 
