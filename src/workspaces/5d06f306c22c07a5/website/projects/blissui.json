@@ -1,5 +1,5 @@
 {
-  "name": "bliss_ui_website_2",
+  "name": "BlissUI",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
@@ -86,7 +86,7 @@
   "components": {
     "1": {
       "id": "1",
-      "name": "bliss_ui_website_2",
+      "name": "BlissUI",
       "element": "div",
       "text": null,
       "attributes": [],

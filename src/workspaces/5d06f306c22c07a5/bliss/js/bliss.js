@@ -262,9 +262,8 @@ var blissUi = (function() {
 
       var url = location.origin +
         '/bliss/designer/' +
-        app.state.firebase.designer_token +
-        '/' + workspace + '/' +
-        app.buildProject.filename || 'designer' + '.html';
+        app.state.firebase.designer_token + '/' + workspace + '/' +
+        'designer.html';
 
       iframe.attr('src', url);
     }
@@ -1071,31 +1070,18 @@ var blissUi = (function() {
         'display': displayValue
       };
     }
-    app.methods["290"] = {};
-    app.methods["290"]['getText'] = function(scope, attributes) {
-      return app.buildProject.filename || '';
+    app.methods["102"] = {};
+    app.methods["102"]['getValue'] = function(scope, attributes) {
+      return app.buildProject.name;
     };
 
-    app.methods["290"]['handleChange'] = function(scope, attributes) {
+    app.methods["102"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        var value = e.target.value;
         app.setState(function() {
-          app.buildProject.filename = value;
+          app.state.shouldSave = true;
+          app.buildProject.name = e.target.value;
         });
       }
-    };
-    app.methods["285"] = {};
-    app.methods["285"]['handleChange'] = function(scope, attributes) {
-      return function(e) {
-        var value = e.target.value;
-        app.setState(function() {
-          app.buildProject.pageTitle = value;
-        });
-      }
-    };
-
-    app.methods["285"]['getText'] = function(scope, attributes) {
-      return app.buildProject.pageTitle || '';
     };
     app.methods["179"] = {};
     app.methods["179"]['getStyle'] = function() {
@@ -1859,7 +1845,7 @@ var blissUi = (function() {
             scope['shouldShow'] = app.methods['251']['shouldShow'](scope);
             if (app.methods['251']['shouldShow'](scope) === true) {
               out.push(React.createElement('div', app.mergeAttributes('251', scope, {}, {
-                  "id": "websites_251",
+                  "id": "workspaces_251",
                   "key": app.getKey('id', '251')
                 }),
                 React.createElement('div', app.mergeAttributes('263', scope, {}, {
@@ -1892,9 +1878,9 @@ var blissUi = (function() {
                     "key": app.getKey('id', '264')
                   }),
                   React.createElement('h3', app.mergeAttributes('261', scope, {}, {
-                    "id": "websitesHeader_261",
+                    "id": "workspacesHeader_261",
                     "key": app.getKey('id', '261')
-                  }), 'Websites'),
+                  }), 'Workspaces'),
                   (function(scope) {
                     var out = [];
                     var list = scope['repeater'] = app.methods['252']['repeater'](scope);
@@ -1903,7 +1889,7 @@ var blissUi = (function() {
                       out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
                           "href": "#",
                           "className": "workspaces",
-                          "id": "listOfWebsites_252",
+                          "id": "listOfWorkspaces_252",
                           "key": app.getKey('id', '252', i)
                         }),
                         React.createElement('a', app.mergeAttributes('267', scope, {
@@ -1911,7 +1897,7 @@ var blissUi = (function() {
                         }, {
                           "href": "#",
                           "className": "workspaces",
-                          "id": "websiteLink_267",
+                          "id": "workspaceLink_267",
                           "key": app.getKey('id', '267')
                         }), app.methods['267']['getText'](scope)),
                         (function(scope) {
@@ -1920,7 +1906,7 @@ var blissUi = (function() {
                           for (var i = 0; i < list.length; i++) {
                             scope['projectRepeater_index'] = i;
                             out.push(React.createElement('span', app.mergeAttributes('265', scope, {}, {
-                              "id": "listOfPages_265",
+                              "id": "listOfProjects_265",
                               "key": app.getKey('id', '265', i)
                             }), app.methods['265']['getText'](scope)));
                           }
@@ -1930,24 +1916,24 @@ var blissUi = (function() {
                     return out;
                   })(scope),
                   React.createElement('div', app.mergeAttributes('271', scope, {}, {
-                      "id": "createWebsiteContainer_271",
+                      "id": "newWorkspaceContainer_271",
                       "key": app.getKey('id', '271')
                     }),
                     React.createElement('input', app.mergeAttributes('272', scope, {
                       "onChange": "handleChange",
                       "value": "getValue"
                     }, {
-                      "placeholder": "website name...",
-                      "id": "createWebsiteInput_272",
+                      "placeholder": "workspace name",
+                      "id": "newWorkspaceName_272",
                       "key": app.getKey('id', '272')
                     })),
                     React.createElement('button', app.mergeAttributes('273', scope, {
                       "onClick": "handleClick"
                     }, {
                       "className": "btn btn-success",
-                      "id": "createWebsiteButton_273",
+                      "id": "createWorkspaceButton_273",
                       "key": app.getKey('id', '273')
-                    }), 'Create Website')))));
+                    }), 'Add Workspace')))));
             }
             return out;
           })(scope),
@@ -1956,7 +1942,7 @@ var blissUi = (function() {
             scope['shouldShow'] = app.methods['243']['shouldShow'](scope);
             if (app.methods['243']['shouldShow'](scope) === true) {
               out.push(React.createElement('div', app.mergeAttributes('243', scope, {}, {
-                  "id": "pages_243",
+                  "id": "projects_243",
                   "key": app.getKey('id', '243')
                 }),
                 React.createElement('div', app.mergeAttributes('111', scope, {}, {
@@ -1970,7 +1956,7 @@ var blissUi = (function() {
                   }), 'Bliss UI'),
                   React.createElement('div', app.mergeAttributes('88', scope, {}, {
                       "className": "float-left",
-                      "id": "pageOptions_88",
+                      "id": "projectOptions_88",
                       "key": app.getKey('id', '88')
                     }),
                     React.createElement('div', app.mergeAttributes('105', scope, {}, {
@@ -1984,7 +1970,7 @@ var blissUi = (function() {
                         "className": "btn btn-default dropdown-toggle btn-sm",
                         "id": "dropdownButton_106",
                         "key": app.getKey('id', '106')
-                      }), 'Pages'),
+                      }), 'Projects'),
                       React.createElement('div', app.mergeAttributes('107', scope, {}, {
                           "className": "dropdown-menu",
                           "id": "options_107",
@@ -2006,7 +1992,7 @@ var blissUi = (function() {
                           React.createElement('span', app.mergeAttributes('164', scope, {}, {
                             "id": "label_164",
                             "key": app.getKey('id', '164')
-                          }), 'New page')),
+                          }), 'New project')),
                         React.createElement('div', app.mergeAttributes('158', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_158",
@@ -2014,9 +2000,9 @@ var blissUi = (function() {
                         })),
                         React.createElement('h6', app.mergeAttributes('162', scope, {}, {
                           "className": "dropdown-header",
-                          "id": "existingPageLabels_162",
+                          "id": "existingProjectLabels_162",
                           "key": app.getKey('id', '162')
-                        }), 'Open page'),
+                        }), 'Open project'),
                         (function(scope) {
                           var out = [];
                           var list = scope['repeater'] = app.methods['161']['repeater'](scope);
@@ -2051,7 +2037,7 @@ var blissUi = (function() {
                           "className": "dropdown-header",
                           "id": "exportLabel_194",
                           "key": app.getKey('id', '194')
-                        }), 'export page'),
+                        }), 'export'),
                         React.createElement('a', app.mergeAttributes('190', scope, {
                             "onClick": "handleClick"
                           }, {
@@ -2068,13 +2054,13 @@ var blissUi = (function() {
                           React.createElement('span', app.mergeAttributes('192', scope, {}, {
                             "id": "label_192",
                             "key": app.getKey('id', '192')
-                          }), 'Component')),
+                          }), 'Build component')),
                         React.createElement('a', app.mergeAttributes('104', scope, {
                             "onClick": "handleClick"
                           }, {
                             "href": "#",
                             "className": "dropdown-item",
-                            "id": "publishPage_104",
+                            "id": "publishProject_104",
                             "key": app.getKey('id', '104')
                           }),
                           React.createElement('i', app.mergeAttributes('167', scope, {}, {
@@ -2101,7 +2087,7 @@ var blissUi = (function() {
                           }, {
                             "href": "#",
                             "className": "dropdown-item",
-                            "id": "switchPage_260",
+                            "id": "switchWorkspace_260",
                             "key": app.getKey('id', '260')
                           }),
                           React.createElement('i', app.mergeAttributes('258', scope, {}, {
@@ -2112,7 +2098,7 @@ var blissUi = (function() {
                           React.createElement('span', app.mergeAttributes('259', scope, {}, {
                             "id": "label_259",
                             "key": app.getKey('id', '259')
-                          }), 'Switch Website')),
+                          }), 'Switch Workspace')),
                         React.createElement('a', app.mergeAttributes('247', scope, {
                             "onClick": "handleClick"
                           }, {
@@ -2275,9 +2261,9 @@ var blissUi = (function() {
                       "className": "getClass",
                       "style": "getStyles"
                     }, {
-                      "id": "showHtml_150",
+                      "id": "showElements_150",
                       "key": app.getKey('id', '150')
-                    }), 'HTML'),
+                    }), 'Elements'),
                     React.createElement('button', app.mergeAttributes('157', scope, {
                       "onClick": "setContentValue",
                       "className": "getClass",
@@ -2334,13 +2320,13 @@ var blissUi = (function() {
                     if (app.methods['3']['shouldShow'](scope) === true) {
                       out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
                           "className": "float-left",
-                          "id": "html_3",
+                          "id": "elements_3",
                           "key": app.getKey('id', '3')
                         }),
                         React.createElement('h3', app.mergeAttributes('20', scope, {}, {
                           "id": "elementsHeader_20",
                           "key": app.getKey('id', '20')
-                        }), 'HTML'),
+                        }), 'Elements'),
                         React.createElement('div', app.mergeAttributes('110', scope, {}, {
                             "id": "treeContainer_110",
                             "key": app.getKey('id', '110')
@@ -2448,58 +2434,38 @@ var blissUi = (function() {
                             "id": "h3General",
                             "key": app.getKey('id', '98')
                           }), 'Settings'),
-                          React.createElement('div', app.mergeAttributes('288', scope, {}, {
-                              "id": "fileNameContainer_288",
-                              "key": app.getKey('id', '288')
+                          React.createElement('div', app.mergeAttributes('199', scope, {}, {
+                              "className": "clearfix",
+                              "id": "projectDetailsContainer_199",
+                              "key": app.getKey('id', '199')
                             }),
-                            React.createElement('label', app.mergeAttributes('289', scope, {}, {
-                              "id": "fileNameLabel_289",
-                              "key": app.getKey('id', '289')
-                            }), 'File name'),
-                            React.createElement('input', app.mergeAttributes('290', scope, {
+                            React.createElement('span', app.mergeAttributes('103', scope, {}, {
+                              "className": "pull-left",
+                              "id": "nameLabel_103",
+                              "key": app.getKey('id', '103')
+                            }), 'Project name: '),
+                            React.createElement('input', app.mergeAttributes('102', scope, {
                               "onChange": "handleChange",
-                              "value": "getText"
+                              "value": "getValue"
                             }, {
-                              "placeholder": "File name",
-                              "className": "form-control",
-                              "id": "fileNameInput_290",
-                              "key": app.getKey('id', '290')
-                            }))),
-                          React.createElement('div', app.mergeAttributes('287', scope, {}, {
-                              "id": "pageTitleContainer_287",
-                              "key": app.getKey('id', '287')
-                            }),
-                            React.createElement('label', app.mergeAttributes('286', scope, {}, {
-                              "id": "pageTitleLabel_286",
-                              "key": app.getKey('id', '286')
-                            }), 'Page title'),
-                            React.createElement('input', app.mergeAttributes('285', scope, {
-                              "value": "getText",
-                              "onChange": "handleChange"
-                            }, {
-                              "placeholder": "Page title",
-                              "className": "form-control",
-                              "id": "pageTitleInput_285",
-                              "key": app.getKey('id', '285')
-                            }))),
-                          React.createElement('hr', app.mergeAttributes('291', scope, {}, {
-                            "id": "separator_291",
-                            "key": app.getKey('id', '291')
-                          })),
-                          React.createElement('button', app.mergeAttributes('196', scope, {}, {
-                              "className": "btn btn-default btn-sm",
-                              "id": "deletePage_196",
-                              "key": app.getKey('id', '196')
-                            }),
-                            React.createElement('i', app.mergeAttributes('197', scope, {}, {
-                              "className": "fa fa-trash",
-                              "id": "icon_197",
-                              "key": app.getKey('id', '197')
+                              "className": "form-control pull-left input-sm",
+                              "id": "projectName_102",
+                              "key": app.getKey('id', '102')
                             })),
-                            React.createElement('span', app.mergeAttributes('198', scope, {}, {
-                              "id": "deleteLabel_198",
-                              "key": app.getKey('id', '198')
-                            }), 'Delete page'))),
+                            React.createElement('button', app.mergeAttributes('196', scope, {}, {
+                                "className": "btn btn-default btn-sm pull-right",
+                                "id": "deleteProject_196",
+                                "key": app.getKey('id', '196')
+                              }),
+                              React.createElement('i', app.mergeAttributes('197', scope, {}, {
+                                "className": "fa fa-trash",
+                                "id": "icon_197",
+                                "key": app.getKey('id', '197')
+                              })),
+                              React.createElement('span', app.mergeAttributes('198', scope, {}, {
+                                "id": "deleteLabel_198",
+                                "key": app.getKey('id', '198')
+                              }), 'Delete project')))),
                         React.createElement('div', app.mergeAttributes('179', scope, {
                             "style": "getStyle"
                           }, {
@@ -2659,7 +2625,7 @@ var blissUi = (function() {
                             "className": "btn btn-default btn-block btn-sm",
                             "id": "toggleJavascript_278",
                             "key": app.getKey('id', '278')
-                          }), 'Javascript for HTML'),
+                          }), 'element javascript'),
                           React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
                             "component": "setComponentProp",
                             "onChange": "setOnChangeProp"
