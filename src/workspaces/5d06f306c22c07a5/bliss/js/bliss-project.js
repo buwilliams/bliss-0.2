@@ -208,7 +208,7 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "Bliss UI v2",
+      "name": "Bliss UI v3",
       "element": "div",
       "text": null,
       "attributes": [],
@@ -232,7 +232,7 @@ var blissProject = {
     },
     "3": {
       "id": "3",
-      "name": "elements",
+      "name": "html",
       "element": "div",
       "text": null,
       "attributes": [
@@ -520,7 +520,7 @@ var blissProject = {
       "id": "20",
       "name": "Elements header",
       "element": "h3",
-      "text": "Elements",
+      "text": "HTML",
       "attributes": [],
       "css": [
         {
@@ -851,7 +851,7 @@ var blissProject = {
     },
     "85": {
       "id": "85",
-      "name": "new project",
+      "name": "new page",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -909,7 +909,7 @@ var blissProject = {
     },
     "88": {
       "id": "88",
-      "name": "Project options",
+      "name": "Page options",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1358,7 +1358,7 @@ var blissProject = {
     },
     "104": {
       "id": "104",
-      "name": "publish project",
+      "name": "publish page",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -1458,7 +1458,7 @@ var blissProject = {
       "id": "106",
       "name": "dropdown button",
       "element": "button",
-      "text": "Projects",
+      "text": "Pages",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2252,9 +2252,9 @@ var blissProject = {
     },
     "150": {
       "id": "150",
-      "name": "Show Elements",
+      "name": "Show HTML",
       "element": "button",
-      "text": "Elements",
+      "text": "HTML",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2857,9 +2857,9 @@ var blissProject = {
     },
     "162": {
       "id": "162",
-      "name": "existing project labels",
+      "name": "existing page labels",
       "element": "h6",
-      "text": "Open project",
+      "text": "Open page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2922,7 +2922,7 @@ var blissProject = {
       "id": "164",
       "name": "label",
       "element": "span",
-      "text": "New project",
+      "text": "New page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3587,7 +3587,7 @@ var blissProject = {
       "id": "192",
       "name": "label",
       "element": "span",
-      "text": "Build component",
+      "text": "Component",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -3618,7 +3618,7 @@ var blissProject = {
       "id": "194",
       "name": "export label",
       "element": "h6",
-      "text": "export",
+      "text": "export page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -4707,7 +4707,7 @@ var blissProject = {
     },
     "243": {
       "id": "243",
-      "name": "Projects",
+      "name": "Pages",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -4931,7 +4931,7 @@ var blissProject = {
     },
     "251": {
       "id": "251",
-      "name": "Workspaces",
+      "name": "Websites",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -4958,7 +4958,7 @@ var blissProject = {
     },
     "252": {
       "id": "252",
-      "name": "List of workspaces",
+      "name": "List of websites",
       "element": "div",
       "text": "",
       "textFn": "",
@@ -5107,7 +5107,7 @@ var blissProject = {
       "id": "259",
       "name": "label",
       "element": "span",
-      "text": "Switch Workspace",
+      "text": "Switch Website",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -5136,7 +5136,7 @@ var blissProject = {
     },
     "260": {
       "id": "260",
-      "name": "switch workspace",
+      "name": "switch page",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -5190,9 +5190,9 @@ var blissProject = {
     },
     "261": {
       "id": "261",
-      "name": "workspaces header",
+      "name": "websites header",
       "element": "h3",
-      "text": "Workspaces",
+      "text": "Websites",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -5375,7 +5375,7 @@ var blissProject = {
     },
     "265": {
       "id": "265",
-      "name": "list of projects",
+      "name": "list of pages",
       "element": "span",
       "text": null,
       "textFn": "getText",
@@ -5411,7 +5411,7 @@ var blissProject = {
     },
     "267": {
       "id": "267",
-      "name": "workspace link",
+      "name": "website link",
       "element": "a",
       "text": "",
       "textFn": "getText",
@@ -5565,7 +5565,7 @@ var blissProject = {
     },
     "271": {
       "id": "271",
-      "name": "new workspace container",
+      "name": "create website container",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -5592,7 +5592,7 @@ var blissProject = {
     },
     "272": {
       "id": "272",
-      "name": "new workspace name",
+      "name": "create website input",
       "element": "input",
       "text": null,
       "textFn": null,
@@ -5601,7 +5601,7 @@ var blissProject = {
       "attributes": [
         {
           "name": "placeholder",
-          "value": "workspace name"
+          "value": "website name..."
         }
       ],
       "css": [
@@ -5654,9 +5654,9 @@ var blissProject = {
     },
     "273": {
       "id": "273",
-      "name": "create workspace button",
+      "name": "create website button",
       "element": "button",
-      "text": "Add Workspace",
+      "text": "Create Website",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -5832,7 +5832,7 @@ var blissProject = {
       "id": "278",
       "name": "toggle javascript",
       "element": "button",
-      "text": "element javascript",
+      "text": "Javascript for HTML",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
