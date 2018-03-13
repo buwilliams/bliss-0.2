@@ -1,4 +1,4 @@
-{
+var blissProject = {
   "name": "Bliss UI Website",
   "compiler": "react",
   "version": "v0.2",
@@ -1732,3 +1732,4 @@
   "filename": "index",
   "pageTitle": "BlissUI - Think CMS but for Apps"
 }
+if(typeof module !== "undefined") module.exports = blissProject;

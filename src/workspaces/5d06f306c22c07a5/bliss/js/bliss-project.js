@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 279,
+  "nextId": 292,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -92,7 +92,7 @@ var blissProject = {
     },
     {
       "name": "build",
-      "body": "function() {\n  app.js.log('app.js.build() invoked.');\n  \n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject)\n  var workspace = app.state.settings.workspace\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe();\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build?workspace=' + workspace,\n                    jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(clearState) {\n  app.js.log('app.js.build() invoked.');\n  \n  if(typeof clearState === 'undefined') clearState = false\n  \n  if(app.buildProject.type === \"bliss\") {\n    app.buildProject.build = \"designer\";\n  }\n  \n  var data = JSON.stringify(app.buildProject)\n  var workspace = app.state.settings.workspace\n\n  $.ajax({\n    type: 'POST',\n    url: '/compiler/build?workspace=' + workspace,\n    data: data,\n    success: function(data) {\n      app.js.refreshIframe(clearState);\n    },\n    error: function(jqXHR, textStatus, errorThrown) {\n      console.error('POST /build?workspace=' + workspace,\n                    jqXHR, textStatus, errorThrown);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     },
     {
       "name": "selectComponent",
@@ -136,11 +136,11 @@ var blissProject = {
     },
     {
       "name": "refreshIframe",
-      "body": "function(resetState) {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  resetState = (resetState === true) ? true : false\n  \n  if(resetState) {\n    app.dispatch({\n      path: '/preview',\n      action: 'setState',\n      state: {}\n    })\n  } else {\n    app.js.savePreviewState()\n  }\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + '/' + workspace + '/' +\n      'designer.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function(resetState) {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  resetState = (resetState === true) ? true : false\n  \n  if(resetState) {\n    app.dispatch({\n      path: '/preview',\n      action: 'setState',\n      state: {}\n    })\n  } else {\n    app.js.savePreviewState()\n  }\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + \n      '/' +  workspace +  '/' +\n      (app.buildProject.filename || 'designer') +\n      '.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",
-      "body": "function() {\n  app.js.log('app.js.refresh() invoked.');\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  app.js.refreshIframe(true);\n}"
+      "body": "function() {\n  app.js.log('app.js.refresh() invoked.');\n  // refresh the project list\n  app.js.getProjects();\n  \n  // refresh iframe\n  //app.js.refreshIframe(true);\n  var clearIframeState = true;\n  app.js.build(clearIframeState);\n}"
     },
     {
       "name": "log",
@@ -208,7 +208,7 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "Bliss UI v2",
+      "name": "Bliss UI v3",
       "element": "div",
       "text": null,
       "attributes": [],
@@ -232,7 +232,7 @@ var blissProject = {
     },
     "3": {
       "id": "3",
-      "name": "elements",
+      "name": "html",
       "element": "div",
       "text": null,
       "attributes": [
@@ -520,7 +520,7 @@ var blissProject = {
       "id": "20",
       "name": "Elements header",
       "element": "h3",
-      "text": "Elements",
+      "text": "HTML",
       "attributes": [],
       "css": [
         {
@@ -851,7 +851,7 @@ var blissProject = {
     },
     "85": {
       "id": "85",
-      "name": "new project",
+      "name": "new page",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -909,7 +909,7 @@ var blissProject = {
     },
     "88": {
       "id": "88",
-      "name": "Project options",
+      "name": "Page options",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1184,7 +1184,7 @@ var blissProject = {
     },
     "98": {
       "id": "98",
-      "name": "settings header",
+      "name": "Settings header",
       "element": "h3",
       "text": "Settings",
       "textFn": null,
@@ -1229,7 +1229,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "199",
+      "next": "288",
       "previous": null,
       "child": null,
       "parent": "97"
@@ -1270,95 +1270,9 @@ var blissProject = {
       "child": "189",
       "parent": "111"
     },
-    "102": {
-      "id": "102",
-      "name": "project name",
-      "element": "input",
-      "text": null,
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "form-control pull-left input-sm"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "width",
-              "value": "50%"
-            },
-            {
-              "name": "margin-left",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "getValue",
-          "body": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n"
-        },
-        {
-          "name": "handleChange",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.shouldSave = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onChange",
-          "value": "handleChange"
-        },
-        {
-          "name": "value",
-          "value": "getValue"
-        }
-      ],
-      "next": "196",
-      "previous": "103",
-      "child": null,
-      "parent": "199"
-    },
-    "103": {
-      "id": "103",
-      "name": "name label",
-      "element": "span",
-      "text": "Project name: ",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "pull-left"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "8px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "102",
-      "previous": null,
-      "child": null,
-      "parent": "199"
-    },
     "104": {
       "id": "104",
-      "name": "publish project",
+      "name": "publish page",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -1458,7 +1372,7 @@ var blissProject = {
       "id": "106",
       "name": "dropdown button",
       "element": "button",
-      "text": "Projects",
+      "text": "Pages",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2252,9 +2166,9 @@ var blissProject = {
     },
     "150": {
       "id": "150",
-      "name": "Show Elements",
+      "name": "Show HTML",
       "element": "button",
-      "text": "Elements",
+      "text": "HTML",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2857,9 +2771,9 @@ var blissProject = {
     },
     "162": {
       "id": "162",
-      "name": "existing project labels",
+      "name": "existing page labels",
       "element": "h6",
-      "text": "Open project",
+      "text": "Open page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -2922,7 +2836,7 @@ var blissProject = {
       "id": "164",
       "name": "label",
       "element": "span",
-      "text": "New project",
+      "text": "New page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3587,7 +3501,7 @@ var blissProject = {
       "id": "192",
       "name": "label",
       "element": "span",
-      "text": "Build component",
+      "text": "Component",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -3618,7 +3532,7 @@ var blissProject = {
       "id": "194",
       "name": "export label",
       "element": "h6",
-      "text": "export",
+      "text": "export page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3652,7 +3566,7 @@ var blissProject = {
     },
     "196": {
       "id": "196",
-      "name": "delete project",
+      "name": "delete page",
       "element": "button",
       "text": "",
       "textFn": null,
@@ -3661,17 +3575,13 @@ var blissProject = {
       "attributes": [
         {
           "name": "class",
-          "value": "btn btn-default btn-sm pull-right"
+          "value": "btn btn-default btn-sm"
         }
       ],
       "css": [
         {
           "selector": "$id",
           "properties": [
-            {
-              "name": "background-color",
-              "value": "$menuWarn"
-            },
             {
               "name": "color",
               "value": "#fff"
@@ -3683,6 +3593,10 @@ var blissProject = {
             {
               "name": "margin-top",
               "value": "6px"
+            },
+            {
+              "name": "background-color",
+              "value": "$menuWarn"
             }
           ]
         }
@@ -3690,9 +3604,9 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "102",
+      "previous": "291",
       "child": "197",
-      "parent": "199"
+      "parent": "97"
     },
     "197": {
       "id": "197",
@@ -3725,7 +3639,7 @@ var blissProject = {
       "id": "198",
       "name": "delete label",
       "element": "span",
-      "text": "Delete project",
+      "text": "Delete page",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -3751,33 +3665,6 @@ var blissProject = {
       "previous": "197",
       "child": null,
       "parent": "196"
-    },
-    "199": {
-      "id": "199",
-      "name": "project details container",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "98",
-      "child": "103",
-      "parent": "97"
     },
     "201": {
       "id": "201",
@@ -4707,7 +4594,7 @@ var blissProject = {
     },
     "243": {
       "id": "243",
-      "name": "Projects",
+      "name": "Pages",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -4931,7 +4818,7 @@ var blissProject = {
     },
     "251": {
       "id": "251",
-      "name": "Workspaces",
+      "name": "Websites",
       "element": "div",
       "text": "",
       "textFn": null,
@@ -4958,7 +4845,7 @@ var blissProject = {
     },
     "252": {
       "id": "252",
-      "name": "List of workspaces",
+      "name": "List of websites",
       "element": "div",
       "text": "",
       "textFn": "",
@@ -5107,7 +4994,7 @@ var blissProject = {
       "id": "259",
       "name": "label",
       "element": "span",
-      "text": "Switch Workspace",
+      "text": "Switch Website",
       "textFn": "",
       "ifFn": null,
       "repeatFn": null,
@@ -5136,7 +5023,7 @@ var blissProject = {
     },
     "260": {
       "id": "260",
-      "name": "switch workspace",
+      "name": "switch page",
       "element": "a",
       "text": "",
       "textFn": null,
@@ -5190,9 +5077,9 @@ var blissProject = {
     },
     "261": {
       "id": "261",
-      "name": "workspaces header",
+      "name": "websites header",
       "element": "h3",
-      "text": "Workspaces",
+      "text": "Websites",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -5375,7 +5262,7 @@ var blissProject = {
     },
     "265": {
       "id": "265",
-      "name": "list of projects",
+      "name": "list of pages",
       "element": "span",
       "text": null,
       "textFn": "getText",
@@ -5411,7 +5298,7 @@ var blissProject = {
     },
     "267": {
       "id": "267",
-      "name": "workspace link",
+      "name": "website link",
       "element": "a",
       "text": "",
       "textFn": "getText",
@@ -5565,7 +5452,7 @@ var blissProject = {
     },
     "271": {
       "id": "271",
-      "name": "new workspace container",
+      "name": "create website container",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -5592,7 +5479,7 @@ var blissProject = {
     },
     "272": {
       "id": "272",
-      "name": "new workspace name",
+      "name": "create website input",
       "element": "input",
       "text": null,
       "textFn": null,
@@ -5601,7 +5488,7 @@ var blissProject = {
       "attributes": [
         {
           "name": "placeholder",
-          "value": "workspace name"
+          "value": "website name..."
         }
       ],
       "css": [
@@ -5654,9 +5541,9 @@ var blissProject = {
     },
     "273": {
       "id": "273",
-      "name": "create workspace button",
+      "name": "create website button",
       "element": "button",
-      "text": "Add Workspace",
+      "text": "Create Website",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -5832,7 +5719,7 @@ var blissProject = {
       "id": "278",
       "name": "toggle javascript",
       "element": "button",
-      "text": "element javascript",
+      "text": "Javascript for HTML",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -5885,6 +5772,277 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "151"
+    },
+    "281": {
+      "id": "281",
+      "name": "page title input",
+      "element": "input",
+      "text": null,
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control pull-left input-sm"
+        },
+        {
+          "name": "placeholder",
+          "value": "Page title"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.buildProject.name;\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.shouldSave = true;\n      app.buildProject.name = e.target.value;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "282",
+      "previous": null,
+      "child": null,
+      "parent": "279"
+    },
+    "285": {
+      "id": "285",
+      "name": "page title input",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control"
+        },
+        {
+          "name": "placeholder",
+          "value": "Page title"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      app.buildProject.pageTitle = value;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return app.buildProject.pageTitle || '';\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getText"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": null,
+      "previous": "286",
+      "child": null,
+      "parent": "287"
+    },
+    "286": {
+      "id": "286",
+      "name": "page title label",
+      "element": "label",
+      "text": "Page title",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "285",
+      "previous": null,
+      "child": null,
+      "parent": "287"
+    },
+    "287": {
+      "id": "287",
+      "name": "Page title container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "291",
+      "previous": "288",
+      "child": "286",
+      "parent": "97"
+    },
+    "288": {
+      "id": "288",
+      "name": "File name container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "287",
+      "previous": "98",
+      "child": "289",
+      "parent": "97"
+    },
+    "289": {
+      "id": "289",
+      "name": "file name label",
+      "element": "label",
+      "text": "File name",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "290",
+      "previous": null,
+      "child": null,
+      "parent": "288"
+    },
+    "290": {
+      "id": "290",
+      "name": "file name input",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control"
+        },
+        {
+          "name": "placeholder",
+          "value": "File name"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return app.buildProject.filename || '';\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var value = e.target.value;\n    app.setState(function() {\n      app.buildProject.filename = value;\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getText"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "288"
+    },
+    "291": {
+      "id": "291",
+      "name": "separator",
+      "element": "hr",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "196",
+      "previous": "287",
+      "child": null,
+      "parent": "97"
     }
   },
   "schemas": [
@@ -6032,6 +6190,8 @@ var blissProject = {
         }
       ]
     }
-  ]
+  ],
+  "filename": "bliss",
+  "pageTitle": "BlissUI"
 }
 if(typeof module !== "undefined") module.exports = blissProject;

@@ -2,7 +2,7 @@
   min-width: 1400px;
 }
 
-#workspaces_251 {
+#websites_251 {
 }
 
 #blissHeader_263 {
@@ -43,7 +43,7 @@
   margin-top: 45px;
 }
 
-#workspacesHeader_261 {
+#websitesHeader_261 {
   background-color: #698290;
   color: #ffffff;
   text-transform: uppercase;
@@ -52,30 +52,30 @@
   margin: 0;
 }
 
-#listOfWorkspaces_252 {
+#listOfWebsites_252 {
   margin: 10px;
 }
 
-#workspaceLink_267 {
+#websiteLink_267 {
   display: block;
 }
 
-#listOfProjects_265 {
+#listOfPages_265 {
   padding-left: 10px;
 }
 
-#newWorkspaceContainer_271 {
+#createWebsiteContainer_271 {
   padding: 10px;
 }
 
-#newWorkspaceName_272 {
+#createWebsiteInput_272 {
   outline: none;
   padding: 6px;
   border-radius: 3px;
   border: solid 1px #ccc;
 }
 
-#createWorkspaceButton_273 {
+#createWebsiteButton_273 {
   margin-left: 5px;
 }
 
@@ -100,7 +100,7 @@
   padding-top: 1px;
 }
 
-#projectOptions_88 {
+#pageOptions_88 {
   margin-left: 15px;
 }
 
@@ -134,7 +134,7 @@
 #divider_158 {
 }
 
-#existingProjectLabels_162 {
+#existingPageLabels_162 {
   font-size: 10px;
   text-transform: uppercase;
 }
@@ -175,7 +175,7 @@
   margin-left: 10px;
 }
 
-#publishProject_104 {
+#publishPage_104 {
   cursor: pointer;
   margin-right: 5px;
   font-size: 10pt;
@@ -197,7 +197,7 @@
   text-transform: uppercase;
 }
 
-#switchWorkspace_260 {
+#switchPage_260 {
   cursor: pointer;
   margin-right: 5px;
   font-size: 10pt;
@@ -327,7 +327,7 @@
   font-size: 10px;
 }
 
-#showElements_150 {
+#showHtml_150 {
   outline: none;
   cursor: pointer;
   margin-left: 5px;
@@ -398,7 +398,7 @@
   position: relative;
 }
 
-#elements_3 {
+#html_3 {
   background-color: #eee;;
   width: 20%;
   height: calc(100vh - 80px);
@@ -520,23 +520,27 @@
   border-radius: 3px;
 }
 
-#projectDetailsContainer_199 {
+#fileNameContainer_288 {
+  margin-top: 1em;
 }
 
-#nameLabel_103 {
-  margin-top: 8px;
+#fileNameInput_290 {
+  outline: none;
 }
 
-#projectName_102 {
-  width: 50%;
-  margin-left: 10px;
+#pageTitleContainer_287 {
+  margin-top: 1em;
 }
 
-#deleteProject_196 {
-  background-color: #9b0000;
+#pageTitleInput_285 {
+  outline: none;
+}
+
+#deletePage_196 {
   color: #fff;
   cursor: pointer;
   margin-top: 6px;
+  background-color: #9b0000;
 }
 
 #icon_197 {
