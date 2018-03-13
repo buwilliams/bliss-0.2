@@ -1,4 +1,4 @@
-var blissProject = {
+{
   "name": "Bliss UI v3",
   "type": "bliss",
   "build": "designer",
@@ -6034,4 +6034,3 @@ var blissProject = {
     }
   ]
 }
-if(typeof module !== "undefined") module.exports = blissProject;
