@@ -136,7 +136,7 @@
     },
     {
       "name": "refreshIframe",
-      "body": "function(resetState) {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  resetState = (resetState === true) ? true : false\n  \n  if(resetState) {\n    app.dispatch({\n      path: '/preview',\n      action: 'setState',\n      state: {}\n    })\n  } else {\n    app.js.savePreviewState()\n  }\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + \n      '/' +  workspace +  '/' +\n      app.buildProject.filename || 'designer' + '.html';\n  \n  iframe.attr('src', url);\n}"
+      "body": "function(resetState) {\n  app.js.log('app.js.refreshIframe() invoked.');\n  \n  resetState = (resetState === true) ? true : false\n  \n  if(resetState) {\n    app.dispatch({\n      path: '/preview',\n      action: 'setState',\n      state: {}\n    })\n  } else {\n    app.js.savePreviewState()\n  }\n  \n  var iframe = $('#preview');\n  var currentSrc = iframe.attr('src');\n  if(_.isUndefined(currentSrc)) return;\n  \n  var workspace = app.state.settings.workspace;\n\n  var url = location.origin + \n      '/bliss/designer/' + \n      app.state.firebase.designer_token + \n      '/' +  workspace +  '/' +\n      (app.buildProject.filename || 'designer') +\n      '.html';\n  \n  iframe.attr('src', url);\n}"
     },
     {
       "name": "refresh",

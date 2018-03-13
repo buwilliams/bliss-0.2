@@ -264,7 +264,8 @@ var blissUiV = (function() {
         '/bliss/designer/' +
         app.state.firebase.designer_token +
         '/' + workspace + '/' +
-        app.buildProject.filename || 'designer' + '.html';
+        (app.buildProject.filename || 'designer') +
+        '.html';
 
       iframe.attr('src', url);
     }

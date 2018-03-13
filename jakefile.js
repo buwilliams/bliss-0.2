@@ -56,19 +56,18 @@ task('build-all-components', function() {
 desc('Build bliss json');
 task('build-bliss', function() {
   console.log('>> build-bliss');
-  // read bliss.json
+
   var projectStr = fs.readFileSync(path.join(config.bliss_src, config.bliss_project));
   var projectJson = JSON.parse(projectStr);
   projectJson.build = 'bliss';
+  projectJson.filename = 'bliss';
+  projectJson.pageTitle = 'BlissUI';
 
-  // compile bliss.json
   var build_path = config.bliss_build;
-  //jake.mkdirP(build_path);
-  //jake.mkdirP(path.join(build_path, 'js'));
-  //jake.mkdirP(path.join(build_path, 'css'));
   compiler.compile(build_path, projectJson);
 
-  fse.moveSync(path.join(build_path, 'bliss.html'), path.join(build_path, 'index.html'), {overwrite:true});
+  var filename = (projectJson.filename || 'designer') + '.html'
+  fse.moveSync(path.join(build_path, filename), path.join(build_path, 'index.html'), {overwrite:true});
 });
 
 desc('Builds bliss and bliss components');

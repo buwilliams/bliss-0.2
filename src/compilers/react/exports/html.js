@@ -45,8 +45,8 @@ module.exports = {
     out += html.closeTag('script');
 
     out += html.getExternalJs(projectJson.externalJs);
-    out += html.getExternalJs(['js/' + (projectJson.filename || '-new-project') + '.js']);
-    out += html.getExternalJs(['js/' + (projectJson.filename || '-project') + '.js']);
+    out += html.getExternalJs(['js/' + (projectJson.filename || 'designer') + '-new-project.js']);
+    out += html.getExternalJs(['js/' + (projectJson.filename || 'designer') + '-project.js']);
     out += html.getExternalJs(['js/' + (projectJson.filename || 'designer') + '.js']);
 
     out += html.openTag('script');
