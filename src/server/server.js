@@ -16,7 +16,7 @@ const hosted = require('./routes/hosted.js')
 const reference = require('./routes/reference.js')
 const tokens = require('./core/tokens.js')
 
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb'}))
 
 var secure = app.use(
   authorization(
