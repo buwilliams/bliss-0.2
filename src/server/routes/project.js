@@ -37,7 +37,7 @@ router.get('/load', function (req, res) {
   var project = user(env, req.session)
     .workspace(req.query.workspace)
     .project()
-    .loadProject(name)
+    .loadProject(name);
 
   deps.update(project.workspace.fullpath, project.projectJson);
 
@@ -53,40 +53,28 @@ router.post('/save', function (req, res) {
   user(env, req.session)
     .workspace(req.query.workspace)
     .project(req.body)
-    .saveProject()
+    .saveProject();
 
   res.send({ success: true });
 });
 
-// TODO: delete project
-
-/*
-router.get('/explore', function(req, res) {
+router.post('/delete', function (req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
     return;
   }
 
-  if (!req.query.path) {
-    res.status(400).send('missing path param');
+  if (!req.query.project) {
+    res.status(400).send('missing project param');
     return;
   }
 
-  var pathName = req.query.path;
-  var list = fs.readdirSync(path.join(
-    ws.workspace(env, req.session, req.query.workspace), pathName));
-  list = list.map(function(entry) {
-    return {
-      file: fs.statSync(path.join(
-        ws.workspace(env, req.session, req.query.workspace),
-        pathName,
-        entry)).isFile(),
-      path: path.join(pathName),
-      name: entry
-    };
-  });
-  res.send({success: true, entries: list});
+  user(env, req.session)
+    .workspace(req.query.workspace)
+    .project()
+    .deleteProject(req.query.project);
+
+  res.send({ success: true });
 });
-*/
 
 module.exports = router
