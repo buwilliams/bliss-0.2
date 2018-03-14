@@ -332,7 +332,13 @@ var BlissTree = {
             "div",
             { className: "selected-text", draggable: "true", onDragStart: this.handleNodeDragStart.bind(this, event, id) },
             this.getNodeIcon(id),
-            component.name
+            component.name,
+            " ",
+            React.createElement(
+              "span",
+              { className: "elementType" },
+              component.element
+            )
           ),
           React.createElement("div", { className: "selected" })
         ));
@@ -349,7 +355,13 @@ var BlissTree = {
             onDragLeave: this.handleNodeDragLeave.bind(this, event, id),
             onClick: this.handleSelect.bind(this, id, true) },
           this.getNodeIcon(id),
-          component.name
+          component.name,
+          " ",
+          React.createElement(
+            "span",
+            { className: "elementType" },
+            component.element
+          )
         ));
       }
 

@@ -324,7 +324,7 @@ var BlissTree = {
                onClick={this.handleSelect.bind(this, id, true)}>
             {this.getNodeIcon(id)}{component.name}
             <div className="selected-text" draggable="true" onDragStart={this.handleNodeDragStart.bind(this, event, id)}>
-              {this.getNodeIcon(id)}{component.name}
+              {this.getNodeIcon(id)}{component.name} <span className="elementType">{component.element}</span>
             </div>
             <div className="selected"></div>
           </div>
@@ -340,7 +340,7 @@ var BlissTree = {
                onDragOver={this.handleNodeDragOver}
                onDragLeave={this.handleNodeDragLeave.bind(this, event, id)}
                onClick={this.handleSelect.bind(this, id, true)}>
-            {this.getNodeIcon(id)}{component.name}
+            {this.getNodeIcon(id)}{component.name} <span className="elementType">{component.element}</span>
           </div>
         );
       }
