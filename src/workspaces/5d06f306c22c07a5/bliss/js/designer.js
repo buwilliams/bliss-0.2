@@ -140,7 +140,7 @@ var blissUiV = (function() {
       app.js.log('app.js.loadProjects() invoked.');
       if (_.isNil(shouldConfirm)) shouldConfirm = true;
       if (shouldConfirm === true) {
-        if (!confirm('Are you sure you want to load a different page?')) return;
+        if (!confirm('Are you sure you want to load a different project?')) return;
       }
 
       app.setState(function() {
@@ -214,26 +214,16 @@ var blissUiV = (function() {
         dataType: 'json'
       });
     }
-    app.js['newProject'] = function(shouldConfirm, pageName) {
+    app.js['newProject'] = function(shouldConfirm) {
       app.js.log('app.js.newProject() invoked.');
       if (_.isNil(shouldConfirm)) shouldConfirm = true;
 
       if (shouldConfirm === true) {
-        if (!confirm('Are you sure you want to create a new page?')) return;
-      }
-
-      var json = Object.assign({}, newBlissProject);
-      if (typeof pageName !== 'undefined') {
-        var snakeName = app.js.getSnake(pageName);
-        //var jsonFilename = snakeName + '.json';
-        json.name = pageName;
-        json.filename = snakeName;
-        json.pageTitle = pageName;
-        json.components["1"].name = pageName;
+        if (!confirm('Are you sure you want to create a new project?')) return;
       }
 
       app.setState(function() {
-        app.buildProject = json;
+        app.buildProject = newBlissProject;
       })
 
       app.dispatch({
@@ -242,12 +232,6 @@ var blissUiV = (function() {
         key: 'activeComponent',
         value: app.buildProject.rootId
       })
-
-      if (typeof pageName !== 'undefined') {
-        app.setState(function() {
-          app.js.saveAndReloadProject();
-        });
-      }
     }
     app.js['saveAndReloadProject'] = function() {
       app.js.log('app.js.saveAndReloadProject() invoked.');
@@ -432,58 +416,6 @@ var blissUiV = (function() {
         }
       })
     }
-    app.js['loadWorkspace'] = function(workspaceName) {
-      app.dispatch({
-        path: '/settings',
-        action: 'set',
-        key: 'activeComponent',
-        value: null
-      });
-
-      app.dispatch({
-        path: '/views',
-        action: 'setView',
-        name: 'designer'
-      });
-
-      app.dispatch({
-        path: '/settings',
-        action: 'set',
-        key: 'workspace',
-        value: workspaceName
-      });
-
-      app.dispatch({
-        path: '/workspaces',
-        action: 'set',
-        key: 'active',
-        value: false
-      });
-
-      app.js.newProject(false);
-      app.js.getProjects();
-    }
-    app.js['getSnake'] = function(str) {
-      var newStr = str.replace(/[^a-z0-9\s_]/gi, '').trim();
-      newStr = newStr.replace(/\s/g, '_').toLowerCase();
-      return newStr;
-    }
-    app.js['deleteProject'] = function(scope, attributes) {
-      if (!confirm('Are you sure you want to delete this page?')) return;
-
-      var workspace = app.state.settings.workspace;
-
-      $.ajax({
-        type: 'POST',
-        url: '/project/delete?workspace=' + workspace + '&project=' + app.buildProject.name,
-        data: {},
-        success: function(data) {
-          app.js.loadWorkspace(workspace);
-        },
-        contentType: "application/json",
-        dataType: 'json'
-      });
-    }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? false : true;
@@ -510,9 +442,39 @@ var blissUiV = (function() {
     };
 
     app.methods["267"]['handleClick'] = function(scope, attributes) {
-      var item = scope.repeater[scope.repeater_index];
+      var item = scope.repeater[scope.repeater_index]
+
       return function(e) {
-        app.js.loadWorkspace(item.name);
+
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'activeComponent',
+          value: null
+        })
+
+        app.dispatch({
+          path: '/views',
+          action: 'setView',
+          name: 'designer'
+        })
+
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'workspace',
+          value: item.name
+        })
+
+        app.dispatch({
+          path: '/workspaces',
+          action: 'set',
+          key: 'active',
+          value: false
+        })
+
+        app.js.newProject(false)
+        app.js.getProjects()
       }
     };
     app.methods["265"] = {};
@@ -557,50 +519,10 @@ var blissUiV = (function() {
           app.state.workspaces.active === false) ?
         true : false;
     }
-    app.methods["293"] = {};
-    app.methods["293"]['handleChange'] = function(scope, attributes) {
+    app.methods["85"] = {};
+    app.methods["85"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        app.dispatch({
-          path: '/projects',
-          action: 'setNewPage',
-          newPage: e.target.value
-        });
-      }
-    };
-
-    app.methods["293"]['getValue'] = function(scope, attributes) {
-      return app.state.projects.newPage;
-    };
-
-    app.methods["293"]['handleKeydown'] = function(scope, attributes) {
-      return function(e) {
-        var key = e.which;
-        var ENTER = 13;
-
-        if (key === ENTER) {
-          var pageName = app.state.projects.newPage;
-          app.js.newProject(true, pageName);
-
-          app.dispatch({
-            path: '/projects',
-            action: 'setNewPage',
-            newPage: ''
-          });
-        }
-      }
-    };
-    app.methods["294"] = {};
-    app.methods["294"]['handleClick'] = function(scope, attributes) {
-      return function(e) {
-        e.preventDefault();
-        var pageName = app.state.projects.newPage;
-        app.js.newProject(true, pageName);
-
-        app.dispatch({
-          path: '/projects',
-          action: 'setNewPage',
-          newPage: ''
-        });
+        app.js.newProject();
       }
     };
     app.methods["161"] = {};
@@ -686,22 +608,6 @@ var blissUiV = (function() {
         dataType: 'json'
       });
     }
-    app.methods["275"] = {};
-    app.methods["275"]['handleClick'] = function(scope, attributes) {
-      return function(e) {
-        var username = app.state.firebase.username
-        var workspace = app.state.settings.workspace
-
-        if (username === null) return
-
-        var url = location.origin +
-          '/hosted/' +
-          username + '/' +
-          workspace + '/'
-
-        window.open(url)
-      }
-    };
     app.methods["250"] = {};
     app.methods["250"]['getText'] = function(scope, attributes) {
       return app.state.firebase.email;
@@ -748,6 +654,22 @@ var blissUiV = (function() {
     app.methods["201"]['handleClick'] = function(scope, attributes) {
       return function(e) {
         app.js.refresh()
+      }
+    };
+    app.methods["275"] = {};
+    app.methods["275"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        var username = app.state.firebase.username
+        var workspace = app.state.settings.workspace
+
+        if (username === null) return
+
+        var url = location.origin +
+          '/hosted/' +
+          username + '/' +
+          workspace + '/'
+
+        window.open(url)
       }
     };
     app.methods["229"] = {};
@@ -999,6 +921,56 @@ var blissUiV = (function() {
     app.methods["18"]['getSelected'] = function(scope, attributes) {
       return app.state.settings.activeComponent
     }
+    app.methods["77"] = {};
+    app.methods["77"]['shouldShow'] = function(scope, attributes) {
+      if (_.isNil(app.state.settings.activeComponent))
+        return false;
+
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
+      return layout.active
+    }
+    app.methods["278"] = {};
+    app.methods["278"]['getStyles'] = function(scope, attributes) {
+      var styles = {}
+      var view = app.state.views.selected
+
+      if (view === 'js') {
+        styles.backgroundColor = app.js.getCssVar('$menuHighlight');
+        styles.borderColor = app.js.getCssVar('$menuHighlight');
+      }
+
+      return styles;
+    }
+    app.methods["278"]['handleClick'] = function(scope, attributes) {
+      var viewName = (app.state.views.selected === 'js') ? 'designer' : 'js'
+      return function(e) {
+        console.log('new view', viewName)
+        app.dispatch({
+          path: '/views',
+          action: 'setView',
+          name: viewName
+        })
+      }
+    };
+    app.methods["11"] = {};
+    app.methods["11"]['setComponentProp'] = function(scope, props) {
+      return app.buildProject.components[
+        app.state.settings.activeComponent]
+    }
+    app.methods["11"]['setOnChangeProp'] = function(scope, props) {
+      return function(newComponent) {
+        app.js.update(function() {
+          if (newComponent.id === app.buildProject.rootId) {
+            app.buildProject.name = newComponent.name;
+          }
+          app.buildProject.components[
+            app.state.settings.activeComponent] = newComponent;
+        });
+      }
+    }
     app.methods["4"] = {};
     app.methods["4"]['getStyles'] = function(scope, attributes) {
       var list = app.state.layout.list
@@ -1154,26 +1126,6 @@ var blissUiV = (function() {
         'display': displayValue
       };
     }
-    app.methods["285"] = {};
-    app.methods["285"]['handleChange'] = function(scope, attributes) {
-      return function(e) {
-        var value = e.target.value;
-        app.setState(function() {
-          app.buildProject.pageTitle = value;
-        });
-
-        app.dispatch({
-          path: '/settings',
-          action: 'set',
-          key: 'shouldSave',
-          value: true
-        });
-      }
-    };
-
-    app.methods["285"]['getText'] = function(scope, attributes) {
-      return app.buildProject.pageTitle || '';
-    };
     app.methods["290"] = {};
     app.methods["290"]['getText'] = function(scope, attributes) {
       return app.buildProject.filename || '';
@@ -1185,41 +1137,20 @@ var blissUiV = (function() {
         app.setState(function() {
           app.buildProject.filename = value;
         });
-
-        app.dispatch({
-          path: '/settings',
-          action: 'set',
-          key: 'shouldSave',
-          value: true
-        });
       }
     };
-    app.methods["302"] = {};
-    app.methods["302"]['getText'] = function(scope, attributes) {
-      return app.buildProject.name || '';
-    };
-
-    app.methods["302"]['handleChange'] = function(scope, attributes) {
+    app.methods["285"] = {};
+    app.methods["285"]['handleChange'] = function(scope, attributes) {
       return function(e) {
         var value = e.target.value;
         app.setState(function() {
-          app.buildProject.name = value;
-        });
-
-        app.dispatch({
-          path: '/settings',
-          action: 'set',
-          key: 'shouldSave',
-          value: true
+          app.buildProject.pageTitle = value;
         });
       }
     };
-    app.methods["196"] = {};
-    app.methods["196"]['handleClick'] = function(scope, attributes) {
-      return function(e) {
-        e.preventDefault();
-        app.js.deleteProject();
-      }
+
+    app.methods["285"]['getText'] = function(scope, attributes) {
+      return app.buildProject.pageTitle || '';
     };
     app.methods["179"] = {};
     app.methods["179"]['getStyle'] = function() {
@@ -1397,53 +1328,6 @@ var blissUiV = (function() {
     }
     app.methods["143"]['setItemValue'] = function(scope, attributes) {
       return "version";
-    }
-    app.methods["77"] = {};
-    app.methods["77"]['shouldShow'] = function(scope, attributes) {
-      if (_.isNil(app.state.settings.activeComponent))
-        return false;
-
-      var layout = _.find(app.state.layout.list, function(item) {
-        return (item.name === 'properties')
-      })
-
-      return layout.active
-    }
-    app.methods["278"] = {};
-    app.methods["278"]['getStyles'] = function(scope, attributes) {
-      var styles = {}
-      var view = app.state.views.selected
-
-      if (view === 'js') {
-        styles.backgroundColor = app.js.getCssVar('$menuHighlight');
-        styles.borderColor = app.js.getCssVar('$menuHighlight');
-      }
-
-      return styles;
-    }
-    app.methods["278"]['handleClick'] = function(scope, attributes) {
-      var viewName = (app.state.views.selected === 'js') ? 'designer' : 'js'
-      return function(e) {
-        console.log('new view', viewName)
-        app.dispatch({
-          path: '/views',
-          action: 'setView',
-          name: viewName
-        })
-      }
-    };
-    app.methods["11"] = {};
-    app.methods["11"]['setComponentProp'] = function(scope, props) {
-      return app.buildProject.components[
-        app.state.settings.activeComponent]
-    }
-    app.methods["11"]['setOnChangeProp'] = function(scope, props) {
-      return function(newComponent) {
-        app.js.update(function() {
-          app.buildProject.components[
-            app.state.settings.activeComponent] = newComponent;
-        });
-      }
     }
     app.methods["95"] = {};
     app.methods["95"]['showStatus'] = function(scope, attributes) {
@@ -1671,11 +1555,9 @@ var blissUiV = (function() {
     }
     app.schema['/projects'] = {};
     app.schema['/projects']['init'] = function(data, args) {
-      var newData = {
-        newPage: '',
+      return {
         list: []
-      };
-      return newData;
+      }
     }
     app.schema['/projects']['add'] = function(data, args) {
       var newData = Object.assign({}, data)
@@ -1690,11 +1572,6 @@ var blissUiV = (function() {
     app.schema['/projects']['clear'] = function(data, args) {
       var newData = Object.assign({}, data)
       newData.list = []
-      return newData;
-    }
-    app.schema['/projects']['setNewPage'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.newPage = args.newPage
       return newData;
     }
     if (app.schema['/projects']['init']) {
@@ -2118,43 +1995,23 @@ var blissUiV = (function() {
                           "id": "options_107",
                           "key": app.getKey('id', '107')
                         }),
-                        React.createElement('h6', app.mergeAttributes('297', scope, {}, {
-                          "className": "dropdown-header",
-                          "id": "newPageLabel_297",
-                          "key": app.getKey('id', '297')
-                        }), 'New page'),
-                        React.createElement('div', app.mergeAttributes('292', scope, {}, {
-                            "className": "input-group input-group-sm",
-                            "id": "newPageContainer_292",
-                            "key": app.getKey('id', '292')
-                          }),
-                          React.createElement('input', app.mergeAttributes('293', scope, {
-                            "onChange": "handleChange",
-                            "value": "getValue",
-                            "onKeyDown": "handleKeydown"
+                        React.createElement('a', app.mergeAttributes('85', scope, {
+                            "onClick": "handleClick"
                           }, {
-                            "placeholder": "Page name",
-                            "className": "form-control input-sm",
-                            "id": "newPageInput_293",
-                            "key": app.getKey('id', '293')
+                            "id": "newButton",
+                            "className": "dropdown-item",
+                            "href": "#",
+                            "key": app.getKey('id', '85')
+                          }),
+                          React.createElement('i', app.mergeAttributes('163', scope, {}, {
+                            "className": "fa fa-plus",
+                            "id": "icon_163",
+                            "key": app.getKey('id', '163')
                           })),
-                          React.createElement('div', app.mergeAttributes('295', scope, {}, {
-                              "className": "input-group-append",
-                              "id": "inputGroup_295",
-                              "key": app.getKey('id', '295')
-                            }),
-                            React.createElement('button', app.mergeAttributes('294', scope, {
-                                "onClick": "handleClick"
-                              }, {
-                                "className": "btn btn-sm btn-block btn-success",
-                                "id": "newPageButton_294",
-                                "key": app.getKey('id', '294')
-                              }),
-                              React.createElement('i', app.mergeAttributes('296', scope, {}, {
-                                "className": "fa fa-plus",
-                                "id": "plusIcon_296",
-                                "key": app.getKey('id', '296')
-                              }))))),
+                          React.createElement('span', app.mergeAttributes('164', scope, {}, {
+                            "id": "label_164",
+                            "key": app.getKey('id', '164')
+                          }), 'New page')),
                         React.createElement('div', app.mergeAttributes('158', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_158",
@@ -2165,39 +2022,31 @@ var blissUiV = (function() {
                           "id": "existingPageLabels_162",
                           "key": app.getKey('id', '162')
                         }), 'Open page'),
-                        React.createElement('div', app.mergeAttributes('298', scope, {}, {
-                            "id": "existingProjectsOverflow_298",
-                            "key": app.getKey('id', '298')
-                          }),
-                          (function(scope) {
-                            var out = [];
-                            var list = scope['repeater'] = app.methods['161']['repeater'](scope);
-                            for (var i = 0; i < list.length; i++) {
-                              scope['repeater_index'] = i;
-                              out.push(React.createElement('a', app.mergeAttributes('161', scope, {
-                                  "onClick": "handleClick"
-                                }, {
-                                  "href": "#",
-                                  "className": "dropdown-item",
-                                  "id": "existingProject_161",
-                                  "key": app.getKey('id', '161', i)
-                                }),
-                                React.createElement('i', app.mergeAttributes('166', scope, {}, {
-                                  "className": "fa fa-file-o",
-                                  "id": "icon_166",
-                                  "key": app.getKey('id', '166')
-                                })),
-                                React.createElement('span', app.mergeAttributes('165', scope, {}, {
-                                  "id": "label_165",
-                                  "key": app.getKey('id', '165')
-                                }), app.methods['165']['getText'](scope))));
-                            }
-                            return out;
-                          })(scope)),
-                        React.createElement('div', app.mergeAttributes('299', scope, {}, {
-                          "id": "scrollToSeeMore_299",
-                          "key": app.getKey('id', '299')
-                        }), '(scroll to see more pages)'),
+                        (function(scope) {
+                          var out = [];
+                          var list = scope['repeater'] = app.methods['161']['repeater'](scope);
+                          for (var i = 0; i < list.length; i++) {
+                            scope['repeater_index'] = i;
+                            out.push(React.createElement('a', app.mergeAttributes('161', scope, {
+                                "onClick": "handleClick"
+                              }, {
+                                "href": "#",
+                                "className": "dropdown-item",
+                                "id": "existingProject_161",
+                                "key": app.getKey('id', '161', i)
+                              }),
+                              React.createElement('i', app.mergeAttributes('166', scope, {}, {
+                                "className": "fa fa-file-o",
+                                "id": "icon_166",
+                                "key": app.getKey('id', '166')
+                              })),
+                              React.createElement('span', app.mergeAttributes('165', scope, {}, {
+                                "id": "label_165",
+                                "key": app.getKey('id', '165')
+                              }), app.methods['165']['getText'](scope))));
+                          }
+                          return out;
+                        })(scope),
                         React.createElement('div', app.mergeAttributes('159', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_159",
@@ -2242,23 +2091,6 @@ var blissUiV = (function() {
                             "id": "label_168",
                             "key": app.getKey('id', '168')
                           }), 'Publish')),
-                        React.createElement('a', app.mergeAttributes('275', scope, {
-                            "onClick": "handleClick"
-                          }, {
-                            "href": "#",
-                            "className": "dropdown-item",
-                            "id": "launchLink_275",
-                            "key": app.getKey('id', '275')
-                          }),
-                          React.createElement('i', app.mergeAttributes('276', scope, {}, {
-                            "className": "fa fa-rocket",
-                            "id": "icon_276",
-                            "key": app.getKey('id', '276')
-                          })),
-                          React.createElement('span', app.mergeAttributes('277', scope, {}, {
-                            "id": "span_277",
-                            "key": app.getKey('id', '277')
-                          }), 'Launch')),
                         React.createElement('div', app.mergeAttributes('246', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_246",
@@ -2328,6 +2160,27 @@ var blissUiV = (function() {
                         "id": "icon_202",
                         "key": app.getKey('id', '202')
                       })))),
+                  React.createElement('div', app.mergeAttributes('274', scope, {}, {
+                      "className": "float-left",
+                      "id": "openContainer_274",
+                      "key": app.getKey('id', '274')
+                    }),
+                    React.createElement('button', app.mergeAttributes('275', scope, {
+                        "onClick": "handleClick"
+                      }, {
+                        "className": "btn btn-default btn-sm",
+                        "id": "openButton_275",
+                        "key": app.getKey('id', '275')
+                      }),
+                      React.createElement('i', app.mergeAttributes('276', scope, {}, {
+                        "className": "fa fa-rocket",
+                        "id": "icon_276",
+                        "key": app.getKey('id', '276')
+                      })),
+                      React.createElement('span', app.mergeAttributes('277', scope, {}, {
+                        "id": "span_277",
+                        "key": app.getKey('id', '277')
+                      }), ' Launch'))),
                   React.createElement('div', app.mergeAttributes('101', scope, {}, {
                       "className": "pull-left",
                       "id": "toggleContent",
@@ -2480,39 +2333,90 @@ var blissUiV = (function() {
                     "id": "blissPanels_96",
                     "key": app.getKey('id', '96')
                   }),
-                  (function(scope) {
-                    var out = [];
-                    scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
-                    if (app.methods['3']['shouldShow'](scope) === true) {
-                      out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
-                          "className": "float-left",
-                          "id": "html_3",
-                          "key": app.getKey('id', '3')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('20', scope, {}, {
-                          "id": "elementsHeader_20",
-                          "key": app.getKey('id', '20')
-                        }), 'HTML'),
-                        React.createElement('div', app.mergeAttributes('110', scope, {}, {
-                            "id": "treeContainer_110",
-                            "key": app.getKey('id', '110')
-                          }),
-                          React.createElement(BlissTree.component, app.mergeAttributes('18', scope, {
-                            "data": "setDataProp",
-                            "onSelect": "setOnSelectProp",
-                            "onCreate": "setOnCreateProp",
-                            "onClone": "setOnCloneProp",
-                            "onDelete": "setOnDeleteProp",
-                            "onMove": "setOnMoveProp",
-                            "_this": "setThis",
-                            "selected": "getSelected"
-                          }, {
-                            "id": "elementTree_18",
-                            "key": app.getKey('id', '18')
-                          })))));
-                    }
-                    return out;
-                  })(scope),
+                  React.createElement(ReactDraggable, app.mergeAttributes('292', scope, {}, {
+                      "id": "draggableHtml_292",
+                      "key": app.getKey('id', '292')
+                    }),
+                    React.createElement('div', app.mergeAttributes('293', scope, {}, {
+                        "id": "new_293",
+                        "key": app.getKey('id', '293')
+                      }),
+                      (function(scope) {
+                        var out = [];
+                        scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
+                        if (app.methods['3']['shouldShow'](scope) === true) {
+                          out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
+                              "className": "float-left",
+                              "id": "html_3",
+                              "key": app.getKey('id', '3')
+                            }),
+                            React.createElement('h3', app.mergeAttributes('20', scope, {}, {
+                              "id": "elementsHeader_20",
+                              "key": app.getKey('id', '20')
+                            }), 'HTML'),
+                            React.createElement('div', app.mergeAttributes('110', scope, {}, {
+                                "id": "treeContainer_110",
+                                "key": app.getKey('id', '110')
+                              }),
+                              React.createElement(BlissTree.component, app.mergeAttributes('18', scope, {
+                                "data": "setDataProp",
+                                "onSelect": "setOnSelectProp",
+                                "onCreate": "setOnCreateProp",
+                                "onClone": "setOnCloneProp",
+                                "onDelete": "setOnDeleteProp",
+                                "onMove": "setOnMoveProp",
+                                "_this": "setThis",
+                                "selected": "getSelected"
+                              }, {
+                                "id": "elementTree_18",
+                                "key": app.getKey('id', '18')
+                              })))));
+                        }
+                        return out;
+                      })(scope))),
+                  React.createElement(ReactDraggable, app.mergeAttributes('294', scope, {}, {
+                      "id": "draggableProperties_294",
+                      "key": app.getKey('id', '294')
+                    }),
+                    React.createElement('div', app.mergeAttributes('295', scope, {}, {
+                        "id": "newCopy_295",
+                        "key": app.getKey('id', '295')
+                      }),
+                      (function(scope) {
+                        var out = [];
+                        scope['shouldShow'] = app.methods['77']['shouldShow'](scope);
+                        if (app.methods['77']['shouldShow'](scope) === true) {
+                          out.push(React.createElement('div', app.mergeAttributes('77', scope, {}, {
+                              "id": "propertiesContainer",
+                              "className": "float-left",
+                              "key": app.getKey('id', '77')
+                            }),
+                            React.createElement('h3', app.mergeAttributes('182', scope, {}, {
+                              "id": "propertyHeader_182",
+                              "key": app.getKey('id', '182')
+                            }), 'properties'),
+                            React.createElement('div', app.mergeAttributes('151', scope, {}, {
+                                "id": "propertiesPadding_151",
+                                "key": app.getKey('id', '151')
+                              }),
+                              React.createElement('button', app.mergeAttributes('278', scope, {
+                                "style": "getStyles",
+                                "onClick": "handleClick"
+                              }, {
+                                "className": "btn btn-default btn-block btn-sm",
+                                "id": "toggleJavascript_278",
+                                "key": app.getKey('id', '278')
+                              }), 'Javascript for HTML'),
+                              React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
+                                "component": "setComponentProp",
+                                "onChange": "setOnChangeProp"
+                              }, {
+                                "id": "blissProperties_11",
+                                "key": app.getKey('id', '11')
+                              })))));
+                        }
+                        return out;
+                      })(scope))),
                   (function(scope) {
                     var out = [];
                     scope['shouldShow'] = app.methods['4']['shouldShow'](scope);
@@ -2593,32 +2497,15 @@ var blissUiV = (function() {
                           React.createElement('h3', app.mergeAttributes('98', scope, {}, {
                             "id": "h3General",
                             "key": app.getKey('id', '98')
-                          }), 'Page Settings'),
-                          React.createElement('div', app.mergeAttributes('287', scope, {}, {
-                              "id": "pageTitleContainer_287",
-                              "key": app.getKey('id', '287')
-                            }),
-                            React.createElement('label', app.mergeAttributes('286', scope, {}, {
-                              "id": "pageTitleLabel_286",
-                              "key": app.getKey('id', '286')
-                            }), 'Page title in <HEAD>'),
-                            React.createElement('input', app.mergeAttributes('285', scope, {
-                              "value": "getText",
-                              "onChange": "handleChange"
-                            }, {
-                              "placeholder": "Page title",
-                              "className": "form-control",
-                              "id": "pageTitleInput_285",
-                              "key": app.getKey('id', '285')
-                            }))),
+                          }), 'Settings'),
                           React.createElement('div', app.mergeAttributes('288', scope, {}, {
                               "id": "fileNameContainer_288",
                               "key": app.getKey('id', '288')
                             }),
                             React.createElement('label', app.mergeAttributes('289', scope, {}, {
-                              "id": "htmlFileNameLabel_289",
+                              "id": "fileNameLabel_289",
                               "key": app.getKey('id', '289')
-                            }), 'HTML file (do not include extension)'),
+                            }), 'File name'),
                             React.createElement('input', app.mergeAttributes('290', scope, {
                               "onChange": "handleChange",
                               "value": "getText"
@@ -2628,30 +2515,28 @@ var blissUiV = (function() {
                               "id": "fileNameInput_290",
                               "key": app.getKey('id', '290')
                             }))),
-                          React.createElement('div', app.mergeAttributes('300', scope, {}, {
-                              "id": "jsonProjectName_300",
-                              "key": app.getKey('id', '300')
+                          React.createElement('div', app.mergeAttributes('287', scope, {}, {
+                              "id": "pageTitleContainer_287",
+                              "key": app.getKey('id', '287')
                             }),
-                            React.createElement('label', app.mergeAttributes('301', scope, {}, {
-                              "id": "projectJsonFilenameLabel_301",
-                              "key": app.getKey('id', '301')
-                            }), 'Project JSON file (do not include extension)'),
-                            React.createElement('input', app.mergeAttributes('302', scope, {
-                              "onChange": "handleChange",
-                              "value": "getText"
+                            React.createElement('label', app.mergeAttributes('286', scope, {}, {
+                              "id": "pageTitleLabel_286",
+                              "key": app.getKey('id', '286')
+                            }), 'Page title'),
+                            React.createElement('input', app.mergeAttributes('285', scope, {
+                              "value": "getText",
+                              "onChange": "handleChange"
                             }, {
-                              "placeholder": "Project name",
+                              "placeholder": "Page title",
                               "className": "form-control",
-                              "id": "projectJsonNameInput_302",
-                              "key": app.getKey('id', '302')
+                              "id": "pageTitleInput_285",
+                              "key": app.getKey('id', '285')
                             }))),
                           React.createElement('hr', app.mergeAttributes('291', scope, {}, {
                             "id": "separator_291",
                             "key": app.getKey('id', '291')
                           })),
-                          React.createElement('button', app.mergeAttributes('196', scope, {
-                              "onClick": "handleClick"
-                            }, {
+                          React.createElement('button', app.mergeAttributes('196', scope, {}, {
                               "className": "btn btn-default btn-sm",
                               "id": "deletePage_196",
                               "key": app.getKey('id', '196')
@@ -2796,41 +2681,6 @@ var blissUiV = (function() {
                           }, {
                             "id": "packagesProperties_143",
                             "key": app.getKey('id', '143')
-                          })))));
-                    }
-                    return out;
-                  })(scope),
-                  (function(scope) {
-                    var out = [];
-                    scope['shouldShow'] = app.methods['77']['shouldShow'](scope);
-                    if (app.methods['77']['shouldShow'](scope) === true) {
-                      out.push(React.createElement('div', app.mergeAttributes('77', scope, {}, {
-                          "id": "propertiesContainer",
-                          "className": "float-left",
-                          "key": app.getKey('id', '77')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('182', scope, {}, {
-                          "id": "propertyHeader_182",
-                          "key": app.getKey('id', '182')
-                        }), 'properties'),
-                        React.createElement('div', app.mergeAttributes('151', scope, {}, {
-                            "id": "propertiesPadding_151",
-                            "key": app.getKey('id', '151')
-                          }),
-                          React.createElement('button', app.mergeAttributes('278', scope, {
-                            "style": "getStyles",
-                            "onClick": "handleClick"
-                          }, {
-                            "className": "btn btn-default btn-block btn-sm",
-                            "id": "toggleJavascript_278",
-                            "key": app.getKey('id', '278')
-                          }), 'Javascript for HTML'),
-                          React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
-                            "component": "setComponentProp",
-                            "onChange": "setOnChangeProp"
-                          }, {
-                            "id": "blissProperties_11",
-                            "key": app.getKey('id', '11')
                           })))));
                     }
                     return out;

@@ -1,4 +1,4 @@
-var manyGhosts = (function() {
+var newProject = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -7,51 +7,8 @@ var manyGhosts = (function() {
       state: {}
     };
     app.js['init'] = function() {
-      app.setState(function() {
-        app.state.numberOfGhosts = 50;
-        app.state.ghosts = app.js.makeGhosts(50);
-      });
+      app.render();
     }
-    app.js['makeGhosts'] = function(numberOfGhosts) {
-      var colors = ['#2ca5ff',
-        '#2594e7',
-        '#1f7cc1',
-        '#58b7ff',
-        '#80c8ff',
-        '#a3d8ff',
-        '#bee3ff',
-        '#d6edff',
-        '#e7f5ff',
-        '#f2faff'
-      ];
-
-      var newArrayOfColors = [];
-      for (var i = 0; i < numberOfGhosts; i++) {
-        newArrayOfColors.push(colors[i % 10]);
-      }
-
-      return newArrayOfColors;
-    }
-    app.methods["2"] = {};
-    app.methods["2"]['getBackgroundColor'] = function(scope, attributes) {
-      return scope.repeater[scope.repeater_index];
-    }
-    app.methods["2"]['repeater'] = function(scope, attributes) {
-      return app.state.ghosts;
-    };
-    app.methods["6"] = {};
-    app.methods["6"]['getValue'] = function(scope, attributes) {
-      return app.state.numberOfGhosts;
-    }
-    app.methods["6"]['handleChange'] = function(scope, attributes) {
-      return function(e) {
-        var numberOfGhosts = parseInt(e.target.value) || 0;
-        app.setState(function() {
-          app.state.numberOfGhosts = numberOfGhosts;
-          app.state.ghosts = app.js.makeGhosts(numberOfGhosts);
-        });
-      }
-    };
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -72,43 +29,9 @@ var manyGhosts = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "manyGhosts_1",
-            "key": app.getKey('id', '1')
-          }),
-          (function(scope) {
-            var out = [];
-            var list = scope['repeater'] = app.methods['2']['repeater'](scope);
-            for (var i = 0; i < list.length; i++) {
-              scope['repeater_index'] = i;
-              out.push(React.createElement(ghost.component, app.mergeAttributes('2', scope, {
-                "backgroundColor": "getBackgroundColor"
-              }, {
-                "id": "ghost_2",
-                "key": app.getKey('id', '2', i)
-              })));
-            }
-            return out;
-          })(scope),
-          React.createElement('div', app.mergeAttributes('5', scope, {}, {
-              "id": "numberOfGhostsContainer_5",
-              "key": app.getKey('id', '5')
-            }),
-            React.createElement('h3', app.mergeAttributes('7', scope, {}, {
-              "id": "header_7",
-              "key": app.getKey('id', '7')
-            }), 'Number of Ghosts'),
-            React.createElement('input', app.mergeAttributes('6', scope, {
-              "value": "getValue",
-              "onChange": "handleChange"
-            }, {
-              "placeholder": "number of ghosts",
-              "id": "numberOfGhosts_6",
-              "key": app.getKey('id', '6')
-            })),
-            React.createElement('p', app.mergeAttributes('8', scope, {}, {
-              "id": "info_8",
-              "key": app.getKey('id', '8')
-            }), 'Example of BlissUI components. Each individual component moves at a random time with a random color. Showing how each component manages state effectively.'))));
+          "id": "newProject_1",
+          "key": app.getKey('id', '1')
+        }), 'hello world'));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

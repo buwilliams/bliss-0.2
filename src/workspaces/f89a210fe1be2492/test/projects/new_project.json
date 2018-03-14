@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 3,
+  "nextId": 2,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -38,32 +38,20 @@
       "id": "1",
       "name": "New Project",
       "element": "div",
-      "text": "",
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "2",
-      "parent": null
-    },
-    "2": {
-      "id": "2",
-      "name": "main-header",
-      "element": "div",
-      "text": "Heade",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
+      "text": null,
+      "attributes": [
+        {
+          "name": "na",
+          "value": ""
+        }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
       "child": null,
-      "parent": "1"
+      "parent": null
     }
   }
 }

@@ -1,4 +1,4 @@
-var foo = (function() {
+var fooJson = (function() {
   var createApp = function(component) {
     var app = {
       js: {},

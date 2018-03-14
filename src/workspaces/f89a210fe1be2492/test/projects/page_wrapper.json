@@ -38,8 +38,13 @@
       "id": "1",
       "name": "page_wrapper",
       "element": "div",
-      "text": "",
-      "attributes": [],
+      "text": null,
+      "attributes": [
+        {
+          "name": "id",
+          "value": "page_wrapper"
+        }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
@@ -50,24 +55,14 @@
     },
     "2": {
       "id": "2",
-      "name": "main-wrapper",
+      "name": "new_2",
       "element": "div",
-      "text": "",
+      "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "color",
-              "value": "red"
-            }
-          ]
-        }
-      ],
+      "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,

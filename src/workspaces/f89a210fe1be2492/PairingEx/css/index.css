@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#header_2 {
+  padding: 10px;
+  background: url(https://images.pexels.com/photos/370799/pexels-photo-370799.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
+  min-height: 200px;
+}
+
+#logo_6 {
+  color: green;
+}
+
+#contentFlexbox_8 {
+  display: flex;
+  flex-direction: row;
+}
+
+#contentFlexbox_8 > div {
+  padding: 10px;
+}
+
+#sidebar_4 {
+  flex-grow: 1;
+  background-color: pink;
+}
+
+#content_5 {
+  flex-grow: 3;
+}
+
+#footer_3 {
+  background-color: green;
+  padding: 10px;
+}
+

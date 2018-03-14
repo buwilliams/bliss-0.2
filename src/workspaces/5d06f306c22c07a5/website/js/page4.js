@@ -1,4 +1,4 @@
-var pageWrapper = (function() {
+var page = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -29,13 +29,9 @@ var pageWrapper = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "page_wrapper",
-            "key": app.getKey('id', '1')
-          }),
-          React.createElement('div', app.mergeAttributes('2', scope, {}, {
-            "id": "new_2",
-            "key": app.getKey('id', '2')
-          }))));
+          "id": "page_1",
+          "key": app.getKey('id', '1')
+        }), 'testing 23'));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

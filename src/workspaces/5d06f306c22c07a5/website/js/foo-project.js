@@ -1,5 +1,5 @@
 var blissProject = {
-  "name": "foo",
+  "name": "foo.json",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",

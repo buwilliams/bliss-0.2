@@ -1,5 +1,5 @@
-{
-  "name": "bar oh yeah",
+var newBlissProject = {
+  "name": "New Project",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
@@ -36,9 +36,9 @@
   "components": {
     "1": {
       "id": "1",
-      "name": "bar oh yeah",
+      "name": "New Project",
       "element": "div",
-      "text": "what do you think?",
+      "text": null,
       "attributes": [],
       "css": [],
       "js": [],
@@ -48,7 +48,6 @@
       "child": null,
       "parent": null
     }
-  },
-  "filename": "bar_oh_yeah",
-  "pageTitle": "bar oh yeah"
+  }
 }
+if(typeof module !== "undefined") module.exports = newBlissProject;
