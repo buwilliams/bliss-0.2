@@ -22,6 +22,7 @@ echo 'Updating node deps...'
 yarn install
 
 echo 'Building Bliss...'
+sudo chown -R git:git ./build
 node_modules/.bin/jake -f jakefile.js build
 
 echo 'Starting express web server...'

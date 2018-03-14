@@ -2,8 +2,6 @@
 Description=BlissUI
 
 [Service]
-User=git
-Group=git
 Environment=
 WorkingDirectory=/home/git/work
 ExecStart=/usr/bin/node ./src/server/server.js
