@@ -139,6 +139,11 @@
   text-transform: uppercase;
 }
 
+#existingProjectsOverflow_298 {
+  max-height: 10em;
+  overflow-y: scroll;
+}
+
 #existingProject_161 {
   margin-right: 5px;
   cursor: pointer;
@@ -151,6 +156,13 @@
 #label_165 {
   display: inline-block;
   margin-left: 10px;
+}
+
+#scrollToSeeMore_299 {
+  color: #636c72;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 0.5rem 1.5rem;
 }
 
 #divider_159 {

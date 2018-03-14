@@ -2111,31 +2111,39 @@ var blissUiV = (function() {
                           "id": "existingPageLabels_162",
                           "key": app.getKey('id', '162')
                         }), 'Open page'),
-                        (function(scope) {
-                          var out = [];
-                          var list = scope['repeater'] = app.methods['161']['repeater'](scope);
-                          for (var i = 0; i < list.length; i++) {
-                            scope['repeater_index'] = i;
-                            out.push(React.createElement('a', app.mergeAttributes('161', scope, {
-                                "onClick": "handleClick"
-                              }, {
-                                "href": "#",
-                                "className": "dropdown-item",
-                                "id": "existingProject_161",
-                                "key": app.getKey('id', '161', i)
-                              }),
-                              React.createElement('i', app.mergeAttributes('166', scope, {}, {
-                                "className": "fa fa-file-o",
-                                "id": "icon_166",
-                                "key": app.getKey('id', '166')
-                              })),
-                              React.createElement('span', app.mergeAttributes('165', scope, {}, {
-                                "id": "label_165",
-                                "key": app.getKey('id', '165')
-                              }), app.methods['165']['getText'](scope))));
-                          }
-                          return out;
-                        })(scope),
+                        React.createElement('div', app.mergeAttributes('298', scope, {}, {
+                            "id": "existingProjectsOverflow_298",
+                            "key": app.getKey('id', '298')
+                          }),
+                          (function(scope) {
+                            var out = [];
+                            var list = scope['repeater'] = app.methods['161']['repeater'](scope);
+                            for (var i = 0; i < list.length; i++) {
+                              scope['repeater_index'] = i;
+                              out.push(React.createElement('a', app.mergeAttributes('161', scope, {
+                                  "onClick": "handleClick"
+                                }, {
+                                  "href": "#",
+                                  "className": "dropdown-item",
+                                  "id": "existingProject_161",
+                                  "key": app.getKey('id', '161', i)
+                                }),
+                                React.createElement('i', app.mergeAttributes('166', scope, {}, {
+                                  "className": "fa fa-file-o",
+                                  "id": "icon_166",
+                                  "key": app.getKey('id', '166')
+                                })),
+                                React.createElement('span', app.mergeAttributes('165', scope, {}, {
+                                  "id": "label_165",
+                                  "key": app.getKey('id', '165')
+                                }), app.methods['165']['getText'](scope))));
+                            }
+                            return out;
+                          })(scope)),
+                        React.createElement('div', app.mergeAttributes('299', scope, {}, {
+                          "id": "scrollToSeeMore_299",
+                          "key": app.getKey('id', '299')
+                        }), '(scroll to see more pages)'),
                         React.createElement('div', app.mergeAttributes('159', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_159",

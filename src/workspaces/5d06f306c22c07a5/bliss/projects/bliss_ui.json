@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 298,
+  "nextId": 300,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -2658,7 +2658,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "194",
-      "previous": "161",
+      "previous": "299",
       "child": null,
       "parent": "107"
     },
@@ -2719,10 +2719,10 @@
           "value": "handleClick"
         }
       ],
-      "next": "159",
-      "previous": "162",
+      "next": null,
+      "previous": null,
       "child": "166",
-      "parent": "107"
+      "parent": "298"
     },
     "162": {
       "id": "162",
@@ -2755,7 +2755,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "161",
+      "next": "298",
       "previous": "158",
       "child": null,
       "parent": "107"
@@ -6144,6 +6144,76 @@
       "dynamicAttributes": [],
       "next": "292",
       "previous": null,
+      "child": null,
+      "parent": "107"
+    },
+    "298": {
+      "id": "298",
+      "name": "existing projects overflow",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "max-height",
+              "value": "10em"
+            },
+            {
+              "name": "overflow-y",
+              "value": "scroll"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "299",
+      "previous": "162",
+      "child": "161",
+      "parent": "107"
+    },
+    "299": {
+      "id": "299",
+      "name": "scroll to see more",
+      "element": "div",
+      "text": "(scroll to see more pages)",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "#636c72"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "padding",
+              "value": "0.5rem 1.5rem"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "159",
+      "previous": "298",
       "child": null,
       "parent": "107"
     }
