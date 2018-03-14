@@ -2071,7 +2071,8 @@ var blissUi = (function() {
                           }),
                           React.createElement('input', app.mergeAttributes('293', scope, {
                             "onChange": "handleChange",
-                            "value": "getValue"
+                            "value": "getValue",
+                            "onKeyDown": "handleKeydown"
                           }, {
                             "placeholder": "New page",
                             "className": "form-control input-sm",

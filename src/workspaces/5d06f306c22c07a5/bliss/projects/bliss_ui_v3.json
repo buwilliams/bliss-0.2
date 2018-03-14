@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 297,
+  "nextId": 298,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -1383,14 +1383,19 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "min-width",
+              "value": "15em"
+            }
+          ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": "106",
-      "child": "292",
+      "child": "297",
       "parent": "105"
     },
     "108": {
@@ -5956,7 +5961,7 @@
           "properties": [
             {
               "name": "padding",
-              "value": "5px"
+              "value": "0.5rem 1.5rem"
             }
           ]
         }
@@ -5964,7 +5969,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "158",
-      "previous": null,
+      "previous": "297",
       "child": "293",
       "parent": "107"
     },
@@ -5979,7 +5984,7 @@
       "attributes": [
         {
           "name": "placeholder",
-          "value": "New page"
+          "value": "Page name"
         },
         {
           "name": "class",
@@ -6105,6 +6110,42 @@
       "previous": null,
       "child": null,
       "parent": "294"
+    },
+    "297": {
+      "id": "297",
+      "name": "new page label",
+      "element": "h6",
+      "text": "New page",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "dropdown-header"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "292",
+      "previous": null,
+      "child": null,
+      "parent": "107"
     }
   },
   "schemas": [

@@ -2064,6 +2064,11 @@ var blissUiV = (function() {
                           "id": "options_107",
                           "key": app.getKey('id', '107')
                         }),
+                        React.createElement('h6', app.mergeAttributes('297', scope, {}, {
+                          "className": "dropdown-header",
+                          "id": "newPageLabel_297",
+                          "key": app.getKey('id', '297')
+                        }), 'New page'),
                         React.createElement('div', app.mergeAttributes('292', scope, {}, {
                             "className": "input-group input-group-sm",
                             "id": "newPageContainer_292",
@@ -2074,7 +2079,7 @@ var blissUiV = (function() {
                             "value": "getValue",
                             "onKeyDown": "handleKeydown"
                           }, {
-                            "placeholder": "New page",
+                            "placeholder": "Page name",
                             "className": "form-control input-sm",
                             "id": "newPageInput_293",
                             "key": app.getKey('id', '293')

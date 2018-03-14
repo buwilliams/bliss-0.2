@@ -115,10 +115,16 @@
 }
 
 #options_107 {
+  min-width: 15em;
+}
+
+#newPageLabel_297 {
+  font-size: 10px;
+  text-transform: uppercase;
 }
 
 #newPageContainer_292 {
-  padding: 5px;
+  padding: 0.5rem 1.5rem;
 }
 
 #newPageInput_293 {
