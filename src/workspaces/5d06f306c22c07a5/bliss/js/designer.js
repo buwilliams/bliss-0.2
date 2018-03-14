@@ -1398,6 +1398,41 @@ var blissUiV = (function() {
     app.methods["143"]['setItemValue'] = function(scope, attributes) {
       return "version";
     }
+    app.methods["304"] = {};
+    app.methods["304"]['getStyle'] = function() {
+      var selected = app.state.views.selected
+      var displayValue = (selected === 'import_html') ? 'block' : 'none';
+      return {
+        'display': displayValue
+      };
+    }
+    app.methods["306"] = {};
+    app.methods["306"]['setObjectContainer'] = function(scope, props) {
+      return app.buildProject;
+    };
+
+    app.methods["306"]['setObjectKey'] = function(scope, props) {
+      return "packages";
+    };
+
+    app.methods["306"]['setObjectType'] = function(scope, props) {
+      return "object";
+    };
+
+    app.methods["306"]['setOnChange'] = function(scope, attributes) {
+      return function(newPackages) {
+        app.js.update(function() {
+          app.buildProject.packages = newPackages;
+        });
+      }
+    };
+
+    app.methods["306"]['setItemKey'] = function(scope, attributes) {
+      return "name";
+    }
+    app.methods["306"]['setItemValue'] = function(scope, attributes) {
+      return "version";
+    }
     app.methods["77"] = {};
     app.methods["77"]['shouldShow'] = function(scope, attributes) {
       if (_.isNil(app.state.settings.activeComponent))
@@ -1784,6 +1819,10 @@ var blissUiV = (function() {
           {
             name: 'node_packages',
             label: 'Node Packages'
+          },
+          {
+            name: 'import_html',
+            label: 'Import HTML'
           },
           {
             name: 'settings',
@@ -2796,7 +2835,31 @@ var blissUiV = (function() {
                           }, {
                             "id": "packagesProperties_143",
                             "key": app.getKey('id', '143')
-                          })))));
+                          }))),
+                        React.createElement('div', app.mergeAttributes('304', scope, {
+                            "style": "getStyle"
+                          }, {
+                            "id": "importHtmlContainer_304",
+                            "key": app.getKey('id', '304')
+                          }),
+                          React.createElement('h3', app.mergeAttributes('305', scope, {}, {
+                            "className": "clearfix",
+                            "id": "title_305",
+                            "key": app.getKey('id', '305')
+                          }), 'import html'),
+                          React.createElement('textarea', app.mergeAttributes('306', scope, {}, {
+                            "cols": "45",
+                            "rows": "10",
+                            "placeholder": "paste html here...",
+                            "className": "form-control",
+                            "id": "import_306",
+                            "key": app.getKey('id', '306')
+                          })),
+                          React.createElement('button', app.mergeAttributes('307', scope, {}, {
+                            "className": "btn btn-sm btn-success",
+                            "id": "import_307",
+                            "key": app.getKey('id', '307')
+                          }), 'Import HTML'))));
                     }
                     return out;
                   })(scope),

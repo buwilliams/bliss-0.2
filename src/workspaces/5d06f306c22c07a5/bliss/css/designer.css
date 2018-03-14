@@ -676,6 +676,25 @@
 #packagesProperties_143 {
 }
 
+#importHtmlContainer_304 {
+  overflow: auto;
+  height: calc(100vh - 80px);
+  padding: 10px;
+}
+
+#title_305 {
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: #698290;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+#import_307 {
+  margin-top: 1em;
+}
+
 #propertiesContainer {
   background-color: #eee;
   height: calc(100vh - 80px);

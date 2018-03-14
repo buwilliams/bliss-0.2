@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 304,
+  "nextId": 308,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -3971,7 +3971,7 @@
           "value": "getStyle"
         }
       ],
-      "next": null,
+      "next": "304",
       "previous": "226",
       "child": "142",
       "parent": "4"
@@ -6279,6 +6279,194 @@
       "previous": null,
       "child": null,
       "parent": "300"
+    },
+    "304": {
+      "id": "304",
+      "name": "Import HTML Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'import_html') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": null,
+      "previous": "227",
+      "child": "305",
+      "parent": "4"
+    },
+    "305": {
+      "id": "305",
+      "name": "title",
+      "element": "h3",
+      "text": "import html",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "306",
+      "previous": null,
+      "child": null,
+      "parent": "304"
+    },
+    "306": {
+      "id": "306",
+      "name": "import",
+      "element": "textarea",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "cols",
+          "value": "45"
+        },
+        {
+          "name": "rows",
+          "value": "10"
+        },
+        {
+          "name": "placeholder",
+          "value": "paste html here..."
+        },
+        {
+          "name": "class",
+          "value": "form-control"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"packages\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"object\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newPackages) {\n    app.js.update(function() {\n      app.buildProject.packages = newPackages;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "setItemKey",
+          "body": "function(scope, attributes) {\n  return \"name\";\n}"
+        },
+        {
+          "name": "setItemValue",
+          "body": "function(scope, attributes) {\n  return \"version\";\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "307",
+      "previous": null,
+      "child": null,
+      "parent": "304"
+    },
+    "307": {
+      "id": "307",
+      "name": "import",
+      "element": "button",
+      "text": "Import HTML",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-sm btn-success"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "306",
+      "child": null,
+      "parent": "304"
     }
   },
   "schemas": [
@@ -6383,7 +6571,7 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
+          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'import_html',   label: 'Import HTML' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
         },
         {
           "action": "setView",
