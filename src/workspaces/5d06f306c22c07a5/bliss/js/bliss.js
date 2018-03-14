@@ -214,16 +214,26 @@ var blissUi = (function() {
         dataType: 'json'
       });
     }
-    app.js['newProject'] = function(shouldConfirm) {
+    app.js['newProject'] = function(shouldConfirm, pageName) {
       app.js.log('app.js.newProject() invoked.');
       if (_.isNil(shouldConfirm)) shouldConfirm = true;
 
       if (shouldConfirm === true) {
-        if (!confirm('Are you sure you want to create a new project?')) return;
+        if (!confirm('Are you sure you want to create a new page?')) return;
+      }
+
+      var json = Object.assign({}, newBlissProject);
+      if (typeof pageName !== 'undefined') {
+        var snakeName = app.js.getSnake(pageName);
+        //var jsonFilename = snakeName + '.json';
+        json.name = snakeName;
+        json.filename = snakeName;
+        json.pageTitle = pageName;
+        json.components["1"].name = pageName;
       }
 
       app.setState(function() {
-        app.buildProject = newBlissProject;
+        app.buildProject = json;
       })
 
       app.dispatch({
@@ -232,6 +242,12 @@ var blissUi = (function() {
         key: 'activeComponent',
         value: app.buildProject.rootId
       })
+
+      if (typeof pageName !== 'undefined') {
+        app.setState(function() {
+          app.js.saveAndReloadProject();
+        });
+      }
     }
     app.js['saveAndReloadProject'] = function() {
       app.js.log('app.js.saveAndReloadProject() invoked.');
@@ -416,6 +432,42 @@ var blissUi = (function() {
         }
       })
     }
+    app.js['loadWorkspace'] = function(workspaceName) {
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'activeComponent',
+        value: null
+      });
+
+      app.dispatch({
+        path: '/views',
+        action: 'setView',
+        name: 'designer'
+      });
+
+      app.dispatch({
+        path: '/settings',
+        action: 'set',
+        key: 'workspace',
+        value: workspaceName
+      });
+
+      app.dispatch({
+        path: '/workspaces',
+        action: 'set',
+        key: 'active',
+        value: false
+      });
+
+      app.js.newProject(false);
+      app.js.getProjects();
+    }
+    app.js['getSnake'] = function(str) {
+      var newStr = str.replace(/[^a-z0-9\s_]/gi, '').trim();
+      newStr = newStr.replace(/\s/g, '_').toLowerCase();
+      return newStr;
+    }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? false : true;
@@ -442,39 +494,9 @@ var blissUi = (function() {
     };
 
     app.methods["267"]['handleClick'] = function(scope, attributes) {
-      var item = scope.repeater[scope.repeater_index]
-
+      var item = scope.repeater[scope.repeater_index];
       return function(e) {
-
-        app.dispatch({
-          path: '/settings',
-          action: 'set',
-          key: 'activeComponent',
-          value: null
-        })
-
-        app.dispatch({
-          path: '/views',
-          action: 'setView',
-          name: 'designer'
-        })
-
-        app.dispatch({
-          path: '/settings',
-          action: 'set',
-          key: 'workspace',
-          value: item.name
-        })
-
-        app.dispatch({
-          path: '/workspaces',
-          action: 'set',
-          key: 'active',
-          value: false
-        })
-
-        app.js.newProject(false)
-        app.js.getProjects()
+        app.js.loadWorkspace(item.name);
       }
     };
     app.methods["265"] = {};
@@ -519,10 +541,50 @@ var blissUi = (function() {
           app.state.workspaces.active === false) ?
         true : false;
     }
-    app.methods["85"] = {};
-    app.methods["85"]['handleClick'] = function(scope, attributes) {
+    app.methods["293"] = {};
+    app.methods["293"]['handleChange'] = function(scope, attributes) {
       return function(e) {
-        app.js.newProject();
+        app.dispatch({
+          path: '/projects',
+          action: 'setNewPage',
+          newPage: e.target.value
+        });
+      }
+    };
+
+    app.methods["293"]['getValue'] = function(scope, attributes) {
+      return app.state.projects.newPage;
+    };
+
+    app.methods["293"]['handleKeydown'] = function(scope, attributes) {
+      return function(e) {
+        var key = e.which;
+        var ENTER = 13;
+
+        if (key === ENTER) {
+          var pageName = app.state.projects.newPage;
+          app.js.newProject(true, pageName);
+
+          app.dispatch({
+            path: '/projects',
+            action: 'setNewPage',
+            newPage: ''
+          });
+        }
+      }
+    };
+    app.methods["294"] = {};
+    app.methods["294"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        e.preventDefault();
+        var pageName = app.state.projects.newPage;
+        app.js.newProject(true, pageName);
+
+        app.dispatch({
+          path: '/projects',
+          action: 'setNewPage',
+          newPage: ''
+        });
       }
     };
     app.methods["161"] = {};
@@ -1555,9 +1617,11 @@ var blissUi = (function() {
     }
     app.schema['/projects'] = {};
     app.schema['/projects']['init'] = function(data, args) {
-      return {
+      var newData = {
+        newPage: '',
         list: []
-      }
+      };
+      return newData;
     }
     app.schema['/projects']['add'] = function(data, args) {
       var newData = Object.assign({}, data)
@@ -1572,6 +1636,11 @@ var blissUi = (function() {
     app.schema['/projects']['clear'] = function(data, args) {
       var newData = Object.assign({}, data)
       newData.list = []
+      return newData;
+    }
+    app.schema['/projects']['setNewPage'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.newPage = args.newPage
       return newData;
     }
     if (app.schema['/projects']['init']) {
@@ -1995,23 +2064,37 @@ var blissUi = (function() {
                           "id": "options_107",
                           "key": app.getKey('id', '107')
                         }),
-                        React.createElement('a', app.mergeAttributes('85', scope, {
-                            "onClick": "handleClick"
-                          }, {
-                            "id": "newButton",
-                            "className": "dropdown-item",
-                            "href": "#",
-                            "key": app.getKey('id', '85')
+                        React.createElement('div', app.mergeAttributes('292', scope, {}, {
+                            "className": "input-group input-group-sm",
+                            "id": "newPageContainer_292",
+                            "key": app.getKey('id', '292')
                           }),
-                          React.createElement('i', app.mergeAttributes('163', scope, {}, {
-                            "className": "fa fa-plus",
-                            "id": "icon_163",
-                            "key": app.getKey('id', '163')
+                          React.createElement('input', app.mergeAttributes('293', scope, {
+                            "onChange": "handleChange",
+                            "value": "getValue"
+                          }, {
+                            "placeholder": "New page",
+                            "className": "form-control input-sm",
+                            "id": "newPageInput_293",
+                            "key": app.getKey('id', '293')
                           })),
-                          React.createElement('span', app.mergeAttributes('164', scope, {}, {
-                            "id": "label_164",
-                            "key": app.getKey('id', '164')
-                          }), 'New page')),
+                          React.createElement('div', app.mergeAttributes('295', scope, {}, {
+                              "className": "input-group-append",
+                              "id": "inputGroup_295",
+                              "key": app.getKey('id', '295')
+                            }),
+                            React.createElement('button', app.mergeAttributes('294', scope, {
+                                "onClick": "handleClick"
+                              }, {
+                                "className": "btn btn-sm btn-block btn-success",
+                                "id": "newPageButton_294",
+                                "key": app.getKey('id', '294')
+                              }),
+                              React.createElement('i', app.mergeAttributes('296', scope, {}, {
+                                "className": "fa fa-plus",
+                                "id": "plusIcon_296",
+                                "key": app.getKey('id', '296')
+                              }))))),
                         React.createElement('div', app.mergeAttributes('158', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_158",

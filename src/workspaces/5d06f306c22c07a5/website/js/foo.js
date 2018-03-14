@@ -1,4 +1,4 @@
-var newProject = (function() {
+var foo = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -29,7 +29,7 @@ var newProject = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-          "id": "newProject_1",
+          "id": "foo_1",
           "key": app.getKey('id', '1')
         })));
     };

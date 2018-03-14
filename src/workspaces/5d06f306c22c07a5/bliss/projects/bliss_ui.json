@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 292,
+  "nextId": 297,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -128,7 +128,7 @@
     },
     {
       "name": "newProject",
-      "body": "function(shouldConfirm) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new project?')) return;\n  }\n  \n  app.setState(function(){\n    app.buildProject = newBlissProject;\n\t})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n}"
+      "body": "function(shouldConfirm, pageName) {\n  app.js.log('app.js.newProject() invoked.');\n  if(_.isNil(shouldConfirm)) shouldConfirm = true;\n\n  if(shouldConfirm === true) {\n    if(!confirm('Are you sure you want to create a new page?')) return;\n  }\n  \n  var json = Object.assign({}, newBlissProject);\n  if(typeof pageName !== 'undefined') {\n    var snakeName = app.js.getSnake(pageName);\n  \t//var jsonFilename = snakeName + '.json';\n    json.name = pageName;\n    json.filename = snakeName;\n    json.pageTitle = pageName;\n    json.components[\"1\"].name = pageName;\n  }\n  \n  app.setState(function(){\n    app.buildProject = json;\n\t})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  if(typeof pageName !== 'undefined') {\n    app.setState(function() {\n       app.js.saveAndReloadProject();\n    });\n  }\n}"
     },
     {
       "name": "saveAndReloadProject",
@@ -165,6 +165,14 @@
     {
       "name": "reloadSavedState",
       "body": "function(prevApp) {\n  var _app = window.top.blissUi\n  prevApp.setState(function() {\n    try {\n      Object.keys(_app.state.preview.state).forEach(function(key) {\n        var stateStr = JSON.stringify(_app.state.preview.state[key])\n        var value = JSON.parse(stateStr)\n        prevApp.state[key] = value\n        console.log('reloaded state', key, value)\n      })\n    } catch(e) {\n      console.error('reloadSavedState', e)\n    }\n  })\n}"
+    },
+    {
+      "name": "loadWorkspace",
+      "body": "function(workspaceName) {\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: null\n  });\n\n  app.dispatch({\n    path: '/views',\n    action: 'setView',\n    name: 'designer'\n  });\n\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'workspace',\n    value: workspaceName\n  });\n\n  app.dispatch({\n    path: '/workspaces',\n    action: 'set',\n    key: 'active',\n    value: false\n  });\n\n  app.js.newProject(false);\n  app.js.getProjects();\n}"
+    },
+    {
+      "name": "getSnake",
+      "body": "function(str) {\n  var newStr = str.replace(/[^a-z0-9\\s_]/gi, '').trim();\n  newStr = newStr.replace(/\\s/g, '_').toLowerCase();\n  return newStr;\n}"
     }
   ],
   "cssVars": [
@@ -849,64 +857,6 @@
       "child": "205",
       "parent": "4"
     },
-    "85": {
-      "id": "85",
-      "name": "new page",
-      "element": "a",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "newButton"
-        },
-        {
-          "name": "className",
-          "value": "dropdown-item"
-        },
-        {
-          "name": "href",
-          "value": "#"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-right",
-              "value": "5px"
-            },
-            {
-              "name": "cursor",
-              "value": "pointer"
-            },
-            {
-              "name": "font-size",
-              "value": "10pt"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.newProject();\n  }\n};\n"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "handleClick"
-        }
-      ],
-      "next": "158",
-      "previous": null,
-      "child": "163",
-      "parent": "107"
-    },
     "88": {
       "id": "88",
       "name": "Page options",
@@ -1440,7 +1390,7 @@
       "dynamicAttributes": [],
       "next": null,
       "previous": "106",
-      "child": "85",
+      "child": "292",
       "parent": "105"
     },
     "108": {
@@ -2676,7 +2626,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "162",
-      "previous": "85",
+      "previous": "292",
       "child": null,
       "parent": "107"
     },
@@ -2804,64 +2754,6 @@
       "previous": "158",
       "child": null,
       "parent": "107"
-    },
-    "163": {
-      "id": "163",
-      "name": "icon",
-      "element": "i",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "fa fa-plus"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": []
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "164",
-      "previous": null,
-      "child": null,
-      "parent": "85"
-    },
-    "164": {
-      "id": "164",
-      "name": "label",
-      "element": "span",
-      "text": "New page",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "display",
-              "value": "inline-block"
-            },
-            {
-              "name": "margin-left",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "163",
-      "child": null,
-      "parent": "85"
     },
     "165": {
       "id": "165",
@@ -5332,7 +5224,7 @@
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index]\n  \n  return function(e) {\n    \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'activeComponent',\n      value: null\n    })\n    \n    app.dispatch({\n      path: '/views',\n      action: 'setView',\n      name: 'designer'\n    })\n    \n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'workspace',\n      value: item.name\n    })\n    \n    app.dispatch({\n      path: '/workspaces',\n      action: 'set',\n      key: 'active',\n      value: false\n    })\n    \n    app.js.newProject(false)\n    app.js.getProjects()\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  var item = scope.repeater[scope.repeater_index];\n  return function(e) {\n    app.js.loadWorkspace(item.name);\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -6043,6 +5935,172 @@
       "previous": "287",
       "child": null,
       "parent": "97"
+    },
+    "292": {
+      "id": "292",
+      "name": "new page container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "input-group input-group-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding",
+              "value": "5px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "158",
+      "previous": null,
+      "child": "293",
+      "parent": "107"
+    },
+    "293": {
+      "id": "293",
+      "name": "new page input",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "New page"
+        },
+        {
+          "name": "class",
+          "value": "form-control input-sm"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/projects',\n      action: 'setNewPage',\n      newPage: e.target.value\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.projects.newPage;\n};\n"
+        },
+        {
+          "name": "handleKeydown",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var key = e.which;\n    var ENTER = 13;\n    \n    if(key === ENTER) {\n    \tvar pageName = app.state.projects.newPage;\n      app.js.newProject(true, pageName);\n\n      app.dispatch({\n        path: '/projects',\n        action: 'setNewPage',\n        newPage: ''\n      });\n    }\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "295",
+      "previous": null,
+      "child": null,
+      "parent": "292"
+    },
+    "294": {
+      "id": "294",
+      "name": "new page button",
+      "element": "button",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-sm btn-block btn-success"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    e.preventDefault();\n    var pageName = app.state.projects.newPage;\n    app.js.newProject(true, pageName);\n    \n    app.dispatch({\n      path: '/projects',\n      action: 'setNewPage',\n      newPage: ''\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": "296",
+      "parent": "295"
+    },
+    "295": {
+      "id": "295",
+      "name": "input group",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "input-group-append"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "293",
+      "child": "294",
+      "parent": "292"
+    },
+    "296": {
+      "id": "296",
+      "name": "plus icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-plus"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "294"
     }
   },
   "schemas": [
@@ -6105,7 +6163,7 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return { list: [] }\n}"
+          "body": "function (data, args) {\n  var newData = {\n    newPage: '',\n    list: []\n  };\n  return newData;\n}"
         },
         {
           "action": "add",
@@ -6118,6 +6176,10 @@
         {
           "action": "clear",
           "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = []\n  return newData;\n}"
+        },
+        {
+          "action": "setNewPage",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.newPage = args.newPage\n  return newData;\n}"
         }
       ]
     },

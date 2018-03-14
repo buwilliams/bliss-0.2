@@ -40,7 +40,7 @@ describe('project', function() {
       .saveProject()
 
     expect(project.listProjects())
-      .to.be.containing('testproj.json')
+      .to.be.containing('testproj')
   })
 
   it('should load existing project', function() {
@@ -59,12 +59,12 @@ describe('project', function() {
       .saveProject()
 
     expect(project.listProjects())
-      .to.be.containing('testproj.json')
+      .to.be.containing('testproj')
 
     expect(project.listProjects())
-      .to.be.containing('testproj2.json')
+      .to.be.containing('testproj2')
 
-    project.loadProject('testproj.json')
+    project.loadProject('testproj')
 
     expect(project.projectJson.name).to.equal('testproj')
   })
@@ -78,11 +78,11 @@ describe('project', function() {
       .saveProject()
 
     expect(project.listProjects())
-      .to.be.containing('testproj.json')
+      .to.be.containing('testproj')
 
-    project.deleteProject('testproj.json')
+    project.deleteProject('testproj')
 
     expect(project.listProjects())
-      .not.to.be.containing('testproj.json')
+      .not.to.be.containing('testproj')
   })
 })

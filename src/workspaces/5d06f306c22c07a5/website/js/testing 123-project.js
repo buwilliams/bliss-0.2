@@ -1,5 +1,5 @@
 var blissProject = {
-  "name": "New Project",
+  "name": "testing 123",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
@@ -48,6 +48,8 @@ var blissProject = {
       "child": null,
       "parent": null
     }
-  }
+  },
+  "filename": "testing 123",
+  "pageTitle": "testing 123"
 }
 if(typeof module !== "undefined") module.exports = blissProject;

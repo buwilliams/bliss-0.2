@@ -43,7 +43,7 @@ describe('project', function() {
 
       request.get(config, function (err, res, body) {
         expect(res.statusCode).to.equal(200);
-        expect(body.projects).to.eql(['new_project.json']);
+        expect(body.projects).to.eql(['new_project']);
         done();
       });
     });
@@ -80,7 +80,7 @@ describe('project', function() {
       var config = {
         'url': 'http://localhost:3000/project/load',
         'json': true,
-        'qs': { 'workspace': 'test', 'name': 'test.json' }
+        'qs': { 'workspace': 'test', 'name': 'test' }
       }
 
       var project = user(env, session)

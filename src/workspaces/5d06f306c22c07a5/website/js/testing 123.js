@@ -1,4 +1,4 @@
-var newProject = (function() {
+var testing = (function() {
   var createApp = function(component) {
     var app = {
       js: {},

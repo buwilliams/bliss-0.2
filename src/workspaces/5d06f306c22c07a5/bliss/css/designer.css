@@ -2,7 +2,7 @@
   min-width: 1400px;
 }
 
-#websites_251 {
+#workspaces_251 {
 }
 
 #blissHeader_263 {
@@ -43,7 +43,7 @@
   margin-top: 45px;
 }
 
-#websitesHeader_261 {
+#workspacesHeader_261 {
   background-color: #698290;
   color: #ffffff;
   text-transform: uppercase;
@@ -52,30 +52,30 @@
   margin: 0;
 }
 
-#listOfWebsites_252 {
+#listOfWorkspaces_252 {
   margin: 10px;
 }
 
-#websiteLink_267 {
+#workspaceLink_267 {
   display: block;
 }
 
-#listOfPages_265 {
+#listOfProjects_265 {
   padding-left: 10px;
 }
 
-#createWebsiteContainer_271 {
+#newWorkspaceContainer_271 {
   padding: 10px;
 }
 
-#createWebsiteInput_272 {
+#newWorkspaceName_272 {
   outline: none;
   padding: 6px;
   border-radius: 3px;
   border: solid 1px #ccc;
 }
 
-#createWebsiteButton_273 {
+#createWorkspaceButton_273 {
   margin-left: 5px;
 }
 
@@ -100,7 +100,7 @@
   padding-top: 1px;
 }
 
-#pageOptions_88 {
+#projectOptions_88 {
   margin-left: 15px;
 }
 
@@ -134,7 +134,7 @@
 #divider_158 {
 }
 
-#existingPageLabels_162 {
+#existingProjectLabels_162 {
   font-size: 10px;
   text-transform: uppercase;
 }
@@ -175,7 +175,7 @@
   margin-left: 10px;
 }
 
-#publishPage_104 {
+#publishProject_104 {
   cursor: pointer;
   margin-right: 5px;
   font-size: 10pt;
@@ -197,7 +197,7 @@
   text-transform: uppercase;
 }
 
-#switchPage_260 {
+#switchWorkspace_260 {
   cursor: pointer;
   margin-right: 5px;
   font-size: 10pt;
@@ -327,7 +327,7 @@
   font-size: 10px;
 }
 
-#showHtml_150 {
+#showElements_150 {
   outline: none;
   cursor: pointer;
   margin-left: 5px;
@@ -398,12 +398,10 @@
   position: relative;
 }
 
-#new_293 {
-  position: absolute;
-}
-
-#html_3 {
+#elements_3 {
   background-color: #eee;;
+  width: 20%;
+  height: calc(100vh - 80px);
   overflow: auto;
   border-right-color: #698290;
   border-right-width: 1px;
@@ -428,41 +426,8 @@
 #elementTree_18 {
 }
 
-#newCopy_295 {
-  position: absolute;
-}
-
-#propertiesContainer {
-  background-color: #eee;
-  height: calc(100vh - 80px);
-  overflow: auto;
-  border-left-color: #698290;
-  border-left-style: solid;
-  border-left-width: 1px;
-  min-width: 200px;
-}
-
-#propertyHeader_182 {
-  font-size: 12pt;
-  background-color: #698290;
-  color: #fff;
-  padding: 10px;
-  margin: 0;
-  text-transform: uppercase;
-}
-
-#propertiesPadding_151 {
-  padding: 5px;
-  position: relative;
-}
-
-#toggleJavascript_278 {
-  color: #e0ebf0;
-  background-color: #313e45;
-  text-transform: uppercase;
-}
-
-#blissProperties_11 {
+#designer {
+  width: 60%;
 }
 
 #designerContainer_80 {
@@ -555,27 +520,23 @@
   border-radius: 3px;
 }
 
-#fileNameContainer_288 {
-  margin-top: 1em;
+#projectDetailsContainer_199 {
 }
 
-#fileNameInput_290 {
-  outline: none;
+#nameLabel_103 {
+  margin-top: 8px;
 }
 
-#pageTitleContainer_287 {
-  margin-top: 1em;
+#projectName_102 {
+  width: 50%;
+  margin-left: 10px;
 }
 
-#pageTitleInput_285 {
-  outline: none;
-}
-
-#deletePage_196 {
+#deleteProject_196 {
+  background-color: #9b0000;
   color: #fff;
   cursor: pointer;
   margin-top: 6px;
-  background-color: #9b0000;
 }
 
 #icon_197 {
@@ -700,6 +661,39 @@
 }
 
 #packagesProperties_143 {
+}
+
+#propertiesContainer {
+  background-color: #eee;
+  height: calc(100vh - 80px);
+  overflow: auto;
+  width: 20%;
+  border-left-color: #698290;
+  border-left-style: solid;
+  border-left-width: 1px;
+}
+
+#propertyHeader_182 {
+  font-size: 12pt;
+  background-color: #698290;
+  color: #fff;
+  padding: 10px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+#propertiesPadding_151 {
+  padding: 5px;
+  position: relative;
+}
+
+#toggleJavascript_278 {
+  color: #e0ebf0;
+  background-color: #313e45;
+  text-transform: uppercase;
+}
+
+#blissProperties_11 {
 }
 
 #statusBar {

@@ -117,18 +117,12 @@
 #options_107 {
 }
 
-#newButton {
-  margin-right: 5px;
-  cursor: pointer;
-  font-size: 10pt;
+#newPageContainer_292 {
+  padding: 5px;
 }
 
-#icon_163 {
-}
-
-#label_164 {
-  display: inline-block;
-  margin-left: 10px;
+#newPageInput_293 {
+  outline: none;
 }
 
 #divider_158 {

@@ -17,8 +17,11 @@ module.exports = function(workspace, projectJson) {
   init(projectJson)
 
   pub.listProjects = function() {
-    return fs(workspace.user.name)
-      .readdirSync(pub.fullpath)
+    var projects = fs(workspace.user.name).readdirSync(pub.fullpath);
+    projects = projects.map(function(p) {
+      return path.basename(p, '.json');
+    });
+    return projects;
   }
 
   pub.saveProject = function() {
@@ -29,7 +32,8 @@ module.exports = function(workspace, projectJson) {
   }
 
   pub.loadProject = function(filename) {
-    var dir = `${pub.fullpath}/${filename}`
+    var snakeFilename = str.getSnake(filename);
+    var dir = `${pub.fullpath}/${snakeFilename}.json`
     var jsonStr = fs(workspace.user.name).readFileSync(dir)
     var projectJson = JSON.parse(jsonStr)
     init(projectJson)
@@ -37,7 +41,8 @@ module.exports = function(workspace, projectJson) {
   }
 
   pub.deleteProject = function(filename) {
-    var dir = `${pub.fullpath}/${filename}`
+    var snakeFilename = str.getSnake(filename)
+    var dir = `${pub.fullpath}/${snakeFilename}.json`;
     fs(workspace.user.name).removeSync(dir)
     return this
   }
