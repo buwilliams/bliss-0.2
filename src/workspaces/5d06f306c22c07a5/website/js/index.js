@@ -120,7 +120,7 @@ var blissUiWebsite = (function() {
                   "className": "small",
                   "id": "smallHeader_8",
                   "key": app.getKey('id', '8')
-                }), 'Think CMS but for Apps')))),
+                }), 'Inspired App Platform')))),
           React.createElement('div', app.mergeAttributes('45', scope, {}, {
               "className": "row",
               "id": "contentRow_45",
@@ -191,11 +191,11 @@ var blissUiWebsite = (function() {
                 React.createElement('span', app.mergeAttributes('64', scope, {}, {
                   "id": "span_64",
                   "key": app.getKey('id', '64')
-                }), 'AMS (app management system)'),
+                }), 'AMS'),
                 React.createElement('span', app.mergeAttributes('63', scope, {}, {
                   "id": "span_63",
                   "key": app.getKey('id', '63')
-                }), ' built to remove technical barriers so that you can focus on designing and creating. It\'s in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it\'s live.')),
+                }), ', think content management system but for apps. It\'s built to remove technical barriers so that you can focus on creating and delivering. It\'s in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it\'s live.')),
               React.createElement('p', app.mergeAttributes('65', scope, {}, {
                 "id": "para_65",
                 "key": app.getKey('id', '65')
@@ -207,7 +207,7 @@ var blissUiWebsite = (function() {
               React.createElement('p', app.mergeAttributes('60', scope, {}, {
                 "id": "para_60",
                 "key": app.getKey('id', '60')
-              }), 'The mission is simple yet enormous, we want to remove all barriers that get in the way of inspiration. To bring back that thing that makes us uniquely human. But hey, maybe we’re crazy.'),
+              }), 'The mission is simple yet enormous, we want to remove all barriers that get in the way of inspiration. To touch that part of us  makes us uniquely human. This mission is our mojo.'),
               React.createElement('div', app.mergeAttributes('51', scope, {}, {
                   "id": "chevronBottom_51",
                   "key": app.getKey('id', '51')

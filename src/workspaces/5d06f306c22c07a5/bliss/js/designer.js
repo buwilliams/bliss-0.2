@@ -921,6 +921,56 @@ var blissUiV = (function() {
     app.methods["18"]['getSelected'] = function(scope, attributes) {
       return app.state.settings.activeComponent
     }
+    app.methods["77"] = {};
+    app.methods["77"]['shouldShow'] = function(scope, attributes) {
+      if (_.isNil(app.state.settings.activeComponent))
+        return false;
+
+      var layout = _.find(app.state.layout.list, function(item) {
+        return (item.name === 'properties')
+      })
+
+      return layout.active
+    }
+    app.methods["278"] = {};
+    app.methods["278"]['getStyles'] = function(scope, attributes) {
+      var styles = {}
+      var view = app.state.views.selected
+
+      if (view === 'js') {
+        styles.backgroundColor = app.js.getCssVar('$menuHighlight');
+        styles.borderColor = app.js.getCssVar('$menuHighlight');
+      }
+
+      return styles;
+    }
+    app.methods["278"]['handleClick'] = function(scope, attributes) {
+      var viewName = (app.state.views.selected === 'js') ? 'designer' : 'js'
+      return function(e) {
+        console.log('new view', viewName)
+        app.dispatch({
+          path: '/views',
+          action: 'setView',
+          name: viewName
+        })
+      }
+    };
+    app.methods["11"] = {};
+    app.methods["11"]['setComponentProp'] = function(scope, props) {
+      return app.buildProject.components[
+        app.state.settings.activeComponent]
+    }
+    app.methods["11"]['setOnChangeProp'] = function(scope, props) {
+      return function(newComponent) {
+        app.js.update(function() {
+          if (newComponent.id === app.buildProject.rootId) {
+            app.buildProject.name = newComponent.name;
+          }
+          app.buildProject.components[
+            app.state.settings.activeComponent] = newComponent;
+        });
+      }
+    }
     app.methods["4"] = {};
     app.methods["4"]['getStyles'] = function(scope, attributes) {
       var list = app.state.layout.list
@@ -1278,56 +1328,6 @@ var blissUiV = (function() {
     }
     app.methods["143"]['setItemValue'] = function(scope, attributes) {
       return "version";
-    }
-    app.methods["77"] = {};
-    app.methods["77"]['shouldShow'] = function(scope, attributes) {
-      if (_.isNil(app.state.settings.activeComponent))
-        return false;
-
-      var layout = _.find(app.state.layout.list, function(item) {
-        return (item.name === 'properties')
-      })
-
-      return layout.active
-    }
-    app.methods["278"] = {};
-    app.methods["278"]['getStyles'] = function(scope, attributes) {
-      var styles = {}
-      var view = app.state.views.selected
-
-      if (view === 'js') {
-        styles.backgroundColor = app.js.getCssVar('$menuHighlight');
-        styles.borderColor = app.js.getCssVar('$menuHighlight');
-      }
-
-      return styles;
-    }
-    app.methods["278"]['handleClick'] = function(scope, attributes) {
-      var viewName = (app.state.views.selected === 'js') ? 'designer' : 'js'
-      return function(e) {
-        console.log('new view', viewName)
-        app.dispatch({
-          path: '/views',
-          action: 'setView',
-          name: viewName
-        })
-      }
-    };
-    app.methods["11"] = {};
-    app.methods["11"]['setComponentProp'] = function(scope, props) {
-      return app.buildProject.components[
-        app.state.settings.activeComponent]
-    }
-    app.methods["11"]['setOnChangeProp'] = function(scope, props) {
-      return function(newComponent) {
-        app.js.update(function() {
-          if (newComponent.id === app.buildProject.rootId) {
-            app.buildProject.name = newComponent.name;
-          }
-          app.buildProject.components[
-            app.state.settings.activeComponent] = newComponent;
-        });
-      }
     }
     app.methods["95"] = {};
     app.methods["95"]['showStatus'] = function(scope, attributes) {
@@ -2333,39 +2333,90 @@ var blissUiV = (function() {
                     "id": "blissPanels_96",
                     "key": app.getKey('id', '96')
                   }),
-                  (function(scope) {
-                    var out = [];
-                    scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
-                    if (app.methods['3']['shouldShow'](scope) === true) {
-                      out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
-                          "className": "float-left",
-                          "id": "html_3",
-                          "key": app.getKey('id', '3')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('20', scope, {}, {
-                          "id": "elementsHeader_20",
-                          "key": app.getKey('id', '20')
-                        }), 'HTML'),
-                        React.createElement('div', app.mergeAttributes('110', scope, {}, {
-                            "id": "treeContainer_110",
-                            "key": app.getKey('id', '110')
-                          }),
-                          React.createElement(BlissTree.component, app.mergeAttributes('18', scope, {
-                            "data": "setDataProp",
-                            "onSelect": "setOnSelectProp",
-                            "onCreate": "setOnCreateProp",
-                            "onClone": "setOnCloneProp",
-                            "onDelete": "setOnDeleteProp",
-                            "onMove": "setOnMoveProp",
-                            "_this": "setThis",
-                            "selected": "getSelected"
-                          }, {
-                            "id": "elementTree_18",
-                            "key": app.getKey('id', '18')
-                          })))));
-                    }
-                    return out;
-                  })(scope),
+                  React.createElement(ReactDraggable, app.mergeAttributes('292', scope, {}, {
+                      "id": "draggableHtml_292",
+                      "key": app.getKey('id', '292')
+                    }),
+                    React.createElement('div', app.mergeAttributes('293', scope, {}, {
+                        "id": "new_293",
+                        "key": app.getKey('id', '293')
+                      }),
+                      (function(scope) {
+                        var out = [];
+                        scope['shouldShow'] = app.methods['3']['shouldShow'](scope);
+                        if (app.methods['3']['shouldShow'](scope) === true) {
+                          out.push(React.createElement('div', app.mergeAttributes('3', scope, {}, {
+                              "className": "float-left",
+                              "id": "html_3",
+                              "key": app.getKey('id', '3')
+                            }),
+                            React.createElement('h3', app.mergeAttributes('20', scope, {}, {
+                              "id": "elementsHeader_20",
+                              "key": app.getKey('id', '20')
+                            }), 'HTML'),
+                            React.createElement('div', app.mergeAttributes('110', scope, {}, {
+                                "id": "treeContainer_110",
+                                "key": app.getKey('id', '110')
+                              }),
+                              React.createElement(BlissTree.component, app.mergeAttributes('18', scope, {
+                                "data": "setDataProp",
+                                "onSelect": "setOnSelectProp",
+                                "onCreate": "setOnCreateProp",
+                                "onClone": "setOnCloneProp",
+                                "onDelete": "setOnDeleteProp",
+                                "onMove": "setOnMoveProp",
+                                "_this": "setThis",
+                                "selected": "getSelected"
+                              }, {
+                                "id": "elementTree_18",
+                                "key": app.getKey('id', '18')
+                              })))));
+                        }
+                        return out;
+                      })(scope))),
+                  React.createElement(ReactDraggable, app.mergeAttributes('294', scope, {}, {
+                      "id": "draggableProperties_294",
+                      "key": app.getKey('id', '294')
+                    }),
+                    React.createElement('div', app.mergeAttributes('295', scope, {}, {
+                        "id": "newCopy_295",
+                        "key": app.getKey('id', '295')
+                      }),
+                      (function(scope) {
+                        var out = [];
+                        scope['shouldShow'] = app.methods['77']['shouldShow'](scope);
+                        if (app.methods['77']['shouldShow'](scope) === true) {
+                          out.push(React.createElement('div', app.mergeAttributes('77', scope, {}, {
+                              "id": "propertiesContainer",
+                              "className": "float-left",
+                              "key": app.getKey('id', '77')
+                            }),
+                            React.createElement('h3', app.mergeAttributes('182', scope, {}, {
+                              "id": "propertyHeader_182",
+                              "key": app.getKey('id', '182')
+                            }), 'properties'),
+                            React.createElement('div', app.mergeAttributes('151', scope, {}, {
+                                "id": "propertiesPadding_151",
+                                "key": app.getKey('id', '151')
+                              }),
+                              React.createElement('button', app.mergeAttributes('278', scope, {
+                                "style": "getStyles",
+                                "onClick": "handleClick"
+                              }, {
+                                "className": "btn btn-default btn-block btn-sm",
+                                "id": "toggleJavascript_278",
+                                "key": app.getKey('id', '278')
+                              }), 'Javascript for HTML'),
+                              React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
+                                "component": "setComponentProp",
+                                "onChange": "setOnChangeProp"
+                              }, {
+                                "id": "blissProperties_11",
+                                "key": app.getKey('id', '11')
+                              })))));
+                        }
+                        return out;
+                      })(scope))),
                   (function(scope) {
                     var out = [];
                     scope['shouldShow'] = app.methods['4']['shouldShow'](scope);
@@ -2630,41 +2681,6 @@ var blissUiV = (function() {
                           }, {
                             "id": "packagesProperties_143",
                             "key": app.getKey('id', '143')
-                          })))));
-                    }
-                    return out;
-                  })(scope),
-                  (function(scope) {
-                    var out = [];
-                    scope['shouldShow'] = app.methods['77']['shouldShow'](scope);
-                    if (app.methods['77']['shouldShow'](scope) === true) {
-                      out.push(React.createElement('div', app.mergeAttributes('77', scope, {}, {
-                          "id": "propertiesContainer",
-                          "className": "float-left",
-                          "key": app.getKey('id', '77')
-                        }),
-                        React.createElement('h3', app.mergeAttributes('182', scope, {}, {
-                          "id": "propertyHeader_182",
-                          "key": app.getKey('id', '182')
-                        }), 'properties'),
-                        React.createElement('div', app.mergeAttributes('151', scope, {}, {
-                            "id": "propertiesPadding_151",
-                            "key": app.getKey('id', '151')
-                          }),
-                          React.createElement('button', app.mergeAttributes('278', scope, {
-                            "style": "getStyles",
-                            "onClick": "handleClick"
-                          }, {
-                            "className": "btn btn-default btn-block btn-sm",
-                            "id": "toggleJavascript_278",
-                            "key": app.getKey('id', '278')
-                          }), 'Javascript for HTML'),
-                          React.createElement(BlissProperties.component, app.mergeAttributes('11', scope, {
-                            "component": "setComponentProp",
-                            "onChange": "setOnChangeProp"
-                          }, {
-                            "id": "blissProperties_11",
-                            "key": app.getKey('id', '11')
                           })))));
                     }
                     return out;

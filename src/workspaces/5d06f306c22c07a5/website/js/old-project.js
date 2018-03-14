@@ -736,6 +736,6 @@ var blissProject = {
     }
   },
   "filename": "old",
-  "pageTitle": "BlissUI"
+  "pageTitle": "Old Website - BlissUI"
 }
 if(typeof module !== "undefined") module.exports = blissProject;

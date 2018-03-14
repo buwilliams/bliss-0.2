@@ -235,7 +235,7 @@ var blissProject = {
       "id": "8",
       "name": "small header",
       "element": "small",
-      "text": "Think CMS but for Apps",
+      "text": "Inspired App Platform",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1202,7 +1202,7 @@ var blissProject = {
       "id": "60",
       "name": "para",
       "element": "p",
-      "text": "The mission is simple yet enormous, we want to remove all barriers that get in the way of inspiration. To bring back that thing that makes us uniquely human. But hey, maybe we’re crazy.",
+      "text": "The mission is simple yet enormous, we want to remove all barriers that get in the way of inspiration. To touch that part of us  makes us uniquely human. This mission is our mojo.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1253,7 +1253,7 @@ var blissProject = {
       "id": "63",
       "name": "span",
       "element": "span",
-      "text": " built to remove technical barriers so that you can focus on designing and creating. It's in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it's live.",
+      "text": ", think content management system but for apps. It's built to remove technical barriers so that you can focus on creating and delivering. It's in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it's live.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1270,7 +1270,7 @@ var blissProject = {
       "id": "64",
       "name": "span",
       "element": "span",
-      "text": "AMS (app management system)",
+      "text": "AMS",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1730,6 +1730,6 @@ var blissProject = {
     }
   ],
   "filename": "index",
-  "pageTitle": "BlissUI - Think CMS but for Apps"
+  "pageTitle": "BlissUI - Inspired App Platform"
 }
 if(typeof module !== "undefined") module.exports = blissProject;
