@@ -3,6 +3,10 @@
 echo 'Stopping express web server...'
 sudo systemctl stop bliss
 
+echo 'Updating systemctl'
+#echo Located at /etc/systemd/system/bliss.service
+sudo systemctl daemon-reload
+
 echo 'Copying env file...'
 cp -f ./scripts/prod.env ./.env
 
