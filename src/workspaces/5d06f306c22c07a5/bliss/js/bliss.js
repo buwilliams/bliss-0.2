@@ -226,7 +226,7 @@ var blissUi = (function() {
       if (typeof pageName !== 'undefined') {
         var snakeName = app.js.getSnake(pageName);
         //var jsonFilename = snakeName + '.json';
-        json.name = snakeName;
+        json.name = pageName;
         json.filename = snakeName;
         json.pageTitle = pageName;
         json.components["1"].name = pageName;
