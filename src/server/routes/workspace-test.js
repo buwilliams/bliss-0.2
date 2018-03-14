@@ -40,7 +40,7 @@ describe('workspace', function() {
                   {"json":true},
                   function (err, res, body) {
         expect(body.workspaces[0].projects.length).to.equal(2);
-        expect(body.workspaces[0].projects[0].name).to.equal('foo.json');
+        expect(body.workspaces[0].projects[0].name).to.equal('foo');
         done();
       });
     });

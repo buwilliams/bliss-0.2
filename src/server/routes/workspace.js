@@ -14,7 +14,8 @@ router.get('/list', function(req, res) {
   workspaces.forEach(function(work) {
     var projects = user(env, req.session).workspace(work.name).listFiles('projects')
     projects = projects.map(function(project) {
-      return { 'name': project }
+      var projectName = path.basename(project, '.json');
+      return { 'name': projectName }
     })
     work.projects = work.projects.concat(projects);
   });
