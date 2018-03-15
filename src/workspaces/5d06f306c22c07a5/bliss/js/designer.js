@@ -499,31 +499,6 @@ var blissUiV = (function() {
         firebase.auth().signOut()
       }
     }
-    app.methods["252"] = {};
-    app.methods["252"]['repeater'] = function(scope, attributes) {
-      return app.state.workspaces.list;
-    };
-    app.methods["267"] = {};
-    app.methods["267"]['getText'] = function(scope, attributes) {
-      var item = scope.repeater[scope.repeater_index]
-      return item.name
-    };
-
-    app.methods["267"]['handleClick'] = function(scope, attributes) {
-      var item = scope.repeater[scope.repeater_index];
-      return function(e) {
-        app.js.loadWorkspace(item.name);
-      }
-    };
-    app.methods["265"] = {};
-    app.methods["265"]['projectRepeater'] = function(scope, attributes) {
-      return scope.repeater[scope.repeater_index].projects;
-    };
-
-    app.methods["265"]['getText'] = function(scope, attributes) {
-      return scope.projectRepeater[
-        scope.projectRepeater_index].name;
-    };
     app.methods["272"] = {};
     app.methods["272"]['handleChange'] = function(scope, attributes) {
       return function(e) {
@@ -550,6 +525,31 @@ var blissUiV = (function() {
           name: app.state.workspaces.newWorkspaceName
         })
       }
+    };
+    app.methods["252"] = {};
+    app.methods["252"]['repeater'] = function(scope, attributes) {
+      return app.state.workspaces.list;
+    };
+    app.methods["267"] = {};
+    app.methods["267"]['getText'] = function(scope, attributes) {
+      var item = scope.repeater[scope.repeater_index]
+      return item.name
+    };
+
+    app.methods["267"]['handleClick'] = function(scope, attributes) {
+      var item = scope.repeater[scope.repeater_index];
+      return function(e) {
+        app.js.loadWorkspace(item.name);
+      }
+    };
+    app.methods["265"] = {};
+    app.methods["265"]['projectRepeater'] = function(scope, attributes) {
+      return scope.repeater[scope.repeater_index].projects;
+    };
+
+    app.methods["265"]['getText'] = function(scope, attributes) {
+      return scope.projectRepeater[
+        scope.projectRepeater_index].name;
     };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
@@ -2062,40 +2062,6 @@ var blissUiV = (function() {
                     "id": "websitesHeader_261",
                     "key": app.getKey('id', '261')
                   }), 'Websites'),
-                  (function(scope) {
-                    var out = [];
-                    var list = scope['repeater'] = app.methods['252']['repeater'](scope);
-                    for (var i = 0; i < list.length; i++) {
-                      scope['repeater_index'] = i;
-                      out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
-                          "href": "#",
-                          "className": "workspaces",
-                          "id": "listOfWebsites_252",
-                          "key": app.getKey('id', '252', i)
-                        }),
-                        React.createElement('a', app.mergeAttributes('267', scope, {
-                          "onClick": "handleClick"
-                        }, {
-                          "href": "#",
-                          "className": "workspaces",
-                          "id": "websiteLink_267",
-                          "key": app.getKey('id', '267')
-                        }), app.methods['267']['getText'](scope)),
-                        (function(scope) {
-                          var out = [];
-                          var list = scope['projectRepeater'] = app.methods['265']['projectRepeater'](scope);
-                          for (var i = 0; i < list.length; i++) {
-                            scope['projectRepeater_index'] = i;
-                            out.push(React.createElement('span', app.mergeAttributes('265', scope, {}, {
-                              "id": "listOfPages_265",
-                              "key": app.getKey('id', '265', i)
-                            }), app.methods['265']['getText'](scope)));
-                          }
-                          return out;
-                        })(scope)));
-                    }
-                    return out;
-                  })(scope),
                   React.createElement('div', app.mergeAttributes('271', scope, {}, {
                       "id": "createWebsiteContainer_271",
                       "key": app.getKey('id', '271')
@@ -2114,7 +2080,60 @@ var blissUiV = (function() {
                       "className": "btn btn-success",
                       "id": "createWebsiteButton_273",
                       "key": app.getKey('id', '273')
-                    }), 'Create Website')))));
+                    }), 'Create Website')),
+                  React.createElement('div', app.mergeAttributes('308', scope, {}, {
+                      "id": "websitesContainer_308",
+                      "key": app.getKey('id', '308')
+                    }),
+                    (function(scope) {
+                      var out = [];
+                      var list = scope['repeater'] = app.methods['252']['repeater'](scope);
+                      for (var i = 0; i < list.length; i++) {
+                        scope['repeater_index'] = i;
+                        out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
+                            "href": "#",
+                            "className": "card",
+                            "id": "cardRepeat_252",
+                            "key": app.getKey('id', '252', i)
+                          }),
+                          React.createElement('div', app.mergeAttributes('309', scope, {}, {
+                              "className": "card-body",
+                              "id": "cardBody_309",
+                              "key": app.getKey('id', '309')
+                            }),
+                            React.createElement('h5', app.mergeAttributes('310', scope, {}, {
+                                "className": "card-title",
+                                "id": "cardTitle_310",
+                                "key": app.getKey('id', '310')
+                              }),
+                              React.createElement('a', app.mergeAttributes('267', scope, {
+                                "onClick": "handleClick"
+                              }, {
+                                "href": "#",
+                                "className": "workspaces",
+                                "id": "websiteLink_267",
+                                "key": app.getKey('id', '267')
+                              }), app.methods['267']['getText'](scope))),
+                            React.createElement('div', app.mergeAttributes('311', scope, {}, {
+                                "className": "card-text",
+                                "id": "cardText_311",
+                                "key": app.getKey('id', '311')
+                              }),
+                              (function(scope) {
+                                var out = [];
+                                var list = scope['projectRepeater'] = app.methods['265']['projectRepeater'](scope);
+                                for (var i = 0; i < list.length; i++) {
+                                  scope['projectRepeater_index'] = i;
+                                  out.push(React.createElement('div', app.mergeAttributes('265', scope, {}, {
+                                    "id": "listOfPages_265",
+                                    "key": app.getKey('id', '265', i)
+                                  }), app.methods['265']['getText'](scope)));
+                                }
+                                return out;
+                              })(scope)))));
+                      }
+                      return out;
+                    })(scope)))));
             }
             return out;
           })(scope),

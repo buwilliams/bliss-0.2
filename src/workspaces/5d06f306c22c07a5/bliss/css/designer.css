@@ -44,20 +44,8 @@
   margin: 0;
 }
 
-#listOfWebsites_252 {
-  margin: 10px;
-}
-
-#websiteLink_267 {
-  display: block;
-}
-
-#listOfPages_265 {
-  padding-left: 10px;
-}
-
 #createWebsiteContainer_271 {
-  padding: 10px;
+  padding: 0.5em;
 }
 
 #createWebsiteInput_272 {
@@ -69,6 +57,34 @@
 
 #createWebsiteButton_273 {
   margin-left: 5px;
+}
+
+#websitesContainer_308 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0.25em;
+  justify-content: space-evenly;
+}
+
+#cardRepeat_252 {
+  margin: 0.25em;
+  flex-grow: 1;
+  background-color: #f2f2f2;
+}
+
+#websiteLink_267 {
+  display: block;
+  text-transform: uppercase;
+}
+
+#cardText_311 {
+  max-height: 7em;
+  overflow-y: scroll;
+}
+
+#listOfPages_265 {
+  padding-left: 10px;
 }
 
 #topMenu_111 {

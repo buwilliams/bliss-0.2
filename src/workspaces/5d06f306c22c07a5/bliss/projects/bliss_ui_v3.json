@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 308,
+  "nextId": 312,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -4733,7 +4733,7 @@
     },
     "252": {
       "id": "252",
-      "name": "List of websites",
+      "name": "card (repeat)",
       "element": "div",
       "text": "",
       "textFn": "",
@@ -4742,7 +4742,7 @@
       "attributes": [
         {
           "name": "class",
-          "value": "workspaces"
+          "value": "card"
         },
         {
           "name": "href",
@@ -4755,7 +4755,15 @@
           "properties": [
             {
               "name": "margin",
-              "value": "10px"
+              "value": "0.25em"
+            },
+            {
+              "name": "flex-grow",
+              "value": "1"
+            },
+            {
+              "name": "background-color",
+              "value": "#f2f2f2"
             }
           ]
         }
@@ -4767,10 +4775,10 @@
         }
       ],
       "dynamicAttributes": [],
-      "next": "271",
-      "previous": "261",
-      "child": "267",
-      "parent": "264"
+      "next": null,
+      "previous": null,
+      "child": "309",
+      "parent": "308"
     },
     "253": {
       "id": "253",
@@ -5005,7 +5013,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "252",
+      "next": "271",
       "previous": null,
       "child": null,
       "parent": "264"
@@ -5147,7 +5155,7 @@
     "265": {
       "id": "265",
       "name": "list of pages",
-      "element": "span",
+      "element": "div",
       "text": null,
       "textFn": "getText",
       "ifFn": null,
@@ -5176,9 +5184,9 @@
       ],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "267",
+      "previous": null,
       "child": null,
-      "parent": "252"
+      "parent": "311"
     },
     "267": {
       "id": "267",
@@ -5205,6 +5213,10 @@
             {
               "name": "display",
               "value": "block"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
             }
           ]
         }
@@ -5225,10 +5237,10 @@
           "value": "handleClick"
         }
       ],
-      "next": "265",
+      "next": null,
       "previous": null,
       "child": null,
-      "parent": "252"
+      "parent": "310"
     },
     "268": {
       "id": "268",
@@ -5349,15 +5361,15 @@
           "properties": [
             {
               "name": "padding",
-              "value": "10px"
+              "value": "0.5em"
             }
           ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
-      "previous": "252",
+      "next": "308",
+      "previous": "261",
       "child": "272",
       "parent": "264"
     },
@@ -6467,6 +6479,129 @@
       "previous": "306",
       "child": null,
       "parent": "304"
+    },
+    "308": {
+      "id": "308",
+      "name": "websites container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "flex-direction",
+              "value": "row"
+            },
+            {
+              "name": "flex-wrap",
+              "value": "wrap"
+            },
+            {
+              "name": "padding",
+              "value": "0.25em"
+            },
+            {
+              "name": "justify-content",
+              "value": "space-evenly"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "271",
+      "child": "252",
+      "parent": "264"
+    },
+    "309": {
+      "id": "309",
+      "name": "card body",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card-body"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "310",
+      "parent": "252"
+    },
+    "310": {
+      "id": "310",
+      "name": "card title",
+      "element": "h5",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card-title"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "311",
+      "previous": null,
+      "child": "267",
+      "parent": "309"
+    },
+    "311": {
+      "id": "311",
+      "name": "card text",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card-text"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "max-height",
+              "value": "7em"
+            },
+            {
+              "name": "overflow-y",
+              "value": "scroll"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "310",
+      "child": "265",
+      "parent": "309"
     }
   },
   "schemas": [
