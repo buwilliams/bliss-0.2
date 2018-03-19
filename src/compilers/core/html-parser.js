@@ -55,9 +55,9 @@ module.exports = {
     return component.id;
   },
 
-  toProject: function(htmlString, projectJson, appendId) {
+  toProject: function(htmlString, projectJson, parentId) {
     var frag = this.parseFragment(htmlString);
-    return this._toProject(frag.childNodes[0], projectJson, appendId);
+    return this._toProject(frag.childNodes[0], projectJson, parentId);
   },
 
   _toProject: function(htmlRef, projectJson, parentId) {

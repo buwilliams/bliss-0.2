@@ -77,4 +77,25 @@ router.post('/delete', function (req, res) {
   res.send({ success: true });
 });
 
+router.post('/html', function(req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('missing workspace param');
+    return;
+  }
+
+  if (!req.query.parentId) {
+    res.status(400).send('missing parentId param');
+    return;
+  }
+
+  var project = user(env, req.session)
+    .workspace(req.query.workspace)
+    .project(req.body.project)
+    .importHtml(req.body.html)
+    .saveProject()
+    .compile();
+
+  res.send({ success: true, project: project.projectJson });
+});
+
 module.exports = router

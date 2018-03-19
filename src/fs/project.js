@@ -1,6 +1,7 @@
 const str = require('../compilers/core/str.js');
-const path = require('path')
-const fs = require('./secure-fs.js')
+const path = require('path');
+const fs = require('./secure-fs.js');
+const htmlParser = require('../compilers/core/html-parser.js');
 
 module.exports = function(workspace, projectJson) {
   var pub = {}
@@ -61,7 +62,12 @@ module.exports = function(workspace, projectJson) {
     compiler.export(workspace.fullpath, projectJson, null)
   }
 
-  pub.workspace = workspace
+  pub.importHtml = function(html, parentId) {
+    init(htmlParser.toProject(html, this.projectJson, parentId));
+    return this;
+  };
 
-  return pub
+  pub.workspace = workspace;
+
+  return pub;
 }
