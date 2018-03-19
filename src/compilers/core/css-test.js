@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const _ = require('lodash');
 const css = require('./css.js');
-const project = require('./project-json.js');
+const projectJson = require('./project-json.js');
 
 describe('css', function() {
   describe('isVariable', function() {
@@ -23,8 +23,9 @@ describe('css', function() {
   });
 
   it('should read project json', function() {
-    expect(project.css[0].selector).to.equal("body");
-    expect(project.css[0].properties[0].name).to.equal("font-family");
+    var proj = projectJson();
+    expect(proj.css[0].selector).to.equal("body");
+    expect(proj.css[0].properties[0].name).to.equal("font-family");
   });
 
   describe('getVarFromValue', function() {
@@ -42,15 +43,17 @@ describe('css', function() {
   });
 
   it('standard css rule', function() {
-    var cssRule = project.css[0].properties[0];
+    var proj = projectJson();
+    var cssRule = proj.css[0].properties[0];
     var expected = "font-family: courier;";
     expect(css.getStandardRule(cssRule)).to.equal(expected);
   });
 
   it('css rule with variable', function() {
-    var cssRule = project.css[0].properties[2];
+    var proj = projectJson();
+    var cssRule = proj.css[0].properties[2];
     var expected = "background-color: #fff;";
-    expect(css.getVariableRule(cssRule, project.cssVars)).to.equal(expected);
+    expect(css.getVariableRule(cssRule, proj.cssVars)).to.equal(expected);
   });
 
   it('handle missing data on standard css rules', function() {
@@ -66,28 +69,32 @@ describe('css', function() {
   });
 
   it('standard css rule from generic fn', function() {
-    var cssRule = project.css[0].properties[0];
+    var proj = projectJson();
+    var cssRule = proj.css[0].properties[0];
     var expected = "font-family: courier;";
-    expect(css.getRule(cssRule, project.cssVars)).to.equal(expected);
+    expect(css.getRule(cssRule, proj.cssVars)).to.equal(expected);
   });
 
   it('variable css rule from generic fn', function() {
-    var cssRule = project.css[0].properties[2];
+    var proj = projectJson();
+    var cssRule = proj.css[0].properties[2];
     var expected = "background-color: #fff;";
-    expect(css.getRule(cssRule, project.cssVars)).to.equal(expected);
+    expect(css.getRule(cssRule, proj.cssVars)).to.equal(expected);
   });
 
   it('should return a list of strings', function() {
-    var cssRules = project.css[0].properties;
+    var proj = projectJson();
+    var cssRules = proj.css[0].properties;
     var expected = ['font-family: courier;',
                     'font-size: 12px;',
                     'background-color: #fff;'];
-    expect(css.getRules(cssRules, project.cssVars)).to.eql(expected);
+    expect(css.getRules(cssRules, proj.cssVars)).to.eql(expected);
   });
 
   describe('getSelector', function() {
     it('should return the selector', function() {
-      var selector = project.css[0].selector;
+      var proj = projectJson();
+      var selector = proj.css[0].selector;
       var expected = 'body';
       expect(css.getSelector(null, selector)).to.equal(expected);
     });
@@ -129,28 +136,31 @@ describe('css', function() {
   });
 
   it('merge selector and rules', function() {
-    var cssDef = project.css[0];
+    var proj = projectJson();
+    var cssDef = proj.css[0];
     var expected = ['body {',
                     '  font-family: courier;',
                     '  font-size: 12px;',
                     '  background-color: #fff;',
                     "}\n\n"];
-    expect(css.getCssDef(null, cssDef, project.cssVars)).to.eql(expected);
+    expect(css.getCssDef(null, cssDef, proj.cssVars)).to.eql(expected);
   });
 
   it('merge css def to string', function() {
-    var cssDef = project.css[0];
+    var proj = projectJson();
+    var cssDef = proj.css[0];
     var expected = "body {\n" +
                    "  font-family: courier;\n" +
                    "  font-size: 12px;\n" +
                    "  background-color: #fff;\n" +
                    "}";
-    var defStr = css.cssDefToStr(null, cssDef, project.cssVars);
+    var defStr = css.cssDefToStr(null, cssDef, proj.cssVars);
     expect(defStr).to.equal(defStr);
   });
 
   it('get css', function() {
-    var cssDef = project.css;
+    var proj = projectJson();
+    var cssDef = proj.css;
     var expected = "body {\n" +
                    "  font-family: courier;\n" +
                    "  font-size: 12px;\n" +
@@ -160,6 +170,6 @@ describe('css', function() {
                    "a:hover {\n" +
                    "  background-color: #ccc;\n" +
                    "}\n\n";
-    expect(css.getCss(null, project.css, project.cssVars)).to.equal(expected);
+    expect(css.getCss(null, proj.css, proj.cssVars)).to.equal(expected);
   });
 });

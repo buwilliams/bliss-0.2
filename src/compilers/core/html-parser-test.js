@@ -8,8 +8,6 @@ describe('htmlParser', function() {
       var html = `<div id="foo">hello, world</div>`;
       var frag = htmlParser.parseFragment(html)
 
-      console.log(frag.childNodes[0].attrs);
-
       expect(frag.childNodes[0].tagName).to.equal("div");
       expect(frag.childNodes[0].childNodes[0].value)
         .to.equal("hello, world");
@@ -17,14 +15,42 @@ describe('htmlParser', function() {
   });
 
   describe('toProject()', function() {
-    // create component:
-    //   - fill out properties
-    //   - fill out attributes
-    //   - text if exists
     it('should append simple hello, world div to projectJson', function() {
-      var html = '<div>hello, world</div>';
-      var proj = htmlParser.toProject(html, projectJson, "3");
+      var html = '<div class="btn btn-class" data-foo="bar">hello, world</div>';
+      var proj = htmlParser.toProject(html, projectJson(), "3");
+      var comp = proj.components[proj.nextId - 1];
       expect(proj.nextId).to.equal(5);
+      expect(comp.name).to.equal("div");
+      expect(comp.attributes[0].name).to.equal("class");
+      expect(comp.attributes[0].value).to.equal("btn btn-class");
+      expect(comp.attributes[1].name).to.equal("data-foo");
+      expect(comp.attributes[1].value).to.equal("bar");
+      expect(comp.text).to.equal("hello, world");
+    });
+
+    it('should append deep html', function() {
+      var html = `<div class="btn btn-class" data-foo="bar">
+                    hello, world
+                    <div class="one">
+                      <div class="two"></div>
+                    </div>
+                    <div class="three"></div>
+                  </div>`;
+
+      var proj = projectJson();
+      var startingId = proj.nextId;
+      proj = htmlParser.toProject(html, proj, "3");
+      var comp = proj.components[startingId];
+
+      expect(proj.nextId).to.equal(startingId + 4);
+      expect(comp.name).to.equal("div");
+      expect(comp.attributes[0].name).to.equal("class");
+      expect(comp.attributes[0].value).to.equal("btn btn-class");
+      expect(comp.attributes[1].name).to.equal("data-foo");
+      expect(comp.attributes[1].value).to.equal("bar");
+      expect(comp.text).to.equal("hello, world");
+
+      //expect(proj.nextId).to.equal(5);
     });
   });
 });

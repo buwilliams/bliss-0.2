@@ -11,7 +11,7 @@ module.exports = {
     return parsed;
   },
 
-  appendComponent: function(htmlRef, projectJson, parentId, prevId) {
+  appendComponent: function(htmlRef, projectJson, parentId) {
     var component = {
       "id": null,
       "name": htmlRef.tagName,
@@ -22,17 +22,35 @@ module.exports = {
       "css": [],
       "js": [],
       "next": null,
-      "previous": prevId,
+      "previous": null,
       "child": null,
-      "parent": parentId
+      "parent": null
     };
+
+    var newId = String(projectJson.nextId++);
 
     htmlRef.attrs.forEach(function(attr) {
       component.attributes.push(attr);
     });
 
-    component.id = projectJson.nextId++;
+    // add component to projectJson
+    component.id = newId;
     projectJson.components[component.id] = component;
+
+    // update ids
+    var parent = projectJson.components[parentId];
+    if(parent.child !== null) {
+      var last = projectJson.components[parent.child];
+      while(last.next !== null) {
+        last = projectJson.components[last.next];
+      }
+      last.next = component.id;
+      component.prev = last.id;
+    } else {
+      parent.child = component.id;
+    }
+
+    component.parent = parent.id;
 
     return component.id;
   },
@@ -43,11 +61,26 @@ module.exports = {
   },
 
   _toProject: function(htmlRef, projectJson, parentId) {
-    // create component
+    var that = this;
+    var newId = this.appendComponent(htmlRef, projectJson, parentId);
+    var newComp = projectJson.components[newId];
 
-    // set attributes
-    // loop through childNodes
-    // set parent, child, next, previous
+    // collect text nodes
+    var text = "";
+    htmlRef.childNodes.forEach(function(node) {
+      if(node.nodeName === "#text") {
+        text += node.value.trim();
+      }
+    });
+    newComp.text = text;
+
+    // determine if there is a text node
+    htmlRef.childNodes.forEach(function(node) {
+      if(node.nodeName !== "#text") {
+        return that._toProject(node, projectJson, newId);
+      }
+    });
+
     return projectJson;
   }
 };

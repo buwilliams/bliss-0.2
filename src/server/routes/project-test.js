@@ -6,7 +6,7 @@ const path = require('path')
 const env = require('../env.js')
 const session = require('../session.js')
 const user = require('../../fs/user.js')
-const testProjectJson = require('../../compilers/core/project-json.js');
+const projectJson = require('../../compilers/core/project-json.js');
 
 describe('project', function() {
   after(function() {
@@ -83,11 +83,12 @@ describe('project', function() {
         'qs': { 'workspace': 'test', 'name': 'test' }
       }
 
+      var proj = projectJson();
       var project = user(env, session)
         .createUser()
         .workspace('test')
         .createWorkspace()
-        .project(testProjectJson)
+        .project(proj)
         .saveProject()
 
       request.get(config, function (err, res, body) {
@@ -118,9 +119,10 @@ describe('project', function() {
         .workspace('test')
         .createWorkspace()
 
-      var project = ws.project(testProjectJson).saveProject()
+      var proj = projectJson();
+      var project = ws.project(proj).saveProject()
 
-      var newTestProjectJson = Object.assign({}, testProjectJson)
+      var newTestProjectJson = Object.assign({}, proj)
       newTestProjectJson.name = 'test2'
 
       var config = {

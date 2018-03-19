@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const js = require('./js.js');
-const project = require('./project-json.js');
+const projectJson = require('./project-json.js');
 
 describe('js', function() {
   describe('aryToObj', function() {
@@ -39,13 +39,15 @@ describe('js', function() {
     });
 
     it('should return collection of function strings', function() {
-      var input = project.js;
+      var proj = projectJson();
+      var input = proj.js;
       var expected = 2;
       expect(js.getFns(input).length).to.equal(expected);
     });
 
     it('should return string', function() {
-      var input = project.js;
+      var proj = projectJson();
+      var input = proj.js;
       var expected = 2;
       expect(js.getFnsString(input).split("\n").length).to.equal(expected);
     });
