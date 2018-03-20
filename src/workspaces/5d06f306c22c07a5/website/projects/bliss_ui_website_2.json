@@ -255,7 +255,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "39",
+      "next": null,
       "previous": "2",
       "child": "4",
       "parent": "1"
@@ -733,36 +733,6 @@
       "previous": "37",
       "child": null,
       "parent": "34"
-    },
-    "39": {
-      "id": "39",
-      "name": "div",
-      "element": "div",
-      "text": "foo",
-      "attributes": [],
-      "dynamicAttributes": [],
-      "css": [],
-      "js": [],
-      "next": "40",
-      "previous": null,
-      "child": null,
-      "parent": "1",
-      "prev": "9"
-    },
-    "40": {
-      "id": "40",
-      "name": "div",
-      "element": "div",
-      "text": "fob",
-      "attributes": [],
-      "dynamicAttributes": [],
-      "css": [],
-      "js": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "1",
-      "prev": "39"
     }
   },
   "filename": "old",
