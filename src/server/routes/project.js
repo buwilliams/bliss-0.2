@@ -37,7 +37,10 @@ router.get('/load', function (req, res) {
     .workspace(req.query.workspace)
     .project()
     .loadProject(name)
-    .updateDependencies();
+
+  if(req.query.ignorePackages !== 'true') {
+    project.updateDependencies();
+  }
 
   res.send({success: true, project: project.projectJson});
 });

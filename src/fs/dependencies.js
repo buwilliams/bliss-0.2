@@ -48,7 +48,6 @@ module.exports = {
   },
 
   installPackageJson: function(workspace) {
-    console.log('Install node packages...');
     var one_minute = 1000 * 60;
     var code = execSync(`yarn install`, {
       "cwd": workspace,

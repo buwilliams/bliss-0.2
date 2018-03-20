@@ -80,7 +80,7 @@ describe('project', function() {
       var config = {
         'url': 'http://localhost:3000/project/load',
         'json': true,
-        'qs': { 'workspace': 'test', 'name': 'test' }
+        'qs': { 'workspace': 'test', 'name': 'test', 'ignorePackages': true }
       }
 
       var proj = projectJson();

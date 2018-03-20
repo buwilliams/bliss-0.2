@@ -50,7 +50,17 @@ describe('htmlParser', function() {
       expect(comp.attributes[1].value).to.equal("bar");
       expect(comp.text).to.equal("hello, world");
 
-      //expect(proj.nextId).to.equal(5);
+      var e1 = proj.components[startingId]; // container
+      var e2 = proj.components[startingId + 1]; // one
+      var e3 = proj.components[startingId + 2]; // two
+      var e4 = proj.components[startingId + 3]; // three
+
+      // Check e2 refs
+      expect(e2.parent).to.equal(e1.id);
+      expect(e2.next).to.equal(e4.id);
+      expect(e2.previous).to.equal(null);
+      expect(e2.child).to.equal(e3.id);
+
     });
   });
 });
