@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 312,
+  "nextId": 319,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -58,7 +58,7 @@
     },
     {
       "name": "bootstrap",
-      "version": "^4.0.0-alpha.6"
+      "version": "4.0.0"
     },
     {
       "name": "codemirror",
@@ -144,7 +144,7 @@
     },
     {
       "name": "log",
-      "body": "function() {\n  return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
+      "body": "function() {\n  //return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
     },
     {
       "name": "firebaseAuthUI",
@@ -177,6 +177,10 @@
     {
       "name": "deleteProject",
       "body": "function(scope, attributes) {\n  if(!confirm('Are you sure you want to delete this page?')) return;\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/delete?workspace=' + workspace + '&project=' + app.buildProject.name,\n    data: {},\n    success: function(data) {\n      app.js.loadWorkspace(workspace);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "serverImportHtml",
+      "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [
@@ -605,7 +609,7 @@
         }
       ],
       "next": "238",
-      "previous": "80",
+      "previous": "314",
       "child": "55",
       "parent": "4",
       "ifFn": ""
@@ -846,7 +850,7 @@
           "value": "getStyle"
         }
       ],
-      "next": "54",
+      "next": "314",
       "previous": null,
       "child": "205",
       "parent": "4"
@@ -6602,6 +6606,233 @@
       "previous": "310",
       "child": "265",
       "parent": "309"
+    },
+    "312": {
+      "id": "312",
+      "name": "import text",
+      "element": "textarea",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "rows",
+          "value": "20"
+        },
+        {
+          "name": "placeholder",
+          "value": "Paste HTML..."
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "z-index",
+              "value": "1000"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #cccccc"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "font-size",
+              "value": "0.5em"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'importHtml',\n      value: e.target.value\n    })\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.settings.importHtml;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "313",
+      "previous": "318",
+      "child": null,
+      "parent": "314"
+    },
+    "313": {
+      "id": "313",
+      "name": "import html button",
+      "element": "button",
+      "text": "Import HTML",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-block btn-primary"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "0.5em"
+            },
+            {
+              "name": "margin",
+              "value": "0 0 1em 0"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.serverImportHtml(app.state.settings.importHtml);\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "312",
+      "child": null,
+      "parent": "314"
+    },
+    "314": {
+      "id": "314",
+      "name": "Import Html Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$lightBg"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'import_html') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "54",
+      "previous": "80",
+      "child": "318",
+      "parent": "4"
+    },
+    "318": {
+      "id": "318",
+      "name": "import html",
+      "element": "h3",
+      "text": "Import HTML",
+      "attributes": [
+        {
+          "name": "id",
+          "value": "h3Js"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": "312",
+      "previous": null,
+      "child": null,
+      "parent": "314",
+      "textFn": ""
     }
   },
   "schemas": [
@@ -6672,15 +6903,15 @@
         },
         {
           "action": "addAll",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.projects\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.projects;\n  return newData;\n}"
         },
         {
           "action": "clear",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = []\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = [];\n  return newData;\n}"
         },
         {
           "action": "setNewPage",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.newPage = args.newPage\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.newPage = args.newPage;\n  return newData;\n}"
         }
       ]
     },
@@ -6689,7 +6920,7 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldReloadProject: true,\n    currentColor: '#ffffff',\n    workspace: 'bliss',\n    timer: null\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldReloadProject: true,\n    currentColor: '#ffffff',\n    workspace: 'bliss',\n    timer: null,\n    importHtml: ''\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
         },
         {
           "action": "set",

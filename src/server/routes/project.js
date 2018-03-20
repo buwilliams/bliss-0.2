@@ -5,7 +5,6 @@ const router = express.Router();
 const env = require('../env.js');
 const session = require('../session.js');
 const user = require('../../fs/user.js');
-const deps = require('../../fs/dependencies.js');
 
 router.get('/list', function (req, res) {
   if (!req.query.workspace) {
@@ -37,9 +36,8 @@ router.get('/load', function (req, res) {
   var project = user(env, req.session)
     .workspace(req.query.workspace)
     .project()
-    .loadProject(name);
-
-  deps.update(project.workspace.fullpath, project.projectJson);
+    .loadProject(name)
+    .updateDependencies();
 
   res.send({success: true, project: project.projectJson});
 });
@@ -91,7 +89,7 @@ router.post('/html', function(req, res) {
   var project = user(env, req.session)
     .workspace(req.query.workspace)
     .project(req.body.project)
-    .importHtml(req.body.html)
+    .importHtml(req.body.html, req.query.parentId)
     .saveProject()
     .compile();
 

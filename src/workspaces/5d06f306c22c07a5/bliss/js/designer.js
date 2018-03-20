@@ -298,7 +298,7 @@ var blissUiV = (function() {
       app.js.build(clearIframeState);
     }
     app.js['log'] = function() {
-      return;
+      //return;
       if (typeof app.buildProject !== 'undefined') {
         if (app.buildProject.build === 'bliss') {
           var args = Array.prototype.slice.call(arguments);
@@ -479,6 +479,29 @@ var blissUiV = (function() {
         data: {},
         success: function(data) {
           app.js.loadWorkspace(workspace);
+        },
+        contentType: "application/json",
+        dataType: 'json'
+      });
+    }
+    app.js['serverImportHtml'] = function(htmlString) {
+      app.js.log('app.js.serverImportHtml() invoked.');
+
+      var data = JSON.stringify({
+        "html": htmlString,
+        "project": app.buildProject
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: '/project/html' +
+          '?workspace=' + app.state.settings.workspace +
+          '&parentId=' + app.state.settings.activeComponent,
+        data: data,
+        success: function(data) {
+          app.setState(function() {
+            app.buildProject = data.project
+          });
         },
         contentType: "application/json",
         dataType: 'json'
@@ -1090,6 +1113,35 @@ var blissUiV = (function() {
       var selected = app.state.views.selected
       return (selected === 'designer')
     }
+    app.methods["314"] = {};
+    app.methods["314"]['getStyle'] = function() {
+      var selected = app.state.views.selected
+      var displayValue = (selected === 'import_html') ? 'block' : 'none';
+      return {
+        'display': displayValue
+      };
+    }
+    app.methods["312"] = {};
+    app.methods["312"]['handleChange'] = function(scope, attributes) {
+      return function(e) {
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'importHtml',
+          value: e.target.value
+        })
+      }
+    };
+
+    app.methods["312"]['getValue'] = function(scope, attributes) {
+      return app.state.settings.importHtml;
+    };
+    app.methods["313"] = {};
+    app.methods["313"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        app.js.serverImportHtml(app.state.settings.importHtml);
+      }
+    };
     app.methods["54"] = {};
     app.methods["54"]['getStyle'] = function() {
       var selected = app.state.views.selected
@@ -1719,17 +1771,17 @@ var blissUiV = (function() {
     }
     app.schema['/projects']['addAll'] = function(data, args) {
       var newData = Object.assign({}, data)
-      newData.list = args.projects
+      newData.list = args.projects;
       return newData;
     }
     app.schema['/projects']['clear'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.list = []
+      var newData = Object.assign({}, data);
+      newData.list = [];
       return newData;
     }
     app.schema['/projects']['setNewPage'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.newPage = args.newPage
+      var newData = Object.assign({}, data);
+      newData.newPage = args.newPage;
       return newData;
     }
     if (app.schema['/projects']['init']) {
@@ -1746,7 +1798,8 @@ var blissUiV = (function() {
         shouldReloadProject: true,
         currentColor: '#ffffff',
         workspace: 'bliss',
-        timer: null
+        timer: null,
+        importHtml: ''
       }
 
       var display = app._state.create('display');
@@ -2600,6 +2653,32 @@ var blissUiV = (function() {
                               "key": app.getKey('id', '204')
                             }), app.methods['204']['getText'](scope)),
                             null)),
+                        React.createElement('div', app.mergeAttributes('314', scope, {
+                            "style": "getStyle"
+                          }, {
+                            "id": "importHtmlContainer_314",
+                            "key": app.getKey('id', '314')
+                          }),
+                          React.createElement('h3', app.mergeAttributes('318', scope, {}, {
+                            "id": "h3Js",
+                            "key": app.getKey('id', '318')
+                          }), 'Import HTML'),
+                          React.createElement('textarea', app.mergeAttributes('312', scope, {
+                            "onChange": "handleChange",
+                            "value": "getValue"
+                          }, {
+                            "rows": "20",
+                            "placeholder": "Paste HTML...",
+                            "id": "importText_312",
+                            "key": app.getKey('id', '312')
+                          })),
+                          React.createElement('button', app.mergeAttributes('313', scope, {
+                            "onClick": "handleClick"
+                          }, {
+                            "className": "btn btn-block btn-primary",
+                            "id": "importHtmlButton_313",
+                            "key": app.getKey('id', '313')
+                          }), 'Import HTML')),
                         React.createElement('div', app.mergeAttributes('54', scope, {
                             "style": "getStyle"
                           }, {

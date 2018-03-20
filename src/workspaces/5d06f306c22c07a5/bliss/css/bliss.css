@@ -44,20 +44,8 @@
   margin: 0;
 }
 
-#listOfWebsites_252 {
-  margin: 10px;
-}
-
-#websiteLink_267 {
-  display: block;
-}
-
-#listOfPages_265 {
-  padding-left: 10px;
-}
-
 #createWebsiteContainer_271 {
-  padding: 10px;
+  padding: 0.5em;
 }
 
 #createWebsiteInput_272 {
@@ -69,6 +57,34 @@
 
 #createWebsiteButton_273 {
   margin-left: 5px;
+}
+
+#websitesContainer_308 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0.25em;
+  justify-content: space-evenly;
+}
+
+#cardRepeat_252 {
+  margin: 0.25em;
+  flex-grow: 1;
+  background-color: #f2f2f2;
+}
+
+#websiteLink_267 {
+  display: block;
+  text-transform: uppercase;
+}
+
+#cardText_311 {
+  max-height: 7em;
+  overflow-y: scroll;
+}
+
+#listOfPages_265 {
+  padding-left: 10px;
 }
 
 #topMenu_111 {
@@ -461,6 +477,38 @@
   border: none;
 }
 
+#importHtmlContainer_314 {
+  background-color: #dbe2e5;
+  padding: 10px;
+  overflow: auto;
+  height: calc(100vh - 80px);
+}
+
+#h3Js {
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: #698290;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+#importText_312 {
+  z-index: 1000;
+  padding: 10px;
+  border-radius: 3px;
+  border: solid 1px #cccccc;
+  outline: none;
+  width: 100%;
+  font-size: 0.5em;
+  margin: 0;
+}
+
+#importHtmlButton_313 {
+  font-size: 0.5em;
+  margin: 0 0 1em 0;
+}
+
 #jsEditor {
   overflow: auto;
   height: calc(100vh - 80px);
@@ -674,6 +722,25 @@
 }
 
 #packagesProperties_143 {
+}
+
+#importHtmlContainer_304 {
+  overflow: auto;
+  height: calc(100vh - 80px);
+  padding: 10px;
+}
+
+#title_305 {
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: #698290;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+#import_307 {
+  margin-top: 1em;
 }
 
 #propertiesContainer {

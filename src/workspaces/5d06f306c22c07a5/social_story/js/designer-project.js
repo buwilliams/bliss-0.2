@@ -1,20 +1,22 @@
 var blissProject = {
-  "name": "Demo BlissUI",
+  "name": "Social Story",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 39,
+  "nextId": 63,
   "rootId": "1",
   "externalCss": [
-    "https://fonts.googleapis.com/css?family=Roboto",
-    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.css",
+    "https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i",
+    "node_modules/font-awesome/css/font-awesome.css"
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js",
-    "node_modules/jquery/dist/jquery.min.js",
-    "node_modules/bootstrap/dist/js/bootstrap.min.js"
+    "https://www.gstatic.com/firebasejs/4.1.1/firebase.js",
+    "https://cdn.firebase.com/libs/firebaseui/2.1.1/firebaseui.js",
+    "node_modules/jquery/dist/jquery.min.js"
   ],
   "state": {},
   "packages": [
@@ -27,8 +29,8 @@ var blissProject = {
       "version": "15.4.2"
     },
     {
-      "name": "bootstrap",
-      "version": "3.3.7"
+      "name": "font-awesome",
+      "version": "4.7.0"
     },
     {
       "name": "jquery",
@@ -37,62 +39,70 @@ var blissProject = {
   ],
   "js": [
     {
-      "name": "init",
-      "body": "function() { app.render(); }"
+      "name": "app_init",
+      "body": "function() {\n  // Initialize Firebase\n  // TODO: Replace with your project's customized code snippet\n  var config = {\n    apiKey: \"AIzaSyCrI98bKkMT3FFgbB5WaRWJoXpzFAu3cfA\",\n    authDomain: \"personal-budget-6f3af.firebaseapp.com\",\n    databaseURL: \"https://personal-budget-6f3af.firebaseio.com\",\n    storageBucket: \"personal-budget-6f3af.appspot.com\"\n  };\n  \n  firebase.initializeApp(config);\n  \n  app.setState(function() {\n    app.state.signedIn = false;\n    app.state.ui = null;\n    app.state.user = null;\n    app.state.currentPage = 'home';\n    app.state.database = firebase.database();\n    app.state.auth = firebase.auth();\n    app.state.storage = firebase.storage();\n    app.state.currentStory = null;\n    app.state.currentLine = \"\";\n  });\n  \n  app.setState(function() {\n  \tapp.js.auth_changed();\n  });\n  \n  window.app = app;\n}"
+    },
+    {
+      "name": "auth_init",
+      "body": "function(scope, attributes) {\n  var uiConfig = {\n    callbacks: {\n      signInSuccess: function(currentUser, credential, redirectUrl) {\n        //app.setState(function() {\n          //app.state.signedIn = true;\n        \t//app.state.user = user;\n        //});\n        return false;\n      },\n      uiShown: function() {\n        // The widget is rendered.\n        // Hide the loader.\n        //console.log('show element');\n      }\n    },\n    signInSuccessUrl: window.location.href,\n    signInOptions: [\n      // Leave the lines as is for the providers you want to offer your users.\n      //firebase.auth.GoogleAuthProvider.PROVIDER_ID,\n      firebase.auth.FacebookAuthProvider.PROVIDER_ID\n      //firebase.auth.PhoneAuthProvider.PROVIDER_ID\n    ],\n    // Terms of service url.\n    tosUrl: window.location.href\n  };\n\n  var ui;\n  if(app.state.ui === null) {\n    // Initialize the FirebaseUI Widget using Firebase.\n    ui = new firebaseui.auth.AuthUI(firebase.auth());\n    app.setState(function() {\n      app.state.ui = ui;\n    });\n  } else {\n    ui = app.state.ui;\n    ui.reset();\n  }\n  \n  // The start method will wait until the DOM is loaded.\n  ui.start('#firebaseui-auth-container', uiConfig);\n}"
+    },
+    {
+      "name": "auth_changed",
+      "body": "function() {\n  app.state.auth.onAuthStateChanged(function(user) {\n    if(user) {\n      //console.log('authStatus user', user);\n      app.setState(function() {\n        app.state.signedIn = true;\n        app.state.user = user;\n        app.js.story_home();\n      });\n    } else {\n      //console.log('user not logged in');\n      app.setState(function() {\n        app.state.user = null;\n        app.state.signedIn = false;\n      });\n      \n      app.setState(function() {\n        app.js.auth_init();\n      });\n    }\n  });\n}"
+    },
+    {
+      "name": "story_start",
+      "body": "function(storyId) {\n  var createStory = function(title, first_line) {\n    var db = app.state.database;\n\n    // create new story\n    var newStory = db.ref().child('stories').push();\n    newStory.set({\"title\": title});\n    newStory.child('authors').child(app.state.user.uid).set(true);\n\n    // create author\n    var newAuthor = db.ref().child('authors')\n                            .child(app.state.user.uid)\n                            .child(newStory.key)\n                            .set(true);\n\n    // create first line\n    var newLine = db.ref().child('lines')\n    .child(newStory.key)\n    .push()\n    .set({\n      \"text\": first_line,\n      \"user\": app.state.user.uid\n    });\n\n    app.js.firebase_subscribe('lines/'+newStory.key);\n\n    app.setState(function() {\n      app.state.currentPage = 'write';\n      app.state.currentStory = newStory.key;\n    });\n  };\n  \n  $.get('/story/sentence', {\"format\": \"A story about {{ an_adjective }} {{ noun }} and {{ an_adjective }} {{ noun }}.\"}, function(data) {\n    createStory(data.sentence, \"Once upon a time there was a ...\");\n  });\n}"
+    },
+    {
+      "name": "story_home",
+      "body": "function() {\n  // listen for stories, update state\n  app.js.firebase_subscribe('stories');\n  \n  app.js.firebase_subscribe_limit_last(100, 'stories');\n  app.js.firebase_subscribe_limit_last(100, 'authors/'+app.state.user.uid);\n}"
+    },
+    {
+      "name": "firebase_subscribe",
+      "body": "function(firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_');\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath);\n  ref.on('value', valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "firebase_subscribe_limit_last",
+      "body": "function(limit, firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_') + '_last_' + limit;\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath).limitToLast(limit);\n  ref.on('value', valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "firebase_subscribe_limit_first",
+      "body": "function(limit, firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_') + '_first_' + limit;\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath).limitToFirst(limit);\n  ref.on('value', valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "firebase_get",
+      "body": "function(firebasePath, returnRef) {\n  if(typeof returnRef === 'undefined') returnRef = false;\n  \n  var db = app.state.database;\n  var statePath = firebasePath.replace(/\\//g, '_') + '_get';\n  var refPath = statePath + '_ref';\n  \n  // If state already exists return it\n  if(typeof app.state[statePath] !== 'undefined') {\n    return (returnRef) ? app.state[refPath] : app.state[statePath];\n  }\n  \n  // Setup listener\n  var valueChanged = function(snapshot) {\n    app.setState(function() {\n      var value = snapshot.val();\n      console.log('data changed', statePath, value);\n      app.state[statePath] = value;\n    });\n  };\n  \n  var ref = db.ref().child(firebasePath).limitToFirst(1);\n  ref.once('value').then(valueChanged);\n  \n  app.state[statePath] = {};\n  app.state[refPath] = ref;\n  \n  app.setState(function(){});\n  \n  return (returnRef) ? app.state[refPath] : app.state[statePath];\n}"
+    },
+    {
+      "name": "story_excerpt",
+      "body": "function(storyId) {\n  return null;\n}"
     }
   ],
   "cssVars": [
     {
-      "name": "color1",
-      "value": "#C4D6B0"
+      "name": "medium",
+      "value": "#d1784a"
     },
     {
-      "name": "color2",
-      "value": "#477998"
+      "name": "light",
+      "value": "#eeeeee"
     },
     {
-      "name": "color3",
-      "value": "#291F1E"
+      "name": "dark",
+      "value": "#454545"
     },
     {
-      "name": "color5",
-      "value": "#F64740"
+      "name": "links",
+      "value": "#2d4931"
     },
     {
-      "name": "color6",
-      "value": "#A3333D"
+      "name": "lightFontColor",
+      "value": "#eeeeee"
     },
     {
-      "name": "color4",
-      "value": "#DABFFF"
-    },
-    {
-      "name": "panelPadding",
-      "value": "30px 15px"
-    },
-    {
-      "name": "color1text",
-      "value": "#494e44"
-    },
-    {
-      "name": "color2text",
-      "value": "#eef9ff"
-    },
-    {
-      "name": "color3text",
-      "value": "#ffe0db"
-    },
-    {
-      "name": "color4text",
-      "value": "#534b5e"
-    },
-    {
-      "name": "color5text",
-      "value": "#6a2923"
-    },
-    {
-      "name": "color6text",
-      "value": "#4e1f22"
+      "name": "darkFontColor",
+      "value": "#333"
     }
   ],
   "css": [
@@ -100,42 +110,122 @@ var blissProject = {
       "selector": "body",
       "properties": [
         {
-          "name": "font-size",
-          "value": "14pt"
+          "name": "margin",
+          "value": "0"
+        },
+        {
+          "name": "padding",
+          "value": "0"
         },
         {
           "name": "font-family",
           "value": "'Roboto', sans-serif"
+        },
+        {
+          "name": "font-size",
+          "value": "12pt"
+        },
+        {
+          "name": "color",
+          "value": "$darkFontColor"
+        },
+        {
+          "name": "background-color",
+          "value": "$light"
+        }
+      ]
+    },
+    {
+      "selector": "a",
+      "properties": [
+        {
+          "name": "color",
+          "value": "$darkFontColor"
+        }
+      ]
+    },
+    {
+      "selector": "*",
+      "properties": [
+        {
+          "name": "box-sizing",
+          "value": "border-box"
+        }
+      ]
+    },
+    {
+      "selector": "a.subnav.active",
+      "properties": [
+        {
+          "name": "background-color",
+          "value": "$dark"
+        },
+        {
+          "name": "color",
+          "value": "$lightFontColor"
+        }
+      ]
+    },
+    {
+      "selector": "a.subnav",
+      "properties": [
+        {
+          "name": "padding",
+          "value": "3px 10px"
+        },
+        {
+          "name": "font-size",
+          "value": "10pt"
+        },
+        {
+          "name": "border-radius",
+          "value": "15px"
+        },
+        {
+          "name": "margin",
+          "value": "0 5px"
+        },
+        {
+          "name": "color",
+          "value": "$darkFontColor"
+        }
+      ]
+    },
+    {
+      "selector": "a.subnav:hover",
+      "properties": [
+        {
+          "name": "background-color",
+          "value": "$dark"
+        },
+        {
+          "name": "color",
+          "value": "$lightFontColor"
         }
       ]
     }
   ],
   "load": [
-    "init"
+    "app_init"
   ],
   "components": {
     "1": {
       "id": "1",
-      "name": "Demo BlissUI",
+      "name": "Social Story",
       "element": "div",
       "text": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "container"
-        }
-      ],
+      "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "2",
+      "child": "9",
       "parent": null
     },
-    "2": {
-      "id": "2",
-      "name": "Row 1 - Title",
+    "3": {
+      "id": "3",
+      "name": "Firebase Sign-in",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -143,30 +233,8 @@ var blissProject = {
       "repeatFn": null,
       "attributes": [
         {
-          "name": "class",
-          "value": "row"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "4",
-      "previous": null,
-      "child": "11",
-      "parent": "1"
-    },
-    "3": {
-      "id": "3",
-      "name": "Column 1 - Speed",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-3"
+          "name": "id",
+          "value": "firebaseui-auth-container"
         }
       ],
       "css": [
@@ -174,12 +242,256 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
+              "name": "position",
+              "value": "relative"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "7"
+    },
+    "5": {
+      "id": "5",
+      "name": "Pages",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "90%"
+            },
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "margin",
+              "value": "0 auto"
+            },
+            {
               "name": "background-color",
-              "value": "$color1"
+              "value": "$light"
+            },
+            {
+              "name": "border-bottom-left-radius",
+              "value": "4px"
+            },
+            {
+              "name": "border-bottom-right-radius",
+              "value": "4px"
             },
             {
               "name": "padding",
-              "value": "$panelPadding"
+              "value": "10px 15px 60px 15px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return app.state.signedIn;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "24",
+      "previous": "7",
+      "child": "39",
+      "parent": "1"
+    },
+    "6": {
+      "id": "6",
+      "name": "Sign-out",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "absolute"
+            },
+            {
+              "name": "right",
+              "value": "15px"
+            },
+            {
+              "name": "top",
+              "value": "40px"
+            },
+            {
+              "name": "z-index",
+              "value": "100"
+            },
+            {
+              "name": "color",
+              "value": "$lightFontColor"
+            },
+            {
+              "name": "font-size",
+              "value": "12pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    firebase.auth().signOut();\n  }\n};\n"
+        },
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return app.state.signedIn;\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "10",
+      "child": "19",
+      "parent": "9"
+    },
+    "7": {
+      "id": "7",
+      "name": "Sign-in Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "position",
+              "value": "relative"
+            },
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "margin",
+              "value": "20px auto 0 auto"
+            },
+            {
+              "name": "border-width",
+              "value": "1px"
+            },
+            {
+              "name": "border-style",
+              "value": "solid"
+            },
+            {
+              "name": "border-color",
+              "value": "$dark"
+            },
+            {
+              "name": "clear",
+              "value": "both"
+            },
+            {
+              "name": "background-color",
+              "value": "$light"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  return !app.state.signedIn;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "5",
+      "previous": "9",
+      "child": "3",
+      "parent": "1"
+    },
+    "9": {
+      "id": "9",
+      "name": "Header",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$dark"
+            },
+            {
+              "name": "font-size",
+              "value": "30pt"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "7",
+      "previous": null,
+      "child": "10",
+      "parent": "1"
+    },
+    "10": {
+      "id": "10",
+      "name": "Brand",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "padding",
+              "value": "15px"
             },
             {
               "name": "font-weight",
@@ -187,7 +499,7 @@ var blissProject = {
             },
             {
               "name": "color",
-              "value": "$color1text"
+              "value": "$lightFontColor"
             }
           ]
         }
@@ -196,221 +508,13 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": "6",
       "previous": null,
-      "child": "15",
-      "parent": "4"
-    },
-    "4": {
-      "id": "4",
-      "name": "Row 2 - Benefits",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "row"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "15px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "9",
-      "previous": "2",
-      "child": "3",
-      "parent": "1"
-    },
-    "5": {
-      "id": "5",
-      "name": "Column 3 - Power",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-3"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "$color3"
-            },
-            {
-              "name": "padding",
-              "value": "$panelPadding"
-            },
-            {
-              "name": "color",
-              "value": "$color3text"
-            },
-            {
-              "name": "font-weight",
-              "value": "bold"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "10",
-      "previous": "6",
-      "child": "27",
-      "parent": "4"
-    },
-    "6": {
-      "id": "6",
-      "name": "Column 2 - Simplicity",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-3"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "$color2"
-            },
-            {
-              "name": "padding",
-              "value": "$panelPadding"
-            },
-            {
-              "name": "font-weight",
-              "value": "bold"
-            },
-            {
-              "name": "color",
-              "value": "$color2text"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "5",
-      "previous": "3",
-      "child": "20",
-      "parent": "4"
-    },
-    "7": {
-      "id": "7",
-      "name": "Column 4",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-9"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "$color5"
-            },
-            {
-              "name": "padding",
-              "value": "$panelPadding"
-            },
-            {
-              "name": "color",
-              "value": "$color5text"
-            },
-            {
-              "name": "font-weight",
-              "value": "bold"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "36",
+      "child": "21",
       "parent": "9"
     },
-    "8": {
-      "id": "8",
-      "name": "Column 6",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-6"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "$color6"
-            },
-            {
-              "name": "padding",
-              "value": "$panelPadding"
-            },
-            {
-              "name": "color",
-              "value": "$color6text"
-            },
-            {
-              "name": "font-weight",
-              "value": "bold"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "37",
-      "parent": "14"
-    },
-    "9": {
-      "id": "9",
-      "name": "Row 3 - Play",
-      "element": "div",
+    "19": {
+      "id": "19",
+      "name": "icon",
+      "element": "i",
       "text": null,
       "textFn": null,
       "ifFn": null,
@@ -418,205 +522,22 @@ var blissProject = {
       "attributes": [
         {
           "name": "class",
-          "value": "row"
+          "value": "fa fa-sign-out"
         }
       ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "14",
-      "previous": "4",
-      "child": "7",
-      "parent": "1"
-    },
-    "10": {
-      "id": "10",
-      "name": "Column 5",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-3"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "$color4"
-            },
-            {
-              "name": "padding",
-              "value": "$panelPadding"
-            },
-            {
-              "name": "color",
-              "value": "$color4text"
-            },
-            {
-              "name": "font-weight",
-              "value": "bold"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "5",
-      "child": "35",
-      "parent": "4"
-    },
-    "11": {
-      "id": "11",
-      "name": "Intro Container",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-12"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "12",
-      "parent": "2"
-    },
-    "12": {
-      "id": "12",
-      "name": "Header",
-      "element": "h1",
-      "text": "BlissUI",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "13",
-      "parent": "11"
-    },
-    "13": {
-      "id": "13",
-      "name": "subtitle",
-      "element": "small",
-      "text": " Build UIs in the cloud.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
+      "next": "20",
       "previous": null,
       "child": null,
-      "parent": "12"
+      "parent": "6"
     },
-    "14": {
-      "id": "14",
-      "name": "Row 4 - Play",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "row"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "9",
-      "child": "8",
-      "parent": "1"
-    },
-    "15": {
-      "id": "15",
-      "name": "Header",
-      "element": "div",
-      "text": "Speed",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-decoration",
-              "value": "underline"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "16",
-      "previous": null,
-      "child": null,
-      "parent": "3"
-    },
-    "16": {
-      "id": "16",
-      "name": "List",
-      "element": "ol",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "15",
-      "child": "17",
-      "parent": "3"
-    },
-    "17": {
-      "id": "17",
-      "name": "dev env",
-      "element": "li",
-      "text": "No development environment setup",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "38",
-      "previous": null,
-      "child": null,
-      "parent": "16"
-    },
-    "18": {
-      "id": "18",
-      "name": "ui framework",
-      "element": "li",
-      "text": "Small learning curve",
+    "20": {
+      "id": "20",
+      "name": "label",
+      "element": "span",
+      "text": " Sign-out",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -627,160 +548,673 @@ var blissProject = {
       "next": null,
       "previous": "19",
       "child": null,
-      "parent": "16"
-    },
-    "19": {
-      "id": "19",
-      "name": "marketplace",
-      "element": "li",
-      "text": "Marketplace for reusable components and themes",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "18",
-      "previous": "38",
-      "child": null,
-      "parent": "16"
-    },
-    "20": {
-      "id": "20",
-      "name": "Header",
-      "element": "div",
-      "text": "Simplicity",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-decoration",
-              "value": "underline"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "21",
-      "previous": null,
-      "child": null,
       "parent": "6"
     },
     "21": {
       "id": "21",
-      "name": "List",
-      "element": "ol",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-book"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "22",
+      "previous": null,
+      "child": null,
+      "parent": "10"
+    },
+    "22": {
+      "id": "22",
+      "name": "label",
+      "element": "span",
+      "text": " Social Story",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "28",
+      "previous": "21",
+      "child": null,
+      "parent": "10"
+    },
+    "24": {
+      "id": "24",
+      "name": "Footer",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin-top",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "8pt"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "5",
+      "child": "35",
+      "parent": "1"
+    },
+    "26": {
+      "id": "26",
+      "name": "Home",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "margin-top",
+              "value": "20px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return app.state.currentPage === 'home';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "38",
+      "previous": "39",
+      "child": "31",
+      "parent": "5"
+    },
+    "28": {
+      "id": "28",
+      "name": "Brand subtitle",
+      "element": "div",
+      "text": "Imaginations running amuk",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "color",
+              "value": "$lightFontColor"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "14pt"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "22",
+      "child": null,
+      "parent": "10"
+    },
+    "31": {
+      "id": "31",
+      "name": "Latest stories",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "65%"
+            },
+            {
+              "name": "margin-right",
+              "value": "12px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "32",
+      "previous": null,
+      "child": "33",
+      "parent": "26"
+    },
+    "32": {
+      "id": "32",
+      "name": "About",
+      "element": "div",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "35%"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "31",
+      "child": "34",
+      "parent": "26"
+    },
+    "33": {
+      "id": "33",
+      "name": "Header",
+      "element": "div",
+      "text": "Latest stories",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border-bottom-color",
+              "value": "$darkFontColor"
+            },
+            {
+              "name": "border-bottom-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-bottom-style",
+              "value": "solid"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "43",
+      "previous": null,
+      "child": null,
+      "parent": "31"
+    },
+    "34": {
+      "id": "34",
+      "name": "Header",
+      "element": "div",
+      "text": "About",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border-bottom-color",
+              "value": "$darkFontColor"
+            },
+            {
+              "name": "border-bottom-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-bottom-style",
+              "value": "solid"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "10px"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "53",
+      "previous": null,
+      "child": null,
+      "parent": "32"
+    },
+    "35": {
+      "id": "35",
+      "name": "text",
+      "element": "span",
+      "text": "powered by ",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "36",
+      "previous": null,
+      "child": null,
+      "parent": "24"
+    },
+    "36": {
+      "id": "36",
+      "name": "link",
+      "element": "a",
+      "text": "bliss ui",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "http://blissui.com"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "35",
+      "child": null,
+      "parent": "24"
+    },
+    "38": {
+      "id": "38",
+      "name": "Write a story",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "20px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "font-size",
+              "value": "16pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function() {\n  return app.state.currentPage === 'write';\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "26",
+      "child": "50",
+      "parent": "5"
+    },
+    "39": {
+      "id": "39",
+      "name": "Menu",
+      "element": "div",
       "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "20",
-      "child": "22",
-      "parent": "6"
-    },
-    "22": {
-      "id": "22",
-      "name": "clean ui",
-      "element": "li",
-      "text": "Clean UI where designers can be involved",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "23",
-      "previous": null,
-      "child": null,
-      "parent": "21"
-    },
-    "23": {
-      "id": "23",
-      "name": "properties",
-      "element": "li",
-      "text": "Elements have properties",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "24",
-      "previous": "22",
-      "child": null,
-      "parent": "21"
-    },
-    "24": {
-      "id": "24",
-      "name": "javascript",
-      "element": "li",
-      "text": "Elements also have JavaScript",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "25",
-      "previous": "23",
-      "child": null,
-      "parent": "21"
-    },
-    "25": {
-      "id": "25",
-      "name": "simple data management",
-      "element": "li",
-      "text": "Easy data management",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": "26",
-      "previous": "24",
-      "child": null,
-      "parent": "21"
+      "previous": null,
+      "child": "40",
+      "parent": "5"
     },
-    "26": {
-      "id": "26",
-      "name": "all you need is a browser",
-      "element": "li",
-      "text": "All you need is a browser",
+    "40": {
+      "id": "40",
+      "name": "Home",
+      "element": "a",
+      "text": "Home",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.currentPage = 'home';\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "41",
+      "previous": null,
+      "child": null,
+      "parent": "39"
+    },
+    "41": {
+      "id": "41",
+      "name": "Start a new story",
+      "element": "a",
+      "text": "Start a new story",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.story_start();\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "40",
+      "child": null,
+      "parent": "39"
+    },
+    "43": {
+      "id": "43",
+      "name": "No latest story",
+      "element": "div",
+      "text": "(no latest story)",
+      "textFn": null,
+      "ifFn": "shouldShow",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "shouldShow",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'stories');\n  return state === null;\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "49",
+      "previous": "33",
+      "child": null,
+      "parent": "31"
+    },
+    "46": {
+      "id": "46",
+      "name": "new line",
+      "element": "input",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "placeholder",
+          "value": "write next line here (max 120 characters)"
+        },
+        {
+          "name": "maxLength",
+          "value": "120"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "border",
+              "value": "none"
+            },
+            {
+              "name": "width",
+              "value": "50%"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "margin-top",
+              "value": "10px"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "font-size",
+              "value": "16pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.setState(function() {\n      app.state.currentLine = e.target.value;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.currentLine;\n}"
+        },
+        {
+          "name": "handleKeyDown",
+          "body": "function(scope, attributes) {\n  var comp = this;\n  return function(e) {\n    var key = e.which, ENTER = 13, ESCAPE = 27;\n    if(key !== ENTER && key !== ESCAPE) return;\n    \n    app.setState(function() {\n      if(key === ENTER && app.state.currentLine !== '') {\n        comp.addLine();\n      } else if(key === ESCAPE) {\n        app.state.currentLine = '';\n      }\n    });\n  }\n};\n"
+        },
+        {
+          "name": "addLine",
+          "body": "function() {\n  var db = app.state.database;\n  \n  // add new line\n  var newLine = db.ref().child('lines/'+app.state.currentStory).push();\n  newLine.set({\"text\": app.state.currentLine, \"user\": app.state.user.uid});\n  \n  // add to authors\n  var newAuthor = db.ref().child('authors/'+app.state.user.uid);\n  newAuthor.child(app.state.currentStory).set(true);\n  \n  // add to story authors\n  var newStoryAuthor = db.ref().child('stories/'+app.state.currentStory+'/authors');\n  newStoryAuthor.child(app.state.user.uid).set(true);\n  \n  app.setState(function() {\n    app.state.currentLine = '';\n  });\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "onKeyDown",
+          "value": "handleKeyDown"
+        }
+      ],
+      "next": null,
+      "previous": "47",
+      "child": null,
+      "parent": "38"
+    },
+    "47": {
+      "id": "47",
+      "name": "lines",
+      "element": "div",
+      "text": null,
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "repeater",
       "attributes": [],
       "css": [],
-      "js": [],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe('lines/'+app.state.currentStory);\n  var keys = Object.keys(state);\n  return keys;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe('lines/'+app.state.currentStory);\n  var key = scope.repeater[scope.repeater_index];\n  //console.log('lines state', state);\n  return state[key].text;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "46",
+      "previous": "50",
+      "child": null,
+      "parent": "38"
+    },
+    "49": {
+      "id": "49",
+      "name": "Story list",
+      "element": "div",
+      "text": "",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": "repeater",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "repeater",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe_limit_last(100, 'stories');\n  return (state === null) ? [] : Object.keys(state);\n};\n"
+        }
+      ],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "25",
-      "child": null,
-      "parent": "21"
+      "previous": "43",
+      "child": "52",
+      "parent": "31"
     },
-    "27": {
-      "id": "27",
-      "name": "Header",
+    "50": {
+      "id": "50",
+      "name": "title",
       "element": "div",
-      "text": "Power",
-      "textFn": null,
+      "text": null,
+      "textFn": "getText",
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
@@ -791,39 +1225,162 @@ var blissProject = {
             {
               "name": "text-decoration",
               "value": "underline"
+            },
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "30px"
+            },
+            {
+              "name": "margin-top",
+              "value": "30px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var state = app.js.firebase_subscribe('stories/'+app.state.currentStory);\n  return state.title;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "47",
+      "previous": null,
+      "child": null,
+      "parent": "38"
+    },
+    "52": {
+      "id": "52",
+      "name": "Story link",
+      "element": "a",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  return function(e) {\n    app.setState(function() {\n      app.state.currentStory = key;\n      app.state.currentPage = 'write';\n    });\n  }\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  var key = scope.repeater[scope.repeater_index];\n  var state = app.js.firebase_subscribe('stories');\n  return state[key].title;\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "49"
+    },
+    "53": {
+      "id": "53",
+      "name": "About Text",
+      "element": "div",
+      "text": "Social Story is a fun way to get creative with your friends. You'll each take turns adding a single line to the story. Over time themes will emerge and no one knows where the story will end! It's also a great way to escape writes block!",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "54",
+      "previous": "34",
+      "child": null,
+      "parent": "32"
+    },
+    "54": {
+      "id": "54",
+      "name": "Instructions",
+      "element": "div",
+      "text": "Instructions",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-weight",
+              "value": "bold"
+            },
+            {
+              "name": "margin-top",
+              "value": "30px"
+            },
+            {
+              "name": "border-bottom",
+              "value": "solid 2px"
+            },
+            {
+              "name": "border-bottom-color",
+              "value": "$darkFontColor"
             }
           ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "28",
-      "previous": null,
+      "next": "55",
+      "previous": "53",
       "child": null,
-      "parent": "5"
+      "parent": "32"
     },
-    "28": {
-      "id": "28",
-      "name": "List",
+    "55": {
+      "id": "55",
+      "name": "ordered list",
       "element": "ol",
       "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "padding-left",
+              "value": "20px"
+            },
+            {
+              "name": "margin-top",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "27",
-      "child": "30",
-      "parent": "5"
+      "previous": "54",
+      "child": "56",
+      "parent": "32"
     },
-    "29": {
-      "id": "29",
-      "name": "move elements",
+    "56": {
+      "id": "56",
+      "name": "list item",
       "element": "li",
-      "text": "Move elements anytime",
+      "text": "Create a new story",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -831,33 +1388,16 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "31",
-      "previous": "30",
-      "child": null,
-      "parent": "28"
-    },
-    "30": {
-      "id": "30",
-      "name": "real stateful",
-      "element": "li",
-      "text": "Real stateful UIs",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "29",
+      "next": "62",
       "previous": null,
       "child": null,
-      "parent": "28"
+      "parent": "55"
     },
-    "31": {
-      "id": "31",
-      "name": "supports node modules",
+    "58": {
+      "id": "58",
+      "name": "list item",
       "element": "li",
-      "text": "Supports node modules (open source)",
+      "text": "Ask your friends to join in the fun",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -865,16 +1405,16 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "32",
-      "previous": "29",
+      "next": "59",
+      "previous": "62",
       "child": null,
-      "parent": "28"
+      "parent": "55"
     },
-    "32": {
-      "id": "32",
-      "name": "css variables",
+    "59": {
+      "id": "59",
+      "name": "list item",
       "element": "li",
-      "text": "CSS variables",
+      "text": "Take turns adding a new line to the story",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -882,16 +1422,33 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "34",
-      "previous": "31",
+      "next": "60",
+      "previous": "58",
       "child": null,
-      "parent": "28"
+      "parent": "55"
     },
-    "33": {
-      "id": "33",
-      "name": "Bootstrapped",
+    "60": {
+      "id": "60",
+      "name": "list item",
       "element": "li",
-      "text": "Bootstrapped architecture",
+      "text": "Be sure to leave your lines open-ended (ie. The frog had no pants but he did have...)",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "61",
+      "previous": "59",
+      "child": null,
+      "parent": "55"
+    },
+    "61": {
+      "id": "61",
+      "name": "list item",
+      "element": "li",
+      "text": "There's no need to refresh the page. All stories and lines are updated immediately.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -900,15 +1457,15 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "34",
+      "previous": "60",
       "child": null,
-      "parent": "28"
+      "parent": "55"
     },
-    "34": {
-      "id": "34",
-      "name": "Mobile ready",
+    "62": {
+      "id": "62",
+      "name": "list item",
       "element": "li",
-      "text": "Mobile ready",
+      "text": "We'll start you off with a story title",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -916,78 +1473,10 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "33",
-      "previous": "32",
+      "next": "58",
+      "previous": "56",
       "child": null,
-      "parent": "28"
-    },
-    "35": {
-      "id": "35",
-      "name": "text",
-      "element": "div",
-      "text": "Column 5",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "10"
-    },
-    "36": {
-      "id": "36",
-      "name": "text",
-      "element": "div",
-      "text": "Column 4",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "7"
-    },
-    "37": {
-      "id": "37",
-      "name": "text",
-      "element": "div",
-      "text": "Column 6",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "8"
-    },
-    "38": {
-      "id": "38",
-      "name": "re-usable components",
-      "element": "li",
-      "text": "Make your own re-usable components",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "19",
-      "previous": "17",
-      "child": null,
-      "parent": "16"
+      "parent": "55"
     }
   }
 }

@@ -2,6 +2,7 @@ const str = require('../compilers/core/str.js');
 const path = require('path');
 const fs = require('./secure-fs.js');
 const htmlParser = require('../compilers/core/html-parser.js');
+const deps = require('./dependencies.js');
 
 module.exports = function(workspace, projectJson) {
   var pub = {}
@@ -45,7 +46,7 @@ module.exports = function(workspace, projectJson) {
     var snakeFilename = str.getSnake(filename)
     var dir = `${pub.fullpath}/${snakeFilename}.json`;
     fs(workspace.user.name).removeSync(dir)
-    return this
+    return this;
   }
 
   pub.compile = function() {
@@ -53,6 +54,7 @@ module.exports = function(workspace, projectJson) {
       projectJson.compiler, `${projectJson.compiler}.js`);
     var compiler = require(compilerPath);
     compiler.compile(workspace.fullpath, projectJson, null)
+    return this;
   }
 
   pub.export = function() {
@@ -60,10 +62,17 @@ module.exports = function(workspace, projectJson) {
       projectJson.compiler, `${projectJson.compiler}.js`);
     var compiler = require(compilerPath);
     compiler.export(workspace.fullpath, projectJson, null)
+    return this;
   }
 
   pub.importHtml = function(html, parentId) {
-    init(htmlParser.toProject(html, this.projectJson, parentId));
+    var updatedProjectJson = htmlParser.toProject(html, this.projectJson, parentId);
+    init(updatedProjectJson);
+    return this;
+  };
+
+  pub.updateDependencies = function() {
+    deps.update(this.workspace.fullpath, this.projectJson);
     return this;
   };
 

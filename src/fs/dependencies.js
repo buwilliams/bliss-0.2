@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 const _ = require('lodash');
 
 module.exports = {
@@ -48,8 +48,9 @@ module.exports = {
   },
 
   installPackageJson: function(workspace) {
-    var one_minute = 1000 * 60
-    var code = exec(`yarn install`, {
+    console.log('Install node packages...');
+    var one_minute = 1000 * 60;
+    var code = execSync(`yarn install`, {
       "cwd": workspace,
       "timeout": one_minute,
       "killSignal": "SIGKILL" // default: SIGTERM

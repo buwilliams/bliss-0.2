@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "bliss",
   "compiler": "react",
-  "nextId": 304,
+  "nextId": 319,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -58,7 +58,7 @@ var blissProject = {
     },
     {
       "name": "bootstrap",
-      "version": "^4.0.0-alpha.6"
+      "version": "4.0.0"
     },
     {
       "name": "codemirror",
@@ -144,7 +144,7 @@ var blissProject = {
     },
     {
       "name": "log",
-      "body": "function() {\n  return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
+      "body": "function() {\n  //return;\n  if(typeof app.buildProject !== 'undefined') {\n    if(app.buildProject.build === 'bliss') {\n      var args = Array.prototype.slice.call(arguments);\n      console.log.apply(this, args);\n    }\n\t}\n}"
     },
     {
       "name": "firebaseAuthUI",
@@ -177,6 +177,10 @@ var blissProject = {
     {
       "name": "deleteProject",
       "body": "function(scope, attributes) {\n  if(!confirm('Are you sure you want to delete this page?')) return;\n  \n  var workspace = app.state.settings.workspace;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/delete?workspace=' + workspace + '&project=' + app.buildProject.name,\n    data: {},\n    success: function(data) {\n      app.js.loadWorkspace(workspace);\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "serverImportHtml",
+      "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [
@@ -605,7 +609,7 @@ var blissProject = {
         }
       ],
       "next": "238",
-      "previous": "80",
+      "previous": "314",
       "child": "55",
       "parent": "4",
       "ifFn": ""
@@ -846,7 +850,7 @@ var blissProject = {
           "value": "getStyle"
         }
       ],
-      "next": "54",
+      "next": "314",
       "previous": null,
       "child": "205",
       "parent": "4"
@@ -3971,7 +3975,7 @@ var blissProject = {
           "value": "getStyle"
         }
       ],
-      "next": null,
+      "next": "304",
       "previous": "226",
       "child": "142",
       "parent": "4"
@@ -4733,7 +4737,7 @@ var blissProject = {
     },
     "252": {
       "id": "252",
-      "name": "List of websites",
+      "name": "card (repeat)",
       "element": "div",
       "text": "",
       "textFn": "",
@@ -4742,7 +4746,7 @@ var blissProject = {
       "attributes": [
         {
           "name": "class",
-          "value": "workspaces"
+          "value": "card"
         },
         {
           "name": "href",
@@ -4755,7 +4759,15 @@ var blissProject = {
           "properties": [
             {
               "name": "margin",
-              "value": "10px"
+              "value": "0.25em"
+            },
+            {
+              "name": "flex-grow",
+              "value": "1"
+            },
+            {
+              "name": "background-color",
+              "value": "#f2f2f2"
             }
           ]
         }
@@ -4767,10 +4779,10 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "271",
-      "previous": "261",
-      "child": "267",
-      "parent": "264"
+      "next": null,
+      "previous": null,
+      "child": "309",
+      "parent": "308"
     },
     "253": {
       "id": "253",
@@ -5005,7 +5017,7 @@ var blissProject = {
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "252",
+      "next": "271",
       "previous": null,
       "child": null,
       "parent": "264"
@@ -5147,7 +5159,7 @@ var blissProject = {
     "265": {
       "id": "265",
       "name": "list of pages",
-      "element": "span",
+      "element": "div",
       "text": null,
       "textFn": "getText",
       "ifFn": null,
@@ -5176,9 +5188,9 @@ var blissProject = {
       ],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "267",
+      "previous": null,
       "child": null,
-      "parent": "252"
+      "parent": "311"
     },
     "267": {
       "id": "267",
@@ -5205,6 +5217,10 @@ var blissProject = {
             {
               "name": "display",
               "value": "block"
+            },
+            {
+              "name": "text-transform",
+              "value": "uppercase"
             }
           ]
         }
@@ -5225,10 +5241,10 @@ var blissProject = {
           "value": "handleClick"
         }
       ],
-      "next": "265",
+      "next": null,
       "previous": null,
       "child": null,
-      "parent": "252"
+      "parent": "310"
     },
     "268": {
       "id": "268",
@@ -5349,15 +5365,15 @@ var blissProject = {
           "properties": [
             {
               "name": "padding",
-              "value": "10px"
+              "value": "0.5em"
             }
           ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
-      "previous": "252",
+      "next": "308",
+      "previous": "261",
       "child": "272",
       "parent": "264"
     },
@@ -6279,6 +6295,544 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "300"
+    },
+    "304": {
+      "id": "304",
+      "name": "Import HTML Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'import_html') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": null,
+      "previous": "227",
+      "child": "305",
+      "parent": "4"
+    },
+    "305": {
+      "id": "305",
+      "name": "title",
+      "element": "h3",
+      "text": "import html",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "clearfix"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "306",
+      "previous": null,
+      "child": null,
+      "parent": "304"
+    },
+    "306": {
+      "id": "306",
+      "name": "import",
+      "element": "textarea",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "cols",
+          "value": "45"
+        },
+        {
+          "name": "rows",
+          "value": "10"
+        },
+        {
+          "name": "placeholder",
+          "value": "paste html here..."
+        },
+        {
+          "name": "class",
+          "value": "form-control"
+        }
+      ],
+      "css": [],
+      "js": [
+        {
+          "name": "setObjectContainer",
+          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
+        },
+        {
+          "name": "setObjectKey",
+          "body": "function(scope, props) {\n  return \"packages\";\n};\n"
+        },
+        {
+          "name": "setObjectType",
+          "body": "function(scope, props) {\n  return \"object\";\n};\n"
+        },
+        {
+          "name": "setOnChange",
+          "body": "function(scope, attributes) {\n  return function(newPackages) {\n    app.js.update(function() {\n      app.buildProject.packages = newPackages;\n    });\n  }\n};\n"
+        },
+        {
+          "name": "setItemKey",
+          "body": "function(scope, attributes) {\n  return \"name\";\n}"
+        },
+        {
+          "name": "setItemValue",
+          "body": "function(scope, attributes) {\n  return \"version\";\n}"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": "307",
+      "previous": null,
+      "child": null,
+      "parent": "304"
+    },
+    "307": {
+      "id": "307",
+      "name": "import",
+      "element": "button",
+      "text": "Import HTML",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-sm btn-success"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "306",
+      "child": null,
+      "parent": "304"
+    },
+    "308": {
+      "id": "308",
+      "name": "websites container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "flex-direction",
+              "value": "row"
+            },
+            {
+              "name": "flex-wrap",
+              "value": "wrap"
+            },
+            {
+              "name": "padding",
+              "value": "0.25em"
+            },
+            {
+              "name": "justify-content",
+              "value": "space-evenly"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "271",
+      "child": "252",
+      "parent": "264"
+    },
+    "309": {
+      "id": "309",
+      "name": "card body",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card-body"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "310",
+      "parent": "252"
+    },
+    "310": {
+      "id": "310",
+      "name": "card title",
+      "element": "h5",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card-title"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "311",
+      "previous": null,
+      "child": "267",
+      "parent": "309"
+    },
+    "311": {
+      "id": "311",
+      "name": "card text",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card-text"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "max-height",
+              "value": "7em"
+            },
+            {
+              "name": "overflow-y",
+              "value": "scroll"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "310",
+      "child": "265",
+      "parent": "309"
+    },
+    "312": {
+      "id": "312",
+      "name": "import text",
+      "element": "textarea",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "rows",
+          "value": "20"
+        },
+        {
+          "name": "placeholder",
+          "value": "Paste HTML..."
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "z-index",
+              "value": "1000"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            },
+            {
+              "name": "border",
+              "value": "solid 1px #cccccc"
+            },
+            {
+              "name": "outline",
+              "value": "none"
+            },
+            {
+              "name": "width",
+              "value": "100%"
+            },
+            {
+              "name": "font-size",
+              "value": "0.5em"
+            },
+            {
+              "name": "margin",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'importHtml',\n      value: e.target.value\n    })\n  }\n};\n"
+        },
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.state.settings.importHtml;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        },
+        {
+          "name": "value",
+          "value": "getValue"
+        }
+      ],
+      "next": "313",
+      "previous": "318",
+      "child": null,
+      "parent": "314"
+    },
+    "313": {
+      "id": "313",
+      "name": "import html button",
+      "element": "button",
+      "text": "Import HTML",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "btn btn-block btn-primary"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "font-size",
+              "value": "0.5em"
+            },
+            {
+              "name": "margin",
+              "value": "0 0 1em 0"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    app.js.serverImportHtml(app.state.settings.importHtml);\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": null,
+      "previous": "312",
+      "child": null,
+      "parent": "314"
+    },
+    "314": {
+      "id": "314",
+      "name": "Import Html Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": "",
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$lightBg"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "overflow",
+              "value": "auto"
+            },
+            {
+              "name": "height",
+              "value": "calc(100vh - 80px)"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getStyle",
+          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'import_html') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "style",
+          "value": "getStyle"
+        }
+      ],
+      "next": "54",
+      "previous": "80",
+      "child": "318",
+      "parent": "4"
+    },
+    "318": {
+      "id": "318",
+      "name": "import html",
+      "element": "h3",
+      "text": "Import HTML",
+      "attributes": [
+        {
+          "name": "id",
+          "value": "h3Js"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-transform",
+              "value": "uppercase"
+            },
+            {
+              "name": "font-size",
+              "value": "1em"
+            },
+            {
+              "name": "background-color",
+              "value": "$headerBg"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            },
+            {
+              "name": "padding",
+              "value": "10px"
+            },
+            {
+              "name": "border-radius",
+              "value": "3px"
+            }
+          ]
+        }
+      ],
+      "dynamicAttributes": [],
+      "js": [],
+      "next": "312",
+      "previous": null,
+      "child": null,
+      "parent": "314",
+      "textFn": ""
     }
   },
   "schemas": [
@@ -6349,15 +6903,15 @@ var blissProject = {
         },
         {
           "action": "addAll",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.projects\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = args.projects;\n  return newData;\n}"
         },
         {
           "action": "clear",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.list = []\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.list = [];\n  return newData;\n}"
         },
         {
           "action": "setNewPage",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.newPage = args.newPage\n  return newData;\n}"
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data);\n  newData.newPage = args.newPage;\n  return newData;\n}"
         }
       ]
     },
@@ -6366,7 +6920,7 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldReloadProject: true,\n    currentColor: '#ffffff',\n    workspace: 'bliss',\n    timer: null\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
+          "body": "function (data, args) {\n  return {\n    buildProject: null,\n    activeComponent: null,\n    shouldSave: false,\n    shouldReloadProject: true,\n    currentColor: '#ffffff',\n    workspace: 'bliss',\n    timer: null,\n    importHtml: ''\n  }\n  \n  var display = app._state.create('display');\n  display.create({name: 'components', width: '20%', active: true});\n  display.create({name: 'designer', width: '60%', width2: '80%', width3: '100%', active: true});\n  display.create({name: 'properties', width: '20%', active: true});\n}"
         },
         {
           "action": "set",
@@ -6383,7 +6937,7 @@ var blissProject = {
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
+          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'import_html',   label: 'Import HTML' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
         },
         {
           "action": "setView",

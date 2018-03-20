@@ -57,10 +57,13 @@ module.exports = {
 
   toProject: function(htmlString, projectJson, parentId) {
     var frag = this.parseFragment(htmlString);
+    console.log('toProject', htmlString, parentId);
+    console.log('frag', frag);
     return this._toProject(frag.childNodes[0], projectJson, parentId);
   },
 
   _toProject: function(htmlRef, projectJson, parentId) {
+    console.log('_toProject', parentId, htmlRef);
     var that = this;
     var newId = this.appendComponent(htmlRef, projectJson, parentId);
     var newComp = projectJson.components[newId];

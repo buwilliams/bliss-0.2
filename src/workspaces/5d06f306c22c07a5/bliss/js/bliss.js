@@ -298,7 +298,7 @@ var blissUi = (function() {
       app.js.build(clearIframeState);
     }
     app.js['log'] = function() {
-      return;
+      //return;
       if (typeof app.buildProject !== 'undefined') {
         if (app.buildProject.build === 'bliss') {
           var args = Array.prototype.slice.call(arguments);
@@ -484,6 +484,29 @@ var blissUi = (function() {
         dataType: 'json'
       });
     }
+    app.js['serverImportHtml'] = function(htmlString) {
+      app.js.log('app.js.serverImportHtml() invoked.');
+
+      var data = JSON.stringify({
+        "html": htmlString,
+        "project": app.buildProject
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: '/project/html' +
+          '?workspace=' + app.state.settings.workspace +
+          '&parentId=' + app.state.settings.activeComponent,
+        data: data,
+        success: function(data) {
+          app.setState(function() {
+            app.buildProject = data.project
+          });
+        },
+        contentType: "application/json",
+        dataType: 'json'
+      });
+    }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? false : true;
@@ -499,31 +522,6 @@ var blissUi = (function() {
         firebase.auth().signOut()
       }
     }
-    app.methods["252"] = {};
-    app.methods["252"]['repeater'] = function(scope, attributes) {
-      return app.state.workspaces.list;
-    };
-    app.methods["267"] = {};
-    app.methods["267"]['getText'] = function(scope, attributes) {
-      var item = scope.repeater[scope.repeater_index]
-      return item.name
-    };
-
-    app.methods["267"]['handleClick'] = function(scope, attributes) {
-      var item = scope.repeater[scope.repeater_index];
-      return function(e) {
-        app.js.loadWorkspace(item.name);
-      }
-    };
-    app.methods["265"] = {};
-    app.methods["265"]['projectRepeater'] = function(scope, attributes) {
-      return scope.repeater[scope.repeater_index].projects;
-    };
-
-    app.methods["265"]['getText'] = function(scope, attributes) {
-      return scope.projectRepeater[
-        scope.projectRepeater_index].name;
-    };
     app.methods["272"] = {};
     app.methods["272"]['handleChange'] = function(scope, attributes) {
       return function(e) {
@@ -550,6 +548,31 @@ var blissUi = (function() {
           name: app.state.workspaces.newWorkspaceName
         })
       }
+    };
+    app.methods["252"] = {};
+    app.methods["252"]['repeater'] = function(scope, attributes) {
+      return app.state.workspaces.list;
+    };
+    app.methods["267"] = {};
+    app.methods["267"]['getText'] = function(scope, attributes) {
+      var item = scope.repeater[scope.repeater_index]
+      return item.name
+    };
+
+    app.methods["267"]['handleClick'] = function(scope, attributes) {
+      var item = scope.repeater[scope.repeater_index];
+      return function(e) {
+        app.js.loadWorkspace(item.name);
+      }
+    };
+    app.methods["265"] = {};
+    app.methods["265"]['projectRepeater'] = function(scope, attributes) {
+      return scope.repeater[scope.repeater_index].projects;
+    };
+
+    app.methods["265"]['getText'] = function(scope, attributes) {
+      return scope.projectRepeater[
+        scope.projectRepeater_index].name;
     };
     app.methods["243"] = {};
     app.methods["243"]['shouldShow'] = function() {
@@ -1090,6 +1113,35 @@ var blissUi = (function() {
       var selected = app.state.views.selected
       return (selected === 'designer')
     }
+    app.methods["314"] = {};
+    app.methods["314"]['getStyle'] = function() {
+      var selected = app.state.views.selected
+      var displayValue = (selected === 'import_html') ? 'block' : 'none';
+      return {
+        'display': displayValue
+      };
+    }
+    app.methods["312"] = {};
+    app.methods["312"]['handleChange'] = function(scope, attributes) {
+      return function(e) {
+        app.dispatch({
+          path: '/settings',
+          action: 'set',
+          key: 'importHtml',
+          value: e.target.value
+        })
+      }
+    };
+
+    app.methods["312"]['getValue'] = function(scope, attributes) {
+      return app.state.settings.importHtml;
+    };
+    app.methods["313"] = {};
+    app.methods["313"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        app.js.serverImportHtml(app.state.settings.importHtml);
+      }
+    };
     app.methods["54"] = {};
     app.methods["54"]['getStyle'] = function() {
       var selected = app.state.views.selected
@@ -1398,6 +1450,41 @@ var blissUi = (function() {
     app.methods["143"]['setItemValue'] = function(scope, attributes) {
       return "version";
     }
+    app.methods["304"] = {};
+    app.methods["304"]['getStyle'] = function() {
+      var selected = app.state.views.selected
+      var displayValue = (selected === 'import_html') ? 'block' : 'none';
+      return {
+        'display': displayValue
+      };
+    }
+    app.methods["306"] = {};
+    app.methods["306"]['setObjectContainer'] = function(scope, props) {
+      return app.buildProject;
+    };
+
+    app.methods["306"]['setObjectKey'] = function(scope, props) {
+      return "packages";
+    };
+
+    app.methods["306"]['setObjectType'] = function(scope, props) {
+      return "object";
+    };
+
+    app.methods["306"]['setOnChange'] = function(scope, attributes) {
+      return function(newPackages) {
+        app.js.update(function() {
+          app.buildProject.packages = newPackages;
+        });
+      }
+    };
+
+    app.methods["306"]['setItemKey'] = function(scope, attributes) {
+      return "name";
+    }
+    app.methods["306"]['setItemValue'] = function(scope, attributes) {
+      return "version";
+    }
     app.methods["77"] = {};
     app.methods["77"]['shouldShow'] = function(scope, attributes) {
       if (_.isNil(app.state.settings.activeComponent))
@@ -1684,17 +1771,17 @@ var blissUi = (function() {
     }
     app.schema['/projects']['addAll'] = function(data, args) {
       var newData = Object.assign({}, data)
-      newData.list = args.projects
+      newData.list = args.projects;
       return newData;
     }
     app.schema['/projects']['clear'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.list = []
+      var newData = Object.assign({}, data);
+      newData.list = [];
       return newData;
     }
     app.schema['/projects']['setNewPage'] = function(data, args) {
-      var newData = Object.assign({}, data)
-      newData.newPage = args.newPage
+      var newData = Object.assign({}, data);
+      newData.newPage = args.newPage;
       return newData;
     }
     if (app.schema['/projects']['init']) {
@@ -1711,7 +1798,8 @@ var blissUi = (function() {
         shouldReloadProject: true,
         currentColor: '#ffffff',
         workspace: 'bliss',
-        timer: null
+        timer: null,
+        importHtml: ''
       }
 
       var display = app._state.create('display');
@@ -1784,6 +1872,10 @@ var blissUi = (function() {
           {
             name: 'node_packages',
             label: 'Node Packages'
+          },
+          {
+            name: 'import_html',
+            label: 'Import HTML'
           },
           {
             name: 'settings',
@@ -2023,40 +2115,6 @@ var blissUi = (function() {
                     "id": "websitesHeader_261",
                     "key": app.getKey('id', '261')
                   }), 'Websites'),
-                  (function(scope) {
-                    var out = [];
-                    var list = scope['repeater'] = app.methods['252']['repeater'](scope);
-                    for (var i = 0; i < list.length; i++) {
-                      scope['repeater_index'] = i;
-                      out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
-                          "href": "#",
-                          "className": "workspaces",
-                          "id": "listOfWebsites_252",
-                          "key": app.getKey('id', '252', i)
-                        }),
-                        React.createElement('a', app.mergeAttributes('267', scope, {
-                          "onClick": "handleClick"
-                        }, {
-                          "href": "#",
-                          "className": "workspaces",
-                          "id": "websiteLink_267",
-                          "key": app.getKey('id', '267')
-                        }), app.methods['267']['getText'](scope)),
-                        (function(scope) {
-                          var out = [];
-                          var list = scope['projectRepeater'] = app.methods['265']['projectRepeater'](scope);
-                          for (var i = 0; i < list.length; i++) {
-                            scope['projectRepeater_index'] = i;
-                            out.push(React.createElement('span', app.mergeAttributes('265', scope, {}, {
-                              "id": "listOfPages_265",
-                              "key": app.getKey('id', '265', i)
-                            }), app.methods['265']['getText'](scope)));
-                          }
-                          return out;
-                        })(scope)));
-                    }
-                    return out;
-                  })(scope),
                   React.createElement('div', app.mergeAttributes('271', scope, {}, {
                       "id": "createWebsiteContainer_271",
                       "key": app.getKey('id', '271')
@@ -2075,7 +2133,60 @@ var blissUi = (function() {
                       "className": "btn btn-success",
                       "id": "createWebsiteButton_273",
                       "key": app.getKey('id', '273')
-                    }), 'Create Website')))));
+                    }), 'Create Website')),
+                  React.createElement('div', app.mergeAttributes('308', scope, {}, {
+                      "id": "websitesContainer_308",
+                      "key": app.getKey('id', '308')
+                    }),
+                    (function(scope) {
+                      var out = [];
+                      var list = scope['repeater'] = app.methods['252']['repeater'](scope);
+                      for (var i = 0; i < list.length; i++) {
+                        scope['repeater_index'] = i;
+                        out.push(React.createElement('div', app.mergeAttributes('252', scope, {}, {
+                            "href": "#",
+                            "className": "card",
+                            "id": "cardRepeat_252",
+                            "key": app.getKey('id', '252', i)
+                          }),
+                          React.createElement('div', app.mergeAttributes('309', scope, {}, {
+                              "className": "card-body",
+                              "id": "cardBody_309",
+                              "key": app.getKey('id', '309')
+                            }),
+                            React.createElement('h5', app.mergeAttributes('310', scope, {}, {
+                                "className": "card-title",
+                                "id": "cardTitle_310",
+                                "key": app.getKey('id', '310')
+                              }),
+                              React.createElement('a', app.mergeAttributes('267', scope, {
+                                "onClick": "handleClick"
+                              }, {
+                                "href": "#",
+                                "className": "workspaces",
+                                "id": "websiteLink_267",
+                                "key": app.getKey('id', '267')
+                              }), app.methods['267']['getText'](scope))),
+                            React.createElement('div', app.mergeAttributes('311', scope, {}, {
+                                "className": "card-text",
+                                "id": "cardText_311",
+                                "key": app.getKey('id', '311')
+                              }),
+                              (function(scope) {
+                                var out = [];
+                                var list = scope['projectRepeater'] = app.methods['265']['projectRepeater'](scope);
+                                for (var i = 0; i < list.length; i++) {
+                                  scope['projectRepeater_index'] = i;
+                                  out.push(React.createElement('div', app.mergeAttributes('265', scope, {}, {
+                                    "id": "listOfPages_265",
+                                    "key": app.getKey('id', '265', i)
+                                  }), app.methods['265']['getText'](scope)));
+                                }
+                                return out;
+                              })(scope)))));
+                      }
+                      return out;
+                    })(scope)))));
             }
             return out;
           })(scope),
@@ -2548,6 +2659,32 @@ var blissUi = (function() {
                               "src": "about:blank",
                               "key": app.getKey('id', '17')
                             })))),
+                        React.createElement('div', app.mergeAttributes('314', scope, {
+                            "style": "getStyle"
+                          }, {
+                            "id": "importHtmlContainer_314",
+                            "key": app.getKey('id', '314')
+                          }),
+                          React.createElement('h3', app.mergeAttributes('318', scope, {}, {
+                            "id": "h3Js",
+                            "key": app.getKey('id', '318')
+                          }), 'Import HTML'),
+                          React.createElement('textarea', app.mergeAttributes('312', scope, {
+                            "onChange": "handleChange",
+                            "value": "getValue"
+                          }, {
+                            "rows": "20",
+                            "placeholder": "Paste HTML...",
+                            "id": "importText_312",
+                            "key": app.getKey('id', '312')
+                          })),
+                          React.createElement('button', app.mergeAttributes('313', scope, {
+                            "onClick": "handleClick"
+                          }, {
+                            "className": "btn btn-block btn-primary",
+                            "id": "importHtmlButton_313",
+                            "key": app.getKey('id', '313')
+                          }), 'Import HTML')),
                         React.createElement('div', app.mergeAttributes('54', scope, {
                             "style": "getStyle"
                           }, {
@@ -2802,7 +2939,31 @@ var blissUi = (function() {
                           }, {
                             "id": "packagesProperties_143",
                             "key": app.getKey('id', '143')
-                          })))));
+                          }))),
+                        React.createElement('div', app.mergeAttributes('304', scope, {
+                            "style": "getStyle"
+                          }, {
+                            "id": "importHtmlContainer_304",
+                            "key": app.getKey('id', '304')
+                          }),
+                          React.createElement('h3', app.mergeAttributes('305', scope, {}, {
+                            "className": "clearfix",
+                            "id": "title_305",
+                            "key": app.getKey('id', '305')
+                          }), 'import html'),
+                          React.createElement('textarea', app.mergeAttributes('306', scope, {}, {
+                            "cols": "45",
+                            "rows": "10",
+                            "placeholder": "paste html here...",
+                            "className": "form-control",
+                            "id": "import_306",
+                            "key": app.getKey('id', '306')
+                          })),
+                          React.createElement('button', app.mergeAttributes('307', scope, {}, {
+                            "className": "btn btn-sm btn-success",
+                            "id": "import_307",
+                            "key": app.getKey('id', '307')
+                          }), 'Import HTML'))));
                     }
                     return out;
                   })(scope),

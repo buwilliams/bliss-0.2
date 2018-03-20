@@ -477,6 +477,38 @@
   border: none;
 }
 
+#importHtmlContainer_314 {
+  background-color: #dbe2e5;
+  padding: 10px;
+  overflow: auto;
+  height: calc(100vh - 80px);
+}
+
+#h3Js {
+  text-transform: uppercase;
+  font-size: 1em;
+  background-color: #698290;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+#importText_312 {
+  z-index: 1000;
+  padding: 10px;
+  border-radius: 3px;
+  border: solid 1px #cccccc;
+  outline: none;
+  width: 100%;
+  font-size: 0.5em;
+  margin: 0;
+}
+
+#importHtmlButton_313 {
+  font-size: 0.5em;
+  margin: 0 0 1em 0;
+}
+
 #jsEditor {
   overflow: auto;
   height: calc(100vh - 80px);
