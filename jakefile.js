@@ -4,17 +4,19 @@ const fs = require('fs');
 const exec = require('sync-exec');
 const compiler = require('./src/compilers/react/react.js');
 const fse = require('fs-extra');
+const deps = require('./src/fs/dependencies.js');
 
 var config = {
   bliss_src: `src/workspaces/${process.env.BLISS_USER}/bliss`,
   bliss_project: 'projects/bliss_ui.json',
-  bliss_build: `build/${process.env.BLISS_USER}/bliss`,
+  bliss_build: `build/_bliss/bliss`,
   bliss_component_path: `src/workspaces/${process.env.BLISS_USER}/bliss/components`,
   bliss_components: ['bliss-tree', 'bliss-properties', 'bliss-javascript', 'bliss-data', 'bliss-utils'],
   bliss_workspace: `src/workspaces/${process.env.BLISS_USER}`,
-  bliss_workspace_build: `build/${process.env.BLISS_USER}`,
+  bliss_workspace_build: `build/_bliss`,
   bliss_workspace_test: `src/workspaces/${process.env.BLISS_TEST_USER}`,
-  bliss_workspace_test_build: `build/${process.env.BLISS_TEST_USER}`
+  bliss_workspace_test_build: `build/${process.env.BLISS_TEST_USER}`,
+  bliss_public: `build/${process.env.BLISS_USER}`
 };
 
 task('compile-jsx', function(inputPath, outputPath) {
@@ -64,7 +66,13 @@ task('build-bliss', function() {
   projectJson.pageTitle = 'BlissUI';
 
   var build_path = config.bliss_build;
+  console.log('>> - compiling bliss');
   compiler.compile(build_path, projectJson);
+
+  console.log('>> - updating dependencies');
+  fse.removeSync(path.join(build_path, 'node_modules'))
+
+  deps.update(build_path, projectJson);
 
   var filename = (projectJson.filename || 'designer') + '.html'
   fse.moveSync(path.join(build_path, filename), path.join(build_path, 'index.html'), {overwrite:true});
@@ -76,7 +84,9 @@ task('build', function(){
 
   if(process.env.BLISS_ENV==='development') {
     console.log('>> cleaning build');
-    fse.removeSync('build')
+    if(fs.existsSync(config.build_bliss)) {
+      fse.removeSync(config.build_bliss);
+    }
   }
 
   console.log('>> copying workspaces');
@@ -88,6 +98,9 @@ task('build', function(){
 
   t = jake.Task['build-bliss'];
   t.invoke();
+
+  console.log('>> making bliss public');
+  fse.copySync(config.bliss_workspace_build, config.bliss_public);
 });
 
 desc('Updates Bliss after you change it in the UI (you need to build bliss first)');
