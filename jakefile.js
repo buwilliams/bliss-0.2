@@ -100,7 +100,7 @@ task('build', function(){
   t.invoke();
 
   console.log('>> making bliss public');
-  fse.copySync(config.bliss_workspace_build, config.bliss_public);
+  fse.copySync(config.bliss_workspace_build, config.bliss_public, {overwrite:true,dereference:true});
 });
 
 desc('Updates Bliss after you change it in the UI (you need to build bliss first)');
