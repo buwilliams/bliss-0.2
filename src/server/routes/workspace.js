@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const env = require('../env.js');
 const user = require('../../fs/user.js');
 
@@ -21,7 +22,25 @@ router.get('/list', function(req, res) {
   });
 
   res.send({ "workspaces": workspaces })
-})
+});
+
+router.get('/download', function(req, res) {
+  var zipFile = user(env, req.session)
+    .workspace()
+    .createZip();
+
+  var stat = fs.statSync(zipFile);
+
+  res.writeHead(200, {
+    'Content-Type': 'application/zip',
+    'Content-Length': stat.size
+  });
+
+  var readStream = fs.createReadStream(zipFile);
+  // We replaced all the event handlers with a simple call to readStream.pipe()
+  readStream.pipe(res);
+  //res.send({ "success": true })
+});
 
 router.post('/', function(req, res) {
   if (!req.body.name) {
@@ -35,7 +54,7 @@ router.post('/', function(req, res) {
     .createWorkspace()
 
   res.send({ "success": true })
-})
+});
 
 router.delete('/:workspaceName', function(req, res) {
   user(env, req.session)

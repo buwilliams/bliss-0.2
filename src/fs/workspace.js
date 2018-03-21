@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('./secure-fs.js')
 const proj = require('./project.js')
+const compress = require('../compilers/core/compress.js');
 
 module.exports = function(user, workspace) {
   var pub = {}
@@ -148,6 +149,13 @@ module.exports = function(user, workspace) {
   pub.project = function(projectJson) {
     return proj(this, projectJson)
   }
+
+  pub.createZip = function() {
+    var fromDir = this.fullpath;
+    var toFile = path.join(this.user.fullpath, 'workspace.zip');
+    compress.zip(fromDir, toFile);
+    return toFile;
+  };
 
   pub.fullpath = dir
   pub.name = workspace
