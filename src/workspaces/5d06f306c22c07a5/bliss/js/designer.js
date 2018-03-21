@@ -2056,7 +2056,7 @@ var blissUiV = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "blissUiVTesting_1",
+            "id": "blissUiV_1",
             "key": app.getKey('id', '1')
           }),
           (function(scope) {
