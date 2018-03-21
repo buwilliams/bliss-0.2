@@ -25,21 +25,16 @@ router.get('/list', function(req, res) {
 });
 
 router.get('/download', function(req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('workspace param required');
+    return;
+  }
+
   var zipFile = user(env, req.session)
-    .workspace()
+    .workspace(req.query.workspace)
     .createZip();
 
-  var stat = fs.statSync(zipFile);
-
-  res.writeHead(200, {
-    'Content-Type': 'application/zip',
-    'Content-Length': stat.size
-  });
-
-  var readStream = fs.createReadStream(zipFile);
-  // We replaced all the event handlers with a simple call to readStream.pipe()
-  readStream.pipe(res);
-  //res.send({ "success": true })
+  res.download(zipFile);
 });
 
 router.post('/', function(req, res) {

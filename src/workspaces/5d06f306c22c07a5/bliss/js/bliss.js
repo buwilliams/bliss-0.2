@@ -507,6 +507,18 @@ var blissUi = (function() {
         dataType: 'json'
       });
     }
+    app.js['download'] = function() {
+      app.js.log('app.js.download() invoked.');
+
+      $.ajax({
+        type: 'GET',
+        url: '/workspace/download',
+        data: {},
+        success: function(data) {},
+        contentType: "application/json",
+        dataType: 'json'
+      });
+    }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
       return (app.state.firebase.user) ? false : true;
@@ -723,6 +735,13 @@ var blissUi = (function() {
           workspace + '/'
 
         window.open(url)
+      }
+    };
+    app.methods["319"] = {};
+    app.methods["319"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        e.preventDefault();
+        app.js.download();
       }
     };
     app.methods["250"] = {};
@@ -2370,6 +2389,23 @@ var blissUi = (function() {
                             "id": "span_277",
                             "key": app.getKey('id', '277')
                           }), 'Launch')),
+                        React.createElement('a', app.mergeAttributes('319', scope, {
+                            "onClick": "handleClick"
+                          }, {
+                            "href": "#",
+                            "className": "dropdown-item",
+                            "id": "downloadWebsite_319",
+                            "key": app.getKey('id', '319')
+                          }),
+                          React.createElement('i', app.mergeAttributes('320', scope, {}, {
+                            "className": "fa fa-cloud-download",
+                            "id": "icon_320",
+                            "key": app.getKey('id', '320')
+                          })),
+                          React.createElement('span', app.mergeAttributes('321', scope, {}, {
+                            "id": "label_321",
+                            "key": app.getKey('id', '321')
+                          }), 'Download')),
                         React.createElement('div', app.mergeAttributes('246', scope, {}, {
                           "className": "dropdown-divider",
                           "id": "divider_246",

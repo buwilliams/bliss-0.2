@@ -3,7 +3,7 @@ var blissProject = {
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 319,
+  "nextId": 322,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -54,7 +54,7 @@ var blissProject = {
     },
     {
       "name": "popper.js",
-      "version": "1.12.5"
+      "version": "^1.12.5"
     },
     {
       "name": "bootstrap",
@@ -181,6 +181,10 @@ var blissProject = {
     {
       "name": "serverImportHtml",
       "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+    },
+    {
+      "name": "download",
+      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/workspace/download',\n    data: {},\n    success: function(data) {},\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [
@@ -4556,7 +4560,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "250",
-      "previous": "275",
+      "previous": "319",
       "child": null,
       "parent": "107"
     },
@@ -5530,7 +5534,7 @@ var blissProject = {
           "value": "handleClick"
         }
       ],
-      "next": "246",
+      "next": "319",
       "previous": "104",
       "child": "276",
       "parent": "107"
@@ -6833,6 +6837,118 @@ var blissProject = {
       "child": null,
       "parent": "314",
       "textFn": ""
+    },
+    "319": {
+      "id": "319",
+      "name": "download website",
+      "element": "a",
+      "text": "",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "#"
+        },
+        {
+          "name": "className",
+          "value": "dropdown-item"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "cursor",
+              "value": "pointer"
+            },
+            {
+              "name": "margin-right",
+              "value": "5px"
+            },
+            {
+              "name": "font-size",
+              "value": "10pt"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "handleClick",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    e.preventDefault();\n    app.js.download();\n  }\n};"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "onClick",
+          "value": "handleClick"
+        }
+      ],
+      "next": "246",
+      "previous": "275",
+      "child": "320",
+      "parent": "107"
+    },
+    "320": {
+      "id": "320",
+      "name": "icon",
+      "element": "i",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "fa fa-cloud-download"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "321",
+      "previous": null,
+      "child": null,
+      "parent": "319"
+    },
+    "321": {
+      "id": "321",
+      "name": "label",
+      "element": "span",
+      "text": "Download",
+      "textFn": "",
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "margin-left",
+              "value": "10px"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "319"
     }
   },
   "schemas": [

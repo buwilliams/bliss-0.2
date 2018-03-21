@@ -10,3 +10,4 @@ src/workspaces/**/yarn.lock
 src/workspaces/**/package.json
 src/workspaces/_deployed
 /blissui-firebase.json
+*.zip

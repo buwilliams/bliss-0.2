@@ -29,7 +29,17 @@ module.exports = function(user, workspace) {
 
   pub.listWorkspaces = function() {
     try {
-      return fs(username).readdirSync(user.fullpath)
+      var workspaces = fs(username).readdirSync(user.fullpath);
+
+      // filter out zip files
+      workspaces = workspaces.reduce(function(accumulator, currentWs) {
+        if(currentWs.indexOf('.zip') === -1) {
+          accumulator.push(currentWs);
+        }
+        return accumulator;
+      }, []);
+      
+      return workspaces;
     } catch(e) {
       return []
     }
