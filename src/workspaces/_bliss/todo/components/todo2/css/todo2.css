@@ -1,0 +1,67 @@
+body {
+  background-color: black;
+  font-size: 20px;
+  color: white;
+  background-image: url(https://www.hdwallpapers.in/download/colorful_flowers_dark_background-1920x1200.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#header_6 {
+  color: white;
+  margin: 50px 0 10px;
+}
+
+#todoInput_7 {
+  background-color: #d22f68;
+  border: none;
+  color: white;
+  outline: none;
+  display: block;
+  width: 100%;
+  font-size: 25pt;
+  padding: 5px 10px;
+  margin-top: 20px;
+  border-radius: 0;
+  text-align: center;
+}
+
+#button_8 {
+  padding: 10px;
+  border: none;
+  background-color: #870c1b;
+  color: white;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+#iconContainer_14 {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+#downIcon_15 {
+  color: white;
+}
+
+#listOfToDos_9 {
+  cursor: pointer;
+  background-color: #47217d;
+  padding: 10px;
+  color: white;
+}
+
+#deleteIcon_13 {
+  float: right;
+  margin-top: 4px;
+}
+
+#completedTodos_16 {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 0.8em;
+}
+

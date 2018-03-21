@@ -1,0 +1,58 @@
+body {
+  background-color: #3c3338;
+}
+
+#todoListContainer_7 {
+  margin: 50px auto 0 auto;
+  width: 75%;
+  position: relative;
+}
+
+#label_6 {
+  margin: 0 auto;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 0 0 10px 0;
+  display: inline-block;
+}
+
+#clearCompleted_9 {
+  color: #fff;
+  display: inline-block;
+  float: right;
+  margin-top: 15px;
+}
+
+#input_4 {
+  
+  display: block;
+  padding: 20px;
+  border: none;
+  color: #fff;
+  font-size: 2em;
+  outline: none;
+  background-color: #55a68b;
+  width: 100%;
+}
+
+#listContainer_8 {
+}
+
+#listItem_3 {
+  padding: 20px;
+  background-color: blue;
+  color: #fff;
+  font-size: 2em;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+}
+
+#deletebutton_10 {
+  float: right;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  margin-top: 15px;
+}
+

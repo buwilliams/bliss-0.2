@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('/node_modules/font-awesome/fonts/fontawesome-webfont.eot?v=4.7.0')
+    format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.draggable:active {
+    cursor: -webkit-grabbing;
+    cursor:    -moz-grabbing;
+    cursor:         grabbing;
+}
+
+.menu-container {
+  position: relative;
+  min-height: 1px;
+}
+
+.menu-options {
+  position: relative;
+  background: #fff;
+  padding: 10px;
+  border-left: solid 3px #ccc;
+}
+
+.focus .menu-options {
+  border-left: solid 3px rgb(15, 108, 251);
+}
+
+.node-tree {
+  position: absolute;
+  overflow: auto;
+  top: 38px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-left: solid 3px #ccc;
+}
+
+.focus .node-tree {
+  border-left: solid 3px rgb(15, 108, 251);
+}
+
+.menu-options a {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.menu {
+  font-size: 12px;
+  /*border-left: solid 3px #ccc;*/
+  outline:none;
+}
+
+.menu > a, .menu > a:hover {
+  text-decoration: none;
+  display: inline-block;
+  padding: 3px 5px;
+  color: blue;
+}
+
+.tree {
+  position: relative;
+  display: block;
+  padding-left: 20px;
+}
+
+.node {
+  position: relative;
+  /* display: inline-block; */
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.node-child-container {
+  position: relative;
+  min-height: 1px;
+}
+
+.node-child {
+  position: absolute;
+  top: -7px;
+  left: -2000px;
+  right: -10px;
+  height: 8px;
+  padding: 0px;
+  z-index: 10;
+}
+
+.node-drag-over {
+  background-color: #b6d2e6;
+}
+
+.node .fa {
+  font-size: 8px;
+  margin-right: 5px;
+  width: 10px;
+}
+
+.selected {
+  position: absolute;
+  top: 0;
+  left: -2000px;
+  right: calc(100% * -1);
+  height: 100%;
+  background-color: #ccc;
+  z-index: 1;
+}
+
+.selected-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.node-drag-over .selected {
+  background-color: #b6d2e6;
+}
+
+.hide {
+  display: none;
+}
+
+.drag-over {
+  border: solid 1px #7878ff;
+  background-color: #dfdfff;
+}
+
+span.elementType {
+  text-transform: uppercase;
+  color: #666666;
+  margin-left: 0.5em;
+  font-size: 0.75em;
+}

@@ -54,7 +54,7 @@ var blissProject = {
     },
     {
       "name": "popper.js",
-      "version": "1.12.5"
+      "version": "^1.12.5"
     },
     {
       "name": "bootstrap",
@@ -224,7 +224,7 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "Bliss UI v3",
+      "name": "Bliss UI v3 (testing)",
       "element": "div",
       "text": null,
       "attributes": [],
