@@ -81,7 +81,11 @@ task('copy-libs', function() {
         out += `${line}\n`;
       }
     });
-    fs.writeFileSync('./build/' + lib.filename, out);
+    fs.writeFileSync(
+      path.join(config.bliss_component_path,
+                 'bliss-utils',
+                 'js',
+                 lib.filename), out);
   })
 });
 
