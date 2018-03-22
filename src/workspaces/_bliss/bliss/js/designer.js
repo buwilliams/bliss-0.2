@@ -512,7 +512,8 @@ var blissUiV = (function() {
 
       $.ajax({
         type: 'GET',
-        url: '/workspace/download',
+        url: '/workspace/download?workspace=' +
+          app.state.settings.workspace,
         data: {},
         success: function(data) {},
         contentType: "application/json",

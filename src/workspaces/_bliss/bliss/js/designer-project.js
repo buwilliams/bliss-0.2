@@ -184,7 +184,7 @@ var blissProject = {
     },
     {
       "name": "download",
-      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/workspace/download',\n    data: {},\n    success: function(data) {},\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/workspace/download?workspace=' +\n    \tapp.state.settings.workspace,\n    data: {},\n    success: function(data) {},\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
     }
   ],
   "cssVars": [

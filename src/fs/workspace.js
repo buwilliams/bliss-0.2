@@ -38,7 +38,7 @@ module.exports = function(user, workspace) {
         }
         return accumulator;
       }, []);
-      
+
       return workspaces;
     } catch(e) {
       return []
@@ -162,9 +162,8 @@ module.exports = function(user, workspace) {
 
   pub.createZip = function() {
     var fromDir = this.fullpath;
-    var toFile = path.join(this.user.fullpath, 'workspace.zip');
-    compress.zip(fromDir, toFile);
-    return toFile;
+    var toFile = path.join(this.user.fullpath, 'website.zip');
+    return compress.zip(fromDir, toFile); // returns promise
   };
 
   pub.fullpath = dir

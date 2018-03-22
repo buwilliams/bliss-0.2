@@ -34,6 +34,12 @@ module.exports = function(options) {
 
     if(matches) {
       var user_token = req.get('X-User-Token');
+
+      if(!user_token) {
+        // fall back on query params
+        user_token = req.query.xUserToken;
+      }
+
       if(!user_token) {
         console.log('[secured]', 'No token supplied in request');
         res.status(401).send('No token supplied in request');

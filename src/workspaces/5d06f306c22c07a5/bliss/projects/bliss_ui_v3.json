@@ -184,7 +184,7 @@
     },
     {
       "name": "download",
-      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/workspace/download?workspace=' +\n    \tapp.state.settings.workspace,\n    data: {},\n    success: function(data) {},\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  var url = '/workspace/download?';\n  url += 'xUserToken=' + encodeURIComponent(app.state.firebase.user_token);\n  url += '&workspace=' + app.state.settings.workspace;\n  \n  window.open(url, '_blank');\n}"
     }
   ],
   "cssVars": [

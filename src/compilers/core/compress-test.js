@@ -8,19 +8,20 @@ const compress = require('./compress.js');
 
 describe('compress', function() {
   describe('zip', function() {
-    it('should zip directory and create zip file', function() {
+    it('should zip directory and create zip file', async () => {
       var u = user(env, session).createUser();
       var ws = u.workspace(env.bliss_test_user_ws).createWorkspace();
       var proj = ws.project().saveProject();
 
-      var toFile = path.join(u.fullpath, 'workspace.zip');
-      compress.zip(ws.fullpath, toFile);
+      var toFile = path.join(u.fullpath, 'website.zip');
+      await compress.zip(ws.fullpath, toFile);
 
       expect(fs.existsSync(toFile)).to.equal(true);
 
-      const stats = fs.statSync(toFile);
-      const fileSizeInBytes = stats.size
-      console.log('file size', fileSizeInBytes);
+      var stats = fs.statSync(toFile);
+      var fileSizeInBytes = stats.size
+
+      expect(fileSizeInBytes).to.be.above(0);
     });
   });
 })

@@ -24,17 +24,19 @@ router.get('/list', function(req, res) {
   res.send({ "workspaces": workspaces })
 });
 
-router.get('/download', function(req, res) {
+router.get('/download', function(req, res, next) {
   if (!req.query.workspace) {
     res.status(400).send('workspace param required');
     return;
   }
 
-  var zipFile = user(env, req.session)
+  user(env, req.session)
     .workspace(req.query.workspace)
-    .createZip();
-
-  res.download(zipFile);
+    .createZip()
+    .then((zipFile) => {
+      res.download(zipFile);
+    })
+    .catch(next);
 });
 
 router.post('/', function(req, res) {

@@ -510,15 +510,11 @@ var blissUiV = (function() {
     app.js['download'] = function() {
       app.js.log('app.js.download() invoked.');
 
-      $.ajax({
-        type: 'GET',
-        url: '/workspace/download?workspace=' +
-          app.state.settings.workspace,
-        data: {},
-        success: function(data) {},
-        contentType: "application/json",
-        dataType: 'json'
-      });
+      var url = '/workspace/download?';
+      url += 'xUserToken=' + encodeURIComponent(app.state.firebase.user_token);
+      url += '&workspace=' + app.state.settings.workspace;
+
+      window.open(url, '_blank');
     }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
