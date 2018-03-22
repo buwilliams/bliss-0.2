@@ -123,14 +123,14 @@ task('build', function(){
     }
   }
 
+  t = jake.Task['copy-libs'];
+  t.invoke();
+
   console.log('>> copying workspaces');
   fse.copySync(config.bliss_workspace, config.bliss_workspace_build);
   fse.copySync(config.bliss_workspace_test, config.bliss_workspace_test_build);
 
   t = jake.Task['build-all-components'];
-  t.invoke();
-
-  t = jake.Task['copy-libs'];
   t.invoke();
 
   t = jake.Task['build-bliss'];

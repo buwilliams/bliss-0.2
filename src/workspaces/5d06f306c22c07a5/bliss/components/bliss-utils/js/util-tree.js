@@ -1,4 +1,4 @@
-var BlissTree = {
+var UtilTree = {
   hasChild: function(component) {
     return _.isNil(component.child) ? false : true;
   },
