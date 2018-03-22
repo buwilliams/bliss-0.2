@@ -4,12 +4,12 @@ const proj = require('./project.js')
 const compress = require('../compilers/core/compress.js');
 
 module.exports = function(user, workspace) {
-  var pub = {}
-  var username = user.name
-  var dir
+  var pub = {};
+  var username = user.name;
+  var dir;
 
   if(typeof(workspace) === 'string') {
-    dir = path.join(user.fullpath, workspace)
+    dir = path.join(user.fullpath, workspace);
   }
 
   pub.createWorkspace = function() {
@@ -162,7 +162,7 @@ module.exports = function(user, workspace) {
 
   pub.createZip = function() {
     var fromDir = this.fullpath;
-    var toFile = path.join(this.user.fullpath, 'website.zip');
+    var toFile = path.join(this.user.fullpath, this.name, this.name + '.zip');
     return compress.zip(fromDir, toFile); // returns promise
   };
 

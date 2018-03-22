@@ -1,8 +1,11 @@
 const fs = require('fs');
+const path = require('path');
 const archiver = require('archiver');
 
 module.exports = {
   zip: function(fromDir, toFile) {
+    var ignoreFilesOrDirs = ['node_modules'];
+
     var promise = new Promise(function(resolve, reject) {
       // create a file to stream archive data to.
       var output = fs.createWriteStream(toFile);
@@ -29,26 +32,52 @@ module.exports = {
       // good practice to catch warnings (ie stat failures and other non-blocking errors)
       archive.on('warning', function(err) {
         if (err.code === 'ENOENT') {
-          reject('ENOENT encountered');
+          console.log('[WARN] ENOENT', err);
         } else {
-          reject(err);
+          console.log('[WARN]', err);
         }
       });
 
       // good practice to catch this error explicitly
       archive.on('error', function(err) {
+        console.log('[ERROR]', err);
         reject(err);
       });
 
-      // pipe archive data to the file
-      archive.pipe(output);
+      try {
+        // pipe archive data to the file
+        archive.pipe(output);
 
-      // append files from a sub-directory and naming it `new-subdir` within the archive
-      archive.directory(fromDir);
+        // list all directories
+        var dirs = fs.readdirSync(fromDir);
 
-      // finalize the archive (ie we are done appending files but streams have to finish yet)
-      // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
-      archive.finalize();
+        var filtered = dirs.reduce((accum, value) => {
+          var ignore = ignoreFilesOrDirs.reduce((accum, ignore) => {
+            if(accum) return accum;
+            if(value.indexOf(ignore) !== -1) return true;
+            return false;
+          }, false);
+
+          if(!ignore) accum.push(value);
+          return accum;
+        }, []);
+
+        filtered.forEach((name) => {
+          var fullPath = path.join(fromDir, name);
+          if(fs.lstatSync(fullPath).isDirectory()) {
+            archive.directory(fullPath, name);
+          } else {
+            archive.file(fullPath, { name: name });
+          }
+        });
+
+        // finalize the archive (ie we are done appending files but streams have to finish yet)
+        // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
+        archive.finalize();
+      } catch(err) {
+        console.log('[ERROR]', err);
+        reject(err);
+      }
     });
     return promise;
   }
