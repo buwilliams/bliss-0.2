@@ -62,8 +62,8 @@ task('copy-libs', function() {
   var libs = [
     {
       src: './src/compilers/core/tree.js',
-      name: 'BlissTree',
-      filename: 'bliss-tree.js',
+      name: 'UtilTree',
+      filename: 'util-tree.js',
     }
   ];
 
