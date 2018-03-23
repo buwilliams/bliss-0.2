@@ -229,7 +229,7 @@ var UtilTree = {
   },
 
   moveComponent: function(proj, fromId, toId, shouldBeChild) {
-    var hasChild = this.hasChild(proj, fromId, toId);
+    var hasChild = this.hasChildDescendant(proj, fromId, toId);
     if(fromId === toId || hasChild) return proj;
 
     this.removeFromTree(proj, fromId);
