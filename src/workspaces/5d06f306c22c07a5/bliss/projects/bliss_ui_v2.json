@@ -454,19 +454,19 @@
         },
         {
           "name": "setOnCreateProp",
-          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(\n      app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = UtilTree.createComponent(\n      app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnCloneProp",
-          "body": "function(scope, props) {\n  return function(cloneId) {\n    var proj = BlissTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(cloneId) {\n    var proj = UtilTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnDeleteProp",
-          "body": "function(scope, props) {\n  return function(id) {\n    var proj = BlissTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(id) {\n    var proj = UtilTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnMoveProp",
-          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(\n      app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() {\n      app.buildProject = proj;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = UtilTree.moveComponent(\n      app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() {\n      app.buildProject = proj;\n    });\n  }\n}"
         },
         {
           "name": "setThis",

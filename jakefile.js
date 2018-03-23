@@ -55,6 +55,40 @@ task('build-all-components', function() {
   });
 });
 
+desc('Copy bliss backend libs for frontend use');
+task('copy-libs', function() {
+  console.log('>> copy-libs');
+
+  var libs = [
+    {
+      src: './src/compilers/core/tree.js',
+      name: 'UtilTree',
+      filename: 'util-tree.js',
+    }
+  ];
+
+  libs.forEach((lib) => {
+    console.log(`>> - ${lib.name}`);
+    var content = fs.readFileSync(lib.src, "utf8");
+    var lines = content.split(`\n`);
+    var start = false;
+    var out = "";
+    lines.forEach((line) => {
+      if(line.indexOf('module.exports') !== -1) {
+        start = true;
+        out += `var ${lib.name} = {\n`;
+      } else if (start) {
+        out += `${line}\n`;
+      }
+    });
+    fs.writeFileSync(
+      path.join(config.bliss_component_path,
+                 'bliss-utils',
+                 'js',
+                 lib.filename), out);
+  })
+});
+
 desc('Build bliss json');
 task('build-bliss', function() {
   console.log('>> build-bliss');
@@ -88,6 +122,9 @@ task('build', function(){
       fse.removeSync(config.build_bliss);
     }
   }
+
+  t = jake.Task['copy-libs'];
+  t.invoke();
 
   console.log('>> copying workspaces');
   fse.copySync(config.bliss_workspace, config.bliss_workspace_build);
