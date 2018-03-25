@@ -29,13 +29,14 @@ var blissProject = {
     "node_modules/react-dom/dist/react-dom.js",
     "node_modules/react-code-mirror/standalone.js",
     "node_modules/lodash/lodash.min.js",
+    "components/bliss-utils/js/util-state.js",
+    "components/bliss-utils/js/util-tree.js",
     "components/bliss-tree/js/bliss-tree.js",
     "components/bliss-properties/js/bliss-property.js",
     "components/bliss-properties/js/bliss-properties.js",
     "components/bliss-properties/js/bliss-properties-generic.js",
     "components/bliss-properties/js/bliss-properties-css.js",
     "components/bliss-javascript/js/bliss-javascript.js",
-    "components/bliss-utils/js/state.js",
     "components/bliss-data/js/bliss-actions.js",
     "components/bliss-data/js/bliss-paths.js",
     "components/bliss-data/js/bliss-data.js",
@@ -180,11 +181,11 @@ var blissProject = {
     },
     {
       "name": "serverImportHtml",
-      "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  app.js.setStatus('Importing HTML...');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  var active = app.state.settings.activeComponent;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n      \n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'activeComponent',\n        value: active\n      });\n      \n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'importHtml',\n        value: ''\n      });\n      \n      app.dispatch({\n        path: '/views',\n        action: 'setView',\n        name: 'designer'\n      });\n      \n      app.js.setStatus('Imported HTML.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}\n\n\n\n\n"
     },
     {
       "name": "download",
-      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/workspace/download?workspace=' +\n    \tapp.state.settings.workspace,\n    data: {},\n    success: function(data) {},\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.js.log('app.js.download() invoked.');\n  \n  var url = '/workspace/download?';\n  url += 'xUserToken=' + encodeURIComponent(app.state.firebase.user_token);\n  url += '&workspace=' + app.state.settings.workspace;\n  \n  window.open(url, '_blank');\n}"
     }
   ],
   "cssVars": [
@@ -464,19 +465,19 @@ var blissProject = {
         },
         {
           "name": "setOnCreateProp",
-          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = BlissTree.createComponent(\n      app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(toId) {\n    var proj = UtilTree.createComponent(\n      app.buildProject, toId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnCloneProp",
-          "body": "function(scope, props) {\n  return function(cloneId) {\n    var proj = BlissTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(cloneId) {\n    var proj = UtilTree.cloneComponent(app.buildProject, cloneId);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnDeleteProp",
-          "body": "function(scope, props) {\n  return function(id) {\n    var proj = BlissTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
+          "body": "function(scope, props) {\n  return function(id) {\n    var proj = UtilTree.deleteComponent(app.buildProject, id);\n    app.js.update(function() { app.buildProject = proj; });\n  };\n}"
         },
         {
           "name": "setOnMoveProp",
-          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = BlissTree.moveComponent(\n      app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() {\n      app.buildProject = proj;\n    });\n  }\n}"
+          "body": "function(scope, props) {\n  return function(fromId, toId, shouldBeChild) {\n    var proj = UtilTree.moveComponent(\n      app.buildProject, fromId, toId, shouldBeChild);\n    app.js.update(function() {\n      app.buildProject = proj;\n    });\n  }\n}"
         },
         {
           "name": "setThis",
@@ -694,11 +695,20 @@ var blissProject = {
             },
             {
               "name": "overflow",
-              "value": "auto"
+              "value": "scroll"
             },
             {
               "name": "height",
-              "value": "auto"
+              "value": "calc(100vh - 150px)"
+            }
+          ]
+        },
+        {
+          "selector": "$id .CodeMirror",
+          "properties": [
+            {
+              "name": "height",
+              "value": "100%"
             }
           ]
         }
@@ -1711,7 +1721,25 @@ var blissProject = {
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "height",
+              "value": "calc(100vh - 150px)"
+            },
+            {
+              "name": "overflow",
+              "value": "scroll"
+            }
+          ]
+        },
+        {
+          "selector": "$id .CodeMirror",
+          "properties": [
+            {
+              "name": "height",
+              "value": "100%"
+            }
+          ]
         }
       ],
       "js": [],
