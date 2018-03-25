@@ -1,22 +1,20 @@
-# To-do
+# Todo
 
-```javascript
-// if fresh state, then skip all below
-// invalidate state if data manager made a change
-// determine how to get app name
-var appName = 'app_name'
-var prevApp = document.getElementById('preview').contentWindow[appName]
-var prevState = {}
-try { prevState = JSON.parse(JSON.stringify(prevApp.state)) } catch(e){}
-// change the iframe src
-// sometime after iframe loads
-// get new reference to app
-var prevApp = document.getElementById('preview').contentWindow[appName]
-prevApp.setState(function() {
-  Object.keys(prevState).forEach(function(key) {
-    prevApp.state[key] = state[key]
-  })
-})
-prevApp = null
-prevState = null
-```
+## In-progress
+
+- create a layout and ignore layout flag
+- add check for layout in compiler
+
+## Done
+
+- specials html types: layout
+
+## Backlog
+
+- add layout key to projectJson
+- add settings select box for layout w/ empty option
+- merge projectJson: create new projectJson
+- merge projectJson: rootId, nextId
+- merge projectJson: load, packages, externalCss, externalJs, JS, CSS
+- merge projectJson: components
+- build all projects

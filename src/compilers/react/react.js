@@ -53,9 +53,6 @@ module.exports = {
     mkdirp.sync(path.join(sourcePath, 'js'));
     mkdirp.sync(path.join(sourcePath, 'css'));
 
-    // TODO: loop CSS
-    // TODO: loop JS
-
     var startId = this.getComponentId(projectJson, componentId);
 
     html.write(sourcePath, projectJson, startId);
@@ -69,6 +66,8 @@ module.exports = {
     });
 
     // include a web server
-    fsutils.copyFileSync(path.join(__dirname, 'express-mini-server.js'), path.join(outputPath, 'index.js'));
+    fsutils.copyFileSync(
+      path.join(__dirname, 'express-mini-server.js'),
+      path.join(outputPath, 'index.js'));
   }
 };
