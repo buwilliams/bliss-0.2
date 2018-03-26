@@ -244,5 +244,16 @@ module.exports = {
     }
 
     return proj;
+  },
+
+  merge: function(source, dest) {
+    // Add components
+    Object.keys(source.components).forEach((key) => {
+      var newKey = dest.nextId++;
+      dest.components[newKey] = source.components[key];
+      dest.components[newKey].id = String(newKey);
+    });
+
+    return dest;
   }
 };

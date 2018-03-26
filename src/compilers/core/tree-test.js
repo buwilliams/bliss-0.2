@@ -53,4 +53,22 @@ describe('tree', function() {
       expect(inputFn()).to.equal(expected);
     });
   });
+
+  describe('merge', function() {
+    it('should sum nextIds together', function() {
+      var source = projectJson();
+      var dest = projectJson();
+      var expected = dest.nextId + Object.keys(source.components).length
+      var actual = tree.merge(source, dest);
+      expect(actual.nextId).to.equal(expected);
+    });
+
+    it('should have the correct number of components', function() {
+      var source = projectJson();
+      var dest = projectJson();
+      var expected = Object.keys(source.components).length + Object.keys(dest.components).length;
+      var actual = Object.keys(tree.merge(source, dest).components).length;
+      expect(actual).to.equal(expected);
+    });
+  });
 });
