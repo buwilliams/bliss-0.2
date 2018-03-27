@@ -292,6 +292,10 @@ module.exports = {
     var union = _.union(dest.js, source.js);
     dest.js = _.uniqBy(union, 'name');
 
+    // Schemas
+    var union = _.union(dest.schemas || [], source.schemas || []);
+    dest.schemas = _.uniqBy(union, 'path');
+
     // Load
     dest.load = _.union(dest.load, source.load);
 

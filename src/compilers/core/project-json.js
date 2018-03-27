@@ -11,6 +11,7 @@ module.exports = function() {
     "externalCss": [],
     "externalJs": [],
     "state": {},
+    "schemas": [],
     "js": [
       {
         "name": "someFn",
