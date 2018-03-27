@@ -2,10 +2,10 @@
 
 ## In-progress
 
-- correct merge ids
 
 ## Done
 
+- correct merge ids
 - merge projectJson: components
 - merge projectJson: load, packages, externalCss, externalJs, JS, CSS
 - merge projectJson: create new projectJson
@@ -14,8 +14,8 @@
 
 ## Backlog
 
-- build all projects
 - create a layout and ignore layout flag
 - add check for layout in compiler
 - add layout key to projectJson
 - add settings select box for layout w/ empty option
+- build all projects
