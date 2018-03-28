@@ -9,8 +9,8 @@ const tree = require('../../core/tree.js');
 module.exports = {
   write: function(outputPath, projectJson, startId, writeAsComponent) {
     if(typeof writeAsComponent === 'undefined') writeAsComponent = false;
-    // write bliss javascript
     var filename = (projectJson.filename || 'designer') + '.js';
+    projectJson = this.buildLayoutJson(projectJson);
     var builtStr = this.buildAppJs(projectJson, startId);
     builtStr += this.buildSchemas(projectJson);
     builtStr += this.buildReact(projectJson, startId);
@@ -32,6 +32,33 @@ module.exports = {
     filename = (projectJson.filename || 'designer') + '-project.js';
     fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, projectJsonStr);
+  },
+
+  buildLayoutJson: function(projectJson, outputPath) {
+    var layout = (projectJson.layout) ? projectJson : '';
+    if(layout === '') return projectJson;
+
+    // load layout file
+    var layoutPath = path.join(outputPath, '..', 'projects', `${layout}.json`);
+    if(!fs.existsSync(layoutPath)) return projectJson;
+    var layoutStr = fs.readFileSync(layoutPath, { encoding: 'utf8'});
+    var layoutJson = JSON.parse(layoutStr);
+
+    // find layout component's parent in layout file
+    var parentId = null;
+    layoutJson.components.forEach((comp) => {
+      if(comp.element === 'content') {
+        parentId = comp.element.parent;
+      }
+    });
+
+    // if not found return projectJson
+    if(parentId === null) return projectJson;
+
+    // otherwise invoke tree.merge();
+    var mergedProjectJson = tree.merge(layoutJson, projectJson, parentId);
+
+    return mergedProjectJson;
   },
 
   buildWrapper: function(projectJson, jsStr, reactStr, renderAsComponent) {
@@ -56,10 +83,6 @@ module.exports = {
   buildHelpers: function(projectJson) {
     var out = "";
 
-    // app.state
-    //out += `app.state = ` + JSON.stringify(projectJson.state, null, 2) + ';';
-
-    // app.render
     out += `app.render = function() {\n`;
     out += `var isComponent = (typeof component === 'undefined') ? false : true;\n`;
     out += `if(isComponent) {\n`;
@@ -70,13 +93,9 @@ module.exports = {
     out += `}\n`;
     out += `}\n`;
 
-    // app.setState(fn, callback)
     out += `app.stateQueue = [];\n`;
     out += `app.stateProcessing = false;\n`;
     out += `app.setState = function(fn, callback) {\n`;
-    //out += `if(typeof app.js.log !== 'undefined') {\n`;
-    //out += `console.log('new setState() invoked.', app);\n`;
-    //out += `}\n`;
     out += `app.stateQueue.push({ fn: fn, callback: callback });\n`;
     out += `var _process = function() {\n`;
     out += `app.stateProcessing = true;\n`;
@@ -90,14 +109,6 @@ module.exports = {
     out += `};\n`;
     out += `if(!app.stateProcessing) _process();\n`;
     out += `};\n`;
-
-    /*
-    out += `app.setState = function(fn) {\n`;
-    out += `  console.log('setState() invoked.');\n`;
-    out += `  fn();\n`;
-    out += `  app.render();\n`;
-    out += `}\n`;
-    */
 
     // app.load
     out += `app.load = function() {\n`;
@@ -154,6 +165,7 @@ module.exports = {
       "version": "v0.2",
       "type": "app",
       "build": "designer",
+      "layout": '',
       "nextId": 2,
       "rootId": "1",
       "externalCss": [],
@@ -161,6 +173,7 @@ module.exports = {
         "node_modules/react/dist/react.js",
         "node_modules/react-dom/dist/react-dom.js",
       ],
+      "schemas": [],
       "state": {},
       "packages": [
         {
@@ -259,6 +272,6 @@ module.exports = {
       out += `}\n`;
     })
 
-    return out
+    return out;
   }
 }

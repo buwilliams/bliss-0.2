@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 322,
+  "nextId": 327,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -101,7 +101,7 @@
     },
     {
       "name": "update",
-      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  // execute the update state function\n  // this function should call dispatch internally\n  try {\n    fn()\n  } catch(e) {\n    console.error('app.js.update', e)\n    return\n  }\n  \n  // reset timer so that it doesn't build too often\n  app.dispatch({\n    path: '/settings',\n    action: 'setTimer',\n    fn: function() {\n    \tif(app.state.settings.shouldReloadProject === true)\n        app.js.saveAndReloadProject()\n      else\n        app.js.build()\n  \t}\n  })\n  \n  // set shouldSave so that the icon lights up\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: true\n  })\n}"
+      "body": "function(fn) {\n  app.js.log('app.js.update() invoked.');\n  \n  // execute the update state function\n  // this function should call dispatch internally\n  try {\n    fn();\n  } catch(e) {\n    console.error('app.js.update', e);\n    return;\n  }\n  \n  // reset timer so that it doesn't build too often\n  app.dispatch({\n    path: '/settings',\n    action: 'setTimer',\n    fn: function() {\n    \tif(app.state.settings.shouldReloadProject === true)\n        app.js.saveAndReloadProject();\n      else\n        app.js.build();\n  \t}\n  });\n  \n  // set shouldSave so that the icon lights up\n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'shouldSave',\n    value: true\n  });\n}"
     },
     {
       "name": "server",
@@ -181,7 +181,7 @@
     },
     {
       "name": "serverImportHtml",
-      "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function(htmlString) {\n  app.js.log('app.js.serverImportHtml() invoked.');\n  \n  app.js.setStatus('Importing HTML...');\n  \n  var data = JSON.stringify({\n    \"html\": htmlString,\n    \"project\": app.buildProject\n  });\n  \n  var active = app.state.settings.activeComponent;\n  \n  $.ajax({\n    type: 'POST',\n    url: '/project/html' +\n    \t'?workspace=' + app.state.settings.workspace +\n    \t'&parentId=' + app.state.settings.activeComponent,\n    data: data,\n    success: function(data) {\n      app.setState(function() {\n        app.buildProject = data.project\n      });\n      \n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'activeComponent',\n        value: active\n      });\n      \n      app.dispatch({\n        path: '/settings',\n        action: 'set',\n        key: 'importHtml',\n        value: ''\n      });\n      \n      app.dispatch({\n        path: '/views',\n        action: 'setView',\n        name: 'designer'\n      });\n      \n      app.js.refreshIframe();\n      \n      app.js.setStatus('Imported HTML.');\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}\n\n\n\n\n"
     },
     {
       "name": "download",
@@ -695,11 +695,20 @@
             },
             {
               "name": "overflow",
-              "value": "auto"
+              "value": "scroll"
             },
             {
               "name": "height",
-              "value": "auto"
+              "value": "calc(100vh - 150px)"
+            }
+          ]
+        },
+        {
+          "selector": "$id .CodeMirror",
+          "properties": [
+            {
+              "name": "height",
+              "value": "100%"
             }
           ]
         }
@@ -1712,7 +1721,25 @@
       "css": [
         {
           "selector": "$id",
-          "properties": []
+          "properties": [
+            {
+              "name": "height",
+              "value": "calc(100vh - 150px)"
+            },
+            {
+              "name": "overflow",
+              "value": "scroll"
+            }
+          ]
+        },
+        {
+          "selector": "$id .CodeMirror",
+          "properties": [
+            {
+              "name": "height",
+              "value": "100%"
+            }
+          ]
         }
       ],
       "js": [],
@@ -2697,7 +2724,7 @@
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  return app.state.projects.list\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.projects.list;\n};\n"
         },
         {
           "name": "getText",
@@ -5923,7 +5950,7 @@
       "js": [],
       "dynamicAttributes": [],
       "next": "196",
-      "previous": "300",
+      "previous": "322",
       "child": null,
       "parent": "97"
     },
@@ -6225,7 +6252,7 @@
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "291",
+      "next": "322",
       "previous": "288",
       "child": "301",
       "parent": "97"
@@ -6950,6 +6977,157 @@
       "previous": null,
       "child": null,
       "parent": "319"
+    },
+    "322": {
+      "id": "322",
+      "name": "Layout editor",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "291",
+      "previous": "300",
+      "child": "323",
+      "parent": "97"
+    },
+    "323": {
+      "id": "323",
+      "name": "layout label",
+      "element": "label",
+      "text": "Page Layout",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "324",
+      "previous": null,
+      "child": null,
+      "parent": "322"
+    },
+    "324": {
+      "id": "324",
+      "name": "layout select",
+      "element": "select",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "form-control"
+        },
+        {
+          "name": "placeholder",
+          "value": "Project name"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "outline",
+              "value": "none"
+            }
+          ]
+        }
+      ],
+      "js": [
+        {
+          "name": "getValue",
+          "body": "function(scope, attributes) {\n  return app.buildProject.layout || '';\n};\n"
+        },
+        {
+          "name": "handleChange",
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var value = e.target.value;\n    \n    app.js.update(function() {\n      app.setState(function() {\n        app.buildProject.layout = value;\n      });\n    });\n  }\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getValue"
+        },
+        {
+          "name": "onChange",
+          "value": "handleChange"
+        }
+      ],
+      "next": null,
+      "previous": null,
+      "child": "326",
+      "parent": "322"
+    },
+    "325": {
+      "id": "325",
+      "name": "layout options",
+      "element": "option",
+      "text": "",
+      "textFn": "getText",
+      "ifFn": null,
+      "repeatFn": "loop",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "loop",
+          "body": "function(scope, attributes) {\n  return app.state.projects.list;\n};\n"
+        },
+        {
+          "name": "getText",
+          "body": "function(scope, attributes) {\n  return scope.loop[scope.loop_index].name;\n};\n"
+        }
+      ],
+      "dynamicAttributes": [
+        {
+          "name": "value",
+          "value": "getText"
+        }
+      ],
+      "next": null,
+      "previous": "326",
+      "child": null,
+      "parent": "324"
+    },
+    "326": {
+      "id": "326",
+      "name": "default option",
+      "element": "option",
+      "text": "(none)",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "value",
+          "value": ""
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "325",
+      "previous": null,
+      "child": null,
+      "parent": "324"
     }
   },
   "schemas": [

@@ -487,10 +487,14 @@ var blissUi = (function() {
     app.js['serverImportHtml'] = function(htmlString) {
       app.js.log('app.js.serverImportHtml() invoked.');
 
+      app.js.setStatus('Importing HTML...');
+
       var data = JSON.stringify({
         "html": htmlString,
         "project": app.buildProject
       });
+
+      var active = app.state.settings.activeComponent;
 
       $.ajax({
         type: 'POST',
@@ -502,23 +506,48 @@ var blissUi = (function() {
           app.setState(function() {
             app.buildProject = data.project
           });
+
+          app.dispatch({
+            path: '/settings',
+            action: 'set',
+            key: 'activeComponent',
+            value: active
+          });
+
+          app.dispatch({
+            path: '/settings',
+            action: 'set',
+            key: 'importHtml',
+            value: ''
+          });
+
+          app.dispatch({
+            path: '/views',
+            action: 'setView',
+            name: 'designer'
+          });
+
+          app.js.refreshIframe();
+
+          app.js.setStatus('Imported HTML.');
         },
         contentType: "application/json",
         dataType: 'json'
       });
     }
+
+
+
+
+
     app.js['download'] = function() {
       app.js.log('app.js.download() invoked.');
 
-      $.ajax({
-        type: 'GET',
-        url: '/workspace/download?workspace=' +
-          app.state.settings.workspace,
-        data: {},
-        success: function(data) {},
-        contentType: "application/json",
-        dataType: 'json'
-      });
+      var url = '/workspace/download?';
+      url += 'xUserToken=' + encodeURIComponent(app.state.firebase.user_token);
+      url += '&workspace=' + app.state.settings.workspace;
+
+      window.open(url, '_blank');
     }
     app.methods["242"] = {};
     app.methods["242"]['shouldShow'] = function() {
@@ -1001,7 +1030,7 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnCreateProp'] = function(scope, props) {
       return function(toId) {
-        var proj = BlissTree.createComponent(
+        var proj = UtilTree.createComponent(
           app.buildProject, toId);
         app.js.update(function() {
           app.buildProject = proj;
@@ -1010,7 +1039,7 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnCloneProp'] = function(scope, props) {
       return function(cloneId) {
-        var proj = BlissTree.cloneComponent(app.buildProject, cloneId);
+        var proj = UtilTree.cloneComponent(app.buildProject, cloneId);
         app.js.update(function() {
           app.buildProject = proj;
         });
@@ -1018,7 +1047,7 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnDeleteProp'] = function(scope, props) {
       return function(id) {
-        var proj = BlissTree.deleteComponent(app.buildProject, id);
+        var proj = UtilTree.deleteComponent(app.buildProject, id);
         app.js.update(function() {
           app.buildProject = proj;
         });
@@ -1026,7 +1055,7 @@ var blissUi = (function() {
     }
     app.methods["18"]['setOnMoveProp'] = function(scope, props) {
       return function(fromId, toId, shouldBeChild) {
-        var proj = BlissTree.moveComponent(
+        var proj = UtilTree.moveComponent(
           app.buildProject, fromId, toId, shouldBeChild);
         app.js.update(function() {
           app.buildProject = proj;

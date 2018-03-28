@@ -540,8 +540,12 @@
 
 #code {
   background: #fff;
-  overflow: auto;
-  height: auto;
+  overflow: scroll;
+  height: calc(100vh - 150px);
+}
+
+#code .CodeMirror {
+  height: 100%;
 }
 
 #blissJavascript_79 {
@@ -607,6 +611,14 @@
   outline: none;
 }
 
+#layoutEditor_322 {
+  margin-top: 1em;
+}
+
+#layoutSelect_324 {
+  outline: none;
+}
+
 #deletePage_196 {
   color: #fff;
   cursor: pointer;
@@ -638,6 +650,12 @@
 }
 
 #generalJsEditorContainer_137 {
+  height: calc(100vh - 150px);
+  overflow: scroll;
+}
+
+#generalJsEditorContainer_137 .CodeMirror {
+  height: 100%;
 }
 
 #projJs_108 {
