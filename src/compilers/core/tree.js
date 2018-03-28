@@ -246,7 +246,7 @@ module.exports = {
     return proj;
   },
 
-  mergeComponents: function(source, dest, toParentId) {
+  mergeComponents: function(source, dest, replaceId) {
     var nextId = dest.nextId;
     var comps = _.cloneDeep(source.components);
     var idMap = {};
@@ -269,20 +269,33 @@ module.exports = {
     // updated dest nextId
     dest.nextId += _.keys(comps).length;
 
-    var fromId = idMap[source.rootId];
-    if(dest.components[toParentId].child !== null) {
-      var child = dest.components[dest.components[toParentId].child];
-      child.previous = fromId;
-      dest.components[fromId].next = child.id;
+    var injectRootComp = dest.components[idMap[source.rootId]];
+    var replaceComp = dest.components[replaceId];
+
+    // Connect source tree with dest tree
+    if(replaceComp.parent !== null) {
+      var parent = dest.components[replaceComp.parent];
+      if(parent.child === replaceComp.id) {
+        parent.child = injectRootComp.id;
+      }
     }
 
-    dest.components[toParentId].child = fromId;
-    dest.components[fromId].parent = toParentId;
+    if(replaceComp.previous !== null) {
+      var prev = dest.components[replaceComp.previous];
+      prev.next = injectRootComp.id;
+      injectRootComp.previous = prev.id;
+    }
+
+    if(replaceComp.next !== null) {
+      var next = dest.components[replaceComp.next];
+      next.previous = injectRootComp.id;
+      injectRootComp.next = next.id;
+    }
 
     return dest;
   },
 
-  merge: function(source, dest, insertParentId) {
+  merge: function(source, dest, replaceId) {
     // Packages, externalCss, externalJs
     dest.packages = _.union(dest.packages, source.packages);
     dest.externalCss = _.union(dest.externalCss, source.externalCss);
@@ -313,15 +326,7 @@ module.exports = {
     // TODO: merge properties on duplicates
 
     // Components
-    dest = this.mergeComponents(source, dest, insertParentId);
-
-    // Overwrite dest with source properties
-    dest.name = source.name;
-    dest.compiler = source.compiler;
-    dest.type = source.type;
-    dest.build = source.build;
-    dest.filename = source.filename || source.name;
-    dest.pageTitle = source.pageTitle || '';
+    dest = this.mergeComponents(source, dest, replaceId);
 
     return dest;
   }

@@ -16,8 +16,14 @@ module.exports = {
   },
 
   compile: function(outputPath, projectJson, componentId) {
-    projectJson = this.getLayoutJson(outputPath, projectJson);
+    projectJson = this.mergeLayoutJson(outputPath, projectJson);
+    projectJson = this.mergePageJson(outputPath, projectJson);
+
+    // Update dependencies
+    deps.update(outputPath, projectJson);
+
     var startId = this.getComponentId(projectJson, projectJson.rootId);
+
     html.write(outputPath, projectJson, startId);
     js.write(path.join(outputPath, 'js'), projectJson, startId);
     css.write(path.join(outputPath, 'css'), projectJson, startId);
@@ -74,22 +80,22 @@ module.exports = {
       path.join(outputPath, 'index.js'));
   },
 
-  getLayoutJson: function(outputPath, projectJson) {
+  mergeLayoutJson: function(outputPath, projectJson) {
     var layout = (projectJson.layout) ? projectJson.layout : '';
     if(layout === '') return projectJson;
 
     // load layout file
     var layoutPath = path.join(outputPath, 'projects', `${layout}.json`);
     if(!fs.existsSync(layoutPath)) return projectJson;
-    var layoutStr = fs.readFileSync(layoutPath, { encoding: 'utf8'});
+    var layoutStr = fs.readFileSync(layoutPath, {encoding: 'utf8'});
     var layoutJson = JSON.parse(layoutStr);
 
     // find layout component's parent in layout file
-    var parentId = null;
+    var replaceId = null;
     Object.keys(layoutJson.components).every((key) => {
       var comp = layoutJson.components[key];
       if(comp.element === 'content') {
-        parentId = comp.parent;
+        replaceId = comp.id;
         return false; // break out of loop early
       } else {
         return true;
@@ -97,13 +103,47 @@ module.exports = {
     });
 
     // if not found return projectJson
-    if(parentId === null) return projectJson;
+    if(replaceId === null) return projectJson;
 
     // otherwise invoke tree.merge();
-    var mergedProjectJson = tree.merge(projectJson, layoutJson, parentId);
+    var mergedProjectJson = tree.merge(projectJson, layoutJson, replaceId);
 
-    // Update dependencies
-    deps.update(outputPath, mergedProjectJson);
+    // Overwrite dest with source properties
+    mergedProjectJson.name = projectJson.name;
+    mergedProjectJson.compiler = projectJson.compiler;
+    mergedProjectJson.type = projectJson.type;
+    mergedProjectJson.build = projectJson.build;
+    mergedProjectJson.filename = projectJson.filename || projectJson.name;
+    mergedProjectJson.pageTitle = projectJson.pageTitle || '';
+
+    return mergedProjectJson;
+  },
+
+  mergePageJson: function(outputPath, projectJson) {
+    var mergedProjectJson = Object.assign({}, projectJson);
+
+    // loop through components
+    Object.keys(mergedProjectJson.components).forEach((id) => {
+      var comp = mergedProjectJson.components[id];
+      // if element type is component
+      if(comp.element.indexOf('page.') === -1) {
+        return;
+      }
+
+      var projectName = comp.element.split('.')[1];
+
+      // load file
+      var dir = path.join(outputPath, 'projects', `${projectName}.json`);
+
+      // if not found bail
+      if(!fs.existsSync(dir)) return;
+
+      var project = fs.readFileSync(dir, {encoding: 'utf8'});
+      var sourceJson = JSON.parse(project);
+
+      // if found then merge the mergedProjectJson
+      mergedProjectJson = tree.merge(sourceJson, mergedProjectJson, id);
+    });
 
     return mergedProjectJson;
   }

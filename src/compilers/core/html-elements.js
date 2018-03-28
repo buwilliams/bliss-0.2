@@ -4,7 +4,8 @@ module.exports = {
     if(isHtml) {
       return (this.htmlElements[element] === true);
     } else {
-      return (this.specialElements[element] === true);
+      var elementName = element.split('.')[0];
+      return (this.specialElements[elementName] === true);
     }
   },
   // special elements do not get rendered in HTML
@@ -12,7 +13,8 @@ module.exports = {
   // compiler to do something special, such as
   // handle layout
   specialElements: {
-    'content': true
+    'content': true,
+    'page': true
   },
   htmlElements: {
     'a': true,
