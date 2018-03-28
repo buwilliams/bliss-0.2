@@ -762,7 +762,8 @@ var blissUiV = (function() {
         var url = location.origin +
           '/hosted/' +
           username + '/' +
-          workspace + '/'
+          workspace + '/' +
+          app.buildProject.filename + '.html' || app.buildProject.name + '.html';
 
         window.open(url)
       }

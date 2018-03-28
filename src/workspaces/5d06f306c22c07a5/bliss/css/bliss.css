@@ -611,6 +611,14 @@
   outline: none;
 }
 
+#layoutEditor_322 {
+  margin-top: 1em;
+}
+
+#layoutSelect_324 {
+  outline: none;
+}
+
 #deletePage_196 {
   color: #fff;
   cursor: pointer;
