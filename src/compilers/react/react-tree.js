@@ -73,6 +73,16 @@ module.exports = {
 
     var out = "\n";
 
+    if(htmlElements.has(component.element, false)) {
+      // special case where we do not want to render this component
+      // it's ignored because it's used for other purposes
+      if(typeof component.next !== "undefined" && component.next !== null) {
+        return this.buildComponent(components, component.next, designMode);
+      } else {
+        return "";
+      }
+    }
+
     if(component.designMode === false && designMode === true) {
       out += "null";
       if(typeof component.next !== "undefined" && component.next !== null) {

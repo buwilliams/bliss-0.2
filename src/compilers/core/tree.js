@@ -315,6 +315,14 @@ module.exports = {
     // Components
     dest = this.mergeComponents(source, dest, insertParentId);
 
+    // Overwrite dest with source properties
+    dest.name = source.name;
+    dest.compiler = source.compiler;
+    dest.type = source.type;
+    dest.build = source.build;
+    dest.filename = source.filename || source.name;
+    dest.pageTitle = source.pageTitle || '';
+
     return dest;
   }
 };

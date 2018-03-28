@@ -1,6 +1,8 @@
 const path = require('path');
 const mkdirp = require('mkdirp');
 const fsutils = require('fs-utils');
+const fs = require('fs');
+const tree = require('../core/tree.js');
 const deps = require('../../fs/dependencies.js');
 const str = require('../core/str.js');
 const html = require('./exports/html.js');
@@ -14,7 +16,8 @@ module.exports = {
   },
 
   compile: function(outputPath, projectJson, componentId) {
-    var startId = this.getComponentId(projectJson, componentId);
+    projectJson = this.getLayoutJson(outputPath, projectJson);
+    var startId = this.getComponentId(projectJson, projectJson.rootId);
     html.write(outputPath, projectJson, startId);
     js.write(path.join(outputPath, 'js'), projectJson, startId);
     css.write(path.join(outputPath, 'css'), projectJson, startId);
@@ -69,5 +72,39 @@ module.exports = {
     fsutils.copyFileSync(
       path.join(__dirname, 'express-mini-server.js'),
       path.join(outputPath, 'index.js'));
+  },
+
+  getLayoutJson: function(outputPath, projectJson) {
+    var layout = (projectJson.layout) ? projectJson.layout : '';
+    if(layout === '') return projectJson;
+
+    // load layout file
+    var layoutPath = path.join(outputPath, 'projects', `${layout}.json`);
+    if(!fs.existsSync(layoutPath)) return projectJson;
+    var layoutStr = fs.readFileSync(layoutPath, { encoding: 'utf8'});
+    var layoutJson = JSON.parse(layoutStr);
+
+    // find layout component's parent in layout file
+    var parentId = null;
+    Object.keys(layoutJson.components).every((key) => {
+      var comp = layoutJson.components[key];
+      if(comp.element === 'content') {
+        parentId = comp.parent;
+        return false; // break out of loop early
+      } else {
+        return true;
+      }
+    });
+
+    // if not found return projectJson
+    if(parentId === null) return projectJson;
+
+    // otherwise invoke tree.merge();
+    var mergedProjectJson = tree.merge(projectJson, layoutJson, parentId);
+
+    // Update dependencies
+    deps.update(outputPath, mergedProjectJson);
+
+    return mergedProjectJson;
   }
 };

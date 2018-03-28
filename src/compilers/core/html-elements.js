@@ -1,7 +1,7 @@
 module.exports = {
-  has: function(element, type) {
-    if(typeof type === 'undefined') type = 'html';
-    if(type === 'html') {
+  has: function(element, isHtml) {
+    if(typeof isHtml === 'undefined') isHtml = true;
+    if(isHtml) {
       return (this.htmlElements[element] === true);
     } else {
       return (this.specialElements[element] === true);
@@ -12,7 +12,7 @@ module.exports = {
   // compiler to do something special, such as
   // handle layout
   specialElements: {
-    'layout': true
+    'content': true
   },
   htmlElements: {
     'a': true,

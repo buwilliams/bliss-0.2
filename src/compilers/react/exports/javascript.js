@@ -5,12 +5,12 @@ const js = require('../../core/js.js');
 const str = require('../../core/str.js');
 const reactTree = require('../react-tree.js');
 const tree = require('../../core/tree.js');
+const deps = require('../../../fs/dependencies.js');
 
 module.exports = {
   write: function(outputPath, projectJson, startId, writeAsComponent) {
     if(typeof writeAsComponent === 'undefined') writeAsComponent = false;
     var filename = (projectJson.filename || 'designer') + '.js';
-    projectJson = this.buildLayoutJson(projectJson);
     var builtStr = this.buildAppJs(projectJson, startId);
     builtStr += this.buildSchemas(projectJson);
     builtStr += this.buildReact(projectJson, startId);
@@ -32,33 +32,6 @@ module.exports = {
     filename = (projectJson.filename || 'designer') + '-project.js';
     fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, projectJsonStr);
-  },
-
-  buildLayoutJson: function(projectJson, outputPath) {
-    var layout = (projectJson.layout) ? projectJson : '';
-    if(layout === '') return projectJson;
-
-    // load layout file
-    var layoutPath = path.join(outputPath, '..', 'projects', `${layout}.json`);
-    if(!fs.existsSync(layoutPath)) return projectJson;
-    var layoutStr = fs.readFileSync(layoutPath, { encoding: 'utf8'});
-    var layoutJson = JSON.parse(layoutStr);
-
-    // find layout component's parent in layout file
-    var parentId = null;
-    layoutJson.components.forEach((comp) => {
-      if(comp.element === 'content') {
-        parentId = comp.element.parent;
-      }
-    });
-
-    // if not found return projectJson
-    if(parentId === null) return projectJson;
-
-    // otherwise invoke tree.merge();
-    var mergedProjectJson = tree.merge(layoutJson, projectJson, parentId);
-
-    return mergedProjectJson;
   },
 
   buildWrapper: function(projectJson, jsStr, reactStr, renderAsComponent) {
