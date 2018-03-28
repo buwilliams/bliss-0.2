@@ -111,7 +111,6 @@ describe('tree', function() {
       source.js.push(newFn);
       source.js.push(newFn);
       var newTree = tree.merge(source, dest, '1');
-      console.log(newTree);
       expect(newTree.js.length).to.equal(3);
     });
   });
