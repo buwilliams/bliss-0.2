@@ -1,6 +1,18 @@
 module.exports = {
-  has: function(element) {
-    return (this.htmlElements[element] === true);
+  has: function(element, isHtml) {
+    if(typeof isHtml === 'undefined') isHtml = true;
+    if(isHtml) {
+      return (this.htmlElements[element] === true);
+    } else {
+      return (this.specialElements[element] === true);
+    }
+  },
+  // special elements do not get rendered in HTML
+  // they are used as compiler hooks, to tell the
+  // compiler to do something special, such as
+  // handle layout
+  specialElements: {
+    'content': true
   },
   htmlElements: {
     'a': true,

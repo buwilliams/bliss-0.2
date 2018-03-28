@@ -5,12 +5,15 @@ module.exports = function() {
     "version": "v0.2",
     "type": "bliss",
     "build": "designer",
+    "filename": "index",
+    "pageTitle": "BlissUI",
     "nextId": 4,
     "rootId": "1",
     "packages": [],
     "externalCss": [],
     "externalJs": [],
     "state": {},
+    "schemas": [],
     "js": [
       {
         "name": "someFn",

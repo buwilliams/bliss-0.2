@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 80,
+  "nextId": 82,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz",
@@ -210,7 +210,7 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": "15",
-      "previous": "79",
+      "previous": "80",
       "child": null,
       "parent": "9"
     },
@@ -1708,10 +1708,44 @@ var blissProject = {
         }
       ],
       "dynamicAttributes": [],
-      "next": "4",
+      "next": "80",
       "previous": "75",
       "child": "78",
       "parent": "9"
+    },
+    "80": {
+      "id": "80",
+      "name": "Layout container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "4",
+      "previous": "79",
+      "child": "81",
+      "parent": "9"
+    },
+    "81": {
+      "id": "81",
+      "name": "Content",
+      "element": "content",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "80"
     }
   },
   "schemas": [

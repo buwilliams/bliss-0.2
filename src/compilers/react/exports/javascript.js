@@ -5,11 +5,11 @@ const js = require('../../core/js.js');
 const str = require('../../core/str.js');
 const reactTree = require('../react-tree.js');
 const tree = require('../../core/tree.js');
+const deps = require('../../../fs/dependencies.js');
 
 module.exports = {
   write: function(outputPath, projectJson, startId, writeAsComponent) {
     if(typeof writeAsComponent === 'undefined') writeAsComponent = false;
-    // write bliss javascript
     var filename = (projectJson.filename || 'designer') + '.js';
     var builtStr = this.buildAppJs(projectJson, startId);
     builtStr += this.buildSchemas(projectJson);
@@ -56,10 +56,6 @@ module.exports = {
   buildHelpers: function(projectJson) {
     var out = "";
 
-    // app.state
-    //out += `app.state = ` + JSON.stringify(projectJson.state, null, 2) + ';';
-
-    // app.render
     out += `app.render = function() {\n`;
     out += `var isComponent = (typeof component === 'undefined') ? false : true;\n`;
     out += `if(isComponent) {\n`;
@@ -70,13 +66,9 @@ module.exports = {
     out += `}\n`;
     out += `}\n`;
 
-    // app.setState(fn, callback)
     out += `app.stateQueue = [];\n`;
     out += `app.stateProcessing = false;\n`;
     out += `app.setState = function(fn, callback) {\n`;
-    //out += `if(typeof app.js.log !== 'undefined') {\n`;
-    //out += `console.log('new setState() invoked.', app);\n`;
-    //out += `}\n`;
     out += `app.stateQueue.push({ fn: fn, callback: callback });\n`;
     out += `var _process = function() {\n`;
     out += `app.stateProcessing = true;\n`;
@@ -90,14 +82,6 @@ module.exports = {
     out += `};\n`;
     out += `if(!app.stateProcessing) _process();\n`;
     out += `};\n`;
-
-    /*
-    out += `app.setState = function(fn) {\n`;
-    out += `  console.log('setState() invoked.');\n`;
-    out += `  fn();\n`;
-    out += `  app.render();\n`;
-    out += `}\n`;
-    */
 
     // app.load
     out += `app.load = function() {\n`;
@@ -154,6 +138,7 @@ module.exports = {
       "version": "v0.2",
       "type": "app",
       "build": "designer",
+      "layout": '',
       "nextId": 2,
       "rootId": "1",
       "externalCss": [],
@@ -161,6 +146,7 @@ module.exports = {
         "node_modules/react/dist/react.js",
         "node_modules/react-dom/dist/react-dom.js",
       ],
+      "schemas": [],
       "state": {},
       "packages": [
         {
@@ -259,6 +245,6 @@ module.exports = {
       out += `}\n`;
     })
 
-    return out
+    return out;
   }
 }

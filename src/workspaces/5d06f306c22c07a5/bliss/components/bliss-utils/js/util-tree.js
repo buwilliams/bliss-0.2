@@ -241,6 +241,86 @@ var UtilTree = {
     }
 
     return proj;
+  },
+
+  mergeComponents: function(source, dest, toParentId) {
+    var nextId = dest.nextId;
+    var comps = _.cloneDeep(source.components);
+    var idMap = {};
+
+    // create id map
+    _.each(_.keys(comps), function(key) {
+      idMap[key] = String(nextId++);
+    });
+
+    // assign components and update ids
+    _.each(_.keys(comps), function(key) {
+      dest.components[idMap[key]] = comps[key];
+      dest.components[idMap[key]].id = idMap[key];
+      if(comps[key].parent !== null) dest.components[idMap[key]].parent = idMap[comps[key].parent];
+      if(comps[key].child !== null) dest.components[idMap[key]].child = idMap[comps[key].child];
+      if(comps[key].next !== null) dest.components[idMap[key]].next = idMap[comps[key].next];
+      if(comps[key].previous !== null) dest.components[idMap[key]].previous = idMap[comps[key].previous];
+    });
+
+    // updated dest nextId
+    dest.nextId += _.keys(comps).length;
+
+    var fromId = idMap[source.rootId];
+    if(dest.components[toParentId].child !== null) {
+      var child = dest.components[dest.components[toParentId].child];
+      child.previous = fromId;
+      dest.components[fromId].next = child.id;
+    }
+
+    dest.components[toParentId].child = fromId;
+    dest.components[fromId].parent = toParentId;
+
+    return dest;
+  },
+
+  merge: function(source, dest, insertParentId) {
+    // Packages, externalCss, externalJs
+    dest.packages = _.union(dest.packages, source.packages);
+    dest.externalCss = _.union(dest.externalCss, source.externalCss);
+    dest.externalJs = _.union(dest.externalJs, source.externalJs);
+
+    // Global JavaScript
+    var union = _.union(dest.js, source.js);
+    dest.js = _.uniqBy(union, 'name');
+
+    // Schemas
+    var union = _.union(dest.schemas || [], source.schemas || []);
+    dest.schemas = _.uniqBy(union, 'path');
+
+    // Load
+    dest.load = _.union(dest.load, source.load);
+
+    // Global JavaScript
+    union = _.union(dest.js, source.js);
+    dest.js = _.uniqBy(union, 'name');
+
+    // CSS Vars
+    union = _.union(dest.cssVars, source.cssVars);
+    dest.cssVars = _.uniqBy(union, 'name');
+
+    // CSS
+    union = _.union(dest.css, source.css);
+    dest.css = _.uniqBy(union, 'selector');
+    // TODO: merge properties on duplicates
+
+    // Components
+    dest = this.mergeComponents(source, dest, insertParentId);
+
+    // Overwrite dest with source properties
+    dest.name = source.name;
+    dest.compiler = source.compiler;
+    dest.type = source.type;
+    dest.build = source.build;
+    dest.filename = source.filename || source.name;
+    dest.pageTitle = source.pageTitle || '';
+
+    return dest;
   }
 };
 

@@ -73,10 +73,10 @@ var blissUiV = (function() {
       // execute the update state function
       // this function should call dispatch internally
       try {
-        fn()
+        fn();
       } catch (e) {
-        console.error('app.js.update', e)
-        return
+        console.error('app.js.update', e);
+        return;
       }
 
       // reset timer so that it doesn't build too often
@@ -85,11 +85,11 @@ var blissUiV = (function() {
         action: 'setTimer',
         fn: function() {
           if (app.state.settings.shouldReloadProject === true)
-            app.js.saveAndReloadProject()
+            app.js.saveAndReloadProject();
           else
-            app.js.build()
+            app.js.build();
         }
-      })
+      });
 
       // set shouldSave so that the icon lights up
       app.dispatch({
@@ -97,7 +97,7 @@ var blissUiV = (function() {
         action: 'set',
         key: 'shouldSave',
         value: true
-      })
+      });
     }
     app.js['server'] = function(path, success, data, requestType) {
       app.js.log('app.js.server() invoked.');
@@ -670,7 +670,7 @@ var blissUiV = (function() {
     };
     app.methods["161"] = {};
     app.methods["161"]['repeater'] = function(scope, attributes) {
-      return app.state.projects.list
+      return app.state.projects.list;
     };
 
     app.methods["161"]['getText'] = function(scope, attributes) {
@@ -762,7 +762,8 @@ var blissUiV = (function() {
         var url = location.origin +
           '/hosted/' +
           username + '/' +
-          workspace + '/'
+          workspace + '/' +
+          app.buildProject.filename + '.html' || app.buildProject.name + '.html';
 
         window.open(url)
       }
@@ -1314,6 +1315,30 @@ var blissUiV = (function() {
           value: true
         });
       }
+    };
+    app.methods["324"] = {};
+    app.methods["324"]['getValue'] = function(scope, attributes) {
+      return app.buildProject.layout || '';
+    };
+
+    app.methods["324"]['handleChange'] = function(scope, attributes) {
+      return function(e) {
+        var value = e.target.value;
+
+        app.js.update(function() {
+          app.setState(function() {
+            app.buildProject.layout = value;
+          });
+        });
+      }
+    };
+    app.methods["325"] = {};
+    app.methods["325"]['loop'] = function(scope, attributes) {
+      return app.state.projects.list;
+    };
+
+    app.methods["325"]['getText'] = function(scope, attributes) {
+      return scope.loop[scope.loop_index].name;
     };
     app.methods["196"] = {};
     app.methods["196"]['handleClick'] = function(scope, attributes) {
@@ -2848,6 +2873,42 @@ var blissUiV = (function() {
                               "id": "projectJsonNameInput_302",
                               "key": app.getKey('id', '302')
                             }))),
+                          React.createElement('div', app.mergeAttributes('322', scope, {}, {
+                              "id": "layoutEditor_322",
+                              "key": app.getKey('id', '322')
+                            }),
+                            React.createElement('label', app.mergeAttributes('323', scope, {}, {
+                              "id": "layoutLabel_323",
+                              "key": app.getKey('id', '323')
+                            }), 'Page Layout'),
+                            React.createElement('select', app.mergeAttributes('324', scope, {
+                                "value": "getValue",
+                                "onChange": "handleChange"
+                              }, {
+                                "placeholder": "Project name",
+                                "className": "form-control",
+                                "id": "layoutSelect_324",
+                                "key": app.getKey('id', '324')
+                              }),
+                              React.createElement('option', app.mergeAttributes('326', scope, {}, {
+                                "value": "",
+                                "id": "defaultOption_326",
+                                "key": app.getKey('id', '326')
+                              }), '(none)'),
+                              (function(scope) {
+                                var out = [];
+                                var list = scope['loop'] = app.methods['325']['loop'](scope);
+                                for (var i = 0; i < list.length; i++) {
+                                  scope['loop_index'] = i;
+                                  out.push(React.createElement('option', app.mergeAttributes('325', scope, {
+                                    "value": "getText"
+                                  }, {
+                                    "id": "layoutOptions_325",
+                                    "key": app.getKey('id', '325', i)
+                                  }), app.methods['325']['getText'](scope)));
+                                }
+                                return out;
+                              })(scope))),
                           React.createElement('hr', app.mergeAttributes('291', scope, {}, {
                             "id": "separator_291",
                             "key": app.getKey('id', '291')
