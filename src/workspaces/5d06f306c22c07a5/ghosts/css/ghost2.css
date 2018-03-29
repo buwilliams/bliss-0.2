@@ -1,0 +1,13 @@
+#ghost_1 {
+  width: 50px;
+  height: 32px;
+  background-color: #6ba3ff;
+  border-radius: 30px;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+  padding-top: 18px;
+  box-sizing: box-border;
+  opacity: 0.5;
+}
+

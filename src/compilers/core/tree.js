@@ -292,6 +292,35 @@ module.exports = {
       injectRootComp.next = next.id;
     }
 
+    // Add replaceComp attributes to injectRootComp
+    var union = _.union(injectRootComp.attributes, replaceComp.attributes);
+    injectRootComp.attributes = _.uniqBy(union, 'name');
+
+    union = _.union(injectRootComp.dynamicAttributes, replaceComp.dynamicAttributes);
+    injectRootComp.dynamicAttributes = _.uniqBy(union, 'name');
+
+    union = _.union(injectRootComp.js, replaceComp.js);
+    injectRootComp.js = _.uniqBy(union, 'name');
+
+    union = _.union(injectRootComp.css, replaceComp.css);
+    injectRootComp.css = _.uniqBy(union, 'selector');
+
+    if(replaceComp.text !== null && replaceComp.text !== '') {
+      injectRootComp.text = replaceComp.text;
+    }
+
+    if(replaceComp.textFn !== null && replaceComp.textFn !== '') {
+      injectRootComp.textFn = replaceComp.textFn;
+    }
+
+    if(replaceComp.repeatFn !== null && replaceComp.repeatFn !== '') {
+      injectRootComp.repeatFn = replaceComp.repeatFn;
+    }
+
+    if(replaceComp.ifFn !== null && replaceComp.ifFn !== '') {
+      injectRootComp.ifFn = replaceComp.ifFn;
+    }
+
     return dest;
   },
 

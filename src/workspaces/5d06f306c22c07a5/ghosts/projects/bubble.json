@@ -1,0 +1,108 @@
+{
+  "name": "bubble",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "layout": "",
+  "nextId": 2,
+  "rootId": "1",
+  "externalCss": [],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js"
+  ],
+  "schemas": [],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() { app.render(); }"
+    }
+  ],
+  "cssVars": [],
+  "css": [
+    {
+      "selector": "*",
+      "properties": [
+        {
+          "name": "box-sizing",
+          "value": "border-box"
+        }
+      ]
+    }
+  ],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "bubble",
+      "element": "div",
+      "text": "bubble",
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "width",
+              "value": "50px"
+            },
+            {
+              "name": "height",
+              "value": "50px"
+            },
+            {
+              "name": "background-color",
+              "value": "#6ba3ff"
+            },
+            {
+              "name": "border-radius",
+              "value": "30px"
+            },
+            {
+              "name": "color",
+              "value": "white"
+            },
+            {
+              "name": "font-size",
+              "value": "10px"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "padding-top",
+              "value": "18px"
+            },
+            {
+              "name": "opacity",
+              "value": "0.5"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": null
+    }
+  },
+  "filename": "bubble",
+  "pageTitle": "Bubble"
+}
