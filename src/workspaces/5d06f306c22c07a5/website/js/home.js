@@ -1,4 +1,4 @@
-var blissUiWebsite = (function() {
+var home = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -177,9 +177,17 @@ var blissUiWebsite = (function() {
                 return out;
               })(scope),
               React.createElement('div', app.mergeAttributes('80', scope, {}, {
-                "id": "layoutContainer_80",
-                "key": app.getKey('id', '80')
-              }), ),
+                  "id": "layoutContainer_80",
+                  "key": app.getKey('id', '80')
+                }),
+                React.createElement('div', app.mergeAttributes('82', scope, {}, {
+                    "id": "newProject_82",
+                    "key": app.getKey('id', '82')
+                  }),
+                  React.createElement('div', app.mergeAttributes('84', scope, {}, {
+                    "id": "content_84",
+                    "key": app.getKey('id', '84')
+                  }), 'I\'m some lowly content.'))),
               React.createElement('h2', app.mergeAttributes('4', scope, {}, {
                 "id": "whatIsBlissui_4",
                 "key": app.getKey('id', '4')

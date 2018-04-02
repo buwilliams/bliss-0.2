@@ -1,4 +1,4 @@
-var blissProject = {
+var newBlissProject = {
   "name": "New Project",
   "compiler": "react",
   "version": "v0.2",
@@ -52,4 +52,4 @@ var blissProject = {
     }
   }
 }
-if(typeof module !== "undefined") module.exports = blissProject;
+if(typeof module !== "undefined") module.exports = newBlissProject;
