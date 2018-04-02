@@ -59,6 +59,24 @@ router.delete('/:workspaceName', function(req, res) {
     .deleteWorkspace()
 
   res.send({ "success": true })
-})
+});
+
+router.get('/file_explorer', function(req, res) {
+  if (!req.query.workspace) {
+    res.status(400).send('workspace param required');
+    return;
+  }
+
+  if (!req.query.path) {
+    res.status(400).send('path param required');
+    return;
+  }
+
+  var entries = user(env, req.session)
+    .workspace(req.query.workspace)
+    .listFiles(req.query.path);
+
+  res.send(entries);
+});
 
 module.exports = router
