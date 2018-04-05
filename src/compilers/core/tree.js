@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const projectJson = require('./project-json.js');
+const str = require('./str.js');
 
 module.exports = {
   hasChild: function(component) {
@@ -353,6 +354,20 @@ module.exports = {
     union = _.union(dest.css, source.css);
     dest.css = _.uniqBy(union, 'selector');
     // TODO: merge properties on duplicates
+
+    // setup root props
+    if(!dest.rootProps) dest.rootProps = {};
+    var props = dest.rootProps[source.filename || str.getSnake(source.name)] = {};
+    var rootComponent = dest.components[replaceId];
+
+    _.forEach(rootComponent.attributes, (item) => {
+      props[item.name] = item.value;
+    });
+
+    _.forEach(rootComponent.dynamicAttributes, (item) => {
+      var jsFn = _.find(rootComponent.js, { name: item.value });
+      if(jsFn) props[item.name] = { "body": jsFn.body };
+    });
 
     // Components
     dest = this.mergeComponents(source, dest, replaceId);
