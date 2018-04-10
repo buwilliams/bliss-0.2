@@ -5553,7 +5553,7 @@ var blissProject = {
       "js": [
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  return function(e) {\n    var username = app.state.firebase.username\n    var workspace = app.state.settings.workspace\n    \n    if(username === null) return\n    \n    var url = location.origin +\n        '/hosted/' +\n        username + '/' +\n        workspace + '/'\n    \n    window.open(url)\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return function(e) {\n    var username = app.state.firebase.username\n    var workspace = app.state.settings.workspace\n    \n    if(username === null) return\n    \n    var url = location.origin +\n        '/hosted/' +\n        username + '/' +\n        workspace + '/' +\n        app.buildProject.filename + '.html' || app.buildProject.name + '.html';\n    \n    window.open(url)\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [

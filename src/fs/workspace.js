@@ -47,7 +47,7 @@ module.exports = function(user, workspace) {
 
   pub.listFiles = function(appendPath) {
     try {
-      return fs(username).readdirSync(path.join(dir, appendPath))
+      return fs(username).readdirSync(path.join(dir, appendPath));
     } catch(e) {
       return []
     }

@@ -1,4 +1,4 @@
-var newProject = (function() {
+var content = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -29,9 +29,9 @@ var newProject = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-          "id": "newProject_1",
+          "id": "content_1",
           "key": app.getKey('id', '1')
-        })));
+        }), 'I\'m some lowly content.'));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

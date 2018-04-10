@@ -1,10 +1,10 @@
 var blissProject = {
-  "name": "Bliss UI Website",
+  "name": "home",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 82,
+  "nextId": 85,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz",
@@ -17,6 +17,22 @@ var blissProject = {
   ],
   "state": {},
   "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    },
     {
       "name": "react",
       "version": "15.4.2"
@@ -1727,7 +1743,7 @@ var blissProject = {
       "dynamicAttributes": [],
       "next": "4",
       "previous": "79",
-      "child": "81",
+      "child": "82",
       "parent": "9"
     },
     "81": {
@@ -1746,6 +1762,51 @@ var blissProject = {
       "previous": null,
       "child": null,
       "parent": "80"
+    },
+    "82": {
+      "id": "82",
+      "name": "New Project",
+      "element": "div",
+      "text": "",
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "84",
+      "parent": null
+    },
+    "83": {
+      "id": "83",
+      "name": "new_3",
+      "element": "page.content",
+      "text": "hello",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "82"
+    },
+    "84": {
+      "id": "84",
+      "name": "content",
+      "element": "div",
+      "text": "I'm some lowly content.",
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": null
     }
   },
   "schemas": [
@@ -1763,7 +1824,7 @@ var blissProject = {
       ]
     }
   ],
-  "filename": "index",
-  "pageTitle": "BlissUI - Inspired App Platform"
+  "filename": "home",
+  "pageTitle": "Bliss UI"
 }
 if(typeof module !== "undefined") module.exports = blissProject;

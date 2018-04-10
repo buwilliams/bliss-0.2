@@ -22,8 +22,8 @@ module.exports = function(options) {
           username: str.token('test@blissui.com')
         }
       }
-      next()
-      return
+      next();
+      return;
     }
 
     var matches = _.reduce(options.protected_urls, function(result, item) {
@@ -32,9 +32,21 @@ module.exports = function(options) {
       return false;
     }, false);
 
-    if(matches) {
-      var user_token = req.get('X-User-Token');
-
+    var user_token = req.get('X-User-Token');
+    
+    // Used for developing components for Bliss
+    if(env.bliss_env === "development" &&
+       matches &&
+       user_token === "development") {
+      req.session = {
+        user: {
+          email: 'bliss@blissui.com',
+          username: str.token('bliss@blissui.com')
+        }
+      }
+      next();
+      return;
+    } else if(matches) {
       if(!user_token) {
         // fall back on query params
         user_token = req.query.xUserToken;

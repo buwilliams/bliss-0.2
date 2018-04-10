@@ -1,4 +1,5 @@
 const beautify = require('js-beautify').js_beautify;
+const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
 const js = require('../../core/js.js');
@@ -12,6 +13,7 @@ module.exports = {
     if(typeof writeAsComponent === 'undefined') writeAsComponent = false;
     var filename = (projectJson.filename || 'designer') + '.js';
     var builtStr = this.buildAppJs(projectJson, startId);
+    builtStr += this.buildRootProps(projectJson);
     builtStr += this.buildSchemas(projectJson);
     builtStr += this.buildReact(projectJson, startId);
     builtStr += this.buildHelpers(projectJson);
@@ -32,6 +34,30 @@ module.exports = {
     filename = (projectJson.filename || 'designer') + '-project.js';
     fullpath = path.join(outputPath, filename);
     fs.writeFileSync(fullpath, projectJsonStr);
+  },
+
+  buildRootProps: function(projectJson) {
+    var out = "";
+    out += `app.rootProps = {};`;
+    out += `app.getRootProps = function(name) {`;
+    out += `  return app.rootProps[name];`;
+    out += `};`;
+
+    if(!projectJson.rootProps) return out;
+
+    _.forEach(_.keys(projectJson.rootProps), (key) => {
+      out += `app.rootProps['${key}'] = {};`;
+      _.forEach(_.keys(projectJson.rootProps[key]), (propKey) => {
+        var item = projectJson.rootProps[key][propKey];
+        if(item.body) {
+          out += `app.rootProps['${key}']['${propKey}'] = ${item.body}`;
+        } else {
+          out += `app.rootProps['${key}']['${propKey}'] = '${item}'`;
+        }
+      });
+    });
+
+    return out;
   },
 
   buildWrapper: function(projectJson, jsStr, reactStr, renderAsComponent) {

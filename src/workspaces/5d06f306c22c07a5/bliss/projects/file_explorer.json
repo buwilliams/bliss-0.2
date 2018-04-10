@@ -31,15 +31,7 @@
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  app._state = state();\n  \n  app.setState(function() {\n    app.js.resetState();\n  });\n  \n  app.setState(function() {\n  \tapp.js.getFiles('/');\n  });\n}"
-    },
-    {
-      "name": "resetState",
-      "body": "function() {\n  app._state.reset();\n  app._state.create('files');\n  app._state.get('files').setData('selected', null);\n}"
-    },
-    {
-      "name": "getFiles",
-      "body": "function(path) {\n  var files = app._state.get('files');\n  \n  $.ajax({\n    type: 'GET',\n    url: '/project/explore',\n    data: {path: path},\n    success: function(data) {\n      app.setState(function() {\n        files.removeAll();\n        data.entries.forEach(function(entry) {\n          files.create(entry);\n        });\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n}"
+      "body": "function() {\n  app.dispatch({\n    path: '/file_explorer',\n    action: 'getEntries'\n  });\n}"
     }
   ],
   "cssVars": [],
@@ -106,15 +98,15 @@
       "js": [
         {
           "name": "repeater",
-          "body": "function(scope, attributes) {\n  var files = app._state.get('files');\n  return files.getAll();\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.file_explorer.entries;\n};\n"
         },
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index].name;\n};\n"
+          "body": "function(scope, attributes) {\n  return scope.repeater[scope.repeater_index];\n};\n"
         },
         {
           "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var selected = scope.repeater[scope.repeater_index];\n  return function(e) {\n    var files = app._state.get('files');\n    app.setState(function() {\n      files.setData('selected', selected);\n    });\n    \n    if(selected.file === false) {\n      var displayPath = (selected.path === '/') ? \n          (selected.path + selected.name) : \n      \t\t(selected.path + '/' + selected.name);\n    \tapp.js.getFiles(displayPath);\n    }\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  var selected = scope.repeater[scope.repeater_index];\n  var cwd = app.state.file_explorer.cwd;\n  \n  if(selected === '..') {\n    var cwdParts = cwd.split('/');\n    if(cwdParts.length > 1) {\n      cwd = '';\n      for(var i=0; i<cwdParts.length - 1; i++) {\n        cwd += cwdParts[i];\n        if(i < cwdParts.length - 2) cwd += '/';\n      }\n    } else {\n      cwd = '.';\n    }\n  } else {\n    cwd = cwd + '/' + selected;\n  }\n  \n  return function(e) {\n    app.dispatch({\n      path: '/file_explorer',\n      action: 'setCwd',\n      cwd: cwd\n    });\n    \n    app.dispatch({\n      path: '/file_explorer',\n      action: 'getEntries'\n    });\n  }\n};\n"
         }
       ],
       "dynamicAttributes": [
@@ -202,7 +194,7 @@
       "js": [
         {
           "name": "getText",
-          "body": "function(scope, attributes) {\n  var files = app._state.get('files');\n  var selected = files.getData('selected');\n  if(selected === null) {\n    return \"(none selected)\";\n  } else {\n    return (selected.path === '/') ? \n      (selected.path + selected.name) : (selected.path + '/' + selected.name);\n  }\n};\n"
+          "body": "function(scope, attributes) {\n  return app.state.file_explorer.cwd;\n};\n"
         }
       ],
       "dynamicAttributes": [],
@@ -246,5 +238,28 @@
       "child": null,
       "parent": "4"
     }
-  }
+  },
+  "schemas": [
+    {
+      "path": "/file_explorer",
+      "actions": [
+        {
+          "action": "init",
+          "body": "function (data, args) {\n  $.ajaxSetup({headers:{'X-User-Token':'development'}});\n  \n  var newData = {\n    cwd: '.',\n    entries: []\n  };\n  \n  return newData;\n}"
+        },
+        {
+          "action": "setEntries",
+          "body": "function (data, args) {\n  console.log('setEntries', app.state.file_explorer.entries);\n  var newData = Object.assign({}, data);\n  \n  // empty array\n  newData.entries.splice(0, newData.entries.length);\n  \n  newData.entries.push('..');\n  \n  // add new entries\n  args.entries.forEach(function(entry) {\n    newData.entries.push(entry);\n  });\n  \n  return newData;\n}"
+        },
+        {
+          "action": "setCwd",
+          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData.cwd = args.cwd;\n  return newData;\n}"
+        },
+        {
+          "action": "getEntries",
+          "body": "function (data, args) {\n  var path = app.state.file_explorer.cwd;\n  var workspace = 'bliss';\n  \n  var url = '/workspace/file_explorer?';\n  url += 'workspace=' + workspace;\n  url += '&path=' + path;\n  \n  $.ajax({\n    type: 'GET',\n    url: url,\n    data: {},\n    success: function(data) {\n      app.dispatch({\n        path: '/file_explorer',\n        action: 'setEntries',\n        entries: data\n      });\n    },\n    contentType: \"application/json\",\n    dataType: 'json'\n  });\n  \n  console.log('getEntries', app.state.file_explorer.cwd);\n  \n  return data;\n}"
+        }
+      ]
+    }
+  ]
 }

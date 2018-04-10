@@ -1,11 +1,11 @@
-var blissProject = {
-  "name": "New Project",
+{
+  "name": "home",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "layout": "",
-  "nextId": 2,
+  "layout": "bliss_ui_website",
+  "nextId": 4,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -40,7 +40,24 @@ var blissProject = {
       "id": "1",
       "name": "New Project",
       "element": "div",
-      "text": null,
+      "text": "",
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "3",
+      "parent": null
+    },
+    "3": {
+      "id": "3",
+      "name": "new_3",
+      "element": "page.content",
+      "text": "hello",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
       "attributes": [],
       "css": [],
       "js": [],
@@ -48,8 +65,9 @@ var blissProject = {
       "next": null,
       "previous": null,
       "child": null,
-      "parent": null
+      "parent": "1"
     }
-  }
+  },
+  "filename": "home",
+  "pageTitle": "Bliss UI"
 }
-if(typeof module !== "undefined") module.exports = blissProject;
