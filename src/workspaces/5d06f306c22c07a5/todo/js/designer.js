@@ -7,343 +7,189 @@ var todo = (function() {
       state: {}
     };
     app.js['init'] = function() {
-      // setup app state
-      var state = app.js.createState('todo');
-      state.setData('currentColor', '#5f38a9');
-      state.setData('currentTodo', '');
-
-      app.todo = state;
-
-      //app.state.currentColor = '#5f38a9';
-      //app.state.currentTodo = '';
-      //app.state.completedTodos = {};
-      //app.state.todoColors = [];
-      //app.state.todos = [];
-
-      // render application
       app.render();
     }
-    app.js['createState'] = function(rawName) {
-      var name = rawName.replace(/[^\w]/gi, '');
+    app.methods["7"] = {};
+    app.methods["7"]['handleChange'] = function(scope, attributes) {
+      return function(e) {
+        app.dispatch({
+          path: '/todos',
+          action: 'setLabel',
+          label: e.target.value
+        })
+      }
+    };
 
-      var hasValue = function(item) {
-        return (typeof item !== "undefined" && item !== null);
-      };
-
-      if (!hasValue(app.state._managed)) app.state._managed = {};
-      if (!hasValue(app.state._managed[name])) app.state._managed[name] = {};
-
-      var managed = app.state._managed[name];
-
-      var getNewId = function() {
-        return managed.nextId++;
-      };
-
-      var getAll = function() {
-        return managed.data;
-      };
-
-      var find = function(id) {
-        var found = null;
-        for (var i = 0; i < managed.data.length; i++) {
-          var item = managed.data[i];
-          if (item.id === id) {
-            found = item;
-            break;
-          }
-        }
-        return found;
-      };
-
-      var findIndex = function(id) {
-        var found = -1;
-        for (var i = 0; i < managed.data.length; i++) {
-          var item = managed.data[i];
-          if (item.id === id) {
-            found = i;
-            break;
-          }
-        }
-        return found;
-      };
-
-      var create = function(data) {
-        if (!hasValue(data)) return;
-        if (!hasValue(data.id)) data.id = getNewId();
-        managed.data.push(data);
-      };
-
-      var update = function(id, data) {
-        var item = find(id);
-        for (key in data) {
-          if (data.hasOwnProperty(key)) {
-            item[key] = data[key];
-          }
-        }
-      };
-
-      var remove = function(id) {
-        var index = findIndex(id);
-        if (index !== -1) managed.data.splice(index, 1);
-      };
-
-      var removeAll = function() {
-        managed.data.splice(0, managed.data.length);
-      };
-
-      var replaceAll = function(dataArray) {
-        removeAll();
-        for (var i = 0; i < dataArray.length; i++) {
-          create(dataArray[i]);
-        }
-      };
-
-      var setData = function(key, value) {
-        managed.internalData[key] = value;
-      };
-
-      var getData = function(key) {
-        return managed.internalData[key];
-      };
-
-      managed.selected = null;
-      managed.nextId = 0;
-      managed.data = [];
-      managed.internalData = {};
-      managed.getNewId = getNewId;
-      managed.hasValue = hasValue;
-      managed.getAll = getAll;
-      managed.find = find;
-      managed.findIndex = findIndex;
-      managed.create = create;
-      managed.update = update;
-      managed.remove = remove;
-      managed.removeAll = removeAll;
-      managed.replaceAll = replaceAll;
-      managed.setData = setData;
-      managed.getData = getData;
-
-      return managed;
+    app.methods["7"]['getValue'] = function(scope, attributes) {
+      return app.state.todos.label;
     }
-    app.js['getState'] = function(rawName) {
-      var name = rawName.replace(/[^\w]/gi, '');
-      return app.state._managed[name];
-    }
+    app.methods["7"]['handleKeyup'] = function(scope, attributes) {
+      return function(e) {
+        if (e.keyCode == 13) {
+          if (app.state.todos.label === '') return;
+          app.dispatch({
+            path: '/todos',
+            action: 'addTodo',
+            label: app.state.todos.label
+          })
+
+          app.dispatch({
+            path: '/todos',
+            action: 'setLabel',
+            label: ''
+          })
+        }
+      }
+    };
+    app.methods["8"] = {};
+    app.methods["8"]['handleClick'] = function(scope, attributes) {
+      return function(e) {
+        if (app.state.todos.label === '') return;
+        app.dispatch({
+          path: '/todos',
+          action: 'addTodo',
+          label: app.state.todos.label
+        })
+
+        app.dispatch({
+          path: '/todos',
+          action: 'setLabel',
+          label: ''
+        })
+      }
+    };
     app.methods["9"] = {};
-    app.methods["9"]['handleClearCompleted'] = function(scope, attributes) {
-      return function(e) {
-        app.setState(function() {
-          var ts = app.todo.getAll();
-          var dels = [];
-          for (var i = 0; i < ts.length; i++) {
-            var t = ts[i];
-            if (t.done === true) dels.push(t.id);
-          }
-
-          for (var i = 0; i < dels.length; i++) {
-            app.todo.remove(dels[i]);
-          }
-        });
-      }
+    app.methods["9"]['repeater'] = function(scope, attributes) {
+      return app.state.todos.list
     };
-    app.methods["4"] = {};
-    app.methods["4"]['handleChange'] = function(scope, attributes) {
+
+    app.methods["9"]['getText'] = function(scope, attributes) {
+      return scope.repeater[scope.repeater_index].label
+    };
+
+    app.methods["9"]['handleClick'] = function(scope, attributes) {
+      var index = scope.repeater_index
       return function(e) {
-        app.setState(function() {
-          app.todo.setData('currentTodo', e.target.value);
-        });
+        app.dispatch({
+          path: '/todos',
+          action: 'toggleTodo',
+          index: index
+        })
       }
     };
 
-    app.methods["4"]['getValue'] = function(scope, attributes) {
-      return app.todo.getData('currentTodo');
+    app.methods["9"]['getStyle'] = function(scope, attributes) {
+      var style = {}
+      var done = scope.repeater[scope.repeater_index].done
+      if (done) {
+        style.textDecoration = 'line-through'
+        style.backgroundColor = '#121026'
+      }
+      return style;
     }
-    app.methods["4"]['changeHue'] = function(rgb, degree) {
-      function changeHue(rgb, degree) {
-        var hsl = rgbToHSL(rgb);
-        hsl.h += degree;
-        if (hsl.h > 360) {
-          hsl.h -= 360;
-        } else if (hsl.h < 0) {
-          hsl.h += 360;
-        }
-        return hslToRGB(hsl);
+    app.methods["13"] = {};
+    app.methods["13"]['handleClick'] = function(scope, attributes) {
+      var index = scope.repeater_index
+      return function(e) {
+        e.stopPropagation()
+        app.dispatch({
+          path: '/todos',
+          action: 'deleteTodo',
+          index: index
+        })
       }
+    };
+    app.methods["16"] = {};
+    app.methods["16"]['getText'] = function(scope, attributes) {
+      var todos = app.state.todos.list
+      var total = todos.length
+      var count = 0
 
-      // exepcts a string and returns an object
-      function rgbToHSL(rgb) {
-        // strip the leading # if it's there
-        rgb = rgb.replace(/^\s*#|\s*$/g, '');
+      todos.forEach(function(todo) {
+        if (todo.done) count++
+      })
 
-        // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
-        if (rgb.length == 3) {
-          rgb = rgb.replace(/(.)/g, '$1$1');
-        }
-
-        var r = parseInt(rgb.substr(0, 2), 16) / 255,
-          g = parseInt(rgb.substr(2, 2), 16) / 255,
-          b = parseInt(rgb.substr(4, 2), 16) / 255,
-          cMax = Math.max(r, g, b),
-          cMin = Math.min(r, g, b),
-          delta = cMax - cMin,
-          l = (cMax + cMin) / 2,
-          h = 0,
-          s = 0;
-
-        if (delta == 0) {
-          h = 0;
-        } else if (cMax == r) {
-          h = 60 * (((g - b) / delta) % 6);
-        } else if (cMax == g) {
-          h = 60 * (((b - r) / delta) + 2);
+      if (total === 0) {
+        return "Start by adding a few to-dos."
+      } else if (count === 0) {
+        return "Time to crush to-dos!"
+      } else if (count === total) {
+        return "BOOM! All to-dos crushed."
+      } else {
+        return "You've crushed " + count + " to-dos. You've have " + (total - count) + " remaining.";
+      }
+    }
+    app.getPath = function(objRef, path) {
+      var ref = objRef;
+      var parts = path.split('/')
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part === '') continue;
+        ref = ref[part] || (ref[part] = {})
+      }
+      return ref;
+    }
+    app.assignPath = function(objRef, path, data) {
+      var ref = objRef;
+      var parts = path.split('/')
+      data || (data = {})
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        if (part === '') continue;
+        if (i === parts.length - 1) {
+          ref = (ref[part] = data)
         } else {
-          h = 60 * (((r - g) / delta) + 4);
-        }
-
-        if (delta == 0) {
-          s = 0;
-        } else {
-          s = (delta / (1 - Math.abs(2 * l - 1)))
-        }
-
-        return {
-          h: h,
-          s: s,
-          l: l
+          ref = ref[part] || (ref[part] = {})
         }
       }
-
-      // expects an object and returns a string
-      function hslToRGB(hsl) {
-        var h = hsl.h,
-          s = hsl.s,
-          l = hsl.l,
-          c = (1 - Math.abs(2 * l - 1)) * s,
-          x = c * (1 - Math.abs((h / 60) % 2 - 1)),
-          m = l - c / 2,
-          r, g, b;
-
-        if (h < 60) {
-          r = c;
-          g = x;
-          b = 0;
-        } else if (h < 120) {
-          r = x;
-          g = c;
-          b = 0;
-        } else if (h < 180) {
-          r = 0;
-          g = c;
-          b = x;
-        } else if (h < 240) {
-          r = 0;
-          g = x;
-          b = c;
-        } else if (h < 300) {
-          r = x;
-          g = 0;
-          b = c;
-        } else {
-          r = c;
-          g = 0;
-          b = x;
-        }
-
-        r = normalize_rgb_value(r, m);
-        g = normalize_rgb_value(g, m);
-        b = normalize_rgb_value(b, m);
-
-        return rgbToHex(r, g, b);
-      }
-
-      function normalize_rgb_value(color, m) {
-        color = Math.floor((color + m) * 255);
-        if (color < 0) {
-          color = 0;
-        }
-        return color;
-      }
-
-      function rgbToHex(r, g, b) {
-        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-      }
-
-      return changeHue(rgb, degree);
+      return ref;
     }
-    app.methods["4"]['handleKeyDown'] = function(scope, attributes) {
-      var comp = this;
-      return function(e) {
-        var key = e.which,
-          ENTER = 13,
-          ESCAPE = 27;
-        if (key !== ENTER && key !== ESCAPE) return;
-
-        app.setState(function() {
-          if (key === ENTER) {
-            app.todo.setData(
-              'currentColor',
-              comp.changeHue(app.todo.getData('currentColor'), 15)
-            );
-            app.todo.create({
-              "label": app.todo.getData('currentTodo'),
-              "done": false,
-              "color": app.todo.getData('currentColor')
-            });
-          }
-          app.todo.setData('currentTodo', '');
-        });
-      }
-    };
-    app.methods["3"] = {};
-    app.methods["3"]['repeatTodos'] = function(scope, attributes) {
-      return app.todo.getAll();
-    };
-
-    app.methods["3"]['showTodo'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-      return t.label;
-    };
-
-    app.methods["3"]['getStyles'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-      var styles = {
-        'backgroundColor': t.color
-      };
-
-      if (t.done === true) {
-        styles.backgroundColor = '#444';
-        styles.textDecoration = 'line-through';
-      }
-
-      return styles;
+    app.dispatch = function(options) {
+      var ref = app.state;
+      app.setState(function() {
+        var data = app.getPath(ref, options.path);
+        var fn = app.schema[options.path][options.action];
+        var newData = fn(data, options);
+        app.assignPath(ref, options.path, newData);
+      })
     }
-    app.methods["3"]['handleClick'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-
-      return function(e) {
-        app.setState(function() {
-          app.todo.update(t.id, {
-            'done': !t.done
-          });
-        });
+    app.schema = {};
+    app.schema['/todos'] = {};
+    app.schema['/todos']['init'] = function(data, args) {
+      var newData = {
+        label: '',
+        list: []
       }
-    };
-
-    app.methods["3"]['getKey'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-      return t.id;
+      return newData;
     }
-    app.methods["10"] = {};
-    app.methods["10"]['handleDelete'] = function(scope, attributes) {
-      var t = scope.repeatTodos[scope.repeatTodos_index];
-
-      return function(e) {
-        e.stopPropagation();
-        app.setState(function() {
-          app.todo.remove(t.id);
-        });
-      }
-    };
+    app.schema['/todos']['setLabel'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.label = args.label
+      return newData;
+    }
+    app.schema['/todos']['addTodo'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.list.push({
+        done: false,
+        label: args.label
+      })
+      return newData;
+    }
+    app.schema['/todos']['toggleTodo'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.list[args.index].done = !newData.list[args.index].done
+      return newData;
+    }
+    app.schema['/todos']['deleteTodo'] = function(data, args) {
+      var newData = Object.assign({}, data)
+      newData.list.splice(args.index, 1)
+      return newData;
+    }
+    if (app.schema['/todos']['init']) {
+      app.assignPath(app.state, '/todos', app.schema['/todos']['init']());
+    } else {
+      app.assignPath(app.state, '/todos');
+    }
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);
@@ -367,57 +213,74 @@ var todo = (function() {
             "id": "todo_1",
             "key": app.getKey('id', '1')
           }),
-          React.createElement('div', app.mergeAttributes('7', scope, {}, {
-              "id": "todoListContainer_7",
-              "key": app.getKey('id', '7')
+          React.createElement('div', app.mergeAttributes('10', scope, {}, {
+              "className": "container",
+              "id": "container_10",
+              "key": app.getKey('id', '10')
             }),
-            React.createElement('h1', app.mergeAttributes('6', scope, {}, {
-              "className": "float-left",
-              "id": "label_6",
-              "key": app.getKey('id', '6')
-            }), 'Todos'),
-            React.createElement('a', app.mergeAttributes('9', scope, {
-              "onClick": "handleClearCompleted"
-            }, {
-              "href": "#",
-              "id": "clearCompleted_9",
-              "key": app.getKey('id', '9')
-            }), 'Clear Completed'),
-            React.createElement('input', app.mergeAttributes('4', scope, {
-              "value": "getValue",
-              "onChange": "handleChange",
-              "onKeyDown": "handleKeyDown"
-            }, {
-              "id": "input_4",
-              "key": app.getKey('id', '4')
-            })),
-            React.createElement('div', app.mergeAttributes('8', scope, {}, {
-                "id": "listContainer_8",
-                "key": app.getKey('id', '8')
+            React.createElement('div', app.mergeAttributes('11', scope, {}, {
+                "className": "row",
+                "id": "row_11",
+                "key": app.getKey('id', '11')
               }),
-              (function(scope) {
-                var out = [];
-                var list = scope['repeatTodos'] = app.methods['3']['repeatTodos'](scope);
-                for (var i = 0; i < list.length; i++) {
-                  scope['repeatTodos_index'] = i;
-                  out.push(React.createElement('div', app.mergeAttributes('3', scope, {
-                      "style": "getStyles",
-                      "onClick": "handleClick",
-                      "key": "getKey"
-                    }, {
-                      "id": "listItem_3",
-                      "key": app.getKey('id', '3', i)
-                    }), app.methods['3']['showTodo'](scope),
-                    React.createElement('a', app.mergeAttributes('10', scope, {
-                      "onClick": "handleDelete"
-                    }, {
-                      "href": "#",
-                      "id": "deletebutton_10",
-                      "key": app.getKey('id', '10')
-                    }), 'Delete')));
-                }
-                return out;
-              })(scope)))));
+              React.createElement('div', app.mergeAttributes('12', scope, {}, {
+                  "className": "col-md-10 offset-md-1",
+                  "id": "column_12",
+                  "key": app.getKey('id', '12')
+                }),
+                React.createElement('input', app.mergeAttributes('7', scope, {
+                  "value": "getValue",
+                  "onChange": "handleChange",
+                  "onKeyUp": "handleKeyup"
+                }, {
+                  "id": "todoInput_7",
+                  "key": app.getKey('id', '7')
+                })),
+                React.createElement('h1', app.mergeAttributes('6', scope, {}, {
+                  "id": "header_6",
+                  "key": app.getKey('id', '6')
+                }), 'Beauitful To-do List'),
+                React.createElement('button', app.mergeAttributes('8', scope, {
+                  "onClick": "handleClick"
+                }, {
+                  "id": "button_8",
+                  "key": app.getKey('id', '8')
+                }), 'ADD TO-DO'),
+                React.createElement('div', app.mergeAttributes('14', scope, {}, {
+                    "id": "iconContainer_14",
+                    "key": app.getKey('id', '14')
+                  }),
+                  React.createElement('i', app.mergeAttributes('15', scope, {}, {
+                    "className": "fas fa-arrow-circle-down",
+                    "id": "downIcon_15",
+                    "key": app.getKey('id', '15')
+                  }))),
+                (function(scope) {
+                  var out = [];
+                  var list = scope['repeater'] = app.methods['9']['repeater'](scope);
+                  for (var i = 0; i < list.length; i++) {
+                    scope['repeater_index'] = i;
+                    out.push(React.createElement('div', app.mergeAttributes('9', scope, {
+                        "style": "getStyle",
+                        "onClick": "handleClick"
+                      }, {
+                        "id": "todoItem_9",
+                        "key": app.getKey('id', '9', i)
+                      }), app.methods['9']['getText'](scope),
+                      React.createElement('i', app.mergeAttributes('13', scope, {
+                        "onClick": "handleClick"
+                      }, {
+                        "className": "fas fa-trash",
+                        "id": "deleteIcon_13",
+                        "key": app.getKey('id', '13')
+                      }))));
+                  }
+                  return out;
+                })(scope),
+                React.createElement('div', app.mergeAttributes('16', scope, {}, {
+                  "id": "completedTodos_16",
+                  "key": app.getKey('id', '16')
+                }), app.methods['16']['getText'](scope)))))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

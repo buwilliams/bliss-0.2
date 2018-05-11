@@ -1,58 +1,73 @@
 body {
-  background-color: #3c3338;
+  background-color: black;
+  font-size: 20px;
+  color: white;
+  background-image: url(https://www.hdwallpapers.in/download/colorful_flowers_dark_background-1920x1200.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  font-family: 'Shadows Into Light', cursive;
 }
 
-#todoListContainer_7 {
-  margin: 50px auto 0 auto;
-  width: 75%;
-  position: relative;
+#todo_1 {
+  min-height: 100vh;
 }
 
-#label_6 {
-  margin: 0 auto;
-  color: #fff;
-  text-transform: uppercase;
-  padding: 0 0 10px 0;
-  display: inline-block;
-}
-
-#clearCompleted_9 {
-  color: #fff;
-  display: inline-block;
-  float: right;
-  margin-top: 15px;
-}
-
-#input_4 {
-  
-  display: block;
-  padding: 20px;
+#todoInput_7 {
+  background-color: #669cd2;
   border: none;
-  color: #fff;
-  font-size: 2em;
+  color: white;
   outline: none;
-  background-color: #55a68b;
-  width: 100%;
-}
-
-#listContainer_8 {
-}
-
-#listItem_3 {
-  padding: 20px;
-  background-color: blue;
-  color: #fff;
-  font-size: 2em;
-  cursor: pointer;
-  width: 100%;
   display: block;
+  width: 100%;
+  font-size: 25pt;
+  padding: 5px 10px;
+  margin-top: 20px;
+  border-radius: 0;
+  text-align: center;
 }
 
-#deletebutton_10 {
+#header_6 {
+  color: white;
+  margin: 50px 0 10px;
+}
+
+#button_8 {
+  padding: 10px;
+  border: none;
+  background-color: #870c1b;
+  color: white;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+#iconContainer_14 {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+#downIcon_15 {
+  color: white;
+}
+
+#todoItem_9 {
+  cursor: pointer;
+  background-color: #47217d;
+  padding: 10px;
+  color: white;
+}
+
+#deleteIcon_13 {
   float: right;
-  color: #fff;
-  display: inline-block;
-  font-size: 12px;
-  margin-top: 15px;
+  margin-top: 4px;
+}
+
+#completedTodos_16 {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 0.8em;
 }
 

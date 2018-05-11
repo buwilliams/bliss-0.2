@@ -165,15 +165,7 @@ var blissUiWebsite = (function() {
               React.createElement('li', app.mergeAttributes('38', scope, {}, {
                 "id": "liCopyCopyCopy_38",
                 "key": app.getKey('id', '38')
-              }), 'Tight integration with cloud-based products such as Firebase'))),
-          React.createElement('div', app.mergeAttributes('39', scope, {}, {
-            "id": "div_39",
-            "key": app.getKey('id', '39')
-          }), 'foo'),
-          React.createElement('div', app.mergeAttributes('40', scope, {}, {
-            "id": "div_40",
-            "key": app.getKey('id', '40')
-          }), 'fob')));
+              }), 'Tight integration with cloud-based products such as Firebase')))));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

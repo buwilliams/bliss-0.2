@@ -1,0 +1,41 @@
+#nav_2 {
+  background-color: #780403;
+  color: white;
+}
+
+#a_3 {
+  color: white;
+}
+
+#button_4 {
+  color: white;
+  border: solid 1px white;
+}
+
+#span_5 {
+  color: white;
+}
+
+#firstRow_25 {
+  background-image: url(https://food.fnr.sndimg.com/content/dam/images/food/fullset/2009/5/27/0/0125629_03_chicken-in-skillet_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371589386937.jpeg);
+  background-size: cover;
+  min-height: 600px;
+}
+
+#new_28 {
+  color: white;
+  font-size: 3em;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  margin: 1em;
+  border-radius: 15px;
+  padding: 2em;
+}
+
+#header_30 {
+  color: #333;
+  font-size: 2em;
+  text-align: center;
+  margin : 1em;
+}
+

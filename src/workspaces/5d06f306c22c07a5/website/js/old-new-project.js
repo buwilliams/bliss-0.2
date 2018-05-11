@@ -4,6 +4,7 @@ var newBlissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
+  "layout": "",
   "nextId": 2,
   "rootId": "1",
   "externalCss": [],
@@ -11,6 +12,7 @@ var newBlissProject = {
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js"
   ],
+  "schemas": [],
   "state": {},
   "packages": [
     {

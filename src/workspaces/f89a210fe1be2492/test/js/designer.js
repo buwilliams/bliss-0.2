@@ -1,4 +1,4 @@
-var pageWrapper = (function() {
+var newProject = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -29,9 +29,13 @@ var pageWrapper = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "page_wrapper",
+            "id": "newProject_1",
             "key": app.getKey('id', '1')
           }),
+          React.createElement('div', app.mergeAttributes('3', scope, {}, {
+            "id": "new_3",
+            "key": app.getKey('id', '3')
+          })),
           React.createElement('div', app.mergeAttributes('2', scope, {}, {
             "id": "new_2",
             "key": app.getKey('id', '2')

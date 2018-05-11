@@ -1,10 +1,10 @@
 var blissProject = {
-  "name": "page_wrapper",
+  "name": "New Project",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 3,
+  "nextId": 4,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -36,21 +36,16 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "page_wrapper",
+      "name": "New Project",
       "element": "div",
       "text": null,
-      "attributes": [
-        {
-          "name": "id",
-          "value": "page_wrapper"
-        }
-      ],
+      "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "2",
+      "child": "3",
       "parent": null
     },
     "2": {
@@ -66,6 +61,23 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
+      "previous": "3",
+      "child": null,
+      "parent": "1"
+    },
+    "3": {
+      "id": "3",
+      "name": "new_3",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "2",
       "previous": null,
       "child": null,
       "parent": "1"

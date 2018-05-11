@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 2,
+  "nextId": 3,
   "rootId": "1",
   "externalCss": [],
   "externalJs": [
@@ -39,19 +39,31 @@
       "name": "New Project",
       "element": "div",
       "text": null,
-      "attributes": [
-        {
-          "name": "na",
-          "value": ""
-        }
-      ],
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "2",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "new_2",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
       "child": null,
-      "parent": null
+      "parent": "1"
     }
   }
 }

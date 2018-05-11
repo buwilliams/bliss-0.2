@@ -1,0 +1,124 @@
+body {
+  padding: 0;
+  margin: 0;
+  color: #333333;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 18px;
+}
+
+#headerContainer_6 {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: #f1f1f1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+#blissLink_58 {
+  text-decoration: none;
+  color: #333333;
+}
+
+#menuContainer_7 {
+}
+
+#menuContainer_7 > a {
+  margin: 0.5em;
+  text-decoration: none;
+  background-color: #c7c7c7;
+  padding: 0.5em 0.75em;
+  font-size: 0.75em;
+  color: #3c3c3c;
+  border-radius: 0.2em;
+}
+
+#menuContainer_7 > a:hover {
+  background-color: #9f9f9f;
+  color: #ffffff;
+}
+
+#hero_14 {
+  margin: 7em 0 0 0;
+}
+
+#header_4 {
+  text-align: center;
+}
+
+#subheader_5 {
+  text-align: center;
+}
+
+#threeBigProblems_15 {
+  display: flex;
+  justify-content: center;
+  margin: 0 2em 4em 2em;
+}
+
+#threeBigProblems_15 .problem {
+  background-color: #c8c8c8;
+  border-radius: 0.5em;
+  padding: 1em;
+  margin: 0.5em;
+  width: 30%;
+}
+
+#visualDesign_17 {
+  text-align: center;
+}
+
+#prototype_23 {
+  text-align: center;
+}
+
+#collaborate_26 {
+  text-align: center;
+}
+
+#introducingBlissContainer_28 {
+  background-color: #e3e3e3;
+  padding: 1em;
+  margin: 3em 0 1em 0;
+}
+
+#introducingBlissui_29 {
+  text-align: center;
+}
+
+#revolutionize_30 {
+  text-align: center;
+}
+
+#featureContainer_31 {
+  display: flex;
+  justify-content: center;
+  margin: 0 2em 4em 2em;
+  flex-wrap: wrap;
+}
+
+#featureContainer_31 .feature {
+  margin: 0.5em;
+  width: 40%;
+}
+
+#useBlissContainer_56 {
+  text-align: center;
+  margin: 4em 0 4em;
+}
+
+#useBliss_57 {
+  text-align: center;
+}
+
+#startNowLink_59 {
+  background-color: #919191;
+  padding: 1em;
+  text-decoration: none;
+  border-radius: 0.5em;
+  display: inline-block;
+  color: #ffffff;
+}
+

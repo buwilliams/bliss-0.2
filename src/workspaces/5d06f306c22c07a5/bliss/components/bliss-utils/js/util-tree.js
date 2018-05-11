@@ -243,7 +243,7 @@ var UtilTree = {
     return proj;
   },
 
-  mergeComponents: function(source, dest, toParentId) {
+  mergeComponents: function(source, dest, replaceId) {
     var nextId = dest.nextId;
     var comps = _.cloneDeep(source.components);
     var idMap = {};
@@ -266,20 +266,62 @@ var UtilTree = {
     // updated dest nextId
     dest.nextId += _.keys(comps).length;
 
-    var fromId = idMap[source.rootId];
-    if(dest.components[toParentId].child !== null) {
-      var child = dest.components[dest.components[toParentId].child];
-      child.previous = fromId;
-      dest.components[fromId].next = child.id;
+    var injectRootComp = dest.components[idMap[source.rootId]];
+    var replaceComp = dest.components[replaceId];
+
+    // Connect source tree with dest tree
+    if(replaceComp.parent !== null) {
+      var parent = dest.components[replaceComp.parent];
+      if(parent.child === replaceComp.id) {
+        parent.child = injectRootComp.id;
+      }
     }
 
-    dest.components[toParentId].child = fromId;
-    dest.components[fromId].parent = toParentId;
+    if(replaceComp.previous !== null) {
+      var prev = dest.components[replaceComp.previous];
+      prev.next = injectRootComp.id;
+      injectRootComp.previous = prev.id;
+    }
+
+    if(replaceComp.next !== null) {
+      var next = dest.components[replaceComp.next];
+      next.previous = injectRootComp.id;
+      injectRootComp.next = next.id;
+    }
+
+    // Add replaceComp attributes to injectRootComp
+    var union = _.union(injectRootComp.attributes, replaceComp.attributes);
+    injectRootComp.attributes = _.uniqBy(union, 'name');
+
+    union = _.union(injectRootComp.dynamicAttributes, replaceComp.dynamicAttributes);
+    injectRootComp.dynamicAttributes = _.uniqBy(union, 'name');
+
+    union = _.union(injectRootComp.js, replaceComp.js);
+    injectRootComp.js = _.uniqBy(union, 'name');
+
+    union = _.union(injectRootComp.css, replaceComp.css);
+    injectRootComp.css = _.uniqBy(union, 'selector');
+
+    if(replaceComp.text !== null && replaceComp.text !== '') {
+      injectRootComp.text = replaceComp.text;
+    }
+
+    if(replaceComp.textFn !== null && replaceComp.textFn !== '') {
+      injectRootComp.textFn = replaceComp.textFn;
+    }
+
+    if(replaceComp.repeatFn !== null && replaceComp.repeatFn !== '') {
+      injectRootComp.repeatFn = replaceComp.repeatFn;
+    }
+
+    if(replaceComp.ifFn !== null && replaceComp.ifFn !== '') {
+      injectRootComp.ifFn = replaceComp.ifFn;
+    }
 
     return dest;
   },
 
-  merge: function(source, dest, insertParentId) {
+  merge: function(source, dest, replaceId) {
     // Packages, externalCss, externalJs
     dest.packages = _.union(dest.packages, source.packages);
     dest.externalCss = _.union(dest.externalCss, source.externalCss);
@@ -310,15 +352,7 @@ var UtilTree = {
     // TODO: merge properties on duplicates
 
     // Components
-    dest = this.mergeComponents(source, dest, insertParentId);
-
-    // Overwrite dest with source properties
-    dest.name = source.name;
-    dest.compiler = source.compiler;
-    dest.type = source.type;
-    dest.build = source.build;
-    dest.filename = source.filename || source.name;
-    dest.pageTitle = source.pageTitle || '';
+    dest = this.mergeComponents(source, dest, replaceId);
 
     return dest;
   }

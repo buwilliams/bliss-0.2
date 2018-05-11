@@ -1,0 +1,257 @@
+{
+  "name": "index2",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "layout": "layout",
+  "nextId": 9,
+  "rootId": "1",
+  "externalCss": [],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js"
+  ],
+  "schemas": [],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() { app.render(); }"
+    }
+  ],
+  "cssVars": [],
+  "css": [],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "index2",
+      "element": "div",
+      "text": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "4",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "spa slow",
+      "element": "h1",
+      "text": "Building single page apps is slow and complicated.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "font-family",
+              "value": "$fontHeader"
+            },
+            {
+              "name": "margin-top",
+              "value": "1em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "3",
+      "previous": null,
+      "child": null,
+      "parent": "4"
+    },
+    "3": {
+      "id": "3",
+      "name": "text editors",
+      "element": "h2",
+      "text": "Texts editors were not designed for the web.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "color",
+              "value": "#808282"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "5",
+      "previous": "2",
+      "child": null,
+      "parent": "4"
+    },
+    "4": {
+      "id": "4",
+      "name": "why",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "2",
+      "parent": "1"
+    },
+    "5": {
+      "id": "5",
+      "name": "flexbox",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "flex-direction",
+              "value": "row"
+            },
+            {
+              "name": "justify-content",
+              "value": "space-around"
+            }
+          ]
+        },
+        {
+          "selector": "$id > div",
+          "properties": [
+            {
+              "name": "flex-grow",
+              "value": "1"
+            },
+            {
+              "name": "padding",
+              "value": "0.5em"
+            },
+            {
+              "name": "margin",
+              "value": "0 0.25em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "3",
+      "child": "6",
+      "parent": "4"
+    },
+    "6": {
+      "id": "6",
+      "name": "visual design",
+      "element": "div",
+      "text": "Visual Design",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "7",
+      "previous": null,
+      "child": null,
+      "parent": "5"
+    },
+    "7": {
+      "id": "7",
+      "name": "experiment",
+      "element": "div",
+      "text": "Experiment",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "8",
+      "previous": "6",
+      "child": null,
+      "parent": "5"
+    },
+    "8": {
+      "id": "8",
+      "name": "share",
+      "element": "div",
+      "text": "Share",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "card"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "7",
+      "child": null,
+      "parent": "5"
+    }
+  },
+  "filename": "index2",
+  "pageTitle": "index2"
+}

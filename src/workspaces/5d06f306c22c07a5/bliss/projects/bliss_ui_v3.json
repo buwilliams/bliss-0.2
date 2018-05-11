@@ -3,7 +3,7 @@
   "type": "bliss",
   "build": "designer",
   "compiler": "react",
-  "nextId": 333,
+  "nextId": 327,
   "rootId": "1",
   "externalCss": [
     "node_modules/tether/dist/css/tether.min.css",
@@ -89,7 +89,7 @@
   "js": [
     {
       "name": "init",
-      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject;\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }});\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  });\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  });\n  \n  app.dispatch({\n    path: '/file_explorer',\n    action: 'getEntries'\n  });\n}"
+      "body": "function() {\n  // Start Bliss with Empty Project\n  app.buildProject = newBlissProject\n  \n  // Send firebase security token\n  $.ajaxSetup({ headers: {\n    'X-User-Token': app.state.firebase.user_token }})\n  \n  app.dispatch({\n    path: '/settings',\n    action: 'set',\n    key: 'activeComponent',\n    value: app.buildProject.rootId\n  })\n  \n  // Verify firebase session\n  app.dispatch({\n    path: '/firebase',\n    action: 'setup'\n  })\n}"
     },
     {
       "name": "build",
@@ -6368,7 +6368,7 @@
           "value": "getStyle"
         }
       ],
-      "next": "327",
+      "next": null,
       "previous": "227",
       "child": "305",
       "parent": "4"
@@ -6480,7 +6480,7 @@
       ],
       "dynamicAttributes": [],
       "next": "307",
-      "previous": "305",
+      "previous": null,
       "child": null,
       "parent": "304"
     },
@@ -7128,231 +7128,6 @@
       "previous": null,
       "child": null,
       "parent": "324"
-    },
-    "327": {
-      "id": "327",
-      "name": "File Explorer Container",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": "",
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "overflow",
-              "value": "auto"
-            },
-            {
-              "name": "height",
-              "value": "calc(100vh - 80px)"
-            },
-            {
-              "name": "padding",
-              "value": "10px"
-            }
-          ]
-        }
-      ],
-      "js": [
-        {
-          "name": "getStyle",
-          "body": "function() {\n  var selected = app.state.views.selected\n  var displayValue = (selected === 'file_explorer') ? 'block' : 'none';\n  return { 'display': displayValue };\n}"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "style",
-          "value": "getStyle"
-        }
-      ],
-      "next": null,
-      "previous": "304",
-      "child": "331",
-      "parent": "4"
-    },
-    "328": {
-      "id": "328",
-      "name": "title_copy",
-      "element": "h3",
-      "text": "file explorer",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-transform",
-              "value": "uppercase"
-            },
-            {
-              "name": "font-size",
-              "value": "1em"
-            },
-            {
-              "name": "background-color",
-              "value": "$headerBg"
-            },
-            {
-              "name": "color",
-              "value": "#fff"
-            },
-            {
-              "name": "padding",
-              "value": "10px"
-            },
-            {
-              "name": "border-radius",
-              "value": "3px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "329",
-      "previous": null,
-      "child": null,
-      "parent": "327"
-    },
-    "329": {
-      "id": "329",
-      "name": "import_copy",
-      "element": "textarea",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "cols",
-          "value": "45"
-        },
-        {
-          "name": "rows",
-          "value": "10"
-        },
-        {
-          "name": "placeholder",
-          "value": "paste html here..."
-        },
-        {
-          "name": "class",
-          "value": "form-control"
-        }
-      ],
-      "css": [],
-      "js": [
-        {
-          "name": "setObjectContainer",
-          "body": "function(scope, props) {\n  return app.buildProject;\n};\n"
-        },
-        {
-          "name": "setObjectKey",
-          "body": "function(scope, props) {\n  return \"packages\";\n};\n"
-        },
-        {
-          "name": "setObjectType",
-          "body": "function(scope, props) {\n  return \"object\";\n};\n"
-        },
-        {
-          "name": "setOnChange",
-          "body": "function(scope, attributes) {\n  return function(newPackages) {\n    app.js.update(function() {\n      app.buildProject.packages = newPackages;\n    });\n  }\n};\n"
-        },
-        {
-          "name": "setItemKey",
-          "body": "function(scope, attributes) {\n  return \"name\";\n}"
-        },
-        {
-          "name": "setItemValue",
-          "body": "function(scope, attributes) {\n  return \"version\";\n}"
-        }
-      ],
-      "dynamicAttributes": [],
-      "next": "330",
-      "previous": null,
-      "child": null,
-      "parent": "327"
-    },
-    "331": {
-      "id": "331",
-      "name": "title",
-      "element": "h3",
-      "text": "file explorer",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "clearfix"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-transform",
-              "value": "uppercase"
-            },
-            {
-              "name": "font-size",
-              "value": "1em"
-            },
-            {
-              "name": "background-color",
-              "value": "$headerBg"
-            },
-            {
-              "name": "color",
-              "value": "#fff"
-            },
-            {
-              "name": "padding",
-              "value": "10px"
-            },
-            {
-              "name": "border-radius",
-              "value": "3px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "332",
-      "previous": null,
-      "child": null,
-      "parent": "327"
-    },
-    "332": {
-      "id": "332",
-      "name": "file explorer component",
-      "element": "page.file_explorer",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "331",
-      "child": null,
-      "parent": "327"
     }
   },
   "schemas": [
@@ -7457,7 +7232,7 @@
       "actions": [
         {
           "action": "init",
-          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'import_html',   label: 'Import HTML' },\n      { name: 'file_explorer', label: 'File Explorer' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
+          "body": "function (data, args) {\n  return {\n    selected: 'designer',\n    list: [\n      { name: 'designer',      label: 'Designer' },\n      { name: 'js',            label: 'JavaScript' },\n      { name: 'data',          label: 'Data Editor' },\n      { name: 'global_js',     label: 'Global JS' },\n      { name: 'global_css',    label: 'Global CSS' },\n      { name: 'css_vars',      label: 'CSS Variables' },\n      { name: 'page_load',     label: 'Page Load' },\n      { name: 'node_packages', label: 'Node Packages' },\n      { name: 'import_html',   label: 'Import HTML' },\n      { name: 'settings',      label: 'Settings' }\n    ]\n  }\n}"
         },
         {
           "action": "setView",
