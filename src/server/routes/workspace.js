@@ -1,3 +1,7 @@
+/**
+ * @module server/routes/workspace
+ */
+
 const path = require('path');
 const express = require('express');
 const router = express.Router();
@@ -5,6 +9,10 @@ const fs = require('fs');
 const env = require('../env.js');
 const user = require('../../fs/user.js');
 
+/**
+ * @name List Workspaces
+ * @route {GET} /workspace/list
+ */
 router.get('/list', function(req, res) {
   var w = user(env, req.session).workspace()
 
@@ -24,6 +32,11 @@ router.get('/list', function(req, res) {
   res.send({ "workspaces": workspaces })
 });
 
+/**
+ * @name Download Workspace
+ * @route {GET} /workspace/download
+ * @queryparam {string} workspace - name of the workspace
+ */
 router.get('/download', function(req, res, next) {
   if (!req.query.workspace) {
     res.status(400).send('workspace param required');
@@ -39,6 +52,11 @@ router.get('/download', function(req, res, next) {
     .catch(next);
 });
 
+/**
+ * @name Create Workspace
+ * @route {post} /workspace
+ * @queryparam {string} name - name of the workspace to create
+ */
 router.post('/', function(req, res) {
   if (!req.body.name) {
     res.status(400).send('name param required');
@@ -53,6 +71,11 @@ router.post('/', function(req, res) {
   res.send({ "success": true })
 });
 
+/**
+ * @name Delete Workspace
+ * @route {delete} /workspace/:workspaceName
+ * @routeparam {string} workspaceName - name of the workspace to delete
+ */
 router.delete('/:workspaceName', function(req, res) {
   user(env, req.session)
     .workspace(req.params.workspaceName)
@@ -61,6 +84,12 @@ router.delete('/:workspaceName', function(req, res) {
   res.send({ "success": true })
 });
 
+/**
+ * @name File Explorer
+ * @route {get} /workspace/file_explorer
+ * @queryparam {string} workspace - name of the workspace
+ * @queryparam {string} path - list the contents of this path
+ */
 router.get('/file_explorer', function(req, res) {
   if (!req.query.workspace) {
     res.status(400).send('workspace param required');

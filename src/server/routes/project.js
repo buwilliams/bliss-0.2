@@ -1,3 +1,7 @@
+/**
+ * @module server/routes/project
+ */
+
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
@@ -6,6 +10,11 @@ const env = require('../env.js');
 const session = require('../session.js');
 const user = require('../../fs/user.js');
 
+/**
+ * @name List Pages
+ * @route {GET} /project/list
+ * @queryparam {string} workspace - workspace name
+ */
 router.get('/list', function (req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
@@ -20,6 +29,12 @@ router.get('/list', function (req, res) {
   res.send({success: true, projects: projects});
 });
 
+/**
+ * @name Load Page
+ * @route {GET} /project/load
+ * @queryparam {string} workspace - workspace name
+ * @queryparam {string} name - name of page to load
+ */
 router.get('/load', function (req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
@@ -45,6 +60,12 @@ router.get('/load', function (req, res) {
   res.send({success: true, project: project.projectJson});
 });
 
+/**
+ * @name Save Page
+ * @route {POST} /project/save
+ * @queryparam {string} workspace - workspace name
+ * @bodyparam {object} requestBody - projectJson contents
+ */
 router.post('/save', function (req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
@@ -59,6 +80,12 @@ router.post('/save', function (req, res) {
   res.send({ success: true });
 });
 
+/**
+ * @name Delete Page
+ * @route {POST} /project/delete
+ * @queryparam {string} workspace - workspace name
+ * @queryparam {string} project - page name
+ */
 router.post('/delete', function (req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');
@@ -78,6 +105,14 @@ router.post('/delete', function (req, res) {
   res.send({ success: true });
 });
 
+/**
+ * @name Import HTML
+ * @route {POST} /project/html
+ * @queryparam {string} workspace - workspace name
+ * @queryparam {string} parentId - id of the parent component to add imported html
+ * @bodyparam {object} project - projectJson
+ * @bodyparam {string} html - string of html to import
+ */
 router.post('/html', function(req, res) {
   if (!req.query.workspace) {
     res.status(400).send('missing workspace param');

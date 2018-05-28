@@ -140,7 +140,7 @@ task('build', function(){
   fse.copySync(config.bliss_workspace_build, config.bliss_public, {overwrite:true,dereference:true});
 });
 
-desc('Updates Bliss after you change it in the UI (you need to build bliss first)');
+desc('Updates Bliss from local build changes');
 task('update-bliss', function() {
   fse.copySync('build','src/workspaces',{overwrite:true,dereference:true});
 });
@@ -175,6 +175,11 @@ task('test', function(optionalFilePattern) {
   jake.exec(cmd, {printStdout: true}, function () {
     console.log('All tests passed.');
   });
+});
+
+desc('Source code documentation.')
+task('docs', function() {
+  jake.exec('./node_modules/.bin/jsdoc -c ./jsdoc.conf.json');
 });
 
 task('default', ['test']);

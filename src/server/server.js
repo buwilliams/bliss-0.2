@@ -1,3 +1,7 @@
+/**
+ * @module server/server
+ */
+
 const path = require('path')
 const https = require('https')
 const fs = require('fs')
@@ -27,9 +31,23 @@ var secure = app.use(
                        '/workspace',
                        '/session']}));
 
+/**
+ * Redirect to website workspace
+ *
+ * @name Website Redirect
+ * @route {GET} /
+ */
 app.get('/', function(req, res) {
   res.redirect(`/hosted/${env.bliss_user}/website/`);
 });
+
+/**
+ * Source code documentation
+ *
+ * @name Docs
+ * @route {GET} /docs
+ */
+app.use('/docs', express.static(path.join(env.workspace, 'docs')));
 
 app.use('/user', user);
 app.use('/compiler', compiler);
@@ -40,6 +58,12 @@ app.use('/bliss', bliss);
 app.use('/hosted', hosted);
 app.use('/reference', reference);
 
+/**
+ * Returns the current user's session.
+ *
+ * @name Session
+ * @route {GET} /session
+ */
 app.get('/session', function(req, res) {
   var token = tokens.createToken([req.session.user.username], env.secret_key);
   res.send({
@@ -52,7 +76,12 @@ app.get('/session', function(req, res) {
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
-// Route to renew https
+/**
+ * Used to renew SSL certs
+ *
+ * @name Well-Known
+ * @route {GET} /.well-known/*
+ */
 app.use('/.well-known',
   express.static(path.join(__dirname, '..', '..', '.well-known'),
   {dotfiles:'allow'}));

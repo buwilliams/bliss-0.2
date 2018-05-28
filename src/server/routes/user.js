@@ -1,3 +1,7 @@
+/**
+ * @module server/routes/user
+ */
+
 const path = require('path');
 const express = require('express');
 const router = express.Router();
