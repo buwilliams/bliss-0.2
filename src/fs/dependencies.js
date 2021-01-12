@@ -49,7 +49,7 @@ module.exports = {
 
   installPackageJson: function(workspace) {
     var one_minute = 1000 * 60;
-    var code = execSync(`yarn install`, {
+    var code = execSync(`npm install`, {
       "cwd": workspace,
       "timeout": one_minute,
       "killSignal": "SIGKILL" // default: SIGTERM
