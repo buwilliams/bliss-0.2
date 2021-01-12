@@ -7,6 +7,7 @@ const https = require('https')
 const fs = require('fs')
 const express = require('express')
 const app = express()
+const _ = require('lodash');
 const bodyParser = require('body-parser')
 // const authorization = require('./server-authorization.js')
 const env = require('./env.js')
@@ -19,6 +20,7 @@ const workspace = require('./routes/workspace.js')
 const hosted = require('./routes/hosted.js')
 const reference = require('./routes/reference.js')
 const tokens = require('./core/tokens.js')
+const defaultSession = require('./session_default.js')
 
 app.use(bodyParser.json({limit: '50mb'}))
 
@@ -32,6 +34,12 @@ var secure = app.use(
                        '/workspace',
                        '/session']}));
 */
+
+app.use(function(req, res, next) {
+  // console.log('Setting default session:', defaultSession);
+  req.session = Object.assign({}, req.session, defaultSession);
+  next();
+});
 
 /**
  * Redirect to website workspace
