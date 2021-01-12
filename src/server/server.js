@@ -2,6 +2,7 @@
  * @module server/server
  */
 
+require('dotenv').config();
 const path = require('path')
 const https = require('https')
 const fs = require('fs')
@@ -21,6 +22,7 @@ const hosted = require('./routes/hosted.js')
 const reference = require('./routes/reference.js')
 const tokens = require('./core/tokens.js')
 const defaultSession = require('./session_default.js')
+const testSession = require('./session.js')
 
 app.use(bodyParser.json({limit: '50mb'}))
 
@@ -36,8 +38,11 @@ var secure = app.use(
 */
 
 app.use(function(req, res, next) {
-  // console.log('Setting default session:', defaultSession);
-  req.session = Object.assign({}, req.session, defaultSession);
+  if(process.env.BLISS_ENV === 'test') {
+    req.session = Object.assign({}, req.session, testSession);
+  } else {
+    req.session = Object.assign({}, req.session, defaultSession);
+  }
   next();
 });
 
