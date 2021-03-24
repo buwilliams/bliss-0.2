@@ -8,6 +8,7 @@ module.exports = {
   "app": process.env.BLISS_APP,
   "node_modules": process.env.BLISS_NODE_MODULES,
   "bliss_user": process.env.BLISS_USER,
+  "bliss_user_ws": process.env.BLISS_USER_WS,
   "secret_key": process.env.BLISS_SECRET_KEY,
   "bliss_test_user": process.env.BLISS_TEST_USER,
   "bliss_test_user_ws": process.env.BLISS_TEST_USER_WS,

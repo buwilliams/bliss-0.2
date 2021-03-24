@@ -1,5 +1,5 @@
 {
-  "name": "BlissUI",
+  "name": "bliss-ui",
   "version": "0.2.0",
   "description": "UI design for creatives",
   "main": "./src/compiler/react/server.js",

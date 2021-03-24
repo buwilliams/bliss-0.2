@@ -13,7 +13,7 @@ Application Management System (AMS) for Coders and Designers
 
 ## Getting Started
 
-- `yarn install`
+- `npm install`
 - `jake test`
 - `jake build`
 - `jake server`

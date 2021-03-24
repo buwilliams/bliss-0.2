@@ -2,13 +2,15 @@
  * @module server/server
  */
 
+require('dotenv').config();
 const path = require('path')
 const https = require('https')
 const fs = require('fs')
 const express = require('express')
 const app = express()
+const _ = require('lodash');
 const bodyParser = require('body-parser')
-const authorization = require('./server-authorization.js')
+// const authorization = require('./server-authorization.js')
 const env = require('./env.js')
 const bliss = require('./routes/bliss.js')
 const compiler = require('./routes/compiler.js')
@@ -19,9 +21,12 @@ const workspace = require('./routes/workspace.js')
 const hosted = require('./routes/hosted.js')
 const reference = require('./routes/reference.js')
 const tokens = require('./core/tokens.js')
+const defaultSession = require('./session_default.js')
+const testSession = require('./session.js')
 
 app.use(bodyParser.json({limit: '50mb'}))
 
+/*
 var secure = app.use(
   authorization(
     { protected_urls: ['/user',
@@ -30,6 +35,16 @@ var secure = app.use(
                        '/website',
                        '/workspace',
                        '/session']}));
+*/
+
+app.use(function(req, res, next) {
+  if(process.env.BLISS_ENV === 'test') {
+    req.session = Object.assign({}, req.session, testSession);
+  } else {
+    req.session = Object.assign({}, req.session, defaultSession);
+  }
+  next();
+});
 
 /**
  * Redirect to website workspace
@@ -65,11 +80,18 @@ app.use('/reference', reference);
  * @route {GET} /session
  */
 app.get('/session', function(req, res) {
+  /*
   var token = tokens.createToken([req.session.user.username], env.secret_key);
   res.send({
     'token': token,
     'email': req.session.user.email,
     'username': req.session.user.username
+  });
+  */
+  res.send({
+    'token': 'foo',
+    'email': 'bliss@blissui.com',
+    'username': 'BlissUI'
   });
 });
 
