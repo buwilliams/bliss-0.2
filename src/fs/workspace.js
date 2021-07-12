@@ -66,17 +66,14 @@ module.exports = function(user, workspace) {
 
   pub.deployWorkspace = function() {
     var deployPath = path.join(user.env.workspace, '_deployed', user.name, workspace)
+
+    fs(username).removeSync(deployPath);
     fs(username).ensureDirSync(deployPath)
-    fs(username).copySync(dir,
-                deployPath,
-                {overwrite: true, dereference: true})
-    /*
-    if(fs(username).existsSync(path.join(deployPath, 'designer.html'))) {
-      fs(username).moveSync(path.join(deployPath, 'designer.html'),
-                  path.join(deployPath, 'index.html'),
-                  {overwrite: true});
-    }
-    */
+    fs(username).copySync(dir, deployPath, {
+      overwrite: true,
+      dereference: true
+    })
+
     return this
   }
 
