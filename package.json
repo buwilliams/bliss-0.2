@@ -21,7 +21,7 @@
   "homepage": "https://github.com/buwilliams/bliss-0.2#readme",
   "dependencies": {
     "archiver": "^2.1.1",
-    "bcrypt": "^1.0.2",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-alpha.6",
     "chai-arrays": "^2.0.0",
