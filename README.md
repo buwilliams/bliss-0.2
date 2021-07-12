@@ -11,10 +11,16 @@ Application Management System (AMS) for Coders and Designers
 - Cloud-based IDE
 - Website
 
+## Bliss relies on out-of-date software, requiring:
+
+- Node 8 (nvm suggested)
+- Python 2.7 (pyenv suggested)
+
 ## Getting Started
 
+- `cp defaults.env .env` Change values for your machine.
 - `npm install`
-- `jake test`
-- `jake build`
-- `jake server`
+- `npm run test` Must not be running the server during tests.
+- `npm run build` Must run before server.
+- `npm run server`
 - Open `http://localhost:3000/bliss/`

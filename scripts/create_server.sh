@@ -46,12 +46,11 @@ EOF
 
 ssh-copy-id -i ~/.ssh/id_rsa git@$IP
 
-# install server dependencies (git, node, npm, yarn)
+# install server dependencies (git, node, npm)
 echo 'Installing system deps...'
 ssh -t git@$IP <<EOF
   sudo apt-get udpate
   sudo apt-get install -y build-essential git certbot ufw nodejs npm
-  sudo npm install -g yarn
   sudo ufw allow ssh
   sudo ufw allow http/tcp
   sudo ufw allow https/tcp
@@ -61,8 +60,8 @@ EOF
 echo 'Installing letsencrypt creds...'
 ssh -t git@$IP <<EOF
   sudo chown -R git:git /etc/letsencrypt
-  yarn global add http-server
-  sudo $(yarn global bin)/http-server -p 80 /home/git/work/scripts/certbot > /dev/null 2>&1 & echo $! > /home/git/work/scripts/certbot/run.pid
+  npm install -g http-server
+  sudo http-server -p 80 /home/git/work/scripts/certbot > /dev/null 2>&1 & echo $! > /home/git/work/scripts/certbot/run.pid
   sudo certbot certonly --webroot -w /home/git/work/scripts/certbot -d blissui.com -d www.blissui.com
   sudo pkill -P $(cat /home/git/work/scripts/certbot/run.pid)
   sudo rm /home/git/work/scripts/certbot/run.pid

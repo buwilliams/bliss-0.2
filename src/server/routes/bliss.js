@@ -63,4 +63,6 @@ router.use('/node_modules',
  */
 router.use('/', express.static(env.app));
 
+console.log(env.app)
+
 module.exports = router

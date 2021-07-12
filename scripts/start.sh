@@ -19,7 +19,7 @@ echo 'Creating symlink for firebase...'
 ln -sfT ~/.ssh/blissui-firebase.json ./blissui-firebase.json
 
 echo 'Updating node deps...'
-yarn install
+npm install
 
 echo 'Building Bliss...'
 sudo chown -R git:git ./build

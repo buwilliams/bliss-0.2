@@ -4,8 +4,9 @@
   "description": "UI design for creatives",
   "main": "./src/compiler/react/server.js",
   "scripts": {
-    "build": "jake",
-    "test": "jake test"
+    "test": "jake -f jakefile.js test",
+    "server": "nodemon --ignore build/ ./src/server/server.js",
+    "build": "jake -f jakefile.js build"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
+    "nodemon": "^2.0.12",
     "parse5": "^4.0.0",
     "popper.js": "^1.12.5",
     "pretty": "^1.0.0",
@@ -63,5 +65,8 @@
     "mocha": "^3.5.0",
     "pryjs": "^1.0.3"
   },
-  "keywords": []
+  "keywords": [],
+  "engines": {
+    "node": ">=8.0 <9"
+  }
 }
