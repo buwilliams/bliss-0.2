@@ -9,26 +9,20 @@ var blissUi = (function() {
     app.js['init'] = function() {
       // Start Bliss with Empty Project
       app.buildProject = newBlissProject
-
-      // Send firebase security token
-      $.ajaxSetup({
-        headers: {
-          'X-User-Token': app.state.firebase.user_token
-        }
-      })
-
       app.dispatch({
         path: '/settings',
         action: 'set',
         key: 'activeComponent',
         value: app.buildProject.rootId
       })
-
-      // Verify firebase session
+      app.js.afterAuth()
       app.dispatch({
         path: '/firebase',
-        action: 'setup'
-      })
+        action: 'setUser',
+        user: {
+          email: 'bliss@blissui.com'
+        }
+      });
     }
     app.js['build'] = function(clearState) {
       app.js.log('app.js.build() invoked.');
@@ -754,8 +748,10 @@ var blissUi = (function() {
     app.methods["275"] = {};
     app.methods["275"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        var username = app.state.firebase.username
-        var workspace = app.state.settings.workspace
+        //var username = app.state.firebase.username
+        //var workspace = app.state.settings.workspace
+        var username = '5d06f306c22c07a5';
+        var workspace = 'bliss';
 
         if (username === null) return
 
@@ -765,7 +761,9 @@ var blissUi = (function() {
           workspace + '/' +
           app.buildProject.filename + '.html' || app.buildProject.name + '.html';
 
-        window.open(url)
+        console.log('app', app);
+
+        //window.open(url)
       }
     };
     app.methods["319"] = {};
@@ -1006,6 +1004,7 @@ var blissUi = (function() {
     }
     app.methods["3"] = {};
     app.methods["3"]['shouldShow'] = function() {
+      return true;
       if (_.isNil(app.state.settings.activeComponent))
         return false;
 
@@ -1609,6 +1608,10 @@ var blissUi = (function() {
     app.methods["95"] = {};
     app.methods["95"]['showStatus'] = function(scope, attributes) {
       return app.state.status || 'Ready.';
+    };
+    app.rootProps = {};
+    app.getRootProps = function(name) {
+      return app.rootProps[name];
     };
     app.getPath = function(objRef, path) {
       var ref = objRef;

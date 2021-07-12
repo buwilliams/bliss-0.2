@@ -1,0 +1,133 @@
+{
+  "name": "buddy",
+  "compiler": "react",
+  "version": "v0.2",
+  "type": "app",
+  "build": "designer",
+  "layout": "",
+  "nextId": 12,
+  "rootId": "1",
+  "externalCss": [],
+  "externalJs": [
+    "node_modules/react/dist/react.js",
+    "node_modules/react-dom/dist/react-dom.js"
+  ],
+  "schemas": [],
+  "state": {},
+  "packages": [
+    {
+      "name": "react",
+      "version": "15.4.2"
+    },
+    {
+      "name": "react-dom",
+      "version": "15.4.2"
+    }
+  ],
+  "js": [
+    {
+      "name": "init",
+      "body": "function() { app.render(); }"
+    }
+  ],
+  "cssVars": [],
+  "css": [],
+  "load": [
+    "init"
+  ],
+  "components": {
+    "1": {
+      "id": "1",
+      "name": "buddy",
+      "element": "div",
+      "text": "",
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "7",
+      "parent": null
+    },
+    "2": {
+      "id": "2",
+      "name": "hello world",
+      "element": "h1",
+      "text": "Hello, world!",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "3",
+      "previous": null,
+      "child": null,
+      "parent": "7"
+    },
+    "3": {
+      "id": "3",
+      "name": "ul",
+      "element": "ul",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "2",
+      "child": "4",
+      "parent": "7"
+    },
+    "4": {
+      "id": "4",
+      "name": "li",
+      "element": "li",
+      "text": "hello",
+      "textFn": "food_name",
+      "ifFn": null,
+      "repeatFn": "food",
+      "attributes": [],
+      "css": [],
+      "js": [
+        {
+          "name": "food_name",
+          "body": "function(scope, attributes) {\n  //console.log('scope', scope, 'attributes', attributes)\n  return scope.food[scope.food_index]\n};\n"
+        },
+        {
+          "name": "food",
+          "body": "function(scope, attributes) {\n  return ['apple', 'banana', 'orange'];\n};\n"
+        }
+      ],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "3"
+    },
+    "7": {
+      "id": "7",
+      "name": "list container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "2",
+      "parent": "1"
+    }
+  },
+  "filename": "buddy",
+  "pageTitle": "buddy"
+}

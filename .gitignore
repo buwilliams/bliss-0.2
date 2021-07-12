@@ -12,3 +12,4 @@ src/workspaces/_deployed
 /blissui-firebase.json
 *.zip
 src/workspaces/_bliss
+src/**/package-lock.json

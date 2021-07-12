@@ -5,8 +5,9 @@
   "main": "./src/compiler/react/server.js",
   "scripts": {
     "test": "jake -f jakefile.js test",
+    "build": "jake -f jakefile.js build",
     "server": "nodemon --ignore build/ ./src/server/server.js",
-    "build": "jake -f jakefile.js build"
+    "backfill": "jake -f jakefile.js update-bliss"
   },
   "repository": {
     "type": "git",

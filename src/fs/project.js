@@ -38,6 +38,7 @@ module.exports = function(workspace, projectJson) {
     var dir = `${pub.fullpath}/${snakeFilename}.json`
     var jsonStr = fs(workspace.user.name).readFileSync(dir)
     var projectJson = JSON.parse(jsonStr)
+    console.log('loading', dir)
     init(projectJson)
     return this
   }

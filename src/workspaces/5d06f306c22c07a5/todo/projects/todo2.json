@@ -4,7 +4,7 @@
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 87,
+  "nextId": 88,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
@@ -76,7 +76,7 @@
         },
         {
           "name": "background-image",
-          "value": "url(https://www.hdwallpapers.in/download/colorful_flowers_dark_background-1920x1200.jpg)"
+          "value": "url(https://i.ibb.co/hK5z1qM/flowers.jpg)"
         },
         {
           "name": "background-size",
@@ -129,7 +129,7 @@
       "id": "6",
       "name": "header",
       "element": "h1",
-      "text": "Beauitful To-do List",
+      "text": "Pretty Todos",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -625,5 +625,7 @@
         }
       ]
     }
-  ]
+  ],
+  "filename": "index",
+  "pageTitle": "Pretty Todo"
 }

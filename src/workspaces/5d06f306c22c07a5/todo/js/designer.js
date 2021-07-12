@@ -119,6 +119,10 @@ var todo = (function() {
         return "You've crushed " + count + " to-dos. You've have " + (total - count) + " remaining.";
       }
     }
+    app.rootProps = {};
+    app.getRootProps = function(name) {
+      return app.rootProps[name];
+    };
     app.getPath = function(objRef, path) {
       var ref = objRef;
       var parts = path.split('/')
@@ -228,6 +232,10 @@ var todo = (function() {
                   "id": "column_12",
                   "key": app.getKey('id', '12')
                 }),
+                React.createElement('h1', app.mergeAttributes('6', scope, {}, {
+                  "id": "header_6",
+                  "key": app.getKey('id', '6')
+                }), 'Beauitful To-do List'),
                 React.createElement('input', app.mergeAttributes('7', scope, {
                   "value": "getValue",
                   "onChange": "handleChange",
@@ -236,10 +244,6 @@ var todo = (function() {
                   "id": "todoInput_7",
                   "key": app.getKey('id', '7')
                 })),
-                React.createElement('h1', app.mergeAttributes('6', scope, {}, {
-                  "id": "header_6",
-                  "key": app.getKey('id', '6')
-                }), 'Beauitful To-do List'),
                 React.createElement('button', app.mergeAttributes('8', scope, {
                   "onClick": "handleClick"
                 }, {

@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 87,
+  "nextId": 88,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
@@ -129,7 +129,7 @@ var blissProject = {
       "id": "6",
       "name": "header",
       "element": "h1",
-      "text": "Beauitful To-do List",
+      "text": "Pretty Todo List",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -625,6 +625,8 @@ var blissProject = {
         }
       ]
     }
-  ]
+  ],
+  "filename": "index.html",
+  "pageTitle": "Pretty Todo"
 }
 if(typeof module !== "undefined") module.exports = blissProject;

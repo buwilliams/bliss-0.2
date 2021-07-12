@@ -748,8 +748,11 @@ var blissUi = (function() {
     app.methods["275"] = {};
     app.methods["275"]['handleClick'] = function(scope, attributes) {
       return function(e) {
-        var username = app.state.firebase.username
-        var workspace = app.state.settings.workspace
+        //var username = app.state.firebase.username
+        //var workspace = app.state.settings.workspace
+
+        var username = '5d06f306c22c07a5';
+        var workspace = app.state.settings.workspace;
 
         if (username === null) return
 

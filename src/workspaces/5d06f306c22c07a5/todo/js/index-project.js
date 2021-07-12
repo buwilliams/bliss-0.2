@@ -4,7 +4,7 @@ var blissProject = {
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 87,
+  "nextId": 88,
   "rootId": "1",
   "externalCss": [
     "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
@@ -29,7 +29,7 @@ var blissProject = {
   "js": [
     {
       "name": "init",
-      "body": "function() { \n  app.render();\n}"
+      "body": "function() { app.render(); }"
     }
   ],
   "cssVars": [
@@ -76,7 +76,7 @@ var blissProject = {
         },
         {
           "name": "background-image",
-          "value": "url(https://www.hdwallpapers.in/download/colorful_flowers_dark_background-1920x1200.jpg)"
+          "value": "url(https://i.ibb.co/hK5z1qM/flowers.jpg)"
         },
         {
           "name": "background-size",
@@ -129,7 +129,7 @@ var blissProject = {
       "id": "6",
       "name": "header",
       "element": "h1",
-      "text": "Pretty To-do List",
+      "text": "Pretty Todos",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -627,6 +627,6 @@ var blissProject = {
     }
   ],
   "filename": "index",
-  "pageTitle": "Pretty To-do List"
+  "pageTitle": "Pretty Todo"
 }
 if(typeof module !== "undefined") module.exports = blissProject;
