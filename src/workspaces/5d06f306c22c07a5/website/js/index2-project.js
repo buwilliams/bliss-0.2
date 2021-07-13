@@ -1156,6 +1156,9 @@ var blissProject = {
     }
   ],
   "filename": "index2",
-  "pageTitle": "index2"
+  "pageTitle": "index2",
+  "rootProps": {
+    "index2": {}
+  }
 }
 if(typeof module !== "undefined") module.exports = blissProject;

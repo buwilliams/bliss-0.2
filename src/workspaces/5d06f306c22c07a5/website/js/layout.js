@@ -25,6 +25,10 @@ var layout = (function() {
     app.methods["79"]['shouldShow'] = function(scope, attributes) {
       return app.state.settings.showVideo;
     }
+    app.rootProps = {};
+    app.getRootProps = function(name) {
+      return app.rootProps[name];
+    };
     app.getPath = function(objRef, path) {
       var ref = objRef;
       var parts = path.split('/')

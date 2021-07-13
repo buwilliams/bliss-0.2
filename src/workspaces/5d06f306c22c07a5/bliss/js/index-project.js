@@ -287,7 +287,7 @@ var blissProject = {
       "js": [
         {
           "name": "shouldShow",
-          "body": "function() {\n  return true; \n if(_.isNil(app.state.settings.activeComponent))\n    return false;\n  \n  var list = app.state.layout.list\n  var layout = _.find(list, function(item) {\n  \treturn (item.name === \"components\")})\n  return layout.active\n}"
+          "body": "function() {\n if(_.isNil(app.state.settings.activeComponent))\n    return false;\n  \n  var list = app.state.layout.list\n  var layout = _.find(list, function(item) {\n  \treturn (item.name === \"components\")})\n  return layout.active\n}"
         }
       ],
       "dynamicAttributes": [],

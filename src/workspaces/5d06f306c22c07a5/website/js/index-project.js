@@ -1,20 +1,20 @@
 var blissProject = {
-  "name": "index",
+  "name": "website_v2",
   "compiler": "react",
   "version": "v0.2",
   "type": "app",
   "build": "designer",
-  "nextId": 132,
+  "layout": "",
+  "nextId": 61,
   "rootId": "1",
   "externalCss": [
-    "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz",
-    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
-    "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz"
   ],
   "externalJs": [
     "node_modules/react/dist/react.js",
     "node_modules/react-dom/dist/react-dom.js"
   ],
+  "schemas": [],
   "state": {},
   "packages": [
     {
@@ -34,24 +34,40 @@ var blissProject = {
   ],
   "cssVars": [
     {
-      "name": "linkColor",
-      "value": "#f64e54"
+      "name": "blue",
+      "value": "#0c5c88"
     },
     {
-      "name": "linkHoverColor",
-      "value": "#ff2252"
+      "name": "red",
+      "value": "#db2b39"
     },
     {
-      "name": "fontBody",
-      "value": "'Quicksand', sans-serif;"
+      "name": "yellow",
+      "value": "#ffd166"
     },
     {
-      "name": "fontCursive",
-      "value": "'Pacifico', cursive"
+      "name": "green",
+      "value": "#06d6a0"
     },
     {
-      "name": "fontHeader",
-      "value": "'Yanone Kaffeesatz', sans-serif"
+      "name": "bluelight",
+      "value": "#44a1a0"
+    },
+    {
+      "name": "white",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "black",
+      "value": "#999999"
+    },
+    {
+      "name": "bluedark",
+      "value": "#073d5a"
+    },
+    {
+      "name": "maxwidth",
+      "value": "1000px"
     }
   ],
   "css": [
@@ -59,81 +75,32 @@ var blissProject = {
       "selector": "body",
       "properties": [
         {
-          "name": "background-image",
-          "value": "url(\"https://i.imgur.com/BdaB2OY.png\"), linear-gradient(to right, #1fc8db, #2cb5e8)"
-        },
-        {
-          "name": "color",
-          "value": "white"
-        },
-        {
-          "name": "font-family",
-          "value": "'Quicksand', sans-serif;"
-        },
-        {
-          "name": "font-size",
-          "value": "18px"
+          "name": "padding",
+          "value": "0"
         },
         {
           "name": "margin",
           "value": "0"
         },
         {
-          "name": "padding",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "selector": "h1",
-      "properties": [
-        {
-          "name": "font-size",
-          "value": "2em"
+          "name": "color",
+          "value": "#333333"
         },
         {
           "name": "font-family",
-          "value": "'Pacifico', cursive"
-        }
-      ]
-    },
-    {
-      "selector": "h2",
-      "properties": [
-        {
-          "name": "font-size",
-          "value": "1.5em"
-        }
-      ]
-    },
-    {
-      "selector": "h2, h3, h4, h5",
-      "properties": [
-        {
-          "name": "font-family",
-          "value": "'Yanone Kaffeesatz', sans-serif"
-        }
-      ]
-    },
-    {
-      "selector": "a, a:visited",
-      "properties": [
-        {
-          "name": "color",
-          "value": "$linkColor"
-        }
-      ]
-    },
-    {
-      "selector": "a:hover, a:active",
-      "properties": [
-        {
-          "name": "text-decoration",
-          "value": "underline"
+          "value": "'Quicksand', sans-serif"
         },
         {
-          "name": "color",
-          "value": "$linkHoverColor"
+          "name": "font-size",
+          "value": "18px"
+        },
+        {
+          "name": "background-image",
+          "value": "url(https://www.toptal.com/designers/subtlepatterns/patterns/double-bubble-outline.png)"
+        },
+        {
+          "name": "background-repeat",
+          "value": "repeat"
         }
       ]
     }
@@ -144,60 +111,78 @@ var blissProject = {
   "components": {
     "1": {
       "id": "1",
-      "name": "Bliss UI Website",
+      "name": "website_v2",
       "element": "div",
       "text": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "container-fluid"
-        }
-      ],
+      "attributes": [],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
       "previous": null,
-      "child": "40",
+      "child": "6",
       "parent": null
     },
     "2": {
       "id": "2",
+      "name": "BlissUI",
+      "element": "div",
+      "text": "BlissUI - ",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": "13",
+      "parent": "58"
+    },
+    "4": {
+      "id": "4",
       "name": "header",
       "element": "h1",
-      "text": "Bliss UI",
+      "text": "Building web apps shouldn’t be a pain.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "header"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
-          "selector": ".header",
+          "selector": "$id",
           "properties": [
             {
               "name": "text-align",
               "value": "center"
-            },
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "5",
+      "previous": null,
+      "child": null,
+      "parent": "14"
+    },
+    "5": {
+      "id": "5",
+      "name": "subheader",
+      "element": "h2",
+      "text": "So, why are we making apps the same old way?",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
             {
-              "name": "background-color",
-              "value": "rgba(0, 0, 0, 0.8)"
-            },
-            {
-              "name": "margin",
-              "value": "0"
-            },
-            {
-              "name": "padding",
-              "value": "20px 0"
-            },
-            {
-              "name": "font-family",
-              "value": "'Pacifico', cursive;"
+              "name": "text-align",
+              "value": "center"
             }
           ]
         }
@@ -205,651 +190,42 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": null,
-      "child": "8",
-      "parent": "42"
+      "previous": "4",
+      "child": null,
+      "parent": "14"
     },
-    "8": {
-      "id": "8",
-      "name": "small header",
-      "element": "small",
-      "text": "Inspired App Platform",
+    "6": {
+      "id": "6",
+      "name": "header container",
+      "element": "div",
+      "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "small"
-        }
-      ],
+      "attributes": [],
       "css": [
         {
-          "selector": ".small",
+          "selector": "$id",
           "properties": [
             {
               "name": "display",
-              "value": "block"
+              "value": "flex"
             },
             {
-              "name": "font-size",
-              "value": "0.5em"
-            },
-            {
-              "name": "font-family",
-              "value": "'Quicksand', sans-serif;"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "2"
-    },
-    "9": {
-      "id": "9",
-      "name": "content col",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col-md-8 offset-md-2 content"
-        }
-      ],
-      "css": [
-        {
-          "selector": ".content",
-          "properties": [
-            {
-              "name": "background-color",
-              "value": "rgba(255, 255, 255, 0.8)"
-            },
-            {
-              "name": "color",
-              "value": "#333333"
+              "name": "justify-content",
+              "value": "space-between"
             },
             {
               "name": "padding",
-              "value": "20px"
-            },
-            {
-              "name": "border-bottom-left-radius",
-              "value": "5px"
-            },
-            {
-              "name": "border-bottom-right-radius",
-              "value": "5px"
-            },
-            {
-              "name": "margin-bottom",
-              "value": "2em"
-            },
-            {
-              "name": "box-shadow",
-              "value": "0 0 5px 3px rgba(0,0,0,.35)"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "75",
-      "parent": "45"
-    },
-    "22": {
-      "id": "22",
-      "name": "para",
-      "element": "p",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-align",
-              "value": "center"
-            },
-            {
-              "name": "margin-bottom",
-              "value": "0"
-            },
-            {
-              "name": "margin-top",
-              "value": "2em"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "80",
-      "child": "23",
-      "parent": "9"
-    },
-    "23": {
-      "id": "23",
-      "name": "span",
-      "element": "span",
-      "text": "Let's get connected!  ",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "24",
-      "previous": null,
-      "child": null,
-      "parent": "22"
-    },
-    "24": {
-      "id": "24",
-      "name": "link",
-      "element": "a",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "mailto: buddy@blissui.com"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "25",
-      "previous": "23",
-      "child": "56",
-      "parent": "22"
-    },
-    "25": {
-      "id": "25",
-      "name": "span",
-      "element": "span",
-      "text": " or ",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "26",
-      "previous": "24",
-      "child": null,
-      "parent": "22"
-    },
-    "26": {
-      "id": "26",
-      "name": "link",
-      "element": "a",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "https://twitter.com/buwilliams"
-        },
-        {
-          "name": "target",
-          "value": "_blank"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "25",
-      "child": "54",
-      "parent": "22"
-    },
-    "40": {
-      "id": "40",
-      "name": "header row",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "row"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "45",
-      "previous": null,
-      "child": "42",
-      "parent": "1"
-    },
-    "42": {
-      "id": "42",
-      "name": "header col",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "col header-col"
-        }
-      ],
-      "css": [
-        {
-          "selector": ".header-col",
-          "properties": [
-            {
-              "name": "padding-left",
-              "value": "0"
-            },
-            {
-              "name": "padding-right",
-              "value": "0"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "2",
-      "parent": "40"
-    },
-    "45": {
-      "id": "45",
-      "name": "content row",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "row"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "40",
-      "child": "9",
-      "parent": "1"
-    },
-    "54": {
-      "id": "54",
-      "name": "twitter icon",
-      "element": "i",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "fa fa-twitter"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "55",
-      "previous": null,
-      "child": null,
-      "parent": "26"
-    },
-    "55": {
-      "id": "55",
-      "name": "twitter handle",
-      "element": "span",
-      "text": "twitter",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-left",
-              "value": "2px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "54",
-      "child": null,
-      "parent": "26"
-    },
-    "56": {
-      "id": "56",
-      "name": "email icon",
-      "element": "i",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "fa fa-envelope"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "57",
-      "previous": null,
-      "child": null,
-      "parent": "24"
-    },
-    "57": {
-      "id": "57",
-      "name": "email address",
-      "element": "span",
-      "text": "email",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-left",
-              "value": "2px"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "56",
-      "child": null,
-      "parent": "24"
-    },
-    "73": {
-      "id": "73",
-      "name": "browse link",
-      "element": "a",
-      "text": "Browse",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "/hosted/"
-        },
-        {
-          "name": "target",
-          "value": "_blank"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "76",
-      "previous": "77",
-      "child": null,
-      "parent": "75"
-    },
-    "75": {
-      "id": "75",
-      "name": "menu item_copy",
-      "element": "div",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id a",
-          "properties": [
-            {
-              "name": "height",
-              "value": "4em"
+              "value": "1em"
             },
             {
               "name": "background-color",
-              "value": "$linkColor"
+              "value": "$bluedark"
             },
-            {
-              "name": "color",
-              "value": "white"
-            },
-            {
-              "name": "padding",
-              "value": "5px 12px"
-            },
-            {
-              "name": "margin",
-              "value": "0 3px"
-            }
-          ]
-        },
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "margin-bottom",
-              "value": "20px"
-            },
-            {
-              "name": "text-align",
-              "value": "center"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "79",
-      "previous": null,
-      "child": "77",
-      "parent": "9"
-    },
-    "76": {
-      "id": "76",
-      "name": "play link",
-      "element": "a",
-      "text": "Sign-in",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "/bliss/"
-        },
-        {
-          "name": "target",
-          "value": "_blank"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "73",
-      "child": null,
-      "parent": "75"
-    },
-    "77": {
-      "id": "77",
-      "name": "watch link",
-      "element": "a",
-      "text": "Watch",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "href",
-          "value": "#"
-        }
-      ],
-      "css": [],
-      "js": [
-        {
-          "name": "handleClick",
-          "body": "function(scope, attributes) {\n  var currentValue = app.state.settings.showVideo\n  return function(e) {\n    app.dispatch({\n      path: '/settings',\n      action: 'set',\n      key: 'showVideo',\n      value: !currentValue\n    })\n  }\n};\n"
-        }
-      ],
-      "dynamicAttributes": [
-        {
-          "name": "onClick",
-          "value": "handleClick"
-        }
-      ],
-      "next": "73",
-      "previous": null,
-      "child": null,
-      "parent": "75"
-    },
-    "78": {
-      "id": "78",
-      "name": "todo video",
-      "element": "iframe",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "name",
-          "value": ""
-        },
-        {
-          "name": "width",
-          "value": "560"
-        },
-        {
-          "name": "height",
-          "value": "315"
-        },
-        {
-          "name": "src",
-          "value": "https://www.youtube.com/embed/j7bxCtu3SVo?rel=0&controls=0&showinfo=0&autoplay=1"
-        },
-        {
-          "name": "frameBorder",
-          "value": "0"
-        },
-        {
-          "name": "allowFullScreen",
-          "value": "true"
-        }
-      ],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "border",
-              "value": "none"
-            },
-            {
-              "name": "margin",
-              "value": "0 auto"
-            },
-            {
-              "name": "width",
-              "value": "560px"
-            },
-            {
-              "name": "display",
-              "value": "block"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "79"
-    },
-    "79": {
-      "id": "79",
-      "name": "video container",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": "shouldShow",
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
             {
               "name": "position",
-              "value": "relative"
-            },
-            {
-              "name": "padding-bottom",
-              "value": "56.25%"
-            },
-            {
-              "name": "padding-top",
-              "value": "30px"
-            },
-            {
-              "name": "height",
-              "value": "0"
-            },
-            {
-              "name": "overflow",
-              "value": "hidden"
-            }
-          ]
-        },
-        {
-          "selector": "$id iframe, $id object, $id embed",
-          "properties": [
-            {
-              "name": "position",
-              "value": "absolute"
+              "value": "fixed"
             },
             {
               "name": "top",
@@ -860,324 +236,114 @@ var blissProject = {
               "value": "0"
             },
             {
-              "name": "width",
-              "value": "100%"
-            },
-            {
-              "name": "height",
-              "value": "100%"
+              "name": "right",
+              "value": "0"
             }
           ]
         }
       ],
-      "js": [
-        {
-          "name": "shouldShow",
-          "body": "function(scope, attributes) {\n  return app.state.settings.showVideo;\n}"
-        }
-      ],
+      "js": [],
       "dynamicAttributes": [],
-      "next": "80",
-      "previous": "75",
-      "child": "78",
-      "parent": "9"
+      "next": "14",
+      "previous": null,
+      "child": "58",
+      "parent": "1"
     },
-    "80": {
-      "id": "80",
-      "name": "Layout container",
+    "7": {
+      "id": "7",
+      "name": "menu container",
       "element": "div",
       "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "22",
-      "previous": "79",
-      "child": "82",
-      "parent": "9"
-    },
-    "81": {
-      "id": "81",
-      "name": "Content",
-      "element": "content",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": []
+        },
+        {
+          "selector": "$id > a",
+          "properties": [
+            {
+              "name": "margin",
+              "value": "0.5em"
+            },
+            {
+              "name": "text-decoration",
+              "value": "none"
+            },
+            {
+              "name": "background-color",
+              "value": "$red"
+            },
+            {
+              "name": "padding",
+              "value": "0.5em 0.75em"
+            },
+            {
+              "name": "font-size",
+              "value": "0.75em"
+            },
+            {
+              "name": "color",
+              "value": "#ffffff"
+            },
+            {
+              "name": "border-radius",
+              "value": "0.2em"
+            }
+          ]
+        },
+        {
+          "selector": "$id > a:hover",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$bluelight"
+            },
+            {
+              "name": "color",
+              "value": "#ffffff"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "80"
+      "previous": "58",
+      "child": "10",
+      "parent": "6"
     },
-    "82": {
-      "id": "82",
-      "name": "index",
-      "element": "div",
-      "text": null,
+    "9": {
+      "id": "9",
+      "name": "Docs",
+      "element": "a",
+      "text": "Docs",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
       "attributes": [
         {
-          "name": "class",
-          "value": "container-fluid"
+          "name": "href",
+          "value": "/hosted/5d06f306c22c07a5/bliss_docs/index.html"
         }
       ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": "126",
-      "parent": null
-    },
-    "83": {
-      "id": "83",
-      "name": "What is BlissUI?",
-      "element": "h2",
-      "text": "What is BlissUI?",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "90",
-      "previous": null,
+      "next": "12",
+      "previous": "10",
       "child": null,
-      "parent": "126"
+      "parent": "7"
     },
-    "84": {
-      "id": "84",
-      "name": "The inspiration for BlissUI",
-      "element": "h2",
-      "text": "The inspiration for BlissUI",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "91",
-      "previous": null,
-      "child": null,
-      "parent": "129"
-    },
-    "85": {
-      "id": "85",
-      "name": "ideas for the future",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "131",
-      "child": "89",
-      "parent": "82"
-    },
-    "86": {
-      "id": "86",
-      "name": "Quick Prototypes",
-      "element": "h2",
-      "text": "Quick Prototypes",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "113",
-      "previous": null,
-      "child": null,
-      "parent": "130"
-    },
-    "87": {
-      "id": "87",
-      "name": "Current State of BlissUI",
-      "element": "h2",
-      "text": "Current State of BlissUI",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "93",
-      "previous": null,
-      "child": null,
-      "parent": "131"
-    },
-    "88": {
-      "id": "88",
-      "name": "Getting Started",
-      "element": "h2",
-      "text": "Getting Started",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "95",
-      "previous": null,
-      "child": null,
-      "parent": "128"
-    },
-    "89": {
-      "id": "89",
-      "name": "Ideas for future development",
-      "element": "h2",
-      "text": "Ideas for future development",
-      "textFn": "",
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "102",
-      "previous": null,
-      "child": null,
-      "parent": "85"
-    },
-    "90": {
-      "id": "90",
-      "name": "para",
-      "element": "p",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "119",
-      "previous": "83",
-      "child": "116",
-      "parent": "126"
-    },
-    "91": {
-      "id": "91",
-      "name": "para",
-      "element": "p",
-      "text": "Years ago, we have visual tools for creating applications. Back then if you wanted a button in your program, you dragged it there. You could edit properties in a visual tool. Those tools were before web apps took hold. It feels that we’ve taken a step backwards really. Now everything is code, frameworks, burdensome processes, and more code. We want to bring back that visual experience and see just how freeing it could really be. Instead of a general purpose IDE, BlissUI gives you a full featured toolkit for building web apps.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "94",
-      "previous": "84",
-      "child": null,
-      "parent": "129"
-    },
-    "92": {
-      "id": "92",
-      "name": "para",
-      "element": "p",
-      "text": "BlissUI helps you rapidly prototype and experiment with the ideas you have. You can realistically build and publish an app in a few short minutes. So it’s a great way to explore your ideas and it’s fun to experience.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "113",
-      "child": null,
-      "parent": "130"
-    },
-    "93": {
-      "id": "93",
-      "name": "para",
-      "element": "p",
-      "text": "The first version of BlissUI is ready for experimental use. You can build apps with BlissUI right now. At this time, there’s no documentation so it’s pure play. If more folks become interested, there’s a lot we can do.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "87",
-      "child": null,
-      "parent": "131"
-    },
-    "94": {
-      "id": "94",
-      "name": "para",
-      "element": "p",
-      "text": "BlissUI is so inspired it built itself. I know that’s confusing but let me say it a different way, we used BlissUI to create BlissUI. How inspired is that?!",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "115",
-      "previous": "91",
-      "child": null,
-      "parent": "129"
-    },
-    "95": {
-      "id": "95",
-      "name": "ol",
-      "element": "ol",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "88",
-      "child": "121",
-      "parent": "128"
-    },
-    "96": {
-      "id": "96",
-      "name": "li",
-      "element": "li",
-      "text": "Watch ",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "98",
-      "previous": "121",
-      "child": "97",
-      "parent": "95"
-    },
-    "97": {
-      "id": "97",
-      "name": "link",
+    "10": {
+      "id": "10",
+      "name": "Intro Video",
       "element": "a",
-      "text": "creating a Todo App",
+      "text": "Intro Video",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1194,491 +360,38 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
+      "next": "9",
       "previous": null,
       "child": null,
-      "parent": "96"
+      "parent": "7"
     },
-    "98": {
-      "id": "98",
-      "name": "li",
-      "element": "li",
-      "text": "",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "100",
-      "previous": "96",
-      "child": "124",
-      "parent": "95"
-    },
-    "99": {
-      "id": "99",
-      "name": "link",
+    "11": {
+      "id": "11",
+      "name": "Launch",
       "element": "a",
-      "text": "free account",
+      "text": "Launch",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [
         {
           "name": "href",
-          "value": "https://blissui.com/bliss/"
-        },
-        {
-          "name": "target",
-          "value": "_blank"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "125",
-      "previous": "124",
-      "child": null,
-      "parent": "98"
-    },
-    "100": {
-      "id": "100",
-      "name": "li",
-      "element": "li",
-      "text": "Experiment!",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "101",
-      "previous": "98",
-      "child": null,
-      "parent": "95"
-    },
-    "101": {
-      "id": "101",
-      "name": "li",
-      "element": "li",
-      "text": "Share what you make, we'd love to see it",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "100",
-      "child": null,
-      "parent": "95"
-    },
-    "102": {
-      "id": "102",
-      "name": "ul",
-      "element": "ul",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "89",
-      "child": "103",
-      "parent": "85"
-    },
-    "103": {
-      "id": "103",
-      "name": "li",
-      "element": "li",
-      "text": "An Education version of BlissUI to help folks learn how to program",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "104",
-      "previous": null,
-      "child": null,
-      "parent": "102"
-    },
-    "104": {
-      "id": "104",
-      "name": "li_copy",
-      "element": "li",
-      "text": "Marketplace to share components",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "105",
-      "previous": "103",
-      "child": null,
-      "parent": "102"
-    },
-    "105": {
-      "id": "105",
-      "name": "li_copy_copy",
-      "element": "li",
-      "text": "Publish apps to existing products",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "106",
-      "previous": "104",
-      "child": null,
-      "parent": "102"
-    },
-    "106": {
-      "id": "106",
-      "name": "li_copy_copy_copy",
-      "element": "li",
-      "text": "Tight integration with cloud-based products such as Firebase",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "105",
-      "child": null,
-      "parent": "102"
-    },
-    "107": {
-      "id": "107",
-      "name": "image",
-      "element": "img",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "src",
-          "value": "https://i.imgur.com/ood3FcY.png"
-        },
-        {
-          "name": "width",
-          "value": "100%"
+          "value": "/bliss/"
         }
       ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": null,
+      "previous": "12",
       "child": null,
-      "parent": "108"
+      "parent": "7"
     },
-    "108": {
-      "id": "108",
-      "name": "screenshot",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "screenshot"
-        }
-      ],
-      "css": [
-        {
-          "selector": ".screenshot",
-          "properties": [
-            {
-              "name": "margin-top",
-              "value": "15px"
-            },
-            {
-              "name": "margin-bottom",
-              "value": "45px"
-            },
-            {
-              "name": "text-align",
-              "value": "center"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "111",
-      "previous": "110",
-      "child": "107",
-      "parent": "127"
-    },
-    "109": {
-      "id": "109",
-      "name": "chevron down icon",
-      "element": "i",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "class",
-          "value": "fa fa-chevron-down"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "110"
-    },
-    "110": {
-      "id": "110",
-      "name": "chevron bottom",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-align",
-              "value": "center"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "108",
-      "previous": "114",
-      "child": "109",
-      "parent": "127"
-    },
-    "111": {
-      "id": "111",
-      "name": "ellipses",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "opacity",
-              "value": "0.2"
-            },
-            {
-              "name": "text-align",
-              "value": "center"
-            },
-            {
-              "name": "margin",
-              "value": "24px 0"
-            },
-            {
-              "name": "display",
-              "value": "none"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "108",
-      "child": "112",
-      "parent": "127"
-    },
-    "112": {
-      "id": "112",
-      "name": "ellipses image",
-      "element": "img",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [
-        {
-          "name": "src",
-          "value": "https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/svg/ellipses.svg"
-        },
-        {
-          "name": "width",
-          "value": "50"
-        },
-        {
-          "name": "alt",
-          "value": "separating content"
-        }
-      ],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": null,
-      "child": null,
-      "parent": "111"
-    },
-    "113": {
-      "id": "113",
-      "name": "para",
-      "element": "p",
-      "text": "Presently, BlissUI creates React.js apps and pairs nicely with Firebase. You don’t need to worry about those details. BlissUI takes standard technologies such as HTML, CSS, JavaScript, React, Data Management and puts them into a nice visual tool so that you can focus on exploring concepts, ideas, and beauty.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "92",
-      "previous": "86",
-      "child": null,
-      "parent": "130"
-    },
-    "114": {
-      "id": "114",
-      "name": "para",
-      "element": "p",
-      "text": "The mission is simple yet enormous, we want to remove all barriers that get in the way of inspiration. To touch that part of us  makes us uniquely human. This mission is our mojo.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "110",
-      "previous": "122",
-      "child": null,
-      "parent": "127"
-    },
-    "115": {
-      "id": "115",
-      "name": "para",
-      "element": "p",
-      "text": "I can almost hear you now… people have tried that. These solutions are always less than ideal. There’s always a greatly limiting architecture. Do not be afraid! BlissUI is an open system. It’s built with open-source and supports the community. We try hard not to lock you in. It’s is not a black box. It’s not even a box. It’s a spaceship. Aren’t you curious? A harmony of code and visual tooling is waiting for you. Are you ready to go exploring?",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "94",
-      "child": null,
-      "parent": "129"
-    },
-    "116": {
-      "id": "116",
-      "name": "span",
-      "element": "span",
-      "text": "Simply put, it’s an ",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "118",
-      "previous": null,
-      "child": null,
-      "parent": "90"
-    },
-    "117": {
-      "id": "117",
-      "name": "span",
-      "element": "span",
-      "text": ", think content management system but for apps. It's built to remove technical barriers so that you can focus on creating and delivering. It's in the cloud so all you need is a browser to publish apps (no IDEs, servers, source control, etc). Click the publish button and it's live.",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "118",
-      "child": null,
-      "parent": "90"
-    },
-    "118": {
-      "id": "118",
-      "name": "span",
-      "element": "span",
-      "text": "AMS",
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [
-        {
-          "selector": "$id",
-          "properties": [
-            {
-              "name": "text-decoration",
-              "value": "underline"
-            }
-          ]
-        }
-      ],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "117",
-      "previous": "116",
-      "child": null,
-      "parent": "90"
-    },
-    "119": {
-      "id": "119",
-      "name": "para",
-      "element": "p",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": null,
-      "previous": "90",
-      "child": null,
-      "parent": "126"
-    },
-    "120": {
-      "id": "120",
-      "name": "published apps link",
+    "12": {
+      "id": "12",
+      "name": "Browse",
       "element": "a",
-      "text": "published apps",
+      "text": "Browse",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1686,25 +399,21 @@ var blissProject = {
         {
           "name": "href",
           "value": "/hosted/"
-        },
-        {
-          "name": "target",
-          "value": "_blank"
         }
       ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": null,
-      "previous": "123",
+      "next": "11",
+      "previous": "9",
       "child": null,
-      "parent": "121"
+      "parent": "7"
     },
-    "121": {
-      "id": "121",
-      "name": "li",
-      "element": "li",
-      "text": "",
+    "13": {
+      "id": "13",
+      "name": "removing barriers",
+      "element": "small",
+      "text": "removing barriers to your creativity",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1712,17 +421,17 @@ var blissProject = {
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "96",
+      "next": null,
       "previous": null,
-      "child": "123",
-      "parent": "95"
+      "child": null,
+      "parent": "2"
     },
-    "122": {
-      "id": "122",
-      "name": "Mission",
-      "element": "h2",
-      "text": "The mission",
-      "textFn": "",
+    "14": {
+      "id": "14",
+      "name": "hero",
+      "element": "div",
+      "text": null,
+      "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
@@ -1731,58 +440,141 @@ var blissProject = {
           "selector": "$id",
           "properties": [
             {
-              "name": "margin-top",
-              "value": "20px"
+              "name": "margin",
+              "value": "9rem auto 3rem auto"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
             }
           ]
         }
       ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "114",
-      "previous": null,
-      "child": null,
-      "parent": "127"
+      "next": "15",
+      "previous": "6",
+      "child": "4",
+      "parent": "1"
     },
-    "123": {
-      "id": "123",
-      "name": "browse span",
-      "element": "span",
-      "text": "Browse ",
+    "15": {
+      "id": "15",
+      "name": "three big problems",
+      "element": "div",
+      "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "justify-content",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "0 auto"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
+            }
+          ]
+        },
+        {
+          "selector": "$id .problem",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$yellow"
+            },
+            {
+              "name": "border-radius",
+              "value": "0.5em"
+            },
+            {
+              "name": "padding",
+              "value": "1em"
+            },
+            {
+              "name": "margin",
+              "value": "0.5em"
+            },
+            {
+              "name": "width",
+              "value": "30%"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "28",
+      "previous": "14",
+      "child": "16",
+      "parent": "1"
+    },
+    "16": {
+      "id": "16",
+      "name": "visual container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "problem"
+        }
+      ],
       "css": [],
       "js": [],
       "dynamicAttributes": [],
-      "next": "120",
+      "next": "22",
       "previous": null,
-      "child": null,
-      "parent": "121"
+      "child": "17",
+      "parent": "15"
     },
-    "124": {
-      "id": "124",
-      "name": "span",
-      "element": "span",
-      "text": "Create your ",
+    "17": {
+      "id": "17",
+      "name": "Visual Design",
+      "element": "h3",
+      "text": "Visual Design",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
       "attributes": [],
-      "css": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
       "js": [],
       "dynamicAttributes": [],
-      "next": "99",
+      "next": "18",
       "previous": null,
       "child": null,
-      "parent": "98"
+      "parent": "16"
     },
-    "125": {
-      "id": "125",
-      "name": "span_copy",
-      "element": "span",
-      "text": " to use it right away",
+    "18": {
+      "id": "18",
+      "name": "Visual Design Text",
+      "element": "div",
+      "text": "Current editors put code front and center. Does it make sense to be staring at text when your creation is visual? With Bliss, design is the focal point enabling you to see the experience you’re work.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1791,129 +583,912 @@ var blissProject = {
       "js": [],
       "dynamicAttributes": [],
       "next": null,
-      "previous": "99",
+      "previous": "17",
       "child": null,
-      "parent": "98"
+      "parent": "16"
     },
-    "126": {
-      "id": "126",
-      "name": "what is bliss",
+    "22": {
+      "id": "22",
+      "name": "prototype container",
       "element": "div",
       "text": null,
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "127",
-      "previous": null,
-      "child": "83",
-      "parent": "82"
-    },
-    "127": {
-      "id": "127",
-      "name": "the mission",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "128",
-      "previous": "126",
-      "child": "122",
-      "parent": "82"
-    },
-    "128": {
-      "id": "128",
-      "name": "getting started",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "129",
-      "previous": "127",
-      "child": "88",
-      "parent": "82"
-    },
-    "129": {
-      "id": "129",
-      "name": "the inspiration",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "130",
-      "previous": "128",
-      "child": "84",
-      "parent": "82"
-    },
-    "130": {
-      "id": "130",
-      "name": "quick prototypes",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "131",
-      "previous": "129",
-      "child": "86",
-      "parent": "82"
-    },
-    "131": {
-      "id": "131",
-      "name": "current state",
-      "element": "div",
-      "text": null,
-      "textFn": null,
-      "ifFn": null,
-      "repeatFn": null,
-      "attributes": [],
-      "css": [],
-      "js": [],
-      "dynamicAttributes": [],
-      "next": "85",
-      "previous": "130",
-      "child": "87",
-      "parent": "82"
-    }
-  },
-  "schemas": [
-    {
-      "path": "/settings",
-      "actions": [
+      "attributes": [
         {
-          "action": "init",
-          "body": "function (data, args) {\n  var newData = {\n    showVideo: false\n  }\n  return newData;\n}"
+          "name": "class",
+          "value": "problem"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "25",
+      "previous": "16",
+      "child": "23",
+      "parent": "15"
+    },
+    "23": {
+      "id": "23",
+      "name": "Prototype",
+      "element": "h3",
+      "text": "Prototype",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "24",
+      "previous": null,
+      "child": null,
+      "parent": "22"
+    },
+    "24": {
+      "id": "24",
+      "name": "Prototype Text",
+      "element": "div",
+      "text": "The best way to test ideas isn’t static mockups. Bliss allows you to try your ideas on the fly, minimizing the amount of time spent coding.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "22"
+    },
+    "25": {
+      "id": "25",
+      "name": "collaborate container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "problem"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "22",
+      "child": "26",
+      "parent": "15"
+    },
+    "26": {
+      "id": "26",
+      "name": "Collaborate",
+      "element": "h3",
+      "text": "Collaborate",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "27",
+      "previous": null,
+      "child": null,
+      "parent": "25"
+    },
+    "27": {
+      "id": "27",
+      "name": "Collaborate Text",
+      "element": "div",
+      "text": "Current collaboration processes assumes a developer will deploy code to a Dev or QA infrastructure which is already in place. When you use Bliss, all you need to do is click publish and share the URL.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "25"
+    },
+    "28": {
+      "id": "28",
+      "name": "introducing bliss container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$blue"
+            },
+            {
+              "name": "padding",
+              "value": "1rem 0 5rem 0"
+            },
+            {
+              "name": "margin",
+              "value": "4rem 0 1rem 0"
+            },
+            {
+              "name": "color",
+              "value": "$white"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
+            },
+            {
+              "name": "margin",
+              "value": "4rem auto"
+            },
+            {
+              "name": "border-radius",
+              "value": "0.5rem"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "56",
+      "previous": "15",
+      "child": "29",
+      "parent": "1"
+    },
+    "29": {
+      "id": "29",
+      "name": "Introducing BlissUI",
+      "element": "h2",
+      "text": "Introducing BlissUI",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "30",
+      "previous": null,
+      "child": null,
+      "parent": "28"
+    },
+    "30": {
+      "id": "30",
+      "name": "Revolutionize",
+      "element": "h3",
+      "text": "A platform designed to revolutionize digital development.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "31",
+      "previous": "29",
+      "child": null,
+      "parent": "28"
+    },
+    "31": {
+      "id": "31",
+      "name": "Feature container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "display",
+              "value": "flex"
+            },
+            {
+              "name": "justify-content",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "0 4em 4em 2em"
+            },
+            {
+              "name": "flex-wrap",
+              "value": "wrap"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
+            },
+            {
+              "name": "margin",
+              "value": "0 auto"
+            }
+          ]
         },
         {
-          "action": "set",
-          "body": "function (data, args) {\n  var newData = Object.assign({}, data)\n  newData[args.key] = args.value\n  return newData;\n}"
+          "selector": "$id .feature",
+          "properties": [
+            {
+              "name": "margin",
+              "value": "0.5em"
+            },
+            {
+              "name": "width",
+              "value": "40%"
+            }
+          ]
         }
-      ]
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "30",
+      "child": "33",
+      "parent": "28"
+    },
+    "32": {
+      "id": "32",
+      "name": "Organized",
+      "element": "h3",
+      "text": "Organized",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "34",
+      "previous": null,
+      "child": null,
+      "parent": "33"
+    },
+    "33": {
+      "id": "33",
+      "name": "Organized Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "35",
+      "previous": null,
+      "child": "32",
+      "parent": "31"
+    },
+    "34": {
+      "id": "34",
+      "name": "Organized Text",
+      "element": "div",
+      "text": "Code shown at the right places. Everything is organized. No more opening JavaScript files, CSS files, and HTML templates. Bliss UI brings them together. ",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "32",
+      "child": null,
+      "parent": "33"
+    },
+    "35": {
+      "id": "35",
+      "name": "Auto-compile Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "38",
+      "previous": "33",
+      "child": "36",
+      "parent": "31"
+    },
+    "36": {
+      "id": "36",
+      "name": "Auto-compile",
+      "element": "h3",
+      "text": "Auto-compile",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "37",
+      "previous": null,
+      "child": null,
+      "parent": "35"
+    },
+    "37": {
+      "id": "37",
+      "name": "Auto-compile Text",
+      "element": "div",
+      "text": "No build tools or configuration because who needs them? Make changes and watch them come to life.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "35"
+    },
+    "38": {
+      "id": "38",
+      "name": "Data Editor Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "41",
+      "previous": "35",
+      "child": "39",
+      "parent": "31"
+    },
+    "39": {
+      "id": "39",
+      "name": "Data Editor",
+      "element": "h3",
+      "text": "Data Editor",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "40",
+      "previous": null,
+      "child": null,
+      "parent": "38"
+    },
+    "40": {
+      "id": "40",
+      "name": "Data Editor Text",
+      "element": "div",
+      "text": "BlissUI makes handling data a breeze. With our editor, you can manage it all from one place.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "38"
+    },
+    "41": {
+      "id": "41",
+      "name": "Layouts & Plugins Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "44",
+      "previous": "38",
+      "child": "42",
+      "parent": "31"
+    },
+    "42": {
+      "id": "42",
+      "name": "Layouts and Components",
+      "element": "h3",
+      "text": "Layouts and Components",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "43",
+      "previous": null,
+      "child": null,
+      "parent": "41"
+    },
+    "43": {
+      "id": "43",
+      "name": "Layouts & Plugins Text",
+      "element": "div",
+      "text": "Create layout pages and use them in other places. Publish any page as a component to re-use in other pages.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "41"
+    },
+    "44": {
+      "id": "44",
+      "name": "RESTful Integration",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "47",
+      "previous": "41",
+      "child": "45",
+      "parent": "31"
+    },
+    "45": {
+      "id": "45",
+      "name": "API Integration",
+      "element": "h3",
+      "text": "API  Integration",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "46",
+      "previous": null,
+      "child": null,
+      "parent": "44"
+    },
+    "46": {
+      "id": "46",
+      "name": "API Integration Text",
+      "element": "div",
+      "text": "Integrate with any API or backend over REST. Bliss compiles to a single-page app so it can talk with any web technology you already know.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "44"
+    },
+    "47": {
+      "id": "47",
+      "name": "Open Source Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "53",
+      "previous": "44",
+      "child": "48",
+      "parent": "31"
+    },
+    "48": {
+      "id": "48",
+      "name": "Open Source",
+      "element": "h3",
+      "text": "Open Source",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "49",
+      "previous": null,
+      "child": null,
+      "parent": "47"
+    },
+    "49": {
+      "id": "49",
+      "name": "Open Source Text",
+      "element": "div",
+      "text": "Have a library you want to use? No problem. Bliss UI supports node packages from npm.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "47"
+    },
+    "50": {
+      "id": "50",
+      "name": "Hosting Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "53",
+      "child": "51",
+      "parent": "31"
+    },
+    "51": {
+      "id": "51",
+      "name": "Cloud Hosting",
+      "element": "h3",
+      "text": "Cloud Hosting",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "52",
+      "previous": null,
+      "child": null,
+      "parent": "50"
+    },
+    "52": {
+      "id": "52",
+      "name": "Cloud Hosting Text",
+      "element": "div",
+      "text": "Want to share your work with friends? Bliss UI will host your projects for free.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "50"
+    },
+    "53": {
+      "id": "53",
+      "name": "Download Container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "class",
+          "value": "feature"
+        }
+      ],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "50",
+      "previous": "47",
+      "child": "54",
+      "parent": "31"
+    },
+    "54": {
+      "id": "54",
+      "name": "Download",
+      "element": "h3",
+      "text": "Download and Export",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "55",
+      "previous": null,
+      "child": null,
+      "parent": "53"
+    },
+    "55": {
+      "id": "55",
+      "name": "Download Text",
+      "element": "div",
+      "text": "Want to eject? With a single-click you can download your entire website. The static files are ready for your favorite host.",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": null,
+      "child": null,
+      "parent": "53"
+    },
+    "56": {
+      "id": "56",
+      "name": "use bliss container",
+      "element": "div",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "margin",
+              "value": "4em 0 4em"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "28",
+      "child": "57",
+      "parent": "1"
+    },
+    "57": {
+      "id": "57",
+      "name": "use bliss",
+      "element": "h2",
+      "text": "How will you use Bliss UI?",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-align",
+              "value": "center"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "59",
+      "previous": null,
+      "child": null,
+      "parent": "56"
+    },
+    "58": {
+      "id": "58",
+      "name": "bliss link",
+      "element": "a",
+      "text": null,
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "/"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "text-decoration",
+              "value": "none"
+            },
+            {
+              "name": "color",
+              "value": "#fff"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": "7",
+      "previous": null,
+      "child": "2",
+      "parent": "6"
+    },
+    "59": {
+      "id": "59",
+      "name": "start now link",
+      "element": "a",
+      "text": "Start Creating Now",
+      "textFn": null,
+      "ifFn": null,
+      "repeatFn": null,
+      "attributes": [
+        {
+          "name": "href",
+          "value": "/bliss/"
+        }
+      ],
+      "css": [
+        {
+          "selector": "$id",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$red"
+            },
+            {
+              "name": "padding",
+              "value": "1em"
+            },
+            {
+              "name": "text-decoration",
+              "value": "none"
+            },
+            {
+              "name": "border-radius",
+              "value": "0.5em"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "color",
+              "value": "#ffffff"
+            }
+          ]
+        },
+        {
+          "selector": "$id:hover",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$bluelight"
+            }
+          ]
+        }
+      ],
+      "js": [],
+      "dynamicAttributes": [],
+      "next": null,
+      "previous": "57",
+      "child": null,
+      "parent": "56"
     }
-  ],
+  },
   "filename": "index",
-  "pageTitle": "BlissUI - Inspired App Platform"
+  "pageTitle": "Bliss UI - Inspired Web App Platform"
 }
 if(typeof module !== "undefined") module.exports = blissProject;

@@ -1,4 +1,4 @@
-{
+var blissProject = {
   "name": "Many Ghosts",
   "compiler": "react",
   "version": "v0.2",
@@ -315,3 +315,4 @@
   },
   "filename": "index"
 }
+if(typeof module !== "undefined") module.exports = blissProject;

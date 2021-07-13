@@ -750,8 +750,9 @@ var blissUi = (function() {
       return function(e) {
         //var username = app.state.firebase.username
         //var workspace = app.state.settings.workspace
+
         var username = '5d06f306c22c07a5';
-        var workspace = 'bliss';
+        var workspace = app.state.settings.workspace;
 
         if (username === null) return
 
@@ -761,9 +762,7 @@ var blissUi = (function() {
           workspace + '/' +
           app.buildProject.filename + '.html' || app.buildProject.name + '.html';
 
-        console.log('app', app);
-
-        //window.open(url)
+        window.open(url)
       }
     };
     app.methods["319"] = {};

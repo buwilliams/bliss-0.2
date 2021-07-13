@@ -9,6 +9,10 @@ var blissUiWebsite = (function() {
     app.js['init'] = function() {
       app.render();
     }
+    app.rootProps = {};
+    app.getRootProps = function(name) {
+      return app.rootProps[name];
+    };
     app.getKey = function() {
       var out = [];
       for (var i = 0; i < arguments.length; i++) out.push(arguments[i]);

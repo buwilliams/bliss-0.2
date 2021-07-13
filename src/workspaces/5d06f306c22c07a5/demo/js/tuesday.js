@@ -1,4 +1,4 @@
-var demo = (function() {
+var tuesday = (function() {
   var createApp = function(component) {
     var app = {
       js: {},
@@ -9,10 +9,6 @@ var demo = (function() {
     app.js['init'] = function() {
       app.render();
     }
-    app.methods["2"] = {};
-    app.methods["2"]['repeater'] = function(scope, attributes) {
-      return [0, 1, 2, 3, 4];
-    };
     app.rootProps = {};
     app.getRootProps = function(name) {
       return app.rootProps[name];
@@ -37,21 +33,9 @@ var demo = (function() {
       var scope = {};
       return (
         React.createElement('div', app.mergeAttributes('1', scope, {}, {
-            "id": "demo_1",
-            "key": app.getKey('id', '1')
-          }),
-          (function(scope) {
-            var out = [];
-            var list = scope['repeater'] = app.methods['2']['repeater'](scope);
-            for (var i = 0; i < list.length; i++) {
-              scope['repeater_index'] = i;
-              out.push(React.createElement('div', app.mergeAttributes('2', scope, {}, {
-                "id": "new_2",
-                "key": app.getKey('id', '2', i)
-              }), 'hello, world'));
-            }
-            return out;
-          })(scope)));
+          "id": "tuesday_1",
+          "key": app.getKey('id', '1')
+        }), 'hello, world!'));
     };
     app.render = function() {
       var isComponent = (typeof component === 'undefined') ? false : true;

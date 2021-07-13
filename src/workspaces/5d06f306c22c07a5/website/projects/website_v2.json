@@ -5,7 +5,7 @@
   "type": "app",
   "build": "designer",
   "layout": "",
-  "nextId": 60,
+  "nextId": 61,
   "rootId": "1",
   "externalCss": [
     "https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Yanone+Kaffeesatz"
@@ -32,7 +32,44 @@
       "body": "function() { app.render(); }"
     }
   ],
-  "cssVars": [],
+  "cssVars": [
+    {
+      "name": "blue",
+      "value": "#0c5c88"
+    },
+    {
+      "name": "red",
+      "value": "#db2b39"
+    },
+    {
+      "name": "yellow",
+      "value": "#ffd166"
+    },
+    {
+      "name": "green",
+      "value": "#06d6a0"
+    },
+    {
+      "name": "bluelight",
+      "value": "#44a1a0"
+    },
+    {
+      "name": "white",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "black",
+      "value": "#999999"
+    },
+    {
+      "name": "bluedark",
+      "value": "#073d5a"
+    },
+    {
+      "name": "maxwidth",
+      "value": "1000px"
+    }
+  ],
   "css": [
     {
       "selector": "body",
@@ -56,6 +93,14 @@
         {
           "name": "font-size",
           "value": "18px"
+        },
+        {
+          "name": "background-image",
+          "value": "url(https://www.toptal.com/designers/subtlepatterns/patterns/double-bubble-outline.png)"
+        },
+        {
+          "name": "background-repeat",
+          "value": "repeat"
         }
       ]
     }
@@ -176,7 +221,7 @@
             },
             {
               "name": "background-color",
-              "value": "#f1f1f1"
+              "value": "$bluedark"
             },
             {
               "name": "position",
@@ -231,7 +276,7 @@
             },
             {
               "name": "background-color",
-              "value": "#c7c7c7"
+              "value": "$red"
             },
             {
               "name": "padding",
@@ -243,7 +288,7 @@
             },
             {
               "name": "color",
-              "value": "#3c3c3c"
+              "value": "#ffffff"
             },
             {
               "name": "border-radius",
@@ -256,7 +301,7 @@
           "properties": [
             {
               "name": "background-color",
-              "value": "#9f9f9f"
+              "value": "$bluelight"
             },
             {
               "name": "color",
@@ -396,7 +441,11 @@
           "properties": [
             {
               "name": "margin",
-              "value": "7em 0 0 0"
+              "value": "9rem auto 3rem auto"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
             }
           ]
         }
@@ -431,7 +480,11 @@
             },
             {
               "name": "margin",
-              "value": "0 2em 4em 2em"
+              "value": "0 auto"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
             }
           ]
         },
@@ -440,7 +493,7 @@
           "properties": [
             {
               "name": "background-color",
-              "value": "#c8c8c8"
+              "value": "$yellow"
             },
             {
               "name": "border-radius",
@@ -521,7 +574,7 @@
       "id": "18",
       "name": "Visual Design Text",
       "element": "div",
-      "text": "Current editors put code front and center. Does it make sense to be staring at text when your creation is visual? With Bliss, design is the focal point enabling you to see the experience you’re creating.",
+      "text": "Current editors put code front and center. Does it make sense to be staring at text when your creation is visual? With Bliss, design is the focal point enabling you to see the experience you’re work.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -587,7 +640,7 @@
       "id": "24",
       "name": "Prototype Text",
       "element": "div",
-      "text": "The best way to test ideas isn’t static mockups. Bliss allows you to implement your ideas on the fly, minimizing the amount of time spent coding.",
+      "text": "The best way to test ideas isn’t static mockups. Bliss allows you to try your ideas on the fly, minimizing the amount of time spent coding.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -681,15 +734,31 @@
           "properties": [
             {
               "name": "background-color",
-              "value": "#e3e3e3"
+              "value": "$blue"
             },
             {
               "name": "padding",
-              "value": "1em"
+              "value": "1rem 0 5rem 0"
             },
             {
               "name": "margin",
-              "value": "3em 0 1em 0"
+              "value": "4rem 0 1rem 0"
+            },
+            {
+              "name": "color",
+              "value": "$white"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
+            },
+            {
+              "name": "margin",
+              "value": "4rem auto"
+            },
+            {
+              "name": "border-radius",
+              "value": "0.5rem"
             }
           ]
         }
@@ -778,11 +847,19 @@
             },
             {
               "name": "margin",
-              "value": "0 2em 4em 2em"
+              "value": "0 4em 4em 2em"
             },
             {
               "name": "flex-wrap",
               "value": "wrap"
+            },
+            {
+              "name": "max-width",
+              "value": "$maxwidth"
+            },
+            {
+              "name": "margin",
+              "value": "0 auto"
             }
           ]
         },
@@ -906,7 +983,7 @@
       "id": "37",
       "name": "Auto-compile Text",
       "element": "div",
-      "text": "No build tools. Many of the things you are used to exist because text wasn’t designed for the web. Make changes and watch them come to life.",
+      "text": "No build tools or configuration because who needs them? Make changes and watch them come to life.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -999,9 +1076,9 @@
     },
     "42": {
       "id": "42",
-      "name": "Layouts & Plugins",
+      "name": "Layouts and Components",
       "element": "h3",
-      "text": "Layouts & Plugins",
+      "text": "Layouts and Components",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1018,7 +1095,7 @@
       "id": "43",
       "name": "Layouts & Plugins Text",
       "element": "div",
-      "text": "Create layout pages and use them in other places. Include plugins just by naming them.",
+      "text": "Create layout pages and use them in other places. Publish any page as a component to re-use in other pages.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1033,7 +1110,7 @@
     },
     "44": {
       "id": "44",
-      "name": "Firebase Integration Container",
+      "name": "RESTful Integration",
       "element": "div",
       "text": null,
       "textFn": null,
@@ -1055,9 +1132,9 @@
     },
     "45": {
       "id": "45",
-      "name": "Firebase Integration",
+      "name": "API Integration",
       "element": "h3",
-      "text": "Firebase Integration",
+      "text": "API  Integration",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1072,9 +1149,9 @@
     },
     "46": {
       "id": "46",
-      "name": "Firebase Integration Text",
+      "name": "API Integration Text",
       "element": "div",
-      "text": "Like Firebase? We do too. Easily add Firebase to save your data in the cloud.",
+      "text": "Integrate with any API or backend over REST. Bliss compiles to a single-page app so it can talk with any web technology you already know.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1167,9 +1244,9 @@
     },
     "51": {
       "id": "51",
-      "name": "Hosting",
+      "name": "Cloud Hosting",
       "element": "h3",
-      "text": "Hosting",
+      "text": "Cloud Hosting",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1184,9 +1261,9 @@
     },
     "52": {
       "id": "52",
-      "name": "Hosting Text",
+      "name": "Cloud Hosting Text",
       "element": "div",
-      "text": "Want to test your ideas and share them with folks? Bliss UI will host your projects for free.",
+      "text": "Want to share your work with friends? Bliss UI will host your projects for free.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1225,7 +1302,7 @@
       "id": "54",
       "name": "Download",
       "element": "h3",
-      "text": "Download",
+      "text": "Download and Export",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1242,7 +1319,7 @@
       "id": "55",
       "name": "Download Text",
       "element": "div",
-      "text": "Single-click to download your entire website. It’s ready to host anywhere you like.",
+      "text": "Want to eject? With a single-click you can download your entire website. The static files are ready for your favorite host.",
       "textFn": null,
       "ifFn": null,
       "repeatFn": null,
@@ -1337,7 +1414,7 @@
             },
             {
               "name": "color",
-              "value": "#333333"
+              "value": "#fff"
             }
           ]
         }
@@ -1369,7 +1446,7 @@
           "properties": [
             {
               "name": "background-color",
-              "value": "#919191"
+              "value": "$red"
             },
             {
               "name": "padding",
@@ -1392,6 +1469,15 @@
               "value": "#ffffff"
             }
           ]
+        },
+        {
+          "selector": "$id:hover",
+          "properties": [
+            {
+              "name": "background-color",
+              "value": "$bluelight"
+            }
+          ]
         }
       ],
       "js": [],
@@ -1402,6 +1488,6 @@
       "parent": "56"
     }
   },
-  "filename": "website_v2",
+  "filename": "index",
   "pageTitle": "Bliss UI - Inspired Web App Platform"
 }

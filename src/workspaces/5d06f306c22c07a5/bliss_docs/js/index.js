@@ -63,6 +63,10 @@ var blissDocs = (function() {
         }, true)
       return shouldShow;
     }
+    app.rootProps = {};
+    app.getRootProps = function(name) {
+      return app.rootProps[name];
+    };
     app.getPath = function(objRef, path) {
       var ref = objRef;
       var parts = path.split('/')

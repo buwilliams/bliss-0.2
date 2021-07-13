@@ -1003,7 +1003,6 @@ var blissUi = (function() {
     }
     app.methods["3"] = {};
     app.methods["3"]['shouldShow'] = function() {
-      return true;
       if (_.isNil(app.state.settings.activeComponent))
         return false;
 

@@ -1,135 +1,138 @@
 body {
-  background-image: url("https://i.imgur.com/BdaB2OY.png"), linear-gradient(to right, #1fc8db, #2cb5e8);
-  color: white;
-  font-family: 'Quicksand', sans-serif;;
-  font-size: 18px;
-  margin: 0;
   padding: 0;
-}
-
-h1 {
-  font-size: 2em;
-  font-family: 'Pacifico', cursive;
-}
-
-h2 {
-  font-size: 1.5em;
-}
-
-h2, h3, h4, h5 {
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-}
-
-a, a:visited {
-  color: #f64e54;
-}
-
-a:hover, a:active {
-  text-decoration: underline;
-  color: #ff2252;
-}
-
-.header-col {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.header {
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.8);
   margin: 0;
-  padding: 20px 0;
-  font-family: 'Pacifico', cursive;;
-}
-
-.small {
-  display: block;
-  font-size: 0.5em;
-  font-family: 'Quicksand', sans-serif;;
-}
-
-.content {
-  background-color: rgba(255, 255, 255, 0.8);
   color: #333333;
-  padding: 20px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  margin-bottom: 2em;
-  box-shadow: 0 0 5px 3px rgba(0,0,0,.35);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 18px;
+  background-image: url(https://www.toptal.com/designers/subtlepatterns/patterns/double-bubble-outline.png);
+  background-repeat: repeat;
 }
 
-#menuItemCopy_75 a {
-  height: 4em;
-  background-color: #f64e54;
-  color: white;
-  padding: 5px 12px;
-  margin: 0 3px;
-}
-
-#menuItemCopy_75 {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-#videoContainer_79 {
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 30px;
-  height: 0;
-  overflow: hidden;
-}
-
-#videoContainer_79 iframe, #videoContainer_79 object, #videoContainer_79 embed {
-  position: absolute;
+#headerContainer_6 {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: #073d5a;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  right: 0;
 }
 
-#todoVideo_78 {
-  border: none;
+#blissLink_58 {
+  text-decoration: none;
+  color: #fff;
+}
+
+#menuContainer_7 {
+}
+
+#menuContainer_7 > a {
+  margin: 0.5em;
+  text-decoration: none;
+  background-color: #db2b39;
+  padding: 0.5em 0.75em;
+  font-size: 0.75em;
+  color: #ffffff;
+  border-radius: 0.2em;
+}
+
+#menuContainer_7 > a:hover {
+  background-color: #44a1a0;
+  color: #ffffff;
+}
+
+#hero_14 {
+  margin: 9rem auto 3rem auto;
+  max-width: 1000px;
+}
+
+#header_4 {
+  text-align: center;
+}
+
+#subheader_5 {
+  text-align: center;
+}
+
+#threeBigProblems_15 {
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
-  width: 560px;
-  display: block;
+  max-width: 1000px;
 }
 
-#span_118 {
-  text-decoration: underline;
+#threeBigProblems_15 .problem {
+  background-color: #ffd166;
+  border-radius: 0.5em;
+  padding: 1em;
+  margin: 0.5em;
+  width: 30%;
 }
 
-#mission_122 {
-  margin-top: 20px;
-}
-
-#chevronBottom_110 {
+#visualDesign_17 {
   text-align: center;
 }
 
-.screenshot {
-  margin-top: 15px;
-  margin-bottom: 45px;
+#prototype_23 {
   text-align: center;
 }
 
-#ellipses_111 {
-  opacity: 0.2;
+#collaborate_26 {
   text-align: center;
-  margin: 24px 0;
-  display: none;
 }
 
-#para_22 {
+#introducingBlissContainer_28 {
+  background-color: #0c5c88;
+  padding: 1rem 0 5rem 0;
+  margin: 4rem 0 1rem 0;
+  color: #FFFFFF;
+  max-width: 1000px;
+  margin: 4rem auto;
+  border-radius: 0.5rem;
+}
+
+#introducingBlissui_29 {
   text-align: center;
-  margin-bottom: 0;
-  margin-top: 2em;
 }
 
-#emailAddress_57 {
-  margin-left: 2px;
+#revolutionize_30 {
+  text-align: center;
 }
 
-#twitterHandle_55 {
-  margin-left: 2px;
+#featureContainer_31 {
+  display: flex;
+  justify-content: center;
+  margin: 0 4em 4em 2em;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+#featureContainer_31 .feature {
+  margin: 0.5em;
+  width: 40%;
+}
+
+#useBlissContainer_56 {
+  text-align: center;
+  margin: 4em 0 4em;
+}
+
+#useBliss_57 {
+  text-align: center;
+}
+
+#startNowLink_59 {
+  background-color: #db2b39;
+  padding: 1em;
+  text-decoration: none;
+  border-radius: 0.5em;
+  display: inline-block;
+  color: #ffffff;
+}
+
+#startNowLink_59:hover {
+  background-color: #44a1a0;
 }
 
