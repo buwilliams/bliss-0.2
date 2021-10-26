@@ -13,7 +13,7 @@ Application Management System (AMS) for Coders and Designers
 
 ## Bliss relies on out-of-date software, requiring:
 
-- Node 8 (nvm suggested)
+- Node 8 (nvm suggested, `nvm install carbon`)
 - Python 2.7 (pyenv suggested)
 
 ## Getting Started
@@ -21,6 +21,6 @@ Application Management System (AMS) for Coders and Designers
 - `cp defaults.env .env` Change values for your machine.
 - `npm install`
 - `npm run test` Must not be running the server during tests.
-- `npm run build` Must run before server.
+- `npm run build` Must run at least once before server.
 - `npm run server`
 - Open `http://localhost:3000/bliss/`
