@@ -1,15 +1,21 @@
 # Bliss UI
 
-Application Management System (AMS) for Coders and Designers
+Low-code app platform
 
 ![BlissUI](https://i.imgur.com/ood3FcY.png)
 
 ## Features
 
-- JSON Data Structure
-- Compilers (Plain, React)
-- Cloud-based IDE
-- Website
+- Web pages
+- Components
+- HMTL editor
+- Import custom HTML
+- CSS support
+- JavaScript Support
+- Compiles to React 15
+- State management
+- Export all assets and working app
+- Deployable
 
 ## Bliss relies on out-of-date software, requiring:
 
@@ -18,9 +24,11 @@ Application Management System (AMS) for Coders and Designers
 
 ## Getting Started
 
-- `cp defaults.env .env` Change values for your machine.
-- `npm install`
-- `npm run test` Must not be running the server during tests.
-- `npm run build` Must run at least once before server.
-- `npm run server`
-- Open `http://localhost:3000/bliss/`
+1. `nvm use carbon` (change to node 8)
+1. `cp defaults.env .env`
+1. `Open .env and change values for your machine`
+1. `npm install` (install dependencies)
+1. `npm run test` (must not be running the server during tests)
+1. `npm run build` (must run at least once before server)
+1. `npm run server` (start server)
+1. Open [http://localhost:3000/bliss/](http://localhost:3000/bliss/)
