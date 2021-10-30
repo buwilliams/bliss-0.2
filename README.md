@@ -1,6 +1,4 @@
-# Bliss UI
-
-Low-code app platform
+# Bliss UI - Low-code app platform
 
 ![BlissUI](https://i.imgur.com/ood3FcY.png)
 
