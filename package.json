@@ -39,7 +39,7 @@
     "lodash": "^4.17.21",
     "metrohash": "^2.3.0",
     "mkdirp": "^0.5.1",
-    "moment": "^2.18.1",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.13",
     "nodemon": "^2.0.12",
     "parse5": "^4.0.0",
