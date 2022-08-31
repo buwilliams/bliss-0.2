@@ -40,7 +40,7 @@
     "metrohash": "^2.3.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
-    "moment-timezone": "^0.5.13",
+    "moment-timezone": "^0.5.35",
     "nodemon": "^2.0.12",
     "parse5": "^4.0.0",
     "popper.js": "^1.12.5",
