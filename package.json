@@ -28,7 +28,7 @@
     "codemirror": "^5.58.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
-    "firebase-admin": "^5.0.1",
+    "firebase-admin": "^11.4.1",
     "font-awesome": "^4.7.0",
     "fs-extra": "^3.0.1",
     "fs-utils": "^0.7.0",
